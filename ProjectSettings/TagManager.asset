@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - BackGround
+  - Enemy
+  - Wall
+  - PickUp
+  - Weapon
+  - Ground
+  - Door
+  - TreasureChest
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - PostProcessing
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 428374677
+    locked: 0
+  - name: Ground
+    uniqueID: 2822588361
+    locked: 0
+  - name: Wall
+    uniqueID: 1741529429
+    locked: 0
+  - name: Units
+    uniqueID: 644545703
+    locked: 0
+  - name: Weapon
+    uniqueID: 813841489
+    locked: 0
+  - name: PickUp
+    uniqueID: 1106477599
+    locked: 0
