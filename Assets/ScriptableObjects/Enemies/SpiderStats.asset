@@ -20,3 +20,4 @@ MonoBehaviour:
   _health: 25
   _mana: 0
   _armor: 2
+  _xpReward: 25

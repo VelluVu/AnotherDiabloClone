@@ -91,7 +91,7 @@ public class ItemSlot : MonoBehaviour
                     FillSlot ( tempWep );
 
                 tempWep = hand [ 1 ].EmptyHand ( );
-                hand [ 1 ].isEguipped = true;
+                hand [ 1 ].isEquipped = true;
                 if ( tempWep != null )
                     if ( FindObjectOfType<Inventory> ( ).AddItemToInventory ( tempWep ) )
                     {

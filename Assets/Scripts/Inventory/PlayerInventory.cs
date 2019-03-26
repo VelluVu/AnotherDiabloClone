@@ -4,15 +4,62 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static PlayerInventory instance;
+    /*  TODO
+     *  - Sort items/
+     *  
+     *  
+     * 
+     */
 
-    // Update is called once per frame
-    void Update()
+    [HideInInspector]
+    public const int maxStackSize = 99;
+    [HideInInspector]
+    public const int InventorySlots = 24;
+    public List<LootSlot> LootList;
+    [System.Serializable]
+    public struct equipmentSlots
+    {
+        public string key;
+        public EquipmentSlot ES;
+    }
+    public List<equipmentSlots> equipmentConnect = new List<equipmentSlots>();
+    public Dictionary<string, Color> rarity = new Dictionary<string, Color>
+    {
+        {"Common",Color.white },
+        {"Uncommon",Color.green},
+        {"Rare",Color.blue },
+        {"Epic",Color.red },
+        {"Legendary",new Color(1,0.647f,0,1)},
+        {"",new Color(0,0,0,0) }
+    };
+
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else if(instance != this)
+        {
+            Destroy(this);
+        }
+        
+
+    }
+    public void AddItem(RolledLoot loot, int count)
     {
         
+        
+        foreach(LootSlot slot in LootList)
+        {
+            if (slot.addToSlot(loot, count))
+            {
+                Debug.Log("Picked Up "+loot.itemName);
+                return;
+            }
+        }
     }
+    
 }

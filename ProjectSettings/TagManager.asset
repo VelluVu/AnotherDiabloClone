@@ -12,6 +12,7 @@ TagManager:
   - Ground
   - Door
   - TreasureChest
+  - Eyes
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
+  - Eyes
   - 
   - 
   - 

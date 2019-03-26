@@ -15,6 +15,7 @@ public class PlayerStatsObject : ScriptableObject
     public float _health;
     public float _mana;
     public float _stamina; //rajoittaa liikkumista jotenkin?
+    public float _armor;
 
     public int _strength;
     public int _dexterity;

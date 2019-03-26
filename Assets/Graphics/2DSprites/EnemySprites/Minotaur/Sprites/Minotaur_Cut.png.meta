@@ -1,0 +1,426 @@
+fileFormatVersion: 2
+guid: daba92194c9249f43b0a1703aac047ed
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Minotaur_Cut 0
+    21300002: Minotaur_Head
+    21300004: Minotaur_Right_Upper_Arm
+    21300006: Minotaur_Left_Upper_Arm
+    21300008: Minotaur_Beard
+    21300010: Minotaur_Right_Lower_Arm
+    21300012: Minotaur_Left_Lower_Arm
+    21300014: Minotaur_Left_Upper_Leg
+    21300016: Minotaur_Left_Hand
+    21300018: Minotaur_Right_Upper_Leg
+    21300020: Minotaur_Right_Hand
+    21300022: Minotaur_Right_Lower_Leg
+    21300024: Minotaur_Left_Lower_Leg
+    21300026: Minotaur_Body
+    21300028: Minotaur_Right_Hoof
+    21300030: Minotaur_Left_Hoof
+  externalObjects: {}
+  serializedVersion: 7
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 64
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 64
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 64
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Minotaur_Head
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 45
+        width: 35
+        height: 18
+      alignment: 9
+      pivot: {x: 0.26550207, y: 0.07194837}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69984fa7d681d01489b57c0c98da937e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Right_Upper_Arm
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 50
+        width: 10
+        height: 13
+      alignment: 9
+      pivot: {x: 0.5893326, y: 0.65031964}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b786915aa49ece4c80902182c182ab2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Left_Upper_Arm
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 52
+        width: 10
+        height: 11
+      alignment: 9
+      pivot: {x: 0.38833466, y: 0.7131802}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e67bd1013370f6242b387a5ed857dde5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Beard
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 36
+        width: 5
+        height: 7
+      alignment: 9
+      pivot: {x: 0.5000002, y: 0.8748779}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 837f2dcb9742b964d98fba6a4ea7a057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Right_Lower_Arm
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 35
+        width: 11
+        height: 14
+      alignment: 9
+      pivot: {x: 0.64212, y: 0.84696144}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0700af92537cf44b915705a174beef3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Left_Lower_Arm
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 40
+        width: 10
+        height: 10
+      alignment: 9
+      pivot: {x: 0.31575203, y: 0.656332}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e430747d02ad89c448919968ffafe130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Left_Upper_Leg
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 21
+        width: 15
+        height: 14
+      alignment: 9
+      pivot: {x: 0.1873361, y: 0.73130745}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b8d8f2379466c24fb52050ed5231e1d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Left_Hand
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 34
+        width: 4
+        height: 4
+      alignment: 9
+      pivot: {x: 0.20687866, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9f4ecc0dd96b98439b6abe27321cb26
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Right_Upper_Leg
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 21
+        width: 11
+        height: 12
+      alignment: 9
+      pivot: {x: 0.3832586, y: 0.7745115}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f74959f0bd7724644b15b37d189fa93a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Right_Hand
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 30
+        width: 6
+        height: 4
+      alignment: 9
+      pivot: {x: 0.3418077, y: 0.7093735}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fee338e1253e35c498fa190a97501e9c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Right_Lower_Leg
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 7
+        width: 15
+        height: 12
+      alignment: 9
+      pivot: {x: 0.6823873, y: 0.7745115}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0032001837e0f6744b76cdfef093e20d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Left_Lower_Leg
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 6
+        width: 13
+        height: 14
+      alignment: 9
+      pivot: {x: 0.607371, y: 0.7711881}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8ff7f6a66a316a4d9e71c93f9432ad0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Body
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 1
+        width: 21
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79d32eaae60c03245ad08451433f3774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Right_Hoof
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 1
+        width: 10
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b31150f98286bb4dab25f2370560dbc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur_Left_Hoof
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 1
+        width: 10
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ddc3650d7d1e184aa11f7a48f4de341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 54788747864aac141a7127df1aeb227d
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
