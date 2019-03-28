@@ -13,6 +13,7 @@ TagManager:
   - Door
   - TreasureChest
   - Eyes
+  - DamageText
   layers:
   - Default
   - TransparentFX
@@ -24,10 +25,10 @@ TagManager:
   - 
   - PostProcessing
   - Eyes
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Wall
+  - Enemy
+  - Player
   - 
   - 
   - 

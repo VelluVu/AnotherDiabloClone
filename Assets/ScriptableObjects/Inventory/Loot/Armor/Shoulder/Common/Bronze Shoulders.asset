@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: Bronze Shoulders
+  m_EditorClassIdentifier: 
+  itemName: Bronze Shoulders
+  description: 
+  itemID: 0
+  itemIcon: {fileID: 2800000, guid: 3d8dd67b2528fb948a1706228ea08600, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 015c5fb03d964424997956a005765783, type: 3}
+  - {fileID: 21300000, guid: f0da76f448669af4ba4e0261b3e759af, type: 3}
+  lootSprite: {fileID: 21300000, guid: 015c5fb03d964424997956a005765783, type: 3}
+  Rarity: Common
+  itemLevel: 0
+  attributes: []
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 0
+  damageMin: 0
+  damageMax: 0
+  armor: 0
+  armorSlot: Shoulder
+  potency: 0
+  buyPrice: 0
+  sellPrice: 0

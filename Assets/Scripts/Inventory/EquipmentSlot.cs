@@ -14,6 +14,8 @@ public class EquipmentSlot : MonoBehaviour
     public RawImage rarityImage;
     public string SlotName;
     TMPro.TMP_Text slotNameText;
+    public List<WeaponPlaceHolder> hand = new List<WeaponPlaceHolder>();
+    public List<SpriteRenderer> graphicsSpriteRenderers = new List<SpriteRenderer>();
 
     private void Awake()
     {
@@ -61,9 +63,37 @@ public class EquipmentSlot : MonoBehaviour
     }
     public void UnEquip()
     {
-        PlayerInventory.instance.AddItem(item,1);
-        emptySlot();
+        if (!isEmpty)
+        {
+            PlayerInventory.instance.AddItem(item, 1);
+            emptySlot();
 
+            removeWeapons();
+        }
+       
+    }
+    public void removeWeapons()
+    {
+        if (SlotName == "WeaponMain")
+        {
+            hand[0].UnEquipWeapon();
+        }
+        if (SlotName == "WeaponOff")
+        {
+            hand[1].UnEquipWeapon();
+        }
+        foreach (var v in PlayerInventory.instance.equipmentConnect) // check which equipment position this can be placed in
+        {
+            if (v.key == item.armorSlot)
+            {
+                foreach (SpriteRenderer SR in v.ES.graphicsSpriteRenderers)
+                {
+                    SR.sprite =  SR.GetComponent<DefaultSprite>().defaultSprite;
+                    
+                }
+                break;
+            }
+        }
     }
     public bool checkEmpty()
     {

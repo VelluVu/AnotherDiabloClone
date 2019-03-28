@@ -12,12 +12,13 @@ public class PlayerClass : MonoBehaviour
     [Header ("This List Includes all possible classes")]
     public List<PlayerStatsObject> classes = new List<PlayerStatsObject>();
 
-    public string myName = "jokuUkko";
-    public string className = "perusJamppa";
+    public string myName = "Jomppe";
+    public string className = "Nephalem";
 
     #region MovementStats
     public CharacterStat moveSpeed;
     public CharacterStat jumpForce;
+    public CharacterStat extraJumpForce;
     #endregion
 
     #region CombatStats
@@ -42,10 +43,10 @@ public class PlayerClass : MonoBehaviour
     public int chosenClass = 0; //tää muuttuu sitten ku class selection ui on tehty
     public static bool isInitStats = false; //jos uusiHahmo asetetaan trueksi hahmon tehdessä ja tästä eteenpäin pitäisi olla false...
 
-    //alustetaan vielä tässä vaiheessa ennen character selection UI:ta trueksi is initStats
+    
     private void Awake ( )
     {
-        isInitStats = true;
+        isInitStats = true; //alustetaan vielä tässä vaiheessa ennen character selection UI:ta trueksi is initStats
         if ( isInitStats )
         {
             isInitStats = false;
@@ -80,6 +81,7 @@ public class PlayerClass : MonoBehaviour
         myName = classes [ chosenClass ]._name;
         className = classes [ chosenClass ]._className;
 
+        extraJumpForce.BaseValue = classes [ chosenClass ]._extraJumpForce;
         moveSpeed.BaseValue = classes [ chosenClass ]._moveSpeed;
         jumpForce.BaseValue = classes [ chosenClass ]._jumpForce;
         baseDamage.BaseValue = classes [ chosenClass ]._baseDamage;

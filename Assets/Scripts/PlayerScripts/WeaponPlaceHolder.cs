@@ -33,8 +33,8 @@ public class WeaponPlaceHolder : MonoBehaviour
     public RolledLoot EquipWeapon(RolledLoot newWeapon)
     {
         RolledLoot tempWeapon = equippedWeapon;
-        Debug.Log("Equipped "+newWeapon.itemName+ "!");
-        _weaponSprite.sprite = newWeapon.equippedSprite;
+        Debug.Log("Equipped " + newWeapon.itemName + "!");
+        _weaponSprite.sprite = newWeapon.equipmentSprites[0];
         equippedWeapon = newWeapon;
         isEquipped = true;
         col.offset = new Vector2 ( 0, -0.2f ); //asettaa aseen collider kohilleen
@@ -47,6 +47,15 @@ public class WeaponPlaceHolder : MonoBehaviour
         
         return null;
         
+    }
+    public void UnEquipWeapon()
+    {
+        _weaponSprite.sprite = null;
+        _weaponDamage = 0;
+        _weaponSpeed = 0;
+        _weaponName = "hand";
+        _currentWeapon = null;
+        isEquipped = false;
     }
 
     //Asettaa Esineen käyttöön

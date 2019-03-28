@@ -12,7 +12,7 @@ public class Loot : ScriptableObject
     public string description; // Description of the item
     public int itemID; // id of the item
     public Texture itemIcon; // itemin iconi
-    public Sprite equippedSprite; // sprite when equipped
+    public List<Sprite> equipmentSprites;
     public Sprite lootSprite; // sprite for the loot
     public string Rarity; // item rarity
     public int itemLevel; // the level of the item

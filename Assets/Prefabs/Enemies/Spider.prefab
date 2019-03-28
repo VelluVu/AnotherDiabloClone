@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2698308004858342132
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2040915893444419574}
+  m_Layer: 12
+  m_Name: head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2040915893444419574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2698308004858342132}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.396, y: 0.515, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8840051671100735624}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8840051671100735625
 GameObject:
   m_ObjectHideFlags: 0
@@ -16,7 +46,7 @@ GameObject:
   - component: {fileID: 8840051671100735629}
   - component: {fileID: 142896088}
   - component: {fileID: 142896082}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Spider
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -35,6 +65,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8840051673129694130}
+  - {fileID: 2040915893444419574}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -146,7 +177,7 @@ Rigidbody2D:
   m_Mass: 35
   m_LinearDrag: 5
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -166,8 +197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ledgeChecker: {fileID: 8840051673129694131}
   moveSpeed: 8
-  moveSpeedScale: 1.5
-  dirRight: 0
+  moveSpeedScale: 8
+  dirRight: 1
 --- !u!114 &142896088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,14 +221,21 @@ MonoBehaviour:
   spotDistance: 2
   sightDistance: 3
   stateTimeElapsed: 4
+  radius: 4
   eyes: {fileID: 8840051673129694130}
+  head: {fileID: 2698308004858342132}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 4096
   chaseTarget: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
   col: {fileID: 0}
-  pos: {x: 0, y: 0}
+  targetDir: {x: 0, y: 0}
   leftDirection: {x: 0, y: 0, z: 0}
   rightDirection: {x: 0, y: 0, z: 0}
+  dmgTextPrefab: {fileID: 7322774220167073038, guid: bfb1c820644704d46a4ded9e64fde1a1,
+    type: 3}
   dirRight: 1
   aiActive: 1
   attackRdy: 1
@@ -222,6 +260,8 @@ MonoBehaviour:
   health: 0
   mana: 0
   armor: 0
+  xpReward: 0
+  chaseMultiplier: 2.5
 --- !u!1 &8840051673129694131
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +273,7 @@ GameObject:
   - component: {fileID: 8840051673129694130}
   - component: {fileID: 5104418097584350918}
   - component: {fileID: 1926242293}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: LedgeCheck
   m_TagString: Eyes
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}

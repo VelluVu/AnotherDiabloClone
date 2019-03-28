@@ -9,9 +9,22 @@ public class PickUpLoot : MonoBehaviour
     public bool pickedUp = false;
     public void Awake()
     {
+        if(loot != null)
+        {
+            Setup();
+        }
+        
+        
+    }
+    public void Setup()
+    {
         GetComponent<SpriteRenderer>().sprite = loot.lootSprite;
-        rLoot = gameObject.AddComponent<RolledLoot>();
+        rLoot = gameObject.GetComponent<RolledLoot>();
         rLoot.rollLoot(loot);
+    }
+    public void DropSetup()
+    {
+        
         
     }
 }

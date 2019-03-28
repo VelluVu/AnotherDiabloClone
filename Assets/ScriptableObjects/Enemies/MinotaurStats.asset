@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MinotaurStats
   m_EditorClassIdentifier: 
   _name: Minotaur
-  _moveSpeed: 15
+  _moveSpeed: 50
   _jumpForce: 2
   _attackSpeed: 2
   _attackDamage: 10

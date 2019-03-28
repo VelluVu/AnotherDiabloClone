@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Patrollaus Action Class
+/// </summary>
 [CreateAssetMenu ( menuName = "PluggableAI/Actions/Patrol" )]
 public class PatrolAction : Action
 {
@@ -22,18 +25,22 @@ public class PatrolAction : Action
 
     }
 
+    /// <summary>
+    /// Liikkuu ees taas...
+    /// </summary>
+    /// <param name="controller"></param>
     void MoveForward ( StateController controller )
     {
 
         if ( controller.dirRight )
         {
 
-            controller.rb.AddForce ( controller.pos * controller.enemyStats.moveSpeed * controller.enemyStats.moveSpeed * controller.moveSpeedScale );
+            controller.rb.velocity = new Vector2 (controller.targetDir.x * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y);
         }
         else
         {
 
-            controller.rb.AddForce ( controller.pos * controller.enemyStats.moveSpeed * controller.enemyStats.moveSpeed * -controller.moveSpeedScale );
+            controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed  * -controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y );
         }     
     }
 

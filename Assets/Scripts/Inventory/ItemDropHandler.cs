@@ -10,92 +10,91 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
     public EquipmentSlot equipmentSlot;
     public void OnDrop(PointerEventData eventData)
     {
-        droppedLoot = eventData.pointerDrag.transform.parent.GetComponent<LootSlot>();
-        if(droppedLoot != null)
+        if(eventData.button == PointerEventData.InputButton.Left)
         {
-            if (isEquipmentSlot){// jos siirtää inventorysta equipment slottiin
+            droppedLoot = eventData.pointerDrag.transform.parent.GetComponent<LootSlot>();
+            if (droppedLoot != null)
+            {
+                if (isEquipmentSlot)
+                {// jos siirtää inventorysta equipment slottiin
 
-                
-                equipmentSlot = transform.parent.GetComponent<EquipmentSlot>();
-                if(droppedLoot.item.armorSlot != equipmentSlot.SlotName)
-                {
-                    
-                    return;
-                }
-                if (!droppedLoot.isEmpty)
-                {
-                    RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
-                    tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
-                    transform.parent.GetComponent<RolledLoot>().transferLoot(droppedLoot.GetComponent<RolledLoot>());
-                    droppedLoot.GetComponent<RolledLoot>().transferLoot(tempLoot);
-                    if (equipmentSlot.isEmpty)
-                    {
-                        droppedLoot.emptySlot();
-                    }
-                    else
-                    {
-                        droppedLoot.UnequipItem();
-                    }
-                    equipmentSlot.fillSlot();
-                    Destroy(tempLoot);
-                }
-            }
-            else // drag and drop between two inventory slots
-            {
-                if (!droppedLoot.isEmpty)
-                {
-                    RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
-                    tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
-                    transform.parent.GetComponent<RolledLoot>().transferLoot(droppedLoot.GetComponent<RolledLoot>());
-                    droppedLoot.GetComponent<RolledLoot>().transferLoot(tempLoot);
 
-                    if (transform.parent.GetComponent<LootSlot>().isEmpty)
+                    equipmentSlot = transform.parent.GetComponent<EquipmentSlot>();
+                   
+                    if (droppedLoot.item.armorSlot != equipmentSlot.SlotName)
                     {
-                        droppedLoot.emptySlot();
+
+                        return;
                     }
-                    else
+                    foreach (var v in PlayerInventory.instance.equipmentConnect) // check which equipment position this can be placed in
                     {
-                        droppedLoot.UnequipItem();
+                        if (v.key == droppedLoot.item.armorSlot)
+                        {
+                            int i = 0;
+                            foreach (SpriteRenderer SR in v.ES.graphicsSpriteRenderers)
+                            {
+                                SR.sprite = v.ES.item.equipmentSprites[i];
+                                i++;
+                            }
+                            break;
+                        }
                     }
-                    transform.parent.GetComponent<LootSlot>().UnequipItem();
-                    Destroy(tempLoot);
+                    if (!droppedLoot.isEmpty)
+                    {
+                        droppedLoot.WeaponEquip();
+                        RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
+                        tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
+                        transform.parent.GetComponent<RolledLoot>().transferLoot(droppedLoot.GetComponent<RolledLoot>());
+                        droppedLoot.GetComponent<RolledLoot>().transferLoot(tempLoot);
+                        if (equipmentSlot.isEmpty)
+                        {
+                            droppedLoot.emptySlot();
+                        }
+                        else
+                        {
+                            droppedLoot.UnequipItem();
+                        }
+                        equipmentSlot.fillSlot();
+                        Destroy(tempLoot);
+                    }
+                }
+                else // drag and drop between two inventory slots
+                {
+                    if (!droppedLoot.isEmpty)
+                    {
+                        RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
+                        tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
+                        transform.parent.GetComponent<RolledLoot>().transferLoot(droppedLoot.GetComponent<RolledLoot>());
+                        droppedLoot.GetComponent<RolledLoot>().transferLoot(tempLoot);
+
+                        if (transform.parent.GetComponent<LootSlot>().isEmpty)
+                        {
+                            droppedLoot.emptySlot();
+                        }
+                        else
+                        {
+                            droppedLoot.UnequipItem();
+                        }
+                        transform.parent.GetComponent<LootSlot>().UnequipItem();
+                        Destroy(tempLoot);
+                    }
                 }
             }
-        }
-        else
-        {
-            equipmentSlot = eventData.pointerDrag.transform.parent.GetComponent<EquipmentSlot>();
-            if (isEquipmentSlot) // equipment slot to equipment slot
+            else
             {
-                if (equipmentSlot.item.armorSlot != transform.parent.GetComponent<EquipmentSlot>().SlotName)
+                equipmentSlot = eventData.pointerDrag.transform.parent.GetComponent<EquipmentSlot>();
+                if (isEquipmentSlot) // equipment slot to equipment slot
                 {
-                    
-                    return;
-                }
-                RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>();
-                tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
-                transform.parent.GetComponent<RolledLoot>().transferLoot(equipmentSlot.GetComponent<RolledLoot>());
-                equipmentSlot.GetComponent<RolledLoot>().transferLoot(tempLoot);
-                if (transform.parent.GetComponent<EquipmentSlot>().isEmpty)
-                {
-                    equipmentSlot.emptySlot();
-                }
-                else
-                {
-                    equipmentSlot.fillSlot();
-                }
-                transform.parent.GetComponent<EquipmentSlot>().fillSlot();
-                Destroy(tempLoot);
-            }
-            else // equipment slot to inventory
-            {
-                if(transform.parent.GetComponent<LootSlot>().item.armorSlot == equipmentSlot.SlotName ||transform.parent.GetComponent<LootSlot>().isEmpty)
-                {
+                    if (equipmentSlot.item.armorSlot != transform.parent.GetComponent<EquipmentSlot>().SlotName)
+                    {
+
+                        return;
+                    }
                     RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>();
                     tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
                     transform.parent.GetComponent<RolledLoot>().transferLoot(equipmentSlot.GetComponent<RolledLoot>());
                     equipmentSlot.GetComponent<RolledLoot>().transferLoot(tempLoot);
-                    if (transform.parent.GetComponent<LootSlot>().isEmpty)
+                    if (transform.parent.GetComponent<EquipmentSlot>().isEmpty)
                     {
                         equipmentSlot.emptySlot();
                     }
@@ -103,23 +102,42 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                     {
                         equipmentSlot.fillSlot();
                     }
-                    transform.parent.GetComponent<LootSlot>().UnequipItem();
+                    transform.parent.GetComponent<EquipmentSlot>().fillSlot();
                     Destroy(tempLoot);
-                    
                 }
-                else
+                else // equipment slot to inventory
                 {
-                    Debug.LogWarning("Can't move to spot with wrong type of equipment!");
-                    return;
+                    if (transform.parent.GetComponent<LootSlot>().item.armorSlot == equipmentSlot.SlotName || transform.parent.GetComponent<LootSlot>().isEmpty)
+                    {
+                        equipmentSlot.removeWeapons();
+                        RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>();
+                        tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
+                        transform.parent.GetComponent<RolledLoot>().transferLoot(equipmentSlot.GetComponent<RolledLoot>());
+                        equipmentSlot.GetComponent<RolledLoot>().transferLoot(tempLoot);
+                       
+                        if (transform.parent.GetComponent<LootSlot>().isEmpty)
+                        {
+                            equipmentSlot.emptySlot();
+                        }
+                        else
+                        {
+                            equipmentSlot.fillSlot();
+                        }
+                        transform.parent.GetComponent<LootSlot>().UnequipItem();
+                        Destroy(tempLoot);
+
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Can't move to spot with wrong type of equipment!");
+                        return;
+                    }
+
                 }
-               
+
             }
-            
+
         }
-
-
-
-
 
 
     }

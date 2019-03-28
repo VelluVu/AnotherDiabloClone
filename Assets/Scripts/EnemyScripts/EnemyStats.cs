@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Alustaa vihollisen statit Scriptable objectista, tämän kaveriksi lisätään varmaan vielä muutama Class laskeen rolleja jne...
+/// </summary>
 public class EnemyStats : MonoBehaviour
 {
 
     public EnemyStatsObject enemy;
 
     public string myName = "Hirvitys";
+
     public float moveSpeed;
     public float jumpForce;
     public float attackSpeed;
@@ -15,7 +19,13 @@ public class EnemyStats : MonoBehaviour
     public float health;
     public float mana;
     public float armor;
+
     public int xpReward;
+
+    [Header ( "Kuinka nopeesti liikkuu jahdatessa pelaajaa" )]
+    public float chaseMultiplier;
+
+  
 
     private void Awake ( )
     {

@@ -2,9 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Classi mahdollistaa Look decision scriptable objectin luonnin ja liittämisen state machineen
+/// </summary>
 [CreateAssetMenu ( menuName = "PluggableAI/Decisions/Look" )]
 public class LookDecision : Decision
 {
+    /// <summary>
+    /// Yliajaaa Decide rajapinnan function Decide ja palauttaa true staten mikäli pelaaja on etäisyyden päässä muuten false
+    /// </summary>
+    /// <param name="controller"></param>
+    /// <returns></returns>
     public override bool Decide ( StateController controller )
     {
         bool targetVisible = Look ( controller );
@@ -12,12 +20,17 @@ public class LookDecision : Decision
         return targetVisible;
     }
 
+    /// <summary>
+    /// Katselee eteenpäin, jos näkee pelaajan spotDistance rajoissa
+    /// </summary>
+    /// <param name="controller">controlloi statejen muuttumista ja mahdollistaa vihollisen/npc parametrien ja functioiden käytön</param>
+    /// <returns>palauttaa näkeekö pelaajan</returns>
     bool Look ( StateController controller )
     {
 
         RaycastHit2D hit;
     
-        hit = Physics2D.Raycast ( controller.eyes.position, controller.eyes.right );
+        hit = Physics2D.Raycast ( controller.eyes.position, controller.eyes.right, controller.enemyLayer );
       
         if ( hit.collider != false )
         {

@@ -7,26 +7,26 @@ using UnityEngine.Events;
 
 public class LootSlot : MonoBehaviour
 {
-   
-    
+
+
     public bool isFilled;
     public bool isEmpty;
     public int stackSize;
     public RolledLoot item;
     public RawImage iconImage;
     public RawImage rarityImage;
-    
+
     public List<WeaponPlaceHolder> hand = new List<WeaponPlaceHolder>();
 
     private void Awake()
     {
-        
+
         item = GetComponent<RolledLoot>();
         emptySlot();
         item.itemID = -1;
-       
+
     }
-    
+
     public void emptySlot()
     {
         iconImage.color = new Color(iconImage.color.r, iconImage.color.g, iconImage.color.b, 0); // set alpha to 0;
@@ -36,14 +36,14 @@ public class LootSlot : MonoBehaviour
         Debug.Log("Emptied Slot");
     }
 
-    public bool addToSlot(RolledLoot loot,int count)
+    public bool addToSlot(RolledLoot loot, int count)
     {
         Debug.Log(loot);
         if (isFilled)
         {
             return false;
         }
-        else if(isEmpty)
+        else if (isEmpty)
         {
 
             item.transferLoot(loot);
@@ -57,9 +57,9 @@ public class LootSlot : MonoBehaviour
                 isFilled = true;
             }
             return true;
-            
+
         }
-        else if(loot.stackable  && stackSize+count< PlayerInventory.maxStackSize)
+        else if (loot.stackable && stackSize + count < PlayerInventory.maxStackSize)
         {
             stackSize += count;
             return true;
@@ -69,43 +69,40 @@ public class LootSlot : MonoBehaviour
 
     public void EquipItem()
     {
-        
-        if (!isEmpty && item!=null)
+
+        if (!isEmpty && item != null)
         {
-            
+
             if (item.equippable)
             {
-                
-                if (item.mainHand)// laitetaan ase main handiin
-                {
-                    hand[0].EquipWeapon(item);
+                WeaponEquip();
 
-                }
-                else if (item.offHand) // laitetaan ase off handiin
-                {
-                    hand[1].EquipWeapon(item);
-
-                }
                 foreach (var v in PlayerInventory.instance.equipmentConnect) // check which equipment position this can be placed in
                 {
                     if (v.key == item.armorSlot)
                     {
-                        
+                        int i = 0;
+                        foreach (SpriteRenderer SR in v.ES.graphicsSpriteRenderers)
+                        {
+                            SR.sprite = item.equipmentSprites[i];
+                            i++;
+                        }
                         RolledLoot tempLoot = v.ES.EquipItem(item);
                         item.transferLoot(tempLoot);
                         Debug.Log(tempLoot.itemID);
                         if (tempLoot.itemID == -1)
                         {
-                            
+
                             emptySlot();
                         }
                         else
                         {
-                            
+
                             UnequipItem();
                         }
-                       
                         
+
+
                         break;
                     }
                 }
@@ -115,7 +112,20 @@ public class LootSlot : MonoBehaviour
 
 
             }
-        }     
+        }
+    }
+    public void WeaponEquip(){
+        if (item.mainHand)// laitetaan ase main handiin
+        {
+            hand[0].EquipWeapon(item);
+
+        }
+        else if (item.offHand) // laitetaan ase off handiin
+        {
+            hand[1].EquipWeapon(item);
+
+        }
+
     }
 
     public void UnequipItem()

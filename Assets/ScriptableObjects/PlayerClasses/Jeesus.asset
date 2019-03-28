@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Jesse
   _className: JumalanPoeka
-  _moveSpeed: 12
-  _jumpForce: 20
+  _moveSpeed: 50
+  _jumpForce: 5
+  _extraJumpForce: 60
   _baseDamage: 5
   _baseAttackSpeed: 1
   _health: 100
   _mana: 100
   _stamina: 100
+  _armor: 0
   _strength: 10
   _dexterity: 10
   _endurance: 10

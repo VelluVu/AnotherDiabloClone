@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1122999473}
   - component: {fileID: 1122999475}
   - component: {fileID: 1122999474}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Minotaur_Eyes
   m_TagString: Eyes
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
@@ -80,7 +80,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1328970169}
   - component: {fileID: 1328970170}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Beard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3654577918923583504}
   - component: {fileID: 3603703521296716114}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Left_Lower_Leg
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 413768960022217932}
   - component: {fileID: 205064086116863830}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Right_Hand
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -318,7 +318,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5211501442959420390}
   - component: {fileID: 6931569700484894056}
-  m_Layer: 0
+  - component: {fileID: 225684185}
+  m_Layer: 12
   m_Name: Minotaur_Head
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -388,6 +389,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &225684185
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2770591779916734275}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.047476947, y: 0.17459384}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.26550207, y: 0.07194837}
+    oldSize: {x: 1.09375, y: 0.5625}
+    newSize: {x: 1.09375, y: 0.5625}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5224695, y: 0.5276656}
+  m_EdgeRadius: 0
 --- !u!1 &2951910355810197897
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,7 +429,7 @@ GameObject:
   - component: {fileID: 3375308404096916609}
   - component: {fileID: 2951910355810197899}
   - component: {fileID: 2951910355810197901}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Minotaur_Root
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -438,7 +465,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.02846253, y: -0.29529977}
+  m_Offset: {x: 0.02846253, y: -0.34406757}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -449,7 +476,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.35959166, y: 1.1921229}
+  m_Size: {x: 0.35959166, y: 1.0945873}
   m_EdgeRadius: 0
 --- !u!114 &2951910355810197900
 MonoBehaviour:
@@ -466,21 +493,28 @@ MonoBehaviour:
   currentState: {fileID: 11400000, guid: 1d6ef80a11a90e04a8007424e1bdb853, type: 2}
   remainState: {fileID: 11400000, guid: 0047f55aadf773f46a7717e368f04018, type: 2}
   enemyStats: {fileID: 3375308404096916609}
-  attackJump: 50
+  attackJump: 100
   moveSpeedScale: 1.5
-  attackDistance: 2
+  attackDistance: 0.3
   searchDuration: 4
   spotDistance: 5
   sightDistance: 8
   stateTimeElapsed: 4
+  radius: 1
   eyes: {fileID: 1122999473}
+  head: {fileID: 2770591779916734275}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 4096
   chaseTarget: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
   col: {fileID: 0}
-  pos: {x: 0, y: 0}
+  targetDir: {x: 0, y: 0}
   leftDirection: {x: 0, y: 0, z: 0}
   rightDirection: {x: 0, y: 0, z: 0}
+  dmgTextPrefab: {fileID: 7322774220167073038, guid: bfb1c820644704d46a4ded9e64fde1a1,
+    type: 3}
   dirRight: 1
   aiActive: 1
   attackRdy: 1
@@ -505,6 +539,8 @@ MonoBehaviour:
   health: 0
   mana: 0
   armor: 0
+  xpReward: 0
+  chaseMultiplier: 3.4
 --- !u!50 &2951910355810197899
 Rigidbody2D:
   serializedVersion: 4
@@ -555,7 +591,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4578090927300330856}
   - component: {fileID: 3944445779586648776}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Right_Lower_Leg
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -635,7 +671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7792265257075901493}
   - component: {fileID: 7171655719764846874}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Left_Lower_Arm
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -715,7 +751,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5372904427768731691}
   - component: {fileID: 4763623048078157911}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Left_Upper_Leg
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -795,7 +831,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4063482000521522934}
   - component: {fileID: 2541985638150916455}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Left_Hand
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -874,7 +910,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3926709931968130733}
   - component: {fileID: 61645071741860861}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Right_Hoof
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -953,7 +989,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6207806124243848981}
   - component: {fileID: 7175195283079554626}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Right_Upper_Arm
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1033,7 +1069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9136158972891957174}
   - component: {fileID: 2651001592090618715}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Right_Upper_Leg
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1113,7 +1149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7793294172164781680}
   - component: {fileID: 7208273537805372953}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Body
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1197,7 +1233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 52234421026827817}
   - component: {fileID: 2114185933052515138}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Left_Hoof
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1276,7 +1312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8254015800105037382}
   - component: {fileID: 532217889246112533}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Right_Lower_Arm
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1356,7 +1392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7739391052763432426}
   - component: {fileID: 616746074185038556}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Left_Upper_Arm
   m_TagString: Enemy
   m_Icon: {fileID: 0}

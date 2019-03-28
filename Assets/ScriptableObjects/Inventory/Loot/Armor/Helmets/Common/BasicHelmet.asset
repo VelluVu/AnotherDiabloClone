@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
   m_Name: BasicHelmet
   m_EditorClassIdentifier: 
-  itemName: Helmet of Protection
+  itemName: Helmet of Bronze
   description: 'Protects the wearer when hit in head.
 
 '
   itemID: 0
-  itemIcon: {fileID: 2800000, guid: 3ff27315513b3db48a255145d0485c94, type: 3}
-  equippedSprite: {fileID: 0}
-  lootSprite: {fileID: 0}
-  item: {fileID: 0}
-  Rarity: 
+  itemIcon: {fileID: 2800000, guid: ad44e5be20f123343a8466f1a2ff5a9d, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 3702217d234cd554881e06e417a1d8fd, type: 3}
+  lootSprite: {fileID: 21300000, guid: 3702217d234cd554881e06e417a1d8fd, type: 3}
+  Rarity: Common
   itemLevel: 0
   attributes: []
-  equippable: 0
+  equippable: 1
   consumable: 0
   stackable: 0
   mainHand: 0
@@ -32,7 +32,7 @@ MonoBehaviour:
   damageMin: 0
   damageMax: 0
   armor: 0
-  armorSlot: 
+  armorSlot: Helm
   potency: 0
   buyPrice: 0
   sellPrice: 0

@@ -8,9 +8,38 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour {
 
     public Transform player;
-
+    bool isShaking;
+    public float smoothTime = 0.3F;
+    Vector3 velocity = Vector3.zero;
+    
     private void LateUpdate ( )
     {
-        transform.position = new Vector3 ( player.position.x, player.position.y, -1);
+        if ( !isShaking )
+        {
+
+            Vector3 targetPosition = new Vector3 ( player.position.x , player.position.y, transform.position.z );
+            transform.position = Vector3.SmoothDamp ( transform.position, targetPosition, ref velocity, smoothTime );
+
+        }
+    }
+
+    public IEnumerator Shake ( float duration, float magnitude )
+    {
+
+        float elapsed = 0.0f;
+        while ( elapsed < duration )
+        {
+            isShaking = true;
+            float x = Random.Range ( -1f, 1f ) * magnitude;
+            float y = Random.Range ( -1f, 1f ) * magnitude;
+
+            transform.position = new Vector3 ( transform.position.x + x, transform.position.y + y, transform.position.z );
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+        isShaking = false;
+
     }
 }

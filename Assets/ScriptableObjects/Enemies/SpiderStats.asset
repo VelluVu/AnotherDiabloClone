@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpiderStats
   m_EditorClassIdentifier: 
   _name: Spider
-  _moveSpeed: 8
+  _moveSpeed: 80
   _jumpForce: 2
   _attackSpeed: 1
   _attackDamage: 5

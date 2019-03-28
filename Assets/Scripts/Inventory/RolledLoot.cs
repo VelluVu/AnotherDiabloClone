@@ -13,7 +13,7 @@ public class RolledLoot : MonoBehaviour
     public int itemID; // id of the item
     public Texture itemIcon; // itemin iconi
     public Sprite lootSprite;
-    public Sprite equippedSprite;
+    public List<Sprite> equipmentSprites;
     public string Rarity; // item rarity
     public int itemLevel; // the level of the item
     #endregion
@@ -58,13 +58,10 @@ public class RolledLoot : MonoBehaviour
         this.itemID = loot.itemID;
         this.itemIcon = loot.itemIcon;
         this.lootSprite = loot.lootSprite;
-        this.equippedSprite = loot.equippedSprite;
+        this.equipmentSprites = loot.equipmentSprites;
         this.Rarity = loot.Rarity;
         this.itemLevel = loot.itemLevel;
-        foreach(Attribute att in loot.attributes)
-        {
-            this.attributes.Add(att);
-        }
+        this.attributes = loot.attributes;
         // bools
         this.equippable = loot.equippable;
         this.consumable = loot.consumable;
@@ -90,7 +87,7 @@ public class RolledLoot : MonoBehaviour
         this.itemID = loot.itemID;
         this.itemIcon = loot.itemIcon;
         this.lootSprite = loot.lootSprite;
-        this.equippedSprite = loot.equippedSprite;
+        this.equipmentSprites = loot.equipmentSprites;
         this.Rarity = loot.Rarity;
         this.itemLevel = loot.itemLevel;
         this.attributes = loot.attributes;
