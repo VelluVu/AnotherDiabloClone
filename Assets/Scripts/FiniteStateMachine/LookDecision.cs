@@ -28,22 +28,45 @@ public class LookDecision : Decision
     bool Look ( StateController controller )
     {
 
+
         RaycastHit2D hit;
-    
-        hit = Physics2D.Raycast ( controller.eyes.position, controller.eyes.right, controller.enemyLayer );
-      
-        if ( hit.collider != false )
+
+        if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
-            if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.spotDistance )
+            hit = Physics2D.Raycast ( controller.eyes.position, controller.eyes.right, controller.enemyLayer );
+
+            if ( hit.collider != false )
             {
+                if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.spotDistance )
+                {
 
-                controller.chaseTarget = hit.transform;
-                return true;
+                    controller.chaseTarget = hit.transform;
+                    return true;
 
+                }
             }
+
+            return false;
         }
-        
-         return false;
-        
+        else
+        {
+
+            hit = Physics2D.CircleCast ( controller.eyes.position, controller.radius, controller.eyes.right, controller.spotDistance, controller.playerLayer );
+            Debug.DrawRay ( controller.eyes.position, controller.eyes.right * controller.spotDistance, Color.red );
+            Debug.Log ( "Look Decision HIT : " + hit.transform );
+
+            if ( hit.collider != false )
+            {
+                if ( hit.collider.gameObject.CompareTag ( "Player" ) )
+                {
+                    controller.chaseTarget = hit.transform;
+                    return true;
+                }
+            }
+
+
+            return false;
+
+        }
     }
 }

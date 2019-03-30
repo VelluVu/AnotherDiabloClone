@@ -21,11 +21,17 @@ public class ScrollingCombatText : MonoBehaviour
         transform.Translate ( Vector2.up * 0.8f * Time.deltaTime );      
     }
 
+    /// <summary>
+    /// Default värinen numero teksti
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="spawnPos"></param>
     public void SpawnText( float value, Vector2 spawnPos)
     {
         string dmgText = value.ToString ( );
 
-        if(value < 0)
+        //negatiivista dmg voi tulla
+        if ( value < 0)
         {
             value = 0;
             dmgText = "block";
@@ -35,11 +41,56 @@ public class ScrollingCombatText : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Valinnaisen Värinen Numero teksti
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="spawnPos"></param>
+    /// <param name="textColor"></param>
+    public void SpawnText ( float value, Vector2 spawnPos, Color textColor )
+    {
+        string dmgText = value.ToString ( );
+
+        //negatiivista dmg voi tulla
+        if ( value < 0 )
+        {
+            value = 0;
+            dmgText = "block";
+        }
+
+        GameObject text = Instantiate ( gameObject, spawnPos, Quaternion.identity );
+        TextMeshProUGUI textMesh = text.GetComponentInChildren<TextMeshProUGUI> ( );
+        textMesh.color = textColor;
+        textMesh.text = dmgText;
+
+    }
+
+    /// <summary>
+    /// Default värinen floating text, string parametsilla
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="spawnPos"></param>
     public void SpawnText ( string message, Vector2 spawnPos)
     {
         
         GameObject text = Instantiate ( gameObject, spawnPos, Quaternion.identity );
         text.GetComponentInChildren<TextMeshProUGUI> ( ).text = message;
+
+    }
+
+    /// <summary>
+    /// Värin vaihto jos haluaa esim ilmoituksia loot nostoista jne..
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="spawnPos"></param>
+    /// <param name="textColor"></param>
+    public void SpawnText ( string message, Vector2 spawnPos, Color textColor )
+    {
+
+        GameObject text = Instantiate ( gameObject, spawnPos, Quaternion.identity );
+        TextMeshProUGUI textMesh = text.GetComponentInChildren<TextMeshProUGUI> ( );
+        textMesh.color = textColor;
+        textMesh.text = message;
 
     }
 

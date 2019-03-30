@@ -4,7 +4,7 @@ using UnityEngine;
 using Kryz.CharacterStats; //Character stat assetin käyttäminen
 
 /// <summary>
-/// Alustaa pelaajan valitseman classin
+/// Alustaa pelaajan valitseman classin, ja sisältää pelaajan statit, Attribuutit, skillpojot, level jne.
 /// </summary>
 public class PlayerClass : MonoBehaviour
 {
@@ -30,7 +30,7 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat armor;
     #endregion
 
-    #region BaseStats
+    #region BaseStats and Leveling Stats
     public CharacterStat strength;
     public CharacterStat dexterity;
     public CharacterStat endurance;
@@ -43,7 +43,6 @@ public class PlayerClass : MonoBehaviour
     public int chosenClass = 0; //tää muuttuu sitten ku class selection ui on tehty
     public static bool isInitStats = false; //jos uusiHahmo asetetaan trueksi hahmon tehdessä ja tästä eteenpäin pitäisi olla false...
 
-    
     private void Awake ( )
     {
         isInitStats = true; //alustetaan vielä tässä vaiheessa ennen character selection UI:ta trueksi is initStats

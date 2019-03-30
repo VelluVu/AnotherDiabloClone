@@ -36,9 +36,9 @@ public class LootSlot : MonoBehaviour
         Debug.Log("Emptied Slot");
     }
 
-    public bool addToSlot(RolledLoot loot, int count)
+    public bool addToSlot(RolledLoot loot, int count,bool autoEquip)
     {
-        Debug.Log(loot);
+        
         if (isFilled)
         {
             return false;
@@ -50,12 +50,18 @@ public class LootSlot : MonoBehaviour
             iconImage.color = new Color(iconImage.color.r, iconImage.color.g, iconImage.color.b, 1); // set alpha to 1;
             iconImage.texture = loot.itemIcon;
             rarityImage.color = PlayerInventory.instance.rarity[loot.Rarity];
-
+           
+            
             isEmpty = false;
             if (!item.stackable)
             {
                 isFilled = true;
             }
+            if (Settings.instance.autoEquip && autoEquip) // if AutoEquip is on
+            {
+                CheckIfEquipSlotEmpty();
+            }
+            
             return true;
 
         }
@@ -66,51 +72,157 @@ public class LootSlot : MonoBehaviour
         }
         return false;
     }
+    public void CheckIfEquipSlotEmpty()
+    {
+        Debug.Log("CheckIfEmpty");
+        Debug.Log(item.equippable);
+        if (item.equippable)
+        {
+            for(int i = 0; i < PlayerInventory.instance.equipmentConnect.Count; i++)
+            { 
+                if (PlayerInventory.instance.equipmentConnect[i].key == item.armorSlot)
+                {
+                    
+                    
+                    if (PlayerInventory.instance.equipmentConnect[i].ES.isEmpty)
+                    {
+                        Debug.Log("AAAAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSDDDDDDDDDDDDDDDDDDD");
+                        EquipItem(true);
+                        return;
+                    }
+                    else if (PlayerInventory.instance.equipmentConnect[i + 1].ES.isEmpty && PlayerInventory.instance.equipmentConnect[i].key == "Ring")
+                    {
+                        Debug.Log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSDDDDDDDDDDDDDDDDDDD");
+                        EquipItem(true);
+                        return;
+                    }
+                   
+                    
+                }
+            }
+        }
+    }
 
-    public void EquipItem()
+    public void EquipItem(bool onlyEmptySlot)
     {
 
+        
         if (!isEmpty && item != null)
         {
-
+            Debug.Log(item.equippable);
             if (item.equippable)
             {
-                WeaponEquip();
-
-                foreach (var v in PlayerInventory.instance.equipmentConnect) // check which equipment position this can be placed in
+                
+                for (int i = 0; i < PlayerInventory.instance.equipmentConnect.Count; i++)
                 {
-                    if (v.key == item.armorSlot)
+                    if (PlayerInventory.instance.equipmentConnect[i].key == item.armorSlot) // check armorslot
                     {
-                        int i = 0;
-                        foreach (SpriteRenderer SR in v.ES.graphicsSpriteRenderers)
+                        if (onlyEmptySlot)
                         {
-                            SR.sprite = item.equipmentSprites[i];
-                            i++;
-                        }
-                        RolledLoot tempLoot = v.ES.EquipItem(item);
-                        item.transferLoot(tempLoot);
-                        Debug.Log(tempLoot.itemID);
-                        if (tempLoot.itemID == -1)
-                        {
-
-                            emptySlot();
+                            if (PlayerInventory.instance.equipmentConnect[i].ES.isEmpty)
+                            {
+                               
+                                WeaponEquip();
+                                int j = 0;
+                                foreach (SpriteRenderer SR in PlayerInventory.instance.equipmentConnect[i].ES.graphicsSpriteRenderers)
+                                {
+                                    SR.sprite = item.equipmentSprites[j];
+                                    j++;
+                                }
+                                RolledLoot tempLoot = PlayerInventory.instance.equipmentConnect[i].ES.EquipItem(item);
+                                item.transferLoot(tempLoot);
+                                emptySlot();
+                                return;
+                            }
+                            else if(PlayerInventory.instance.equipmentConnect[i+1].ES.isEmpty &&  item.armorSlot == "Ring" && PlayerInventory.instance.equipmentConnect[i + 1].ES.SlotName == "Ring");
+                            {
+                                RolledLoot tempLoot = PlayerInventory.instance.equipmentConnect[i+1].ES.EquipItem(item);
+                                item.transferLoot(tempLoot);
+                                emptySlot();
+                                return;
+                            }
                         }
                         else
                         {
+                            if(PlayerInventory.instance.equipmentConnect[i].key == "Ring")
+                            {
+                                if (PlayerInventory.instance.equipmentConnect[i].ES.isEmpty)
+                                {
+                                    RolledLoot rempLoot = PlayerInventory.instance.equipmentConnect[i].ES.EquipItem(item);
+                                    item.transferLoot(rempLoot);
+                                    Debug.Log(rempLoot.itemID);
+                                    if (rempLoot.itemID == -1)
+                                    {
 
-                            UnequipItem();
+                                        emptySlot();
+                                    }
+                                    else
+                                    {
+
+                                        UnequipItem();
+                                    }
+                                }
+                                else if (PlayerInventory.instance.equipmentConnect[i + 1].ES.isEmpty && PlayerInventory.instance.equipmentConnect[i + 1].ES.SlotName == "Ring")
+                                {
+                                    RolledLoot rempLoot = PlayerInventory.instance.equipmentConnect[i+1].ES.EquipItem(item);
+                                    item.transferLoot(rempLoot);
+                                    Debug.Log(rempLoot.itemID);
+                                    if (rempLoot.itemID == -1)
+                                    {
+
+                                        emptySlot();
+                                    }
+                                    else
+                                    {
+
+                                        UnequipItem();
+                                    }
+                                }
+                                else
+                                {
+                                    RolledLoot rempLoot = PlayerInventory.instance.equipmentConnect[i].ES.EquipItem(item);
+                                    item.transferLoot(rempLoot);
+                                    Debug.Log(rempLoot.itemID);
+                                    if (rempLoot.itemID == -1)
+                                    {
+
+                                        emptySlot();
+                                    }
+                                    else
+                                    {
+
+                                        UnequipItem();
+                                    }
+                                }
+                                break;   
+                            }
+                            else
+                            {
+                                WeaponEquip();
+                                int j = 0;
+                                foreach (SpriteRenderer SR in PlayerInventory.instance.equipmentConnect[i].ES.graphicsSpriteRenderers)
+                                {
+                                    SR.sprite = item.equipmentSprites[j];
+                                    j++;
+                                }
+                                RolledLoot tempLoot = PlayerInventory.instance.equipmentConnect[i].ES.EquipItem(item);
+                                item.transferLoot(tempLoot);
+                                Debug.Log(tempLoot.itemID);
+                                if (tempLoot.itemID == -1)
+                                {
+
+                                    emptySlot();
+                                }
+                                else
+                                {
+
+                                    UnequipItem();
+                                }
+                                return;
+                            }
                         }
-                        
-
-
-                        break;
                     }
                 }
-
-
-
-
-
             }
         }
     }

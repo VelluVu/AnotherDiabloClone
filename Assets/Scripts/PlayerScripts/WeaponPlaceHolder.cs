@@ -11,12 +11,14 @@ public class WeaponPlaceHolder : MonoBehaviour
     BoxCollider2D col;
     SpriteRenderer sr;
     public Item _currentWeapon = null;
+    public GameObject bloodSplash;
     public string _weaponName; //aseen nimi
     public SpriteRenderer _weaponSprite;  //Aseen grafiikka
     public float _weaponDamage; //Aseen vahinko
     public float _weaponSpeed; //Aseen nopeus
     public bool isEquipped = false;
     bool hasHit;
+    public bool isShield;
 
     //for new equip
     public RolledLoot equippedWeapon;
@@ -123,17 +125,33 @@ public class WeaponPlaceHolder : MonoBehaviour
 
     }
 
-
-    private void OnTriggerEnter2D ( Collider2D collision )
+    private void OnCollisionEnter2D ( Collision2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "Enemy" )  && !hasHit)
+        if ( collision.gameObject.CompareTag ( "Enemy" ) && !hasHit && !isShield )
         {
             hasHit = true;
+            Destroy ( Instantiate ( bloodSplash, collision.contacts[0].point, Quaternion.identity ), 2f );
             Debug.Log ( gameObject.name );
-            gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.GetComponent<StateController> ( ), _weaponDamage );
-            StartCoroutine ( HitReset() );
+            gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject.GetComponent<StateController> ( ), _weaponDamage );
+            StartCoroutine ( HitReset ( ) );
+
         }
     }
+
+    /*private void OnTriggerEnter2D ( Collision2D collision )
+    {
+
+        if ( collision.gameObject.CompareTag ( "Enemy" ) && !hasHit && !isShield )
+        {
+            hasHit = true;
+            Destroy(Instantiate ( bloodSplash, collision.transform) , 2f);
+            Debug.Log ( gameObject.name );
+            gameObject.GetComponentInParent<Player> ( ).DealDamage ( collider.GetComponent<StateController> ( ), _weaponDamage );
+            StartCoroutine ( HitReset ( ) );
+
+        }
+    }*/
+
 
     IEnumerator HitReset()
     {

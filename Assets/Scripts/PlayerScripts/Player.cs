@@ -14,26 +14,27 @@ public class Player : MonoBehaviour
     public LevelUp levelUp;
     Vector3 leftDir;
     Vector3 rightDir;
+    Vector2 textPosition;
 
     #region GameObjects
     public GameObject head;
     public GameObject rightHand;
     public GameObject leftHand;
-    public GameObject dmgTextPrefab;
     GameObject ToolTip;
     #endregion
 
     #region EssentialComponents
-    Animator heroAnim;
-    Rigidbody2D playerRB;
-    CameraControl camShaking;
+    [HideInInspector] Animator heroAnim;
+    [HideInInspector] Rigidbody2D playerRB;
+    [HideInInspector] CameraControl camShaking;
     public Image healthPool;
     public Image manaPool;
     public Transform feet;
     public LayerMask whatIsGround;
     public LayerMask enemyLayer;    
     public WeaponPlaceHolder main;
-    public WeaponPlaceHolder off;   
+    public WeaponPlaceHolder off;
+    public ScrollingCombatText floatingText;
     #endregion
 
     #region Booleans
@@ -60,6 +61,9 @@ public class Player : MonoBehaviour
     public float wallJumpPushBack;
     public float jumpTime;
     public float groundCheckRadius;
+    public float radius;
+    public float magnitude;
+    public float floatingTextPosition;
     float gravity;
     #endregion
 
@@ -86,7 +90,7 @@ public class Player : MonoBehaviour
         rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponSpeed = stats.baseAttackSpeed.Value;
         rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponDamage = stats.baseDamage.Value;
         leftDir = new Vector3 ( 0, -180, 0 );
-        rightDir = new Vector3 ( 0, 0, 0 );
+        rightDir = new Vector3 ( 0, 0, 0 );       
         gravity = playerRB.gravityScale;
     }
 
@@ -111,7 +115,7 @@ public class Player : MonoBehaviour
         }
 
         HealthTrack ( stats.health.Value );
-        Debug.Log ( stats.health.Value * 0.01f );
+        //Debug.Log ( stats.health.Value * 0.01f );
         ManaTrack ( stats.mana.Value );
     }
 
@@ -364,44 +368,60 @@ public class Player : MonoBehaviour
     /// <param name="dmg"></param>
     public void TakeDamage ( float dmg )
     {
-        float absoluteDmg;
+        float positiveDamage;
+
         if ( isBlocking )
         {
-            //Varmaan joku defense muuttuja kilpeen ois hyvä
-            StartCoroutine ( camShaking.Shake ( 0.05f, 0.05f ) );
-            absoluteDmg = dmg - stats.armor.Value * 1.5f;
-            if(absoluteDmg < 0)
+            //Varmaan joku defense muuttuja kilpeen ois hyvä tällä hetkellä taikanumeroKerroin pelaajan defenseen 2f
+            StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
+            positiveDamage = dmg - stats.armor.Value * 2f;
+
+            //alle 0 jos ottais vahinkoa niin parantuisin
+            if(positiveDamage < 0)
             {
-                absoluteDmg = 0;
-                dmgTextPrefab.GetComponent<ScrollingCombatText> ( ).SpawnText ( absoluteDmg, new Vector2(transform.position.x, head.transform.position.y) );
+                positiveDamage = 0;      
             }
-            stats.health.BaseValue -= absoluteDmg;
-            Debug.Log ( dmg - stats.armor.Value * 1.5f + " Damage taken " );
-            Debug.Log ( stats.armor.Value * 1.5f + " Damage blocked " );     
+
+            stats.health.BaseValue -= positiveDamage;
             
+            Debug.Log ( dmg - stats.armor.Value * 2f + " Damage taken " );  Debug.Log ( stats.armor.Value * 2f + " Damage blocked " );
+
+            textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
+            floatingText.SpawnText ( positiveDamage, textPosition , Color.gray );
         }
         else
         {
 
-            StartCoroutine ( camShaking.Shake ( 0.1f, 0.1f ) );
-            absoluteDmg = dmg - stats.armor.Value;
-            stats.health.BaseValue -= absoluteDmg;
+            StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
+            positiveDamage = dmg - stats.armor.Value;
+            stats.health.BaseValue -= positiveDamage;
             Debug.Log ( dmg - stats.armor.Value + " Damage Taken " );
-            dmgTextPrefab.GetComponent<ScrollingCombatText> ( ).SpawnText ( absoluteDmg, new Vector2 ( transform.position.x, head.transform.position.y ) );
-                  
+
+            textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
+            floatingText.SpawnText ( positiveDamage, textPosition  );
+            
         }
-        
+
+        //Kuolema
         if ( stats.health.Value <= 0 )
         {
             Die ( );
         }
     }
 
+    /// <summary>
+    /// Päivittää healthpoolia
+    /// </summary>
+    /// <param name="value"></param>
     public void HealthTrack(float value)
     {
         healthPool.fillAmount = value * 0.01f;       
     }
 
+    /// <summary>
+    /// Päivittää manapoolia
+    /// </summary>
+    /// <param name="value"></param>
     public void ManaTrack(float value)
     {
         manaPool.fillAmount = value * 0.01f;
@@ -430,8 +450,10 @@ public class Player : MonoBehaviour
             isBlocking = false;
         }
 
+        //Ei välttämättä tarvi collideria ellei halua tehdä jotain knockback efectiä
         if ( isBlocking )
         {
+            playerRB.velocity = playerRB.velocity.x * Vector2.zero;
             leftHand.GetComponent<BoxCollider2D> ( ).enabled = true;
         }
         else
@@ -470,18 +492,21 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D ( Collision2D collision )
     {
 
+        //tästä on toinenkin check, mutta toistaiseksi ei viiti ottaa poiskaan
         if ( collision.gameObject.CompareTag ( "Ground" ) )
         {
             isAir = false;
             isWallJump = false;
         }
 
+        //tagin voisi muuttaa myös interactableWorldObject tai joksikin oviin ja näihin boxeihin, toisaalta jos avaimia ja muita tehdään niin varmaan olisi hyvä tietää mikä on kyseessä.
         if(collision.gameObject.CompareTag("TreasureChest"))
         {
             isAir = false;
             isGrounded = true;
         }
 
+        //Seinästä seinähyppy hetkellisesti mahdolliseksi
         if ( collision.gameObject.CompareTag ( "Wall" ) )
         {
 
@@ -490,6 +515,7 @@ public class Player : MonoBehaviour
                      
         }
 
+        //Enemyn päältä voi hypätä
         if ( collision.gameObject.CompareTag ( "Enemy" ) )
         {
 
@@ -497,6 +523,7 @@ public class Player : MonoBehaviour
             isGrounded = true;
         }
 
+        //Tämä voisi olla myös collision stayssa ehkä, jos on buginen niin siirtää sinne <antaa dashaa vihujen lävitse>
         if ( isDashing && collision.gameObject.CompareTag ( "Enemy" ) )
         {
             Physics2D.IgnoreCollision ( gameObject.GetComponent<BoxCollider2D>() , collision.collider , true);
@@ -505,7 +532,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Kun irtoaa maasta ollaan ilmassa
+    /// Kun irtoaa maasta ollaan ilmassa ja kun irrotaan enemyistä niin on taas mahdollista törmätä dashilla
     /// </summary>
     /// <param name="collision"></param>
     private void OnCollisionExit2D ( Collision2D collision )
@@ -545,16 +572,21 @@ public class Player : MonoBehaviour
             other.gameObject.SetActive ( false );
             invi.AddItemToInventory ( other.gameObject.GetComponent<Item> ( ).GetItem ( ) );
         }*/
-        if ( other.gameObject.CompareTag ( "PickUp" ) && !other.gameObject.GetComponent<PickUpLoot> ( ).pickedUp )
+        /*if ( other.gameObject.CompareTag ( "PickUp" ) && !other.gameObject.GetComponent<PickUpLoot> ( ).pickedUp )
         {
+            //Ilmoittaa mitä lootattiin
+            textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
+            floatingText.SpawnText ( other.gameObject.GetComponent<PickUpLoot>().rLoot.itemName , textPosition, Color.cyan );
+
             Debug.Log ( "Pickup" );
             other.gameObject.GetComponent<PickUpLoot> ( ).pickedUp = true;
-            PlayerInventory.instance.AddItem ( other.GetComponent<PickUpLoot> ( ).rLoot, 1 );
+            PlayerInventory.instance.AddItem ( other.GetComponent<PickUpLoot> ( ).rLoot, 1,true);
             other.gameObject.SetActive ( false );
 
-        }
+        }*/
 
     }
+    
 
     #region Coroutines
     IEnumerator Attack ( )
@@ -590,6 +622,9 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds ( dashCooldown );
         readyToDash = true;
+        //ilmoittaa että dash on valmis
+        textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
+        floatingText.SpawnText ( "Ready To Dash", textPosition, Color.cyan );
     }
     #endregion
 

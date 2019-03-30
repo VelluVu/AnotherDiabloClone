@@ -19,7 +19,7 @@ MonoBehaviour:
   equipmentSprites:
   - {fileID: 21300000, guid: 4d8ca54a36149c34da147df1ad5afd12, type: 3}
   lootSprite: {fileID: 21300000, guid: 4d8ca54a36149c34da147df1ad5afd12, type: 3}
-  Rarity: 
+  Rarity: Common
   itemLevel: 0
   attributes: []
   equippable: 1

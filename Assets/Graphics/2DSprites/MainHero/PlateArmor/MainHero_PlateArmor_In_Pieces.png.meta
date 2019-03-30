@@ -2,23 +2,23 @@ fileFormatVersion: 2
 guid: f25dc829b6ff97e4eb09c15942a51ec0
 TextureImporter:
   fileIDToRecycleName:
-    21300000: MainHero_PlateArmor_In_Pieces_0
-    21300002: MainHero_PlateArmor_In_Pieces_1
-    21300004: MainHero_PlateArmor_In_Pieces_2
-    21300006: MainHero_PlateArmor_In_Pieces_3
-    21300008: MainHero_PlateArmor_In_Pieces_4
-    21300010: MainHero_PlateArmor_In_Pieces_5
-    21300012: MainHero_PlateArmor_In_Pieces_6
-    21300014: MainHero_PlateArmor_In_Pieces_7
-    21300016: MainHero_PlateArmor_In_Pieces_8
-    21300018: MainHero_PlateArmor_In_Pieces_9
-    21300020: MainHero_PlateArmor_In_Pieces_10
-    21300022: MainHero_PlateArmor_In_Pieces_11
-    21300024: MainHero_PlateArmor_In_Pieces_12
-    21300026: MainHero_PlateArmor_In_Pieces_13
-    21300028: MainHero_PlateArmor_In_Pieces_14
-    21300030: MainHero_PlateArmor_In_Pieces_15
-    21300032: MainHero_PlateArmor_In_Pieces_16
+    21300000: Right_Shoulder_Plate
+    21300002: Right_Upper_Arm_Plate
+    21300004: Head_Plate
+    21300006: Left_Shoulder_Plate
+    21300008: Right_Lower_Arm_Plate
+    21300010: Body_Plate
+    21300012: Belt_Plate
+    21300014: Left_Upper_Arm_Plate
+    21300016: Right_Hand_Plate
+    21300018: Right_Upper_Leg_Plate
+    21300020: Left_Upper_Leg_Plate
+    21300022: Left_Lower_Arm_Plate
+    21300024: Right_Feet_Plate
+    21300026: Right_Lower_Leg_Plate
+    21300028: Left_Lower_Leg_Plate
+    21300030: Left_Feet_Plate
+    21300032: Left_Hand_Plate
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -112,15 +112,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_0
+      name: Right_Shoulder_Plate
       rect:
         serializedVersion: 2
         x: 2
         y: 24
         width: 5
         height: 5
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5856759, y: 0.41967887}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -132,15 +132,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_1
+      name: Right_Upper_Arm_Plate
       rect:
         serializedVersion: 2
         x: 2
         y: 19
         width: 3
         height: 4
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4999999, y: 0.8212857}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -152,15 +152,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_2
+      name: Head_Plate
       rect:
         serializedVersion: 2
         x: 12
         y: 24
         width: 6
         height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.49108186, y: 0.14885831}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -172,15 +172,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_3
+      name: Left_Shoulder_Plate
       rect:
         serializedVersion: 2
         x: 25
         y: 24
         width: 5
         height: 5
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.40361443, y: 0.39825973}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -192,15 +192,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_4
+      name: Right_Lower_Arm_Plate
       rect:
         serializedVersion: 2
         x: 2
         y: 14
         width: 4
         height: 4
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.41298527, y: 0.7811246}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -212,7 +212,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_5
+      name: Body_Plate
       rect:
         serializedVersion: 2
         x: 12
@@ -220,7 +220,7 @@ TextureImporter:
         width: 8
         height: 9
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -232,7 +232,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_6
+      name: Belt_Plate
       rect:
         serializedVersion: 2
         x: 13
@@ -240,7 +240,7 @@ TextureImporter:
         width: 6
         height: 3
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -252,15 +252,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_7
+      name: Left_Upper_Arm_Plate
       rect:
         serializedVersion: 2
         x: 27
         y: 19
         width: 3
         height: 4
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.7945118}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -272,15 +272,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_8
+      name: Right_Hand_Plate
       rect:
         serializedVersion: 2
         x: 2
         y: 11
         width: 3
         height: 2
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4910752, y: 0.7811246}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -292,15 +292,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_9
+      name: Right_Upper_Leg_Plate
       rect:
         serializedVersion: 2
         x: 7
         y: 8
         width: 5
         height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.52682227, y: 0.6741905}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -312,15 +312,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_10
+      name: Left_Upper_Leg_Plate
       rect:
         serializedVersion: 2
         x: 20
         y: 8
         width: 5
         height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.46775132, y: 0.6607434}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -332,15 +332,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_11
+      name: Left_Lower_Arm_Plate
       rect:
         serializedVersion: 2
         x: 27
         y: 14
         width: 4
         height: 4
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.39959764, y: 0.7945118}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -352,15 +352,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_12
+      name: Right_Feet_Plate
       rect:
         serializedVersion: 2
         x: 4
         y: 0
         width: 4
         height: 3
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.45956874, y: 0.5635557}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -372,15 +372,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_13
+      name: Right_Lower_Leg_Plate
       rect:
         serializedVersion: 2
         x: 9
         y: 2
         width: 4
         height: 5
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.40629196, y: 0.81076825}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -392,15 +392,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_14
+      name: Left_Lower_Leg_Plate
       rect:
         serializedVersion: 2
         x: 20
         y: 2
         width: 4
         height: 5
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.40629196, y: 0.80534124}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -412,15 +412,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_15
+      name: Left_Feet_Plate
       rect:
         serializedVersion: 2
         x: 24
         y: 0
         width: 4
         height: 3
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.46623278, y: 0.56383663}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -432,15 +432,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MainHero_PlateArmor_In_Pieces_16
+      name: Left_Hand_Plate
       rect:
         serializedVersion: 2
         x: 27
         y: 11
         width: 3
         height: 2
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5089245, y: 0.75435066}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

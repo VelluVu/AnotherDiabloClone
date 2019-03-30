@@ -23,19 +23,45 @@ public class SearchDecision : Decision
     private bool Search ( StateController controller )
     {
 
-        RaycastHit2D hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius, controller.eyes.right, controller.enemyLayer );
-
-        if ( hit.collider != false )
+        if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
-            if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.spotDistance )
+            if ( !controller.hasTurn )
+            {
+                controller.hasTurn = true;
+
+                if ( controller.dirRight )
+                {
+                    controller.dirRight = false;
+                    controller.rb.velocity = Vector2.left * 4 * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime;
+                }
+                else if ( !controller.dirRight )
+                {
+                    controller.dirRight = true;
+                    controller.rb.velocity = Vector2.right * 4 * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime;
+                }
+                controller.StartCoroutine ( controller.WaitTime ( 1f ) );
+            }
+        }
+        else
+        {
+
+            if ( controller.dirRight )
             {
 
-                
-                
+                controller.rb.velocity = new Vector2 ( 0, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
+
+                controller.StartCoroutine ( controller.TurnAfterTime ( 4, false ) );
+
+            }
+            else if ( !controller.dirRight )
+            {
+                controller.rb.velocity = new Vector2 ( 0, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
+
+                controller.StartCoroutine ( controller.TurnAfterTime ( 4, true ) );
+
             }
 
         }
-
 
         return controller.CheckIfCountDownElapsed ( controller.searchDuration );
     }

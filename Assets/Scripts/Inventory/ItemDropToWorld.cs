@@ -6,6 +6,15 @@ using UnityEngine.EventSystems;
 public class ItemDropToWorld : MonoBehaviour, IDropHandler
 {
     public GameObject dropObject;
+
+    
+    CanvasGroup CG;
+
+    private void Awake()
+    {
+        CG = GetComponent<CanvasGroup>();
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         if(eventData.button == PointerEventData.InputButton.Left)
@@ -14,6 +23,8 @@ public class ItemDropToWorld : MonoBehaviour, IDropHandler
             droppedLoot.GetComponent<PickUpLoot>().rLoot = droppedLoot.GetComponent<RolledLoot>();
             droppedLoot.GetComponent<PickUpLoot>().rLoot.transferLoot(eventData.pointerDrag.transform.parent.GetComponent<RolledLoot>());
             droppedLoot.GetComponent<SpriteRenderer>().sprite = droppedLoot.GetComponent<PickUpLoot>().rLoot.lootSprite;
+            droppedLoot.GetComponent<PickUpLoot>().DropSetup();
+            
             if(eventData.pointerDrag.transform.parent.GetComponent<LootSlot>() != null)
             {
                 eventData.pointerDrag.transform.parent.GetComponent<LootSlot>().emptySlot();
@@ -21,8 +32,22 @@ public class ItemDropToWorld : MonoBehaviour, IDropHandler
             else if(eventData.pointerDrag.transform.parent.GetComponent<EquipmentSlot>() != null)
             {
                 eventData.pointerDrag.transform.parent.GetComponent<EquipmentSlot>().emptySlot();
+                eventData.pointerDrag.transform.parent.GetComponent<EquipmentSlot>().removeWeapons();
             }
           
         }
     }
+    private void Update()
+    {
+        if (PlayerInventory.instance.draggingInventoryItem)
+        {
+            CG.blocksRaycasts = true;
+        }
+        else
+        {
+            CG.blocksRaycasts = false;
+        }
+    }
+
+    
 }

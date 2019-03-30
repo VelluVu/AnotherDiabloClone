@@ -10,6 +10,7 @@ public class EyesColliderScript : MonoBehaviour
 {
 
     bool hasDealtDmg;
+    public GameObject bloodSplash;
 
     private void Update ( )
     {
@@ -23,13 +24,14 @@ public class EyesColliderScript : MonoBehaviour
     /// Osuuko collider pelaajaan ja onko tehnyt vahinkoa vielä, jos ei niin ilmoittaa statemachinelle käyttää dealdamage functiota
     /// </summary>
     /// <param name="collision"></param>
-    private void OnTriggerEnter2D ( Collider2D collision )
+    private void OnCollisionEnter2D ( Collision2D collision )
     {
         if(collision.gameObject.CompareTag("Player") && !hasDealtDmg)
         {
             Debug.Log ( gameObject.GetComponentInParent<StateController>().enemyStats.name + " Hits you" );
-            hasDealtDmg = true;
-            gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.GetComponentInParent<Player>() );
+            hasDealtDmg = true;          
+            Destroy ( Instantiate ( bloodSplash, collision.contacts[0].point, Quaternion.identity), 2f );
+            gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject.GetComponentInParent<Player>() );
             StartCoroutine ( DmgCooldown ( ) );
         }
     }

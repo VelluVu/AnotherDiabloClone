@@ -23,15 +23,36 @@ public class AttackAction : Action
 
         RaycastHit2D hit;
 
-        hit = Physics2D.Raycast ( controller.eyes.transform.position, controller.eyes.right , controller.enemyLayer );
-
-        if ( hit.collider != false )
+        if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
-            if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance && controller.attackRdy)
+            hit = Physics2D.Raycast ( controller.eyes.transform.position, controller.eyes.right, controller.enemyLayer );
+
+            if ( hit.collider != false )
             {
+                if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance && controller.attackRdy )
+                {
 
-                controller.Attack ( );
+                    controller.Attack ( );
 
+                }
+            }
+        }
+        else
+        {
+            //Hyökkäys vähän lähempänä
+            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
+            Debug.DrawRay ( controller.eyes.position, controller.eyes.right * controller.spotDistance, Color.red );
+            Debug.Log ( "Attack Ray HIT : " + hit.transform );
+
+            if ( hit.collider != false )
+            {
+                //hit.distance on laaja niin tää on ehkä hölmö tapa testaa attackdistancee
+                if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance && controller.attackRdy )
+                {
+
+                    controller.Attack ( );
+
+                }
             }
         }
     }

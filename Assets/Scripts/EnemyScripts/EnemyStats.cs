@@ -24,8 +24,7 @@ public class EnemyStats : MonoBehaviour
 
     [Header ( "Kuinka nopeesti liikkuu jahdatessa pelaajaa" )]
     public float chaseMultiplier;
-
-  
+    public EnemyType enemyType;
 
     private void Awake ( )
     {
@@ -38,6 +37,7 @@ public class EnemyStats : MonoBehaviour
         mana = enemy._mana;
         armor = enemy._armor;
         xpReward = enemy._xpReward;
+        enemyType = enemy._enemyType;
     }
 
 }

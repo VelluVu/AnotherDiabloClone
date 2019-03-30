@@ -42,10 +42,10 @@ BoxCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.17610684, y: 0.24459195}
+  m_Offset: {x: -0.045013472, y: 0.34167814}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -56,7 +56,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7470985, y: 1.314774}
+  m_Size: {x: 0.5093951, y: 0.71802664}
   m_EdgeRadius: 0
 --- !u!114 &1122999474
 MonoBehaviour:
@@ -70,6 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e8f85d1cd9083478821f2a70ad430a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
+    type: 3}
 --- !u!1 &1328970168
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,7 +437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1643042880009106843
 Transform:
   m_ObjectHideFlags: 0
@@ -496,16 +498,26 @@ MonoBehaviour:
   attackJump: 100
   moveSpeedScale: 1.5
   attackDistance: 0.3
-  searchDuration: 4
+  searchDuration: 5
   spotDistance: 5
   sightDistance: 8
-  stateTimeElapsed: 4
-  radius: 1
+  stateTimeElapsed: 0
+  radius: 4
+  floatingTextPosition: 0.3
+  enemyDamageAreaDuration: 0.1
+  amplitude: 0
+  frequency: 0
+  flyingPatrolDirectionTime: 0
   eyes: {fileID: 1122999473}
   head: {fileID: 2770591779916734275}
+  floatingText: {fileID: 2701557179819223357, guid: bfb1c820644704d46a4ded9e64fde1a1,
+    type: 3}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 4096
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8192
   chaseTarget: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
@@ -513,11 +525,10 @@ MonoBehaviour:
   targetDir: {x: 0, y: 0}
   leftDirection: {x: 0, y: 0, z: 0}
   rightDirection: {x: 0, y: 0, z: 0}
-  dmgTextPrefab: {fileID: 7322774220167073038, guid: bfb1c820644704d46a4ded9e64fde1a1,
-    type: 3}
   dirRight: 1
   aiActive: 1
   attackRdy: 1
+  hasTurn: 0
 --- !u!114 &3375308404096916609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,6 +552,7 @@ MonoBehaviour:
   armor: 0
   xpReward: 0
   chaseMultiplier: 3.4
+  enemyType: 0
 --- !u!50 &2951910355810197899
 Rigidbody2D:
   serializedVersion: 4

@@ -14,4 +14,14 @@ public class EnemyStatsObject : ScriptableObject
     public float _mana;
     public float _armor;
     public int _xpReward;
+    public EnemyType _enemyType;
+
+}
+
+public enum EnemyType
+{
+    GroundEnemy,
+    FlyingEnemy,
+    EliteEnemy,
+    Boss
 }

@@ -26,19 +26,7 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
 
                         return;
                     }
-                    foreach (var v in PlayerInventory.instance.equipmentConnect) // check which equipment position this can be placed in
-                    {
-                        if (v.key == droppedLoot.item.armorSlot)
-                        {
-                            int i = 0;
-                            foreach (SpriteRenderer SR in v.ES.graphicsSpriteRenderers)
-                            {
-                                SR.sprite = v.ES.item.equipmentSprites[i];
-                                i++;
-                            }
-                            break;
-                        }
-                    }
+                   
                     if (!droppedLoot.isEmpty)
                     {
                         droppedLoot.WeaponEquip();
@@ -56,6 +44,20 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                         }
                         equipmentSlot.fillSlot();
                         Destroy(tempLoot);
+                    }
+                    foreach (var v in PlayerInventory.instance.equipmentConnect) // check which equipment position this can be placed in
+                    {
+                        if (v.key == droppedLoot.item.armorSlot)
+                        {
+                            int i = 0;
+                            foreach (SpriteRenderer SR in v.ES.graphicsSpriteRenderers)
+                            {
+                                Debug.Log(v.ES.item.equipmentSprites[i]);
+                                SR.sprite = v.ES.item.equipmentSprites[i];
+                                i++;
+                            }
+                            break;
+                        }
                     }
                 }
                 else // drag and drop between two inventory slots

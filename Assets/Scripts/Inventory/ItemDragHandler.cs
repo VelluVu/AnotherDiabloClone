@@ -39,6 +39,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
+            PlayerInventory.instance.draggingInventoryItem = true;
             if (sortCanvas == null)
             {
                 
@@ -67,7 +68,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        
+        PlayerInventory.instance.draggingInventoryItem = false;
         foreach (var v in PlayerInventory.instance.equipmentConnect)
         {
             if (v.key == key)

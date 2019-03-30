@@ -8,8 +8,6 @@ using UnityEngine;
 [CreateAssetMenu ( menuName = "PluggableAI/Actions/Patrol" )]
 public class PatrolAction : Action
 {
-    public float pauseTime;
-    public float timeToBreak;
 
     public override void Act ( StateController controller )
     {
@@ -20,8 +18,7 @@ public class PatrolAction : Action
     {
 
         MoveForward ( controller );
-        //SpotOpponent ( controller );
-        //TurnAround ( controller );
+
 
     }
 
@@ -32,37 +29,35 @@ public class PatrolAction : Action
     void MoveForward ( StateController controller )
     {
 
-        if ( controller.dirRight )
+        if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
+            if ( controller.dirRight )
+            {
 
-            controller.rb.velocity = new Vector2 (controller.targetDir.x * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y);
+                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y );
+            }
+            else
+            {
+
+                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed * -controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y );
+            }
         }
         else
         {
 
-            controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed  * -controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y );
-        }     
-    }
-
-    void SpotOpponent ( StateController controller )
-    {
-
-
-        controller.gaze = Physics2D.Raycast ( controller.eyes.transform.position, Vector2.right );
-
-
-
-        if ( controller.gaze.collider != false )
-        {
-            if ( controller.gaze.collider.gameObject.CompareTag ( "Player" ) )
+            if ( controller.dirRight )
             {
-                if ( controller.gaze.distance <= controller.spotDistance )
-                {
-                    Debug.Log ( "SPOTS PLAYER" );
-                    //Spots Player
-                    //Move To ChaseState
 
-                }
+                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
+                controller.StartCoroutine ( controller.TurnAfterTime ( controller.flyingPatrolDirectionTime, false ) );
+
+            }
+            else if ( !controller.dirRight )
+            {
+
+                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed * -controller.moveSpeedScale * Time.deltaTime, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
+                controller.StartCoroutine ( controller.TurnAfterTime ( controller.flyingPatrolDirectionTime, true ) );
+
             }
         }
     }

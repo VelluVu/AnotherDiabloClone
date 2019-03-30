@@ -31,8 +31,6 @@ public class EquipmentSlot : MonoBehaviour
         isEmpty = true;
         item.itemID = -1;
         slotNameText.enabled = true;
-
-
     }
     public void fillSlot()
     {
@@ -65,7 +63,7 @@ public class EquipmentSlot : MonoBehaviour
     {
         if (!isEmpty)
         {
-            PlayerInventory.instance.AddItem(item, 1);
+            PlayerInventory.instance.AddItem(item, 1,false);
             emptySlot();
 
             removeWeapons();

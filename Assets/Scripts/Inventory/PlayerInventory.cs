@@ -17,6 +17,9 @@ public class PlayerInventory : MonoBehaviour
     [HideInInspector]
     public const int InventorySlots = 24;
     public List<LootSlot> LootList;
+    public Transform LootHolder;
+    [HideInInspector]
+    public bool draggingInventoryItem = false; // inventory item is being dragged
     [System.Serializable]
     public struct equipmentSlots
     {
@@ -29,7 +32,7 @@ public class PlayerInventory : MonoBehaviour
         {"Common",Color.white },
         {"Uncommon",Color.green},
         {"Rare",Color.blue },
-        {"Epic",Color.red },
+        {"Epic",Color.yellow },
         {"Legendary",new Color(1,0.647f,0,1)},
         {"",new Color(0,0,0,0) }
     };
@@ -48,18 +51,25 @@ public class PlayerInventory : MonoBehaviour
         
 
     }
-    public void AddItem(RolledLoot loot, int count)
+    public void AddItem(RolledLoot loot, int count,bool autoEquip)
     {
         
         
         foreach(LootSlot slot in LootList)
         {
-            if (slot.addToSlot(loot, count))
+            if (slot.addToSlot(loot, count,autoEquip))
             {
-                Debug.Log("Picked Up "+loot.itemName);
+                //Debug.Log("Picked Up "+loot.itemName);
                 return;
             }
         }
     }
-    
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftAlt))
+        {
+            
+        }
+    }
+
 }
