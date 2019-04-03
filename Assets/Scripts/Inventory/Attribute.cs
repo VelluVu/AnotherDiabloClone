@@ -7,4 +7,5 @@ public class Attribute : ScriptableObject
 {
     public bool primary;
     public float potency;
+    
 }

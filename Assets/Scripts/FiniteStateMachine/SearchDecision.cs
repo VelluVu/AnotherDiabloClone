@@ -50,14 +50,14 @@ public class SearchDecision : Decision
 
                 controller.rb.velocity = new Vector2 ( 0, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
 
-                controller.StartCoroutine ( controller.TurnAfterTime ( 4, false ) );
+                controller.StartCoroutine ( controller.TurnAfterTime ( 2, false ) );
 
             }
             else if ( !controller.dirRight )
             {
                 controller.rb.velocity = new Vector2 ( 0, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
 
-                controller.StartCoroutine ( controller.TurnAfterTime ( 4, true ) );
+                controller.StartCoroutine ( controller.TurnAfterTime ( 2, true ) );
 
             }
 

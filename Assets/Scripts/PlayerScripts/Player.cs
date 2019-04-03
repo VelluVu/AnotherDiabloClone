@@ -12,14 +12,11 @@ public class Player : MonoBehaviour
 
     public PlayerClass stats; //pelaajan statit
     public LevelUp levelUp;
-    Vector3 leftDir;
-    Vector3 rightDir;
-    Vector2 textPosition;
-
+    
     #region GameObjects
-    public GameObject head;
-    public GameObject rightHand;
-    public GameObject leftHand;
+    [HideInInspector] public GameObject head;
+    [HideInInspector] public GameObject rightHand;
+    [HideInInspector] public GameObject leftHand;
     GameObject ToolTip;
     #endregion
 
@@ -27,14 +24,16 @@ public class Player : MonoBehaviour
     [HideInInspector] Animator heroAnim;
     [HideInInspector] Rigidbody2D playerRB;
     [HideInInspector] CameraControl camShaking;
+    [Header ("Health and Mana UI")]
     public Image healthPool;
     public Image manaPool;
-    public Transform feet;
-    public LayerMask whatIsGround;
-    public LayerMask enemyLayer;    
-    public WeaponPlaceHolder main;
-    public WeaponPlaceHolder off;
-    public ScrollingCombatText floatingText;
+    [HideInInspector]public Transform feet;
+    [HideInInspector] public LayerMask whatIsGround;
+    [HideInInspector] public LayerMask enemyLayer;
+    [HideInInspector] public WeaponPlaceHolder main;
+    [HideInInspector] public WeaponPlaceHolder off;
+    [HideInInspector] public FloatingCombatText floatingText;
+    [HideInInspector] public ColorFlashScript flash;
     #endregion
 
     #region Booleans
@@ -44,6 +43,7 @@ public class Player : MonoBehaviour
     bool isAttackRdy = true;
     bool isJumping = false;
     bool readyToDash = true;
+    [Header ("Ability Unlocks")]
     public bool isDashing;
     public bool isDoubleJumpEnabled;
     public bool isWallJumpEnabled;
@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
     #endregion
 
     #region publicVariables  
+    [Header ("Movement Variables")]
     public float speedScale;
     public float dashTime;
     public float dashCooldown;
@@ -61,19 +62,24 @@ public class Player : MonoBehaviour
     public float wallJumpPushBack;
     public float jumpTime;
     public float groundCheckRadius;
+    [Header ("CameraShake Variables")]
     public float radius;
     public float magnitude;
+    [Header ("Text position y axis")]
     public float floatingTextPosition;
-    float gravity;
     #endregion
 
-    #region FlagVariables
+    #region Extra Variables
     public int extraJumps;
     public bool directionRight;
     int jumpsCount = 0;
     float jumpTimeCounter;
     int wallJumpDirection = -1;
     float moveX;
+    float gravity;
+    Vector3 leftDir;
+    Vector3 rightDir;
+    Vector2 textPosition;
     #endregion
 
     private void Awake ( )
@@ -101,7 +107,10 @@ public class Player : MonoBehaviour
         OpenInventory ( );
         PlayerBasicAttack ( );
         PlayerBasicBlock ( );
-        PlayerJump ( );
+        if ( !isBlocking )
+        {
+            PlayerJump ( );
+        }
 
         if ( !isDashing )
         {
@@ -373,7 +382,10 @@ public class Player : MonoBehaviour
         if ( isBlocking )
         {
             //Varmaan joku defense muuttuja kilpeen ois hyvä tällä hetkellä taikanumeroKerroin pelaajan defenseen 2f
+            StartCoroutine ( flash.ColorFlash ( 0.5f, Color.yellow ) );
+
             StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
+
             positiveDamage = dmg - stats.armor.Value * 2f;
 
             //alle 0 jos ottais vahinkoa niin parantuisin
@@ -392,7 +404,10 @@ public class Player : MonoBehaviour
         else
         {
 
+            StartCoroutine ( flash.ColorFlash ( 0.5f, Color.red ) );
+
             StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
+
             positiveDamage = dmg - stats.armor.Value;
             stats.health.BaseValue -= positiveDamage;
             Debug.Log ( dmg - stats.armor.Value + " Damage Taken " );
@@ -425,6 +440,16 @@ public class Player : MonoBehaviour
     public void ManaTrack(float value)
     {
         manaPool.fillAmount = value * 0.01f;
+    }
+
+    /// <summary>
+    /// Displays message over players head
+    /// </summary>
+    /// <param name="message"></param>
+    public void PlayerMessage( string message )
+    {
+        textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
+        floatingText.SpawnText ( message, textPosition, Color.blue );
     }
 
     /// <summary>
@@ -564,34 +589,34 @@ public class Player : MonoBehaviour
     /// Katsoo törmääkö loottiin
     /// </summary>
     /// <param name="other"></param>
-    private void OnTriggerEnter2D ( Collider2D other )
-    {
+    //private void OnTriggerEnter2D ( Collider2D other )
+    //{
 
-        /*if ( other.gameObject.CompareTag ( "PickUp" ) && other.gameObject.GetComponent<Item> ( ).pickedUp == false )
-        {
-            other.gameObject.SetActive ( false );
-            invi.AddItemToInventory ( other.gameObject.GetComponent<Item> ( ).GetItem ( ) );
-        }*/
-        /*if ( other.gameObject.CompareTag ( "PickUp" ) && !other.gameObject.GetComponent<PickUpLoot> ( ).pickedUp )
-        {
-            //Ilmoittaa mitä lootattiin
-            textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
-            floatingText.SpawnText ( other.gameObject.GetComponent<PickUpLoot>().rLoot.itemName , textPosition, Color.cyan );
+    //    /*if ( other.gameObject.CompareTag ( "PickUp" ) && other.gameObject.GetComponent<Item> ( ).pickedUp == false )
+    //    {
+    //        other.gameObject.SetActive ( false );
+    //        invi.AddItemToInventory ( other.gameObject.GetComponent<Item> ( ).GetItem ( ) );
+    //    }*/
+    //    /*if ( other.gameObject.CompareTag ( "PickUp" ) && !other.gameObject.GetComponent<PickUpLoot> ( ).pickedUp )
+    //    {
+    //        //Ilmoittaa mitä lootattiin
+    //        textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
+    //        floatingText.SpawnText ( other.gameObject.GetComponent<PickUpLoot>().rLoot.itemName , textPosition, Color.cyan );
 
-            Debug.Log ( "Pickup" );
-            other.gameObject.GetComponent<PickUpLoot> ( ).pickedUp = true;
-            PlayerInventory.instance.AddItem ( other.GetComponent<PickUpLoot> ( ).rLoot, 1,true);
-            other.gameObject.SetActive ( false );
+    //        Debug.Log ( "Pickup" );
+    //        other.gameObject.GetComponent<PickUpLoot> ( ).pickedUp = true;
+    //        PlayerInventory.instance.AddItem ( other.GetComponent<PickUpLoot> ( ).rLoot, 1,true);
+    //        other.gameObject.SetActive ( false );
 
-        }*/
+    //    }*/
 
-    }
+    //}
     
 
     #region Coroutines
     IEnumerator Attack ( )
     {
-        yield return new WaitForSeconds ( 1.0f );
+        yield return new WaitForSeconds ( heroAnim.GetCurrentAnimatorStateInfo ( 0 ).length );
         rightHand.GetComponent<BoxCollider2D> ( ).enabled = false;
 
     }

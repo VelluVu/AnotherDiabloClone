@@ -37,9 +37,12 @@ public class StateController : MonoBehaviour
     #region Necessary Variables
     public Transform eyes; //silmät aseta manuaalisesti
     public GameObject head;
-    public ScrollingCombatText floatingText;
+    public FloatingCombatText floatingText;
     public LayerMask enemyLayer;
     public LayerMask playerLayer;
+    public ColorFlashScript flash;
+    public EnemyWeaponHolder weaponLeft;
+    public EnemyWeaponHolder weaponRight;
     Vector2 textPosition;
     [HideInInspector] public Transform chaseTarget;
     [HideInInspector] public Animator animator;
@@ -49,6 +52,7 @@ public class StateController : MonoBehaviour
     [HideInInspector] public Vector3 leftDirection;
     [HideInInspector] public Vector3 rightDirection;
     [HideInInspector] public RaycastHit2D gaze;
+   
     #endregion
 
     #region Booleans
@@ -221,6 +225,7 @@ public class StateController : MonoBehaviour
     public void TakeDamage ( float dmg )
     {
 
+        StartCoroutine ( flash.ColorFlash ( 0.5f, Color.red ) );
         Debug.Log ( enemyStats.name + " PAIN SOUNDS ,,, " );
         enemyStats.health -= ( dmg - enemyStats.armor );
         Debug.Log ( dmg - enemyStats.armor );

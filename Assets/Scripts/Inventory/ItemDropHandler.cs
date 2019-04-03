@@ -64,10 +64,31 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                 {
                     if (!droppedLoot.isEmpty)
                     {
+                        if (droppedLoot.item.stackable && transform.parent.GetComponent<RolledLoot>().itemName == droppedLoot.item.itemName)
+                        {
+                            if(transform.parent.GetComponent<LootSlot>().stackSize + droppedLoot.stackSize <= PlayerInventory.maxStackSize)
+                            {
+                                transform.parent.GetComponent<LootSlot>().stackSize += droppedLoot.stackSize;
+                                transform.parent.GetComponent<LootSlot>().stackSizeTextEnable(true);
+                                droppedLoot.emptySlot();
+                            }
+                           
+                            return;
+                            
+                        }
+                        else
+                        {
+
+                        }
                         RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
                         tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
+                        int tempStackSize = transform.parent.GetComponent<LootSlot>().stackSize;
                         transform.parent.GetComponent<RolledLoot>().transferLoot(droppedLoot.GetComponent<RolledLoot>());
+                        transform.parent.GetComponent<LootSlot>().stackSize = droppedLoot.stackSize;
                         droppedLoot.GetComponent<RolledLoot>().transferLoot(tempLoot);
+                        droppedLoot.stackSize = tempStackSize;
+                        droppedLoot.stackSizeTextEnable(droppedLoot.item.stackable);
+                        transform.parent.GetComponent<LootSlot>().stackSizeTextEnable(transform.parent.GetComponent<RolledLoot>().stackable);
 
                         if (transform.parent.GetComponent<LootSlot>().isEmpty)
                         {
@@ -160,4 +181,5 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
     {
         
     }
+    
 }

@@ -25,7 +25,7 @@ public class AttackAction : Action
 
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
-            hit = Physics2D.Raycast ( controller.eyes.transform.position, controller.eyes.right, controller.enemyLayer );
+            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
 
             if ( hit.collider != false )
             {

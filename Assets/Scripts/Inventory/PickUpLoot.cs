@@ -8,6 +8,7 @@ public class PickUpLoot : MonoBehaviour
     public Loot loot;
     public RolledLoot rLoot;
     public bool pickedUp = false;
+    public int Count = 1; 
     TMPro.TMP_Text text;
     RawImage rawImage;
 
@@ -30,7 +31,7 @@ public class PickUpLoot : MonoBehaviour
         rawImage = GetComponentInChildren<RawImage>();
         rawImage.color = PlayerInventory.instance.rarity[rLoot.Rarity];
         rawImage.color = new Color(rawImage.color.r, rawImage.color.g, rawImage.color.b, 0.7f);
-
+        
 
     }
     public void DropSetup()

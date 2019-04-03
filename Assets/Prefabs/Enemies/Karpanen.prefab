@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 183585757139660423}
   - component: {fileID: 5934902462984269097}
   - component: {fileID: 1835769067435714243}
+  - component: {fileID: 4851909324289275820}
   m_Layer: 12
   m_Name: Karpanen
   m_TagString: Enemy
@@ -207,6 +208,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 8192
+  flash: {fileID: 4851909324289275820}
   chaseTarget: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
@@ -242,6 +244,18 @@ MonoBehaviour:
   xpReward: 0
   chaseMultiplier: 2.5
   enemyType: 0
+--- !u!114 &4851909324289275820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2199584789959898269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5380269201b754f83ae9de557616e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2637335946669773666
 GameObject:
   m_ObjectHideFlags: 0

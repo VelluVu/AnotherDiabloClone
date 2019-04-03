@@ -18,10 +18,4 @@ public class EnemyStatsObject : ScriptableObject
 
 }
 
-public enum EnemyType
-{
-    GroundEnemy,
-    FlyingEnemy,
-    EliteEnemy,
-    Boss
-}
+

@@ -14,7 +14,7 @@ public class EyesColliderScript : MonoBehaviour
 
     private void Update ( )
     {
-        if(gameObject.GetComponent<BoxCollider2D>().isActiveAndEnabled)
+        if ( gameObject.GetComponent<BoxCollider2D> ( ).isActiveAndEnabled )
         {
             hasDealtDmg = false;
         }
@@ -26,12 +26,12 @@ public class EyesColliderScript : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D ( Collision2D collision )
     {
-        if(collision.gameObject.CompareTag("Player") && !hasDealtDmg)
+        if ( collision.gameObject.CompareTag ( "Player" ) && !hasDealtDmg )
         {
-            Debug.Log ( gameObject.GetComponentInParent<StateController>().enemyStats.name + " Hits you" );
-            hasDealtDmg = true;          
-            Destroy ( Instantiate ( bloodSplash, collision.contacts[0].point, Quaternion.identity), 2f );
-            gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject.GetComponentInParent<Player>() );
+            Debug.Log ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.name + " Hits you" );
+            hasDealtDmg = true;
+            Destroy ( Instantiate ( bloodSplash, collision.contacts [ 0 ].point, Quaternion.identity ), 2f );
+            gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject.GetComponentInParent<Player> ( ) );
             StartCoroutine ( DmgCooldown ( ) );
         }
     }
@@ -40,9 +40,9 @@ public class EyesColliderScript : MonoBehaviour
     /// Mahdollistaa uuden vahingon teon resettaamalla booleanin
     /// </summary>
     /// <returns></returns>
-    IEnumerator DmgCooldown()
+    IEnumerator DmgCooldown ( )
     {
-        yield return new WaitForSeconds ( gameObject.GetComponentInParent<StateController>().enemyStats.attackSpeed );
+        yield return new WaitForSeconds ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.attackSpeed );
         hasDealtDmg = false;
     }
 

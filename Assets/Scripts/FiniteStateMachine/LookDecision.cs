@@ -33,7 +33,7 @@ public class LookDecision : Decision
 
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
-            hit = Physics2D.Raycast ( controller.eyes.position, controller.eyes.right, controller.enemyLayer );
+            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, controller.eyes.right, controller.spotDistance, controller.playerLayer );
 
             if ( hit.collider != false )
             {

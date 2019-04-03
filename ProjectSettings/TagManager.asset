@@ -70,3 +70,6 @@ TagManager:
   - name: PickUp
     uniqueID: 1106477599
     locked: 0
+  - name: Projectile
+    uniqueID: 2277662361
+    locked: 0

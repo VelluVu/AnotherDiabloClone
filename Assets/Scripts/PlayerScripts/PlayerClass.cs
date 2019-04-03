@@ -14,6 +14,7 @@ public class PlayerClass : MonoBehaviour
 
     public string myName = "Jomppe";
     public string className = "Nephalem";
+    public ClassType classType;
 
     #region MovementStats
     public CharacterStat moveSpeed;
@@ -79,6 +80,7 @@ public class PlayerClass : MonoBehaviour
     {
         myName = classes [ chosenClass ]._name;
         className = classes [ chosenClass ]._className;
+        classType = classes [ chosenClass ]._classType;
 
         extraJumpForce.BaseValue = classes [ chosenClass ]._extraJumpForce;
         moveSpeed.BaseValue = classes [ chosenClass ]._moveSpeed;

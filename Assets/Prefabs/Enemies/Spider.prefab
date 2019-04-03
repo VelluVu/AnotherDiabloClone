@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 8840051671100735629}
   - component: {fileID: 142896088}
   - component: {fileID: 142896082}
+  - component: {fileID: 7423365702441429897}
   m_Layer: 12
   m_Name: Spider
   m_TagString: Enemy
@@ -218,12 +219,15 @@ MonoBehaviour:
   moveSpeedScale: 1.5
   attackDistance: 0.49
   searchDuration: 6
-  spotDistance: 2
-  sightDistance: 3
+  spotDistance: 4
+  sightDistance: 5
   stateTimeElapsed: 0
-  radius: 4
+  radius: 1.1
   floatingTextPosition: 0.3
   enemyDamageAreaDuration: 0.1
+  amplitude: 0
+  frequency: 0
+  flyingPatrolDirectionTime: 0
   eyes: {fileID: 8840051673129694130}
   head: {fileID: 2698308004858342132}
   floatingText: {fileID: 2701557179819223357, guid: bfb1c820644704d46a4ded9e64fde1a1,
@@ -231,6 +235,10 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 4096
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  flash: {fileID: 7423365702441429897}
   chaseTarget: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
@@ -265,6 +273,19 @@ MonoBehaviour:
   armor: 0
   xpReward: 0
   chaseMultiplier: 2.5
+  enemyType: 0
+--- !u!114 &7423365702441429897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8840051671100735625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5380269201b754f83ae9de557616e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8840051673129694131
 GameObject:
   m_ObjectHideFlags: 0

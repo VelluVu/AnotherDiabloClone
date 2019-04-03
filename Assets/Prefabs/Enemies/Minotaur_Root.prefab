@@ -431,13 +431,14 @@ GameObject:
   - component: {fileID: 3375308404096916609}
   - component: {fileID: 2951910355810197899}
   - component: {fileID: 2951910355810197901}
+  - component: {fileID: 7105697184667014825}
   m_Layer: 12
   m_Name: Minotaur_Root
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1643042880009106843
 Transform:
   m_ObjectHideFlags: 0
@@ -497,12 +498,12 @@ MonoBehaviour:
   enemyStats: {fileID: 3375308404096916609}
   attackJump: 100
   moveSpeedScale: 1.5
-  attackDistance: 0.3
+  attackDistance: 0.4
   searchDuration: 5
   spotDistance: 5
   sightDistance: 8
   stateTimeElapsed: 0
-  radius: 4
+  radius: 1.1
   floatingTextPosition: 0.3
   enemyDamageAreaDuration: 0.1
   amplitude: 0
@@ -518,6 +519,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 8192
+  flash: {fileID: 7105697184667014825}
   chaseTarget: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
@@ -593,6 +595,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7105697184667014825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2951910355810197897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5380269201b754f83ae9de557616e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3182558795360931544
 GameObject:
   m_ObjectHideFlags: 0

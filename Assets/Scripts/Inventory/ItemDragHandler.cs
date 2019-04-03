@@ -12,8 +12,8 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
     GameObject ToolTip;
     ToolTip TT; // tooltip
     public Transform movableObject;
-    string key;
-    Canvas sortCanvas;
+    public string key;
+    public Canvas sortCanvas;
     bool waitForEndDrag;
     EquipmentSlot ES; // check if changed
     LootSlot LS;// check if changed
@@ -22,15 +22,23 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
     void Awake()
     {
         ToolTip = GameObject.Find("ToolTip");
-        TT = ToolTip.GetComponent<ToolTip>();
+        if(ToolTip != null)
+        {
+            TT = ToolTip.GetComponent<ToolTip>();
+        }
+        
        
     }
     void Start()
     {
-        if (ToolTip.activeSelf)
+        if(ToolTip != null)
         {
-            ToolTip.SetActive(false);
+            if (ToolTip.activeSelf)
+            {
+                ToolTip.SetActive(false);
+            }
         }
+       
 
     }
 
@@ -59,10 +67,6 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
             }
             movableObject.transform.position = Input.mousePosition;
         }
-
-
-
-
 
     }
 
@@ -187,6 +191,69 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
                 OnPointerEnter(eventData);
             }
             
+        }
+        if(eventData.button == PointerEventData.InputButton.Left && KeyboardManager.instance.holdingShift && transform.parent.GetComponent<RolledLoot>().stackable 
+            && transform.parent.GetComponent<LootSlot>().stackSize > 1)
+        {
+            GameObject stackBox = Instantiate(PlayerInventory.instance.stackDividerObject,GameObject.Find("UICanvas").transform);
+            StackDivide SD = stackBox.GetComponent<StackDivide>();
+            SD.maxSize = transform.parent.GetComponent<LootSlot>().stackSize;
+            SD.ChangeValue(transform.parent.GetComponent<LootSlot>().stackSize-1);
+            SD.parentLootSlot = transform.parent.GetComponent<LootSlot>();
+            stackBox.transform.position = new Vector3(transform.position.x-140,transform.position.y);
+        }
+        if(eventData.button == PointerEventData.InputButton.Left && PlayerInventory.instance.splittingItem && eventData.pointerPress.transform.parent.GetComponent<LootSlot>() != null)
+        {
+            Debug.Log("SplitItemDrop");
+            SplitItemDrop(PlayerInventory.instance.splitItemObject);
+        }
+        if(eventData.button == PointerEventData.InputButton.Left && transform.parent.GetComponent<RolledLoot>().consumable) // consume item
+        {
+            
+        }
+    }
+    public void SplitItemDrop(LootSlot theLootSlot)
+    {
+        Debug.Log(theLootSlot.isEmpty);
+        if (!theLootSlot.isEmpty && transform.parent.GetComponent<LootSlot>().isEmpty)
+        {
+            if (theLootSlot.item.stackable && transform.parent.GetComponent<RolledLoot>().itemName == theLootSlot.item.itemName)
+            {
+                transform.parent.GetComponent<LootSlot>().stackSize += theLootSlot.stackSize;
+                theLootSlot.emptySlot();
+                return;
+
+            }
+            else
+            {
+
+            }
+            RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
+            tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
+            int tempStackSize = transform.parent.GetComponent<LootSlot>().stackSize;
+            transform.parent.GetComponent<RolledLoot>().transferLoot(theLootSlot.GetComponent<RolledLoot>());
+            transform.parent.GetComponent<LootSlot>().stackSize = theLootSlot.stackSize;
+            theLootSlot.GetComponent<RolledLoot>().transferLoot(tempLoot);
+            theLootSlot.stackSize = tempStackSize;
+            theLootSlot.stackSizeTextEnable(theLootSlot.item.stackable);
+            transform.parent.GetComponent<LootSlot>().stackSizeTextEnable(transform.parent.GetComponent<RolledLoot>().stackable);
+
+            if (transform.parent.GetComponent<LootSlot>().isEmpty)
+            {
+                theLootSlot.emptySlot();
+            }
+            else
+            {
+                theLootSlot.UnequipItem();
+            }
+            transform.parent.GetComponent<LootSlot>().UnequipItem();
+            Destroy(tempLoot);
+            PlayerInventory.instance.splittingItem = false;
+            Destroy(PlayerInventory.instance.splitItemObject);
+        }
+        else
+        {
+            Debug.LogWarning("Invalid Target for split item. Target must be empty inventory slot");
         }
     }
 }

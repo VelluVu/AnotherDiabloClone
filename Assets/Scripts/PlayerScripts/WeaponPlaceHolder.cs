@@ -151,8 +151,7 @@ public class WeaponPlaceHolder : MonoBehaviour
 
         }
     }*/
-
-
+   
     IEnumerator HitReset()
     {
         yield return new WaitForSeconds ( _weaponSpeed * gameObject.GetComponentInParent<PlayerClass>().baseAttackSpeed.Value );

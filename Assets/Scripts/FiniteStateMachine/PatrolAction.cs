@@ -19,7 +19,6 @@ public class PatrolAction : Action
 
         MoveForward ( controller );
 
-
     }
 
     /// <summary>

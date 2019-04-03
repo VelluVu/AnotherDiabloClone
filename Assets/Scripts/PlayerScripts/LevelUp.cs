@@ -49,10 +49,12 @@ public class LevelUp : MonoBehaviour
     public void GainLevel ( PlayerClass playerClass, int levelAmount )
     {
 
+        
         playerClass.playerLevel.BaseValue += levelAmount;
         playerClass.statPoint.BaseValue += statPointGain;
         playerClass.health.BaseValue += playerClass.playerLevel.Value * playerClass.endurance.Value;
         playerClass.mana.BaseValue += playerClass.playerLevel.Value * playerClass.energy.Value;
+        gameObject.GetComponent<Player> ( ).PlayerMessage ( "Level " + playerClass.playerLevel.Value );
 
         //Lisätään vaan joka toinen level yks skillpojo
         if ( playerClass.playerLevel.Value % 2 == 0 )
