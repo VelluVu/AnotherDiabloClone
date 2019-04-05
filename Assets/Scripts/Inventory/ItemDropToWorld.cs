@@ -28,8 +28,9 @@ public class ItemDropToWorld : MonoBehaviour, IDropHandler
             
             if(eventData.pointerDrag.transform.parent.GetComponent<LootSlot>() != null)
             {
-                eventData.pointerDrag.transform.parent.GetComponent<LootSlot>().emptySlot();
                 droppedLoot.GetComponent<PickUpLoot>().Count = eventData.pointerDrag.transform.parent.GetComponent<LootSlot>().stackSize;
+                eventData.pointerDrag.transform.parent.GetComponent<LootSlot>().emptySlot();
+                
             }
             else if(eventData.pointerDrag.transform.parent.GetComponent<EquipmentSlot>() != null)
             {

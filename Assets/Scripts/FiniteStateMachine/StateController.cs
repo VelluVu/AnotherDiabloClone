@@ -52,7 +52,7 @@ public class StateController : MonoBehaviour
     [HideInInspector] public Vector3 leftDirection;
     [HideInInspector] public Vector3 rightDirection;
     [HideInInspector] public RaycastHit2D gaze;
-   
+
     #endregion
 
     #region Booleans
@@ -60,6 +60,7 @@ public class StateController : MonoBehaviour
     public bool aiActive;
     public bool attackRdy;
     public bool hasTurn;
+    public bool hasSplit;
     #endregion
 
     private void Awake ( )
@@ -105,7 +106,7 @@ public class StateController : MonoBehaviour
 
             transform.eulerAngles = rightDirection;
         }
-        else if (!dirRight)
+        else if ( !dirRight )
         {
 
             transform.eulerAngles = leftDirection;
@@ -242,11 +243,27 @@ public class StateController : MonoBehaviour
 
     public void Die ( )
     {
+        
+        if ( enemyStats.groundEnemyType == GroundEnemyType.Splitter && !hasSplit)
+        {
+            hasSplit = true;
+            Vector2 leftSplitPos = new Vector2 ( transform.position.x + Random.Range ( 0f, -0.4f ), transform.position.y );
+            Vector2 rightSplitPos = new Vector2 ( transform.position.x + Random.Range ( 0f, 0.4f ), transform.position.y );
+            GameObject leftSplitted = Instantiate ( gameObject, leftSplitPos, Quaternion.identity );
+            GameObject rightSplitted = Instantiate ( gameObject, rightSplitPos, Quaternion.identity );
+            leftSplitted.GetComponent<StateController> ( ).hasSplit = true;
+            rightSplitted.GetComponent<StateController> ( ).hasSplit = true;
+            leftSplitted.GetComponent<StateController> ( ).chaseTarget = null;
+            rightSplitted.GetComponent<StateController> ( ).chaseTarget = null;
 
-        Debug.Log ( enemyStats.name + " IS DEAD" );
-        //Instantiate death prefab
-        Destroy ( gameObject );
-
+            gameObject.SetActive ( false );
+        }
+        else
+        {
+            Debug.Log ( enemyStats.name + " IS DEAD" );
+            //Instantiate death prefab
+            Destroy ( gameObject );
+        }
     }
 
     #region Coroutines
@@ -270,7 +287,7 @@ public class StateController : MonoBehaviour
 
     }
 
-    public IEnumerator TurnAfterTime(float time, bool turnDir)
+    public IEnumerator TurnAfterTime ( float time, bool turnDir )
     {
         yield return new WaitForSeconds ( time );
         dirRight = turnDir;

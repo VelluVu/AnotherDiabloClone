@@ -9,15 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9e8748d8b8c79947b93a84acb83c361, type: 3}
-  m_Name: MinotaurStats
+  m_Script: {fileID: 11500000, guid: 0b84ea76521396d499fa12772145d438, type: 3}
+  m_Name: Strength
   m_EditorClassIdentifier: 
-  _name: Minotaur
-  _moveSpeed: 50
-  _jumpForce: 2
-  _attackSpeed: 2
-  _attackDamage: 10
-  _health: 100
-  _mana: 0
-  _armor: 8
-  _xpReward: 50
+  isBaseValue: 0
+  stat: 13
+  primary: 1
+  value: 30
+  statModType: 100
+  characterStat:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  PC: {fileID: 0}

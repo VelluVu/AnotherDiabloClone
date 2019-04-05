@@ -1350,6 +1350,7 @@ MonoBehaviour:
   nameText: {fileID: 5220364278611244413}
   descriptionText: {fileID: 5220364279223883431}
   mainText: {fileID: 5220364278632059756}
+  secondaryText: {fileID: 0}
 --- !u!1 &5220364279914036310
 GameObject:
   m_ObjectHideFlags: 0

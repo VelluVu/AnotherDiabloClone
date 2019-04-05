@@ -10,21 +10,22 @@ public class ElevatorLever : MonoBehaviour
 
     private void OnTriggerStay2D ( Collider2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "Player" ) && !triggered && Input.GetButtonDown ( "Interaction" ))
+        if ( collision.gameObject.CompareTag ( "Player" ) && !triggered)
         {
-
-            triggered = true;
-
-            foreach ( var elevator in elevators )
+            if ( Input.GetButtonDown ( "Interaction" ) )
             {
-                elevator.StartElevator ( );
-            }
+                triggered = true;
 
-            foreach ( var trigger in triggers )
-            {
-                trigger.UsedLever ( );
+                foreach ( var elevator in elevators )
+                {
+                    elevator.StartElevator ( );
+                }
+
+                foreach ( var trigger in triggers )
+                {
+                    trigger.UsedLever ( );
+                }
             }
-           
         }
     }
 

@@ -142,7 +142,7 @@ public class LootSlot : MonoBehaviour
         
         if (!isEmpty && item != null)
         {
-            Debug.Log(item.equippable);
+          
             if (item.equippable)
             {
                 
@@ -167,7 +167,7 @@ public class LootSlot : MonoBehaviour
                                 emptySlot();
                                 return;
                             }
-                            else if(PlayerInventory.instance.equipmentConnect[i+1].ES.isEmpty &&  item.armorSlot == "Ring" && PlayerInventory.instance.equipmentConnect[i + 1].ES.SlotName == "Ring");
+                            else if(PlayerInventory.instance.equipmentConnect[i+1].ES.isEmpty &&  item.armorSlot == "Ring" && PlayerInventory.instance.equipmentConnect[i + 1].ES.SlotName == "Ring")
                             {
                                 RolledLoot tempLoot = PlayerInventory.instance.equipmentConnect[i+1].ES.EquipItem(item);
                                 item.transferLoot(tempLoot);

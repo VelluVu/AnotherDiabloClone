@@ -20,7 +20,7 @@ public class RolledLoot : MonoBehaviour
 
 
     #region attributes
-    public List<Attribute> attributes;
+    public List<RollAttribute> attributes;
     #endregion
 
     #region bools
@@ -61,7 +61,15 @@ public class RolledLoot : MonoBehaviour
         this.equipmentSprites = loot.equipmentSprites;
         this.Rarity = loot.Rarity;
         this.itemLevel = loot.itemLevel;
-        this.attributes = loot.attributes;
+        int i = 0;
+        foreach(Attribute a in loot.attributes)
+        {
+            RollAttribute RA = gameObject.AddComponent<RollAttribute>();
+            attributes.Add(RA);
+            RA.rollAttribute(a);
+            Debug.Log(attributes[i]);
+            i++;
+        }
         // bools
         this.equippable = loot.equippable;
         this.consumable = loot.consumable;
@@ -109,7 +117,20 @@ public class RolledLoot : MonoBehaviour
       
         
     }
-
+    public void Equip()
+    {
+        foreach(RollAttribute r in attributes)
+        {
+            r.Equip();
+        }
+    }
+    public void UnEquip()
+    {
+        foreach (RollAttribute r in attributes)
+        {
+            r.Unequip();
+        }
+    }
 
 
 }

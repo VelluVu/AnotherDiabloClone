@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Kryz.CharacterStats;
 
 /// <summary>
 /// Pelaaja Prototyyppi
@@ -12,9 +13,9 @@ public class Player : MonoBehaviour
 
     public PlayerClass stats; //pelaajan statit
     public LevelUp levelUp;
-    
+
     #region GameObjects
-    [HideInInspector] public GameObject head;
+    [ HideInInspector] public GameObject head;
     [HideInInspector] public GameObject rightHand;
     [HideInInspector] public GameObject leftHand;
     GameObject ToolTip;
@@ -175,13 +176,13 @@ public class Player : MonoBehaviour
     {
         
         //Turning
-        if ( moveX > 0 )
+        if ( moveX > 0.2f )
         {
             directionRight = true;
             wallJumpDirection = -1;
             transform.eulerAngles = rightDir;
         }
-        else
+        else if ( moveX < -0.2f )
         {
             directionRight = false;
             wallJumpDirection = 1;
@@ -372,6 +373,57 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+    /// Lisää pelaajalle hp
+    /// </summary>
+    /// <param name="amount"></param>
+    public void HealHealth( float amount , bool max)
+    {
+        if ( max )
+        {
+
+            //Asettaa healtit maximiin
+            //stats.health.BaseValue = stats.health.Value;
+          
+                stats.health.RemoveAllModifiersFromSource ( stats.healthLoss );
+         
+                stats.health.RemoveAllModifiersFromSource ( stats.healthFill );
+
+        }
+        else
+        {
+            
+            stats.healthFill = new StatModifier ( amount, StatModType.Flat );
+            stats.health.AddModifier ( stats.healthFill );
+
+        }
+    }
+
+    /// <summary>
+    /// Lisää pelaajalle hp
+    /// </summary>
+    /// <param name="amount"></param>
+    public void RestoreMana ( float amount, bool max )
+    {
+        if ( max)
+        {
+
+            //Asettaa healtit maximiin          
+           
+                stats.mana.RemoveAllModifiersFromSource ( stats.manaLoss );
+          
+                stats.mana.RemoveAllModifiersFromSource ( stats.manaFill );
+
+        }
+        else
+        {
+
+            stats.manaFill = new StatModifier ( amount , StatModType.Flat );
+            stats.mana.AddModifier ( stats.manaFill );
+
+        }
+    }
+
+    /// <summary>
     /// Player calculates defenses and how much damage is taken
     /// </summary>
     /// <param name="dmg"></param>
@@ -394,8 +446,11 @@ public class Player : MonoBehaviour
                 positiveDamage = 0;      
             }
 
-            stats.health.BaseValue -= positiveDamage;
-            
+            stats.healthLoss = new StatModifier ( -positiveDamage, StatModType.Flat );
+            stats.health.AddModifier ( stats.healthLoss );
+
+            //stats.health.BaseValue -= positiveDamage;
+
             Debug.Log ( dmg - stats.armor.Value * 2f + " Damage taken " );  Debug.Log ( stats.armor.Value * 2f + " Damage blocked " );
 
             textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
@@ -407,9 +462,14 @@ public class Player : MonoBehaviour
             StartCoroutine ( flash.ColorFlash ( 0.5f, Color.red ) );
 
             StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
-
+       
             positiveDamage = dmg - stats.armor.Value;
-            stats.health.BaseValue -= positiveDamage;
+
+            stats.healthLoss = new StatModifier ( -positiveDamage, StatModType.Flat );
+            stats.health.AddModifier ( stats.healthLoss );
+
+            //stats.health.BaseValue -= positiveDamage;
+
             Debug.Log ( dmg - stats.armor.Value + " Damage Taken " );
 
             textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
@@ -579,7 +639,7 @@ public class Player : MonoBehaviour
     private void OnCollisionStay2D ( Collision2D collision )
     {
         
-        if ( ( collision.gameObject.CompareTag ( "Door" ) || collision.gameObject.CompareTag ( "TreasureChest" ) ) && Input.GetButton ( "Interaction" ) )
+        if (  collision.gameObject.CompareTag ( "TreasureChest" )  && Input.GetButton ( "Interaction" ) )
         {
             collision.gameObject.SendMessage ( "Aukene" );
         }

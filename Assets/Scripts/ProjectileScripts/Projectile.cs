@@ -15,13 +15,11 @@ public class Projectile : MonoBehaviour
     public LayerMask enemyLayer;
 
     Vector2 _velocity;
-
     public float _damage;
     bool collided;
     public bool isPlayersProjectile;
     string targetTag;
     //public float _speed;
-
 
     private void Awake ( )
     {
@@ -50,13 +48,6 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Minkätyyppinen projectile ja sen perusteella valitsee lentotavan
-    /// </summary>
-    /// <param name="damage"></param>
-    /// <param name="force"></param>
-    /// <param name="speed"></param>
-    /// <param name="damageType"></param>
     public void LaunchProjectile ( float damage, Vector2 velocity, DamageType damageType, ProjectileType projectileType )
     {
 

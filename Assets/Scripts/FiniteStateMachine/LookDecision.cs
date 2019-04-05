@@ -28,7 +28,6 @@ public class LookDecision : Decision
     bool Look ( StateController controller )
     {
 
-
         RaycastHit2D hit;
 
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )

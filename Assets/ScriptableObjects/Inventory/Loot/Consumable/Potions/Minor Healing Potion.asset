@@ -20,7 +20,8 @@ MonoBehaviour:
   lootSprite: {fileID: 21300000, guid: 2656d100ada649149a38d60a97f9ad82, type: 3}
   Rarity: Common
   itemLevel: 0
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: aa6a7baa969f4344693344a4601aff61, type: 2}
   equippable: 0
   consumable: 1
   stackable: 1

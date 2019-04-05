@@ -7,12 +7,13 @@ namespace Kryz.CharacterStats
 	[Serializable]
 	public class CharacterStat
 	{
+       
 		public float BaseValue;
 
-		protected bool isDirty = true;
-		protected float lastBaseValue;
+		public bool isDirty = true;
+		public float lastBaseValue;
 
-		protected float _value;
+		public float _value;
 		public virtual float Value {
 			get {
 				if(isDirty || lastBaseValue != BaseValue) {

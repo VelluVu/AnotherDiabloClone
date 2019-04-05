@@ -21,6 +21,12 @@ public class KeyboardManager : MonoBehaviour
     }
     private void Update()
     {
+
+        ShowLoot();
+        ShiftKey();
+    }
+    public void ShowLoot()
+    {
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             if (GameObject.Find("LootTextCanvas").GetComponent<Canvas>().enabled)
@@ -31,8 +37,11 @@ public class KeyboardManager : MonoBehaviour
             {
                 GameObject.Find("LootTextCanvas").GetComponent<Canvas>().enabled = true;
             }
-                
+
         }
+    }
+    public void ShiftKey()
+    {
         if (Input.GetKey(KeyCode.LeftShift))
         {
             holdingShift = true;

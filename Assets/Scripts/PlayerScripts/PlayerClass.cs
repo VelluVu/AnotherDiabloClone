@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Kryz.CharacterStats; //Character stat assetin käyttäminen
+using TMPro;
 
 /// <summary>
 /// Alustaa pelaajan valitseman classin, ja sisältää pelaajan statit, Attribuutit, skillpojot, level jne.
@@ -9,13 +10,14 @@ using Kryz.CharacterStats; //Character stat assetin käyttäminen
 public class PlayerClass : MonoBehaviour
 {
 
+    
     [Header ("This List Includes all possible classes")]
     public List<PlayerStatsObject> classes = new List<PlayerStatsObject>();
 
+    public List<CharacterStat> listCharacterStats = new List<CharacterStat>();
     public string myName = "Jomppe";
     public string className = "Nephalem";
     public ClassType classType;
-
     #region MovementStats
     public CharacterStat moveSpeed;
     public CharacterStat jumpForce;
@@ -25,10 +27,26 @@ public class PlayerClass : MonoBehaviour
     #region CombatStats
     public CharacterStat baseDamage;
     public CharacterStat baseAttackSpeed;
+    public CharacterStat maxHealth;
     public CharacterStat health;
     public CharacterStat mana;
     public CharacterStat stamina;
     public CharacterStat armor;
+    #region elemental resistances
+    public CharacterStat fireResistance;
+    public CharacterStat coldResistance;
+    public CharacterStat poisonResistance;
+    public CharacterStat lightningResistance;
+    public CharacterStat physicalResistance;
+    #endregion
+    #endregion
+
+    //Tässä vois olla vaikka boostit jne..
+    #region StatModifiers
+    public StatModifier healthLoss;
+    public StatModifier healthFill;
+    public StatModifier manaLoss;
+    public StatModifier manaFill;
     #endregion
 
     #region BaseStats and Leveling Stats
@@ -40,17 +58,46 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat skillPoint;
     public CharacterStat playerLevel;
     #endregion
-
+    
+    #region displayStats
+    public TMP_Text leftSmallStatsText;
+    public TMP_Text rightSmallStatsText;
+    #endregion
     public int chosenClass = 0; //tää muuttuu sitten ku class selection ui on tehty
     public static bool isInitStats = false; //jos uusiHahmo asetetaan trueksi hahmon tehdessä ja tästä eteenpäin pitäisi olla false...
 
     private void Awake ( )
     {
+        AddToList();
         isInitStats = true; //alustetaan vielä tässä vaiheessa ennen character selection UI:ta trueksi is initStats
         if ( isInitStats )
         {
             isInitStats = false;
             InitializeHeroClass ( );
+        }
+        checkForChanges();
+    }
+    public void checkForChanges()
+    {
+        foreach (CharacterStat cStat in listCharacterStats)
+        {
+            float randomFloat = cStat.Value;
+        }
+        BuildSmallBoxStatsText();
+    }
+    private void Update()
+    {
+
+        checkHealth();
+    }
+    public void checkHealth() // tarkistetaan että health ei ole suurempi kuin maxHealth;
+    {
+        if (health.Value > maxHealth.Value)
+        {
+
+            health.AddModifier(new StatModifier(-(health.Value - maxHealth.Value), StatModType.Flat));
+            checkForChanges();
+
         }
     }
 
@@ -91,10 +138,48 @@ public class PlayerClass : MonoBehaviour
         mana.BaseValue = classes [ chosenClass ]._mana;
         stamina.BaseValue = classes [ chosenClass ]._stamina;
         armor.BaseValue = classes [ chosenClass ]._armor;
+        maxHealth.BaseValue = classes[chosenClass]._maxHealth;
+
+        fireResistance.BaseValue = classes[chosenClass]._fireResistance;
+        coldResistance.BaseValue = classes[chosenClass]._coldResistance;
+        poisonResistance.BaseValue = classes[chosenClass]._poisonResistance;
+        lightningResistance.BaseValue = classes[chosenClass]._lightningResistance;
+        physicalResistance.BaseValue = classes[chosenClass]._physicalResistance;
 
         strength.BaseValue = classes [ chosenClass ]._strength;
         dexterity.BaseValue = classes [ chosenClass ]._dexterity;
         endurance.BaseValue = classes [ chosenClass ]._endurance;
         energy.BaseValue = classes [ chosenClass ]._energy;
+    }
+
+    public void BuildSmallBoxStatsText()
+    {
+        leftSmallStatsText.text = "Strength: " + strength.Value.ToString() + "\nDexterity: " + dexterity.Value.ToString() 
+            +"\nEndurance: "+endurance.Value.ToString() +"\nEnergy: "+ energy.Value.ToString();
+        rightSmallStatsText.text = "Armor: " + armor.Value.ToString() + "\nHealth: " +maxHealth.Value.ToString()+ "\nMana " + mana.Value.ToString()
+            + "\nStamina: " + stamina.Value.ToString();
+    }
+    public void AddToList() // tarkista että sama järjestys Attribute skriptin enumissa Stat
+    {
+        listCharacterStats.Add(moveSpeed); // 0
+        listCharacterStats.Add(jumpForce); // 1
+        listCharacterStats.Add(extraJumpForce); // 2
+        listCharacterStats.Add(baseDamage); // 3
+        listCharacterStats.Add(baseAttackSpeed); // 4
+        listCharacterStats.Add(health); //5
+        listCharacterStats.Add(mana); // 6
+        listCharacterStats.Add(stamina); // 7
+        listCharacterStats.Add(armor);// 8
+        listCharacterStats.Add(fireResistance);// 9
+        listCharacterStats.Add(coldResistance);//10
+        listCharacterStats.Add(poisonResistance);// 11
+        listCharacterStats.Add(lightningResistance);// 12
+        listCharacterStats.Add(strength);// 13
+        listCharacterStats.Add(dexterity);// 14
+        listCharacterStats.Add(endurance);//15
+        listCharacterStats.Add(energy);// 16
+        listCharacterStats.Add(physicalResistance);//17
+        listCharacterStats.Add(maxHealth); //18
+
     }
 }

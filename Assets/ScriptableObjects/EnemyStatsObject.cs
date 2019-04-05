@@ -15,6 +15,10 @@ public class EnemyStatsObject : ScriptableObject
     public float _armor;
     public int _xpReward;
     public EnemyType _enemyType;
+    public GroundEnemyType _groundEnemyType;
+    public FlyingEnemyType _flyingEnemyType;
+    public BossEnemyType _bossEnemyType;
+    public EnemyVariations[] _enemyVariation;
 
 }
 

@@ -447,7 +447,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2951910355810197897}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.047429483, y: -0.09, z: -0.12890625}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7793294172164781680}
@@ -520,6 +520,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8192
   flash: {fileID: 7105697184667014825}
+  weaponLeft: {fileID: 0}
+  weaponRight: {fileID: 0}
   chaseTarget: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}

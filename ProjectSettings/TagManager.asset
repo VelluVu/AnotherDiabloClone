@@ -15,6 +15,7 @@ TagManager:
   - Eyes
   - DamageText
   - LootText
+  - EnemySpawn
   layers:
   - Default
   - TransparentFX

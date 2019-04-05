@@ -78,6 +78,7 @@ public class PlayerInventory : MonoBehaviour
                 return;
             }
         }
+        
     }
     private void Update()
     {

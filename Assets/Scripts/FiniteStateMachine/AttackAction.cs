@@ -38,8 +38,7 @@ public class AttackAction : Action
             }
         }
         else
-        {
-            //Hyökkäys vähän lähempänä
+        {       
             hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
             Debug.DrawRay ( controller.eyes.position, controller.eyes.right * controller.spotDistance, Color.red );
             Debug.Log ( "Attack Ray HIT : " + hit.transform );

@@ -34,6 +34,51 @@ public enum EnemyType
     Boss
 }
 
+//Vihollislistasta poimitut toteutetaan ne mitä kerkiää
+
+public enum GroundEnemyType
+{
+    Skeleton,
+    DemonicWolf,
+    Ogre,
+    Rat,
+    ShieldWielder,
+    Splitter,
+    Spider,
+    FireMage,
+    IceMage,
+    HealerMage,
+    Archer,
+    Knight,
+    ArmoredRat,
+    Ghoul,
+    PoisonToad,
+    ParkRanger
+}
+
+public enum FlyingEnemyType
+{
+    Bat,
+    DemonicBird
+}
+
+public enum BossEnemyType
+{
+    SpiderQueen,
+    FireLord,
+    SummonerKing,
+    Medusa
+}
+
+public enum EnemyVariations
+{
+    ManaLeech,
+    IceAura,
+    Adapting,
+    MagicImmune,
+    Suicider
+}
+
 public enum ClassType
 {
     Warrior,
@@ -48,4 +93,19 @@ public enum SpellType
     Ray,
     Area,
     Buff
+}
+
+public enum DoorType
+{
+    normalDoor,
+    keyLockedDoor,
+    leverLockedDoor,
+    bossLockedDoor
+
+}
+
+public enum KeyType
+{
+    silver,
+    gold
 }

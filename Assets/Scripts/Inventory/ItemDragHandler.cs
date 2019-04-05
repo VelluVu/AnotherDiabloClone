@@ -17,7 +17,10 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
     bool waitForEndDrag;
     EquipmentSlot ES; // check if changed
     LootSlot LS;// check if changed
-    
+
+    public bool isEquipmentSlot = true;
+    LootSlot lSlot; // for descriptiontext
+    EquipmentSlot eSlot; // for descriptiontext
 
     void Awake()
     {
@@ -108,10 +111,11 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
             {
                 if (!eventData.pointerEnter.transform.parent.GetComponent<EquipmentSlot>().isEmpty)
                 {
-                    EquipmentSlot eSlot = eventData.pointerEnter.transform.parent.GetComponent<EquipmentSlot>();
+                    eSlot = eventData.pointerEnter.transform.parent.GetComponent<EquipmentSlot>();
                     ToolTip.SetActive(true);
                     TT.nameText.text = eSlot.item.itemName;
                     TT.descriptionText.text = eSlot.item.description;
+                    BuildMainText();
                     Debug.Log("FilledPointerEnter");
                 }
                 else
@@ -125,10 +129,11 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
             {
                 if (!eventData.pointerEnter.transform.parent.GetComponent<LootSlot>().isEmpty)
                 {
-                    LootSlot lSlot = eventData.pointerEnter.transform.parent.GetComponent<LootSlot>();
+                    lSlot = eventData.pointerEnter.transform.parent.GetComponent<LootSlot>();
                     ToolTip.SetActive(true);
                     TT.nameText.text = lSlot.item.itemName;
                     TT.descriptionText.text = lSlot.item.description;
+                    BuildMainText();
 
                 }
                 else
@@ -139,6 +144,26 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
             }
         }
         
+    }
+    private void BuildMainText()
+    {
+        if (isEquipmentSlot)
+        {
+            TT.mainText.text = "";
+            foreach(RollAttribute rAtt in eSlot.item.attributes)
+            {
+                TT.mainText.text += rAtt.createText() + "\n";
+            }
+        }
+        else
+        {
+            TT.mainText.text = "";
+            foreach (RollAttribute rAtt in lSlot.item.attributes)
+            {
+                TT.mainText.text += rAtt.createText() + "\n";
+            }
+        }
+       
     }
     
 
@@ -207,8 +232,24 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
             Debug.Log("SplitItemDrop");
             SplitItemDrop(PlayerInventory.instance.splitItemObject);
         }
-        if(eventData.button == PointerEventData.InputButton.Left && transform.parent.GetComponent<RolledLoot>().consumable) // consume item
+        if(eventData.button == PointerEventData.InputButton.Right && transform.parent.GetComponent<RolledLoot>().consumable) // consume item
         {
+            foreach(RollAttribute rAtt in transform.parent.GetComponent<RolledLoot>().attributes)
+            {
+                rAtt.Consume();
+            }
+            transform.parent.GetComponent<LootSlot>().stackSize -= 1;
+            if(transform.parent.GetComponent<LootSlot>().stackSize < 1)
+            {
+                transform.parent.GetComponent<LootSlot>().emptySlot();
+               
+            }
+            else
+            {
+                transform.parent.GetComponent<LootSlot>().stackSizeTextEnable(true);
+            }
+               
+
             
         }
     }

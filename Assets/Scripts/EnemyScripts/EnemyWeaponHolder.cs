@@ -18,7 +18,8 @@ public class EnemyWeaponHolder : MonoBehaviour
     public DamageType damageType;
     public ProjectileType projectileType;
 
-    public float damage, force, speed;
+    //Näihin otetaan talteen itemeistä tulleet muuttujat , esim. varsijousessa force riittää ampuun kauemmas
+    public float _damage, _force, _weaponSpeed;
 
     private void Start ( )
     {
@@ -39,10 +40,11 @@ public class EnemyWeaponHolder : MonoBehaviour
     /// <param name="damage"></param>
     /// <param name="force"></param>
     /// <param name="speed"></param>
-    public void Shoot ( float damage, float speed, float range, Transform target, LayerMask playerLayer )
+    public void Shoot ( float damage, float weaponSpeed, float range, Transform target, LayerMask playerLayer )
     {
-        Vector2 velocity = AimWithRangedWeapon ( target, range, playerLayer );
 
+        Vector2 velocity = AimWithRangedWeapon ( target, range, playerLayer );
+    
         if ( isTargetLocked && isShootCDrdy )
         {
 
@@ -50,8 +52,8 @@ public class EnemyWeaponHolder : MonoBehaviour
             GameObject newProjectile = Instantiate ( projectile, launchPosition.position, launchPosition.rotation ) as GameObject;
             newProjectile.GetComponent<Projectile> ( ).LaunchProjectile ( damage, velocity, damageType, projectileType );
 
+            StartCoroutine ( ShootCD ( weaponSpeed ) );
 
-            StartCoroutine ( ShootCD ( speed ) );
         }
     }
 
@@ -61,7 +63,7 @@ public class EnemyWeaponHolder : MonoBehaviour
     }
 
     /// <summary>
-    /// Ampuu projectilen heittoliikkeellä, jos lopullisella vihollisella on jokin rotatepoint niin tätä pitää muokata päivittämään anglen rotatepointtiin ja projectilelle annetaan vaan lähtövoima/nopeus.
+    /// Ampuu projectilen heittoliikkeellä tietystä positiosta.
     /// </summary>
     /// <param name="target"></param>
     /// <param name="range"></param>
@@ -69,57 +71,47 @@ public class EnemyWeaponHolder : MonoBehaviour
     public Vector2 AimWithRangedWeapon ( Transform target, float range, LayerMask playerLayer )
     {
 
-        RaycastHit2D hit = Physics2D.CircleCast ( rotatingPoint.position, 0.1f, target.transform.position, range, playerLayer );
-        //RaycastHit2D up = Physics2D.Raycast ( rotatingPoint.position, launchPosition.up, 1f );
-
-        //Vector3 towardsTarget = -Vector3.Cross ( Vector3.Cross ( launchPosition.position, target.position ), launchPosition.up ).normalized;
-        //Vector3 upVector = Vector3.Project ( launchPosition.up, Vector3.up ).normalized;
+        RaycastHit2D hit = Physics2D.CircleCast ( rotatingPoint.position, 0.1f, launchPosition.transform.right, range, playerLayer );
+   
         Vector2 distance = new Vector2 ( target.position.x - launchPosition.position.x, target.position.y - launchPosition.position.y );
         Vector3 curGravity = Physics2D.gravity;
-        //Vector3 diagonal = new Vector2 ( towardsTarget.x, upVector.y );
-
-        //vektorit visualisointi
-        //Debug.DrawRay ( launchPosition.position, diagonal, Color.blue, 10f );
-        //Debug.DrawRay ( launchPosition.position, towardsTarget, Color.red, 10f );
-        //Debug.DrawRay ( launchPosition.position, upVector, Color.green, 10f );
+     
         Debug.DrawRay ( launchPosition.position, distance, Color.black, 10f ); // vaaka vektori pelaajaan
 
         float angle = Mathf.Atan ( ( distance.y + curGravity.y * 0.5f ) / distance.x ) * -1;
         float velocity = distance.x / Mathf.Cos ( angle );
         Vector2 calculatedVelocity = new Vector2 ( Mathf.Cos ( angle ) * velocity, Mathf.Sin ( angle ) * velocity );
 
-        Debug.Log ( "Etäisyys " + range );
-        Debug.Log ( "EtäisyysLähelle " + range * 0.5f );
-        Debug.Log ( "Säteen " + hit.distance );
-
-        if ( hit != false && hit.collider.gameObject.CompareTag ( "Player" ) )
+        if ( hit != false )
         {
-
-            if ( hit.distance <= ( range * 0.5f ) )
+            if ( hit.collider.gameObject.CompareTag ( "Player" ) )
             {
+                if ( hit.distance <= ( range * 0.5f ) )
+                {
+                    Debug.Log ( "hitDistance" + hit.distance );
 
-                Debug.Log ( "Etäisyys " + range * 0.5f );
+                    Debug.Log ( "Etäisyys " + range * 0.5f );
 
-                Debug.Log ( "kohde lähellä" );
+                    Debug.Log ( "kohde lähellä" );
 
-                calculatedVelocity = new Vector2 ( Mathf.Cos ( angle * 0.3f ) * velocity, Mathf.Sin ( angle * 0.3f ) * velocity );
+                    calculatedVelocity = new Vector2 ( Mathf.Cos ( angle * 0.3f ) * velocity, Mathf.Sin ( angle * 0.3f ) * velocity );
 
-                isTargetLocked = true;
+                    isTargetLocked = true;
 
-                return calculatedVelocity;
+                    return calculatedVelocity;
+                }
+                else
+                {
+
+                    Debug.Log ( "Etäisyys " + range );
+
+                    Debug.Log ( "kohde kaukana" );
+
+                    isTargetLocked = true;
+
+                    return calculatedVelocity;
+                }
             }
-            else
-            {
-
-                Debug.Log ( "Etäisyys " + range );
-
-                Debug.Log ( "kohde kaukana" );
-
-                isTargetLocked = true;
-
-                return calculatedVelocity;
-            }
-
         }
 
         return calculatedVelocity;

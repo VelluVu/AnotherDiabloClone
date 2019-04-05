@@ -1,5 +1,6 @@
 namespace Kryz.CharacterStats
 {
+    
 	public enum StatModType
 	{
 		Flat = 100,

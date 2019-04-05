@@ -46,7 +46,7 @@ public class EquipmentSlot : MonoBehaviour
         Destroy(tempObject);
         tempObject = gameObject.AddComponent<RolledLoot>();
         tempObject.transferLoot(item);
-        
+        loot.Equip();
         item.transferLoot(loot);
         rarityImage.color = PlayerInventory.instance.rarity[loot.Rarity];
         iconImage.texture = loot.itemIcon;
@@ -64,6 +64,7 @@ public class EquipmentSlot : MonoBehaviour
         if (!isEmpty)
         {
             PlayerInventory.instance.AddItem(item, 1,false);
+            item.UnEquip();
             emptySlot();
 
             removeWeapons();
@@ -72,6 +73,7 @@ public class EquipmentSlot : MonoBehaviour
     }
     public void removeWeapons()
     {
+        item.UnEquip();
         if (SlotName == "WeaponMain")
         {
             hand[0].UnEquipWeapon();

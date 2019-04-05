@@ -20,8 +20,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 98a2a76197bc26a43a33c79643e6e781, type: 3}
   lootSprite: {fileID: 21300000, guid: 98a2a76197bc26a43a33c79643e6e781, type: 3}
   Rarity: Epic
-  itemLevel: 0
-  attributes: []
+  itemLevel: 1
+  attributes:
+  - {fileID: 11400000, guid: a5fb97337cbd6e44d9294677df1d85e9, type: 2}
   equippable: 1
   consumable: 0
   stackable: 0
