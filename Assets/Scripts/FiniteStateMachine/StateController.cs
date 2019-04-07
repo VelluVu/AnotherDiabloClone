@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Kryz.CharacterStats;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,23 @@ public class StateController : MonoBehaviour
     [Header ( "EnemyStats Class" )]
     public EnemyStats enemyStats;
 
+    #region Enemy Delegates
+    public delegate void EnemyNotifyDelegate ( Transform transform, string message, Color color);
+    public static event EnemyNotifyDelegate enemyNotifyEvent;
+
+    public delegate void EnemyTakeDamageDelegate ( float damage );
+    public static event EnemyTakeDamageDelegate enemyTakeDamageEvent;
+
+    public delegate void EnemyDealDamageDelegate ( Object target, float damage );
+    public static event EnemyDealDamageDelegate enemyDealDamageEvent;
+
+    public delegate void EnemyDeathDelegate ( Transform transform, int xp );
+    public static event EnemyDeathDelegate enemyDeathEvent;
+
+    public delegate IEnumerator EnemyFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
+    public static event EnemyFlashDelegate enemyFlashEvent;
+    #endregion
+
     #region Public Variables
     public float attackJump; //could be in enemyStats
     public float moveSpeedScale; //could be in enemyStats
@@ -27,7 +45,6 @@ public class StateController : MonoBehaviour
     public float sightDistance; //could be in enemyStats
     public float stateTimeElapsed;
     public float radius;
-    public float floatingTextPosition;
     public float enemyDamageAreaDuration;
     public float amplitude;
     public float frequency;
@@ -37,13 +54,10 @@ public class StateController : MonoBehaviour
     #region Necessary Variables
     public Transform eyes; //silmät aseta manuaalisesti
     public GameObject head;
-    public FloatingCombatText floatingText;
     public LayerMask enemyLayer;
     public LayerMask playerLayer;
-    public ColorFlashScript flash;
     public EnemyWeaponHolder weaponLeft;
     public EnemyWeaponHolder weaponRight;
-    Vector2 textPosition;
     [HideInInspector] public Transform chaseTarget;
     [HideInInspector] public Animator animator;
     [HideInInspector] public Rigidbody2D rb;
@@ -67,13 +81,29 @@ public class StateController : MonoBehaviour
     {
         //GetComponents
         animator = gameObject.GetComponent<Animator> ( );
+
+        if(animator == null)
+        {
+            animator = gameObject.GetComponentInChildren<Animator> ( );
+        }
+
         rb = gameObject.GetComponent<Rigidbody2D> ( );
         col = gameObject.GetComponent<BoxCollider2D> ( );
-        chaseTarget = GameObject.FindGameObjectWithTag ( "Player" ).transform;
         targetDir = new Vector2 ( 1, 0 );
         leftDirection = new Vector3 ( 0, -180, 0 );
         rightDirection = new Vector3 ( 0, 0, 0 );
+        attackRdy = true;
 
+    }
+
+    private void OnEnable ( )
+    {
+        Player.playerDealDamageEvent += TakeDamage;
+    }
+
+    private void OnDisable ( )
+    {
+        Player.playerDealDamageEvent -= TakeDamage;
     }
 
     private void Update ( )
@@ -202,7 +232,7 @@ public class StateController : MonoBehaviour
         if ( attackRdy )
         {
             attackRdy = false;
-            rb.AddForce ( new Vector2 ( rb.velocity.x, 1 ) * attackJump, ForceMode2D.Impulse );
+            rb.AddForce ( new Vector2 ( rb.velocity.x * 2, 2 ) * attackJump, ForceMode2D.Impulse );
             animator.SetTrigger ( "Attack" );
             eyes.GetComponent<BoxCollider2D> ( ).enabled = true;
             StartCoroutine ( AttackHitBoxDuration ( ) );
@@ -214,36 +244,65 @@ public class StateController : MonoBehaviour
     /// Tekee vahinkoa pelaajaan
     /// </summary>
     /// <param name="player"></param>
-    public void DealDamage ( Player player )
+    public void DealDamage ( Object target, float weaponDamage )
     {
-        player.TakeDamage ( enemyStats.attackDamage );
+        if ( target != null )
+        {
+            float calculatedDamage = enemyStats.attackDamage.Value + weaponDamage;
+
+            if ( enemyDealDamageEvent != null )
+            {
+                enemyDealDamageEvent ( target, calculatedDamage );
+            }
+        }
     }
 
     /// <summary>
     /// Laskee tulevan vahingon lopullisen määrän
     /// </summary>
     /// <param name="dmg">Tuleva vahinko</param>
-    public void TakeDamage ( float dmg )
+    public void TakeDamage ( Object target , float dmg )
     {
+        Color color = Color.red;
 
-        StartCoroutine ( flash.ColorFlash ( 0.5f, Color.red ) );
-        Debug.Log ( enemyStats.name + " PAIN SOUNDS ,,, " );
-        enemyStats.health -= ( dmg - enemyStats.armor );
-        Debug.Log ( dmg - enemyStats.armor );
-
-        textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
-        floatingText.SpawnText ( dmg - enemyStats.armor, textPosition );
-
-        if ( enemyStats.health <= 0 )
+        if ( target == gameObject )
         {
-            Die ( );
+
+            float calculatedDamage = dmg - enemyStats.armor.Value;
+
+            enemyStats.healthLoss = new StatModifier ( -calculatedDamage, StatModType.Flat );
+            enemyStats.health.AddModifier ( enemyStats.healthLoss );
+
+            if ( enemyNotifyEvent != null )
+            {
+                enemyNotifyEvent ( head.transform, calculatedDamage.ToString ( ), color );
+            }
+
+            if ( enemyFlashEvent != null )
+            {
+                StartCoroutine ( enemyFlashEvent ( gameObject, 0.2f, color, true ) );
+            }
+
+            if ( enemyTakeDamageEvent != null )
+            {
+                enemyTakeDamageEvent ( calculatedDamage );
+            }
+
+            if ( enemyStats.health.Value <= 0 )
+            {
+                Die ( );
+            }
         }
 
     }
 
     public void Die ( )
     {
-        
+        if(enemyDeathEvent != null)
+        {
+            enemyDeathEvent ( head.transform, enemyStats.xpReward );
+        }
+
         if ( enemyStats.groundEnemyType == GroundEnemyType.Splitter && !hasSplit)
         {
             hasSplit = true;
@@ -253,9 +312,12 @@ public class StateController : MonoBehaviour
             GameObject rightSplitted = Instantiate ( gameObject, rightSplitPos, Quaternion.identity );
             leftSplitted.GetComponent<StateController> ( ).hasSplit = true;
             rightSplitted.GetComponent<StateController> ( ).hasSplit = true;
+            leftSplitted.transform.localScale *= 0.6f;
+            rightSplitted.transform.localScale *= 0.6f;
+            leftSplitted.GetComponent<StateController> ( ).dirRight = false;
+            rightSplitted.GetComponent<StateController> ( ).dirRight = true;
             leftSplitted.GetComponent<StateController> ( ).chaseTarget = null;
             rightSplitted.GetComponent<StateController> ( ).chaseTarget = null;
-
             gameObject.SetActive ( false );
         }
         else
@@ -264,19 +326,20 @@ public class StateController : MonoBehaviour
             //Instantiate death prefab
             Destroy ( gameObject );
         }
+        
     }
 
     #region Coroutines
     IEnumerator AttackCooldown ( )
     {
-        yield return new WaitForSeconds ( enemyStats.attackSpeed );
+        yield return new WaitForSeconds ( enemyStats.attackSpeed.Value );
         attackRdy = true;
     }
 
     IEnumerator AttackHitBoxDuration ( )
     {
-        yield return new WaitForSeconds ( enemyDamageAreaDuration );
-        eyes.GetComponent<BoxCollider2D> ( ).enabled = false;
+        yield return new WaitForSeconds ( enemyStats.attackSpeed.Value );
+        //eyes.GetComponent<BoxCollider2D> ( ).enabled = false;
 
     }
 

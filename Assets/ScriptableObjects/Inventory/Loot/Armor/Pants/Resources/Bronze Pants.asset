@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: Bronze Pants
+  m_EditorClassIdentifier: 
+  itemName: Bronze Pants
+  description: 
+  itemID: 800
+  itemIcon: {fileID: 2800000, guid: a6e9221a3fed45e4696b7deb476db138, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 9df2b9540586d5a46825b72e181de665, type: 3}
+  - {fileID: 21300000, guid: 85d1f43545a8af64f8379b593f4f7cc1, type: 3}
+  - {fileID: 21300000, guid: 38f91ca871210a247ab465105a60e350, type: 3}
+  - {fileID: 21300000, guid: 1523b7776878924498a32309e1e2c6ee, type: 3}
+  lootSprite: {fileID: 21300000, guid: 85d1f43545a8af64f8379b593f4f7cc1, type: 3}
+  Rarity: 0
+  itemLevel: 0
+  tags: 
+  attributes: []
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 0
+  damageMin: 0
+  damageMax: 0
+  armor: 0
+  armorSlot: 3
+  potency: 0
+  buyPrice: 0
+  sellPrice: 0

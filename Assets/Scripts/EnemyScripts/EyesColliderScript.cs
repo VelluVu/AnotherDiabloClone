@@ -24,15 +24,36 @@ public class EyesColliderScript : MonoBehaviour
     /// Osuuko collider pelaajaan ja onko tehnyt vahinkoa vielä, jos ei niin ilmoittaa statemachinelle käyttää dealdamage functiota
     /// </summary>
     /// <param name="collision"></param>
-    private void OnCollisionEnter2D ( Collision2D collision )
+    //private void OnCollisionEnter2D ( Collision2D collision )
+    //{
+    //    if ( collision.gameObject.CompareTag ( "Player" ) )
+    //    {
+    //        if ( !hasDealtDmg )
+    //        {
+    //            Debug.Log ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.name + " Hits you" );
+    //            hasDealtDmg = true;
+    //            Destroy ( Instantiate ( bloodSplash, collision.contacts [ 0 ].point, Quaternion.identity ), 2f );
+    //            gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject.GetComponentInParent<Player> ( ) );
+    //            gameObject.GetComponent<Collider2D> ( ).enabled = false;
+    //            StartCoroutine ( DmgCooldown ( ) );
+    //        }
+    //    }
+    //}
+
+    ///Jos hirviöllä ei ole asetta
+    private void OnTriggerEnter2D ( Collider2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "Player" ) && !hasDealtDmg )
+        if ( collision.gameObject.CompareTag ( "Player" ) )
         {
-            Debug.Log ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.name + " Hits you" );
-            hasDealtDmg = true;
-            Destroy ( Instantiate ( bloodSplash, collision.contacts [ 0 ].point, Quaternion.identity ), 2f );
-            gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject.GetComponentInParent<Player> ( ) );
-            StartCoroutine ( DmgCooldown ( ) );
+            if ( !hasDealtDmg )
+            {
+                Debug.Log ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.name + " Hits you" );
+                hasDealtDmg = true;
+                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint( transform.position ), Quaternion.identity ), 2f );
+                gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject, 0 );
+                gameObject.GetComponent<Collider2D> ( ).enabled = false;
+                StartCoroutine ( DmgCooldown ( ) );
+            }
         }
     }
 
@@ -42,7 +63,7 @@ public class EyesColliderScript : MonoBehaviour
     /// <returns></returns>
     IEnumerator DmgCooldown ( )
     {
-        yield return new WaitForSeconds ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.attackSpeed );
+        yield return new WaitForSeconds ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.attackSpeed.Value );
         hasDealtDmg = false;
     }
 

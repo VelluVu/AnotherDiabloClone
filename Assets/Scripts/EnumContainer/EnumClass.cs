@@ -109,3 +109,19 @@ public enum KeyType
     silver,
     gold
 }
+
+[System.Serializable]
+public enum Tags
+{
+    HealingPotion, ManaPotion
+}
+[System.Serializable]
+public enum Rarity
+{
+    Common,Uncommon,Rare,Epic,Legendary
+}
+[System.Serializable]
+public enum ArmorSlot
+{
+    None,Helm,Chest,Pants,Boots,Shoulder,Bracer,Glove,Belt,Mainhand,Offhand,Ring,Necklace,Consumable
+}

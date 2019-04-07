@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b84ea76521396d499fa12772145d438, type: 3}
   m_Name: Dexterity
   m_EditorClassIdentifier: 
+  attributeName: Dexterity
   isBaseValue: 0
   stat: 14
   primary: 1

@@ -6,27 +6,22 @@ using Kryz.CharacterStats;
 [CreateAssetMenu(fileName = "Attribute", menuName = "Loot/Attribute", order = 2)]
 public class Attribute: ScriptableObject
 {
-    [SerializeField]
-    public enum Stat // tarkista että on samassa järjesyksessä mikä playerclass.addToList
-    {
-        MoveSpeed,JumpForce,ExtraJumpForce,BaseDamage,
-        BaseAttackSpeed,Health,Mana,Stamina,Armor,
-        fireResistance,coldResistance,poisonResistance,
-        lightningResistance,Strength,Dexterity,
-        Endurance,Energy,physicalResistance,maxHealth
-
-    
-    }
+    public bool rollValueByItemLevels = false;
+    public string attributeName;
     public bool isBaseValue;
     public Stat stat;
     public bool primary;
     public float value; // make into value range
+    public float valueMax = 0;
+    public float value2Min = 0;
+    public float value2Max = 0;
     public StatModType statModType;
     public StatModifier statModifier;
-    public CharacterStat characterStat;
-    public PlayerClass PC;
+    [HideInInspector] public CharacterStat characterStat;
+    
    
    
    
     
 }
+

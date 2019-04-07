@@ -14,8 +14,26 @@ public class Player : MonoBehaviour
     public PlayerClass stats; //pelaajan statit
     public LevelUp levelUp;
 
+    #region Player Delegates
+    public delegate void PlayerDeathDelegate ( Transform position );
+    public static event PlayerDeathDelegate playerDeathEvent;
+
+    public delegate void PlayerTakeDamageDelegate ( float damage );
+    public static event PlayerTakeDamageDelegate playerTakeDamageEvent;
+
+    public delegate IEnumerator PlayerFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
+    public static event PlayerFlashDelegate playerFlashEvent;
+
+    public delegate void PlayerDealDamageDelegate ( Object enemy, float damage );
+    public static event PlayerDealDamageDelegate playerDealDamageEvent;
+
+    public delegate void PlayerNotifyDelecate ( Transform transform, string message, Color color );
+    public static event PlayerNotifyDelecate playerNotifyEvent;
+
+    #endregion
+
     #region GameObjects
-    [ HideInInspector] public GameObject head;
+    [HideInInspector] public GameObject head;
     [HideInInspector] public GameObject rightHand;
     [HideInInspector] public GameObject leftHand;
     GameObject ToolTip;
@@ -25,16 +43,14 @@ public class Player : MonoBehaviour
     [HideInInspector] Animator heroAnim;
     [HideInInspector] Rigidbody2D playerRB;
     [HideInInspector] CameraControl camShaking;
-    [Header ("Health and Mana UI")]
+    [Header ( "Health and Mana UI" )]
     public Image healthPool;
     public Image manaPool;
-    [HideInInspector]public Transform feet;
+    [HideInInspector] public Transform feet;
     [HideInInspector] public LayerMask whatIsGround;
     [HideInInspector] public LayerMask enemyLayer;
     [HideInInspector] public WeaponPlaceHolder main;
     [HideInInspector] public WeaponPlaceHolder off;
-    [HideInInspector] public FloatingCombatText floatingText;
-    [HideInInspector] public ColorFlashScript flash;
     #endregion
 
     #region Booleans
@@ -44,16 +60,16 @@ public class Player : MonoBehaviour
     bool isAttackRdy = true;
     bool isJumping = false;
     bool readyToDash = true;
-    [Header ("Ability Unlocks")]
+    [Header ( "Ability Unlocks" )]
     public bool isDashing;
     public bool isDoubleJumpEnabled;
     public bool isWallJumpEnabled;
     public bool isDashEnabled;
-    public bool isGrounded;    
+    public bool isGrounded;
     #endregion
 
     #region publicVariables  
-    [Header ("Movement Variables")]
+    [Header ( "Movement Variables" )]
     public float speedScale;
     public float dashTime;
     public float dashCooldown;
@@ -63,11 +79,9 @@ public class Player : MonoBehaviour
     public float wallJumpPushBack;
     public float jumpTime;
     public float groundCheckRadius;
-    [Header ("CameraShake Variables")]
+    [Header ( "CameraShake Variables" )]
     public float radius;
     public float magnitude;
-    [Header ("Text position y axis")]
-    public float floatingTextPosition;
     #endregion
 
     #region Extra Variables
@@ -85,8 +99,28 @@ public class Player : MonoBehaviour
 
     private void Awake ( )
     {
-        ToolTip = FindObjectOfType<ToolTip> ( ).gameObject;
+
+
         DontDestroyOnLoad ( this );
+
+
+        ToolTip = FindObjectOfType<ToolTip> ( ).gameObject;
+
+    }
+
+    //Eventtien subscribausta varten
+    private void OnEnable ( )
+    {
+        LevelUp.levelUpEvent += OnLevelUp;
+        StateController.enemyDealDamageEvent += TakeDamage;
+        Projectile.projectileHitEvent += TakeDamage;
+    }
+
+    private void OnDisable ( )
+    {
+        LevelUp.levelUpEvent -= OnLevelUp;
+        StateController.enemyDealDamageEvent -= TakeDamage;
+        Projectile.projectileHitEvent -= TakeDamage;
     }
 
     private void Start ( )
@@ -97,17 +131,19 @@ public class Player : MonoBehaviour
         rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponSpeed = stats.baseAttackSpeed.Value;
         rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponDamage = stats.baseDamage.Value;
         leftDir = new Vector3 ( 0, -180, 0 );
-        rightDir = new Vector3 ( 0, 0, 0 );       
+        rightDir = new Vector3 ( 0, 0, 0 );
         gravity = playerRB.gravityScale;
     }
 
     private void Update ( )
     {
         moveX = Input.GetAxis ( "Horizontal" );
+
         GroundCheck ( );
         OpenInventory ( );
         PlayerBasicAttack ( );
         PlayerBasicBlock ( );
+
         if ( !isBlocking )
         {
             PlayerJump ( );
@@ -115,7 +151,7 @@ public class Player : MonoBehaviour
 
         if ( !isDashing )
         {
-            TurnMousePointerDir ( );       
+            TurnMousePointerDir ( );
             WalkAnimation ( );
         }
 
@@ -136,15 +172,15 @@ public class Player : MonoBehaviour
     {
         //layermask tapa tsekkaa grounded testi
         isGrounded = Physics2D.OverlapCircle ( feet.position, groundCheckRadius, whatIsGround );
-       
+
     }
 
     private void FixedUpdate ( )
     {
-       
+
         if ( !isBlocking )
             PlayerMovement ( );
-       
+
     }
 
     /// <summary>
@@ -156,7 +192,7 @@ public class Player : MonoBehaviour
         Vector2 mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint ( mousePos );
 
-        if ( playerRB.velocity.x == 0)
+        if ( playerRB.velocity.x == 0 )
         {
             if ( mousePos.x > transform.position.x )
             {
@@ -174,7 +210,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void PlayerMovement ( )
     {
-        
+
         //Turning
         if ( moveX > 0.2f )
         {
@@ -238,13 +274,13 @@ public class Player : MonoBehaviour
         }
 
         //Double jump
-        if ( Input.GetButtonDown ( "Jump" ) && jumpsCount > 0 && !isJumping && !isWallJump && isDoubleJumpEnabled)
+        if ( Input.GetButtonDown ( "Jump" ) && jumpsCount > 0 && !isJumping && !isWallJump && isDoubleJumpEnabled )
         {
 
             jumpsCount--;
             Debug.Log ( "DOUBLE JUMP" );
             heroAnim.SetTrigger ( "Jump" );
-            playerRB.AddForce ( new Vector2 ( playerRB.velocity.x,  stats.jumpForce.Value * stats.extraJumpForce.Value ), ForceMode2D.Impulse );
+            playerRB.AddForce ( new Vector2 ( playerRB.velocity.x, stats.jumpForce.Value * stats.extraJumpForce.Value ), ForceMode2D.Impulse );
 
         }
 
@@ -255,7 +291,7 @@ public class Player : MonoBehaviour
             isWallJump = false;
             Debug.Log ( "WALL JUMP" );
             heroAnim.SetTrigger ( "Jump" );
-            playerRB.AddForce ( new Vector2 ( playerRB.velocity.x * wallJumpDirection * wallJumpPushBack,  stats.extraJumpForce.Value * stats.jumpForce.Value * wallJumpScale ), ForceMode2D.Impulse );
+            playerRB.AddForce ( new Vector2 ( playerRB.velocity.x * wallJumpDirection * wallJumpPushBack, stats.extraJumpForce.Value * stats.jumpForce.Value * wallJumpScale ), ForceMode2D.Impulse );
 
         }
 
@@ -266,7 +302,7 @@ public class Player : MonoBehaviour
             {
 
                 //playerRB.AddForce(Vector2.up * stats.jumpForce.Value, ForceMode2D.Impulse);
-                playerRB.velocity = new Vector2 ( playerRB.velocity.x,  stats.jumpForce.Value);
+                playerRB.velocity = new Vector2 ( playerRB.velocity.x, stats.jumpForce.Value );
                 jumpTimeCounter -= Time.deltaTime;
 
             }
@@ -290,14 +326,14 @@ public class Player : MonoBehaviour
     /// </summary>
     public void Dash ( )
     {
-        if(isDashing)
-        {         
+        if ( isDashing )
+        {
             Debug.Log ( "IS DASHING" );
             heroAnim.SetBool ( "Walk", false );
             //dash animaatio
         }
-      
-        if( Input.GetButtonDown( "Dash" ) && !isDashing && readyToDash)
+
+        if ( Input.GetButtonDown ( "Dash" ) && !isDashing && readyToDash )
         {
             readyToDash = false;
             Debug.Log ( "Started Dashing" );
@@ -307,20 +343,20 @@ public class Player : MonoBehaviour
             StartCoroutine ( DashCoolDown ( ) );
         }
 
-        if ( Input.GetButton ( "Dash" ) && isDashing)
+        if ( Input.GetButton ( "Dash" ) && isDashing )
         {
             Debug.Log ( "Holding Dash Key" );
-            
+
             if ( directionRight && isDashing )
             {
-                playerRB.velocity = new Vector2 ( playerRB.velocity.x, 0);
-                transform.Translate (new Vector2 ( playerRB.velocity.x * dashSpeed * Time.deltaTime, 0 ));
+                playerRB.velocity = new Vector2 ( playerRB.velocity.x, 0 );
+                transform.Translate ( new Vector2 ( playerRB.velocity.x * dashSpeed * Time.deltaTime, 0 ) );
 
             }
-            else if( !directionRight && isDashing )
+            else if ( !directionRight && isDashing )
             {
                 playerRB.velocity = new Vector2 ( playerRB.velocity.x, 0 );
-                transform.Translate ( new Vector2 ( playerRB.velocity.x * -dashSpeed *  Time.deltaTime, 0 ) );
+                transform.Translate ( new Vector2 ( playerRB.velocity.x * -dashSpeed * Time.deltaTime, 0 ) );
 
             }
             else
@@ -329,9 +365,9 @@ public class Player : MonoBehaviour
                 isDashing = false;
                 playerRB.gravityScale = gravity;
             }
-        }   
+        }
 
-        if (Input.GetButtonUp ( "Dash" ) )
+        if ( Input.GetButtonUp ( "Dash" ) )
         {
             Debug.Log ( "Stopped Dashing" );
             isDashing = false;
@@ -355,19 +391,19 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Damage Done calculated and passed to enemy
+    /// Osuessa viholliseen suorittaa tarvittavat calculaatiot
     /// </summary>
-    /// <param name="enemy"></param>
+    /// <param name="target"></param>
     /// <param name="weaponPower"></param>
-    public void DealDamage ( StateController enemy, float weaponPower )
+    public void DealDamage ( GameObject target, float weaponPower )
     {
-
-        if ( enemy != null )
+        if ( target != null )
         {
-            enemy.TakeDamage ( weaponPower + stats.baseDamage.Value );
-            if ( enemy.enemyStats.health <= 0 )
+            float calculatedDamage = weaponPower + stats.baseDamage.Value;
+             
+            if ( playerDealDamageEvent != null )
             {
-                levelUp.GainXP ( enemy.enemyStats.xpReward, stats );
+                playerDealDamageEvent ( target, calculatedDamage );
             }
         }
     }
@@ -376,22 +412,19 @@ public class Player : MonoBehaviour
     /// Lisää pelaajalle hp
     /// </summary>
     /// <param name="amount"></param>
-    public void HealHealth( float amount , bool max)
+    public void HealHealth ( float amount, bool max )
     {
         if ( max )
         {
 
-            //Asettaa healtit maximiin
-            //stats.health.BaseValue = stats.health.Value;
-          
-                stats.health.RemoveAllModifiersFromSource ( stats.healthLoss );
-         
-                stats.health.RemoveAllModifiersFromSource ( stats.healthFill );
+            stats.health.RemoveAllModifiersFromSource ( stats.healthLoss );
+
+            stats.health.RemoveAllModifiersFromSource ( stats.healthFill );
 
         }
         else
         {
-            
+
             stats.healthFill = new StatModifier ( amount, StatModType.Flat );
             stats.health.AddModifier ( stats.healthFill );
 
@@ -404,20 +437,20 @@ public class Player : MonoBehaviour
     /// <param name="amount"></param>
     public void RestoreMana ( float amount, bool max )
     {
-        if ( max)
+        if ( max )
         {
 
             //Asettaa healtit maximiin          
-           
-                stats.mana.RemoveAllModifiersFromSource ( stats.manaLoss );
-          
-                stats.mana.RemoveAllModifiersFromSource ( stats.manaFill );
+
+            stats.mana.RemoveAllModifiersFromSource ( stats.manaLoss );
+
+            stats.mana.RemoveAllModifiersFromSource ( stats.manaFill );
 
         }
         else
         {
 
-            stats.manaFill = new StatModifier ( amount , StatModType.Flat );
+            stats.manaFill = new StatModifier ( amount, StatModType.Flat );
             stats.mana.AddModifier ( stats.manaFill );
 
         }
@@ -427,60 +460,67 @@ public class Player : MonoBehaviour
     /// Player calculates defenses and how much damage is taken
     /// </summary>
     /// <param name="dmg"></param>
-    public void TakeDamage ( float dmg )
+    public void TakeDamage ( Object target, float dmg )
     {
-        float positiveDamage;
+        float calculatedDamage;
+        Color color;
 
-        if ( isBlocking )
+        if ( target == gameObject )
         {
-            //Varmaan joku defense muuttuja kilpeen ois hyvä tällä hetkellä taikanumeroKerroin pelaajan defenseen 2f
-            StartCoroutine ( flash.ColorFlash ( 0.5f, Color.yellow ) );
 
-            StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
-
-            positiveDamage = dmg - stats.armor.Value * 2f;
-
-            //alle 0 jos ottais vahinkoa niin parantuisin
-            if(positiveDamage < 0)
+            if ( isBlocking )
             {
-                positiveDamage = 0;      
+
+                StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
+
+                calculatedDamage = dmg - stats.armor.Value * 2f;
+
+                //alle 0 jos ottais vahinkoa niin parantuisin
+                if ( calculatedDamage < 0 )
+                {
+                    calculatedDamage = 0;
+                }
+
+                color = Color.yellow;
+                stats.healthLoss = new StatModifier ( -calculatedDamage, StatModType.Flat );
+                stats.health.AddModifier ( stats.healthLoss );
+
+                Debug.Log ( dmg - stats.armor.Value * 2f + " Damage taken " ); Debug.Log ( stats.armor.Value * 2f + " Damage blocked " );
+
+            }
+            else
+            {
+
+                StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
+
+                color = Color.red;
+                calculatedDamage = dmg - stats.armor.Value;
+
+                stats.healthLoss = new StatModifier ( -calculatedDamage, StatModType.Flat );
+                stats.health.AddModifier ( stats.healthLoss );
+
+                Debug.Log ( dmg - stats.armor.Value + " Damage Taken " );
+
             }
 
-            stats.healthLoss = new StatModifier ( -positiveDamage, StatModType.Flat );
-            stats.health.AddModifier ( stats.healthLoss );
+            if ( playerNotifyEvent != null )
+            {
+                playerNotifyEvent ( head.transform, calculatedDamage.ToString ( ), color );
+            }
+            if ( playerFlashEvent != null )
+            {
+                StartCoroutine ( playerFlashEvent ( gameObject, 0.2f, color, true ) );
+            }
+            if ( playerTakeDamageEvent != null )
+            {
+                playerTakeDamageEvent ( calculatedDamage );
+            }
 
-            //stats.health.BaseValue -= positiveDamage;
-
-            Debug.Log ( dmg - stats.armor.Value * 2f + " Damage taken " );  Debug.Log ( stats.armor.Value * 2f + " Damage blocked " );
-
-            textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
-            floatingText.SpawnText ( positiveDamage, textPosition , Color.gray );
-        }
-        else
-        {
-
-            StartCoroutine ( flash.ColorFlash ( 0.5f, Color.red ) );
-
-            StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
-       
-            positiveDamage = dmg - stats.armor.Value;
-
-            stats.healthLoss = new StatModifier ( -positiveDamage, StatModType.Flat );
-            stats.health.AddModifier ( stats.healthLoss );
-
-            //stats.health.BaseValue -= positiveDamage;
-
-            Debug.Log ( dmg - stats.armor.Value + " Damage Taken " );
-
-            textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
-            floatingText.SpawnText ( positiveDamage, textPosition  );
-            
-        }
-
-        //Kuolema
-        if ( stats.health.Value <= 0 )
-        {
-            Die ( );
+            //Kuolema
+            if ( stats.health.Value <= 0 )
+            {
+                Die ( );
+            }
         }
     }
 
@@ -488,35 +528,49 @@ public class Player : MonoBehaviour
     /// Päivittää healthpoolia
     /// </summary>
     /// <param name="value"></param>
-    public void HealthTrack(float value)
+    public void HealthTrack ( float value )
     {
-        healthPool.fillAmount = value * 0.01f;       
+        healthPool.fillAmount = value * 0.01f;
     }
 
     /// <summary>
     /// Päivittää manapoolia
     /// </summary>
     /// <param name="value"></param>
-    public void ManaTrack(float value)
+    public void ManaTrack ( float value )
     {
         manaPool.fillAmount = value * 0.01f;
     }
 
     /// <summary>
-    /// Displays message over players head
+    /// Levelup hetkellä tapahtuvat jutut
     /// </summary>
-    /// <param name="message"></param>
-    public void PlayerMessage( string message )
+    public void OnLevelUp ( )
     {
-        textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
-        floatingText.SpawnText ( message, textPosition, Color.blue );
+
+        //esim partikkeli efekti
+        //ääni
+
+        if ( playerNotifyEvent != null )
+        {
+            playerNotifyEvent ( head.transform, "Level Up " + stats.playerLevel.Value, Color.cyan );
+        }
+        if ( playerFlashEvent != null )
+        {
+            StartCoroutine ( playerFlashEvent ( gameObject, 0.5f, Color.cyan, true ) );
+        }
+
     }
 
     /// <summary>
-    /// Actions Taken on player death
+    /// Kuolllessa tapahtuvat jutut
     /// </summary>
     public void Die ( )
     {
+        if ( playerDeathEvent != null )
+        {
+            playerDeathEvent ( transform );
+        }
         Debug.Log ( "I'm Dead" );
     }
 
@@ -585,7 +639,7 @@ public class Player : MonoBehaviour
         }
 
         //tagin voisi muuttaa myös interactableWorldObject tai joksikin oviin ja näihin boxeihin, toisaalta jos avaimia ja muita tehdään niin varmaan olisi hyvä tietää mikä on kyseessä.
-        if(collision.gameObject.CompareTag("TreasureChest"))
+        if ( collision.gameObject.CompareTag ( "TreasureChest" ) )
         {
             isAir = false;
             isGrounded = true;
@@ -595,9 +649,9 @@ public class Player : MonoBehaviour
         if ( collision.gameObject.CompareTag ( "Wall" ) )
         {
 
-            isWallJump = true;      
+            isWallJump = true;
             StartCoroutine ( WallJumpRanOut ( ) );
-                     
+
         }
 
         //Enemyn päältä voi hypätä
@@ -611,7 +665,7 @@ public class Player : MonoBehaviour
         //Tämä voisi olla myös collision stayssa ehkä, jos on buginen niin siirtää sinne <antaa dashaa vihujen lävitse>
         if ( isDashing && collision.gameObject.CompareTag ( "Enemy" ) )
         {
-            Physics2D.IgnoreCollision ( gameObject.GetComponent<BoxCollider2D>() , collision.collider , true);
+            Physics2D.IgnoreCollision ( gameObject.GetComponent<BoxCollider2D> ( ), collision.collider, true );
         }
 
     }
@@ -638,40 +692,12 @@ public class Player : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionStay2D ( Collision2D collision )
     {
-        
-        if (  collision.gameObject.CompareTag ( "TreasureChest" )  && Input.GetButton ( "Interaction" ) )
+
+        if ( collision.gameObject.CompareTag ( "TreasureChest" ) && Input.GetButton ( "Interaction" ) )
         {
             collision.gameObject.SendMessage ( "Aukene" );
         }
     }
-
-    /// <summary>
-    /// Katsoo törmääkö loottiin
-    /// </summary>
-    /// <param name="other"></param>
-    //private void OnTriggerEnter2D ( Collider2D other )
-    //{
-
-    //    /*if ( other.gameObject.CompareTag ( "PickUp" ) && other.gameObject.GetComponent<Item> ( ).pickedUp == false )
-    //    {
-    //        other.gameObject.SetActive ( false );
-    //        invi.AddItemToInventory ( other.gameObject.GetComponent<Item> ( ).GetItem ( ) );
-    //    }*/
-    //    /*if ( other.gameObject.CompareTag ( "PickUp" ) && !other.gameObject.GetComponent<PickUpLoot> ( ).pickedUp )
-    //    {
-    //        //Ilmoittaa mitä lootattiin
-    //        textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
-    //        floatingText.SpawnText ( other.gameObject.GetComponent<PickUpLoot>().rLoot.itemName , textPosition, Color.cyan );
-
-    //        Debug.Log ( "Pickup" );
-    //        other.gameObject.GetComponent<PickUpLoot> ( ).pickedUp = true;
-    //        PlayerInventory.instance.AddItem ( other.GetComponent<PickUpLoot> ( ).rLoot, 1,true);
-    //        other.gameObject.SetActive ( false );
-
-    //    }*/
-
-    //}
-    
 
     #region Coroutines
     IEnumerator Attack ( )
@@ -708,8 +734,8 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds ( dashCooldown );
         readyToDash = true;
         //ilmoittaa että dash on valmis
-        textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
-        floatingText.SpawnText ( "Ready To Dash", textPosition, Color.cyan );
+        //textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
+        //floatingText.SpawnText ( "Ready To Dash", textPosition, Color.cyan );
     }
     #endregion
 

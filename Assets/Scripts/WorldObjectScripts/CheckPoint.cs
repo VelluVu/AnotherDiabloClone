@@ -18,6 +18,9 @@ public class CheckPoint : MonoBehaviour
     bool ableToInteractCheckPoint;
     GameObject [ ] enemySpawnPoints;
 
+    public delegate void CheckPointDelegate ( );
+    public static event CheckPointDelegate checkPointEvent;
+
     private void Awake ( )
     {
         enemySpawnPoints = GameObject.FindGameObjectsWithTag ( "EnemySpawn" );
@@ -46,6 +49,12 @@ public class CheckPoint : MonoBehaviour
 
         if (ableToInteractCheckPoint && Input.GetButtonDown ( "Interaction" ) )
         {
+
+            if(checkPointEvent != null)
+            {
+                checkPointEvent ( );
+            }
+
             foreach ( var spawn in enemySpawnPoints )
             {
                 if ( !spawn.GetComponent<EnemySpawn> ( ).isSpawn )
@@ -53,11 +62,13 @@ public class CheckPoint : MonoBehaviour
                     spawn.GetComponent<EnemySpawn> ( ).SpawnEnemy ( );
                 }
             }
+
             if ( player != null )
             {
                 player.HealHealth ( 0, true );
                 player.RestoreMana ( 0, true );
             }
+
             interactingCheckPoint = true;
             //checkPointMenu.SetActive ( true );
             Time.timeScale = 0;

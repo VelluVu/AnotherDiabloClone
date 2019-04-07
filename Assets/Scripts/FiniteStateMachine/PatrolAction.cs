@@ -33,12 +33,12 @@ public class PatrolAction : Action
             if ( controller.dirRight )
             {
 
-                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y );
+                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y );
             }
             else
             {
 
-                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed * -controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y );
+                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed.Value * -controller.moveSpeedScale * Time.deltaTime, controller.rb.velocity.y );
             }
         }
         else
@@ -47,14 +47,14 @@ public class PatrolAction : Action
             if ( controller.dirRight )
             {
 
-                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
+                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * Time.deltaTime, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
                 controller.StartCoroutine ( controller.TurnAfterTime ( controller.flyingPatrolDirectionTime, false ) );
 
             }
             else if ( !controller.dirRight )
             {
 
-                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed * -controller.moveSpeedScale * Time.deltaTime, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
+                controller.rb.velocity = new Vector2 ( controller.targetDir.x * controller.enemyStats.moveSpeed.Value * -controller.moveSpeedScale * Time.deltaTime, controller.amplitude * ( Mathf.Sin ( 1 - controller.frequency + Time.time ) * Time.deltaTime ) );
                 controller.StartCoroutine ( controller.TurnAfterTime ( controller.flyingPatrolDirectionTime, true ) );
 
             }

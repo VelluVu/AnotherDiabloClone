@@ -32,12 +32,12 @@ public class SearchDecision : Decision
                 if ( controller.dirRight )
                 {
                     controller.dirRight = false;
-                    controller.rb.velocity = Vector2.left * 4 * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime;
+                    controller.rb.velocity = Vector2.left * 4 * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * Time.deltaTime;
                 }
                 else if ( !controller.dirRight )
                 {
                     controller.dirRight = true;
-                    controller.rb.velocity = Vector2.right * 4 * controller.enemyStats.moveSpeed * controller.moveSpeedScale * Time.deltaTime;
+                    controller.rb.velocity = Vector2.right * 4 * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * Time.deltaTime;
                 }
                 controller.StartCoroutine ( controller.WaitTime ( 1f ) );
             }

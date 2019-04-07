@@ -114,6 +114,7 @@ MonoBehaviour:
   loot: {fileID: 0}
   rLoot: {fileID: 0}
   pickedUp: 0
+  Count: 1
 --- !u!61 &1271708765927182647
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -160,8 +161,9 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 
+  Rarity: 0
   itemLevel: 0
+  tags: 
   attributes: []
   equippable: 0
   consumable: 0
@@ -171,7 +173,7 @@ MonoBehaviour:
   damageMin: 0
   damageMax: 0
   armor: 3
-  armorSlot: 
+  armorSlot: 0
   potency: 0
   buyPrice: 0
   sellPrice: 0
@@ -570,7 +572,7 @@ GameObject:
   - component: {fileID: 5489798183227315902}
   - component: {fileID: 845099437654351430}
   - component: {fileID: 517971850406746423}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Image
   m_TagString: LootText
   m_Icon: {fileID: 0}
@@ -690,6 +692,7 @@ MonoBehaviour:
   verticalLayoutObject: {fileID: 3953873227799439297, guid: 09f181ef392b9c646bfb099447f67046,
     type: 3}
   lootTextCanvas: {fileID: 0}
+  group: {fileID: 0}
 --- !u!61 &517971850406746423
 BoxCollider2D:
   m_ObjectHideFlags: 0

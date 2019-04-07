@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PickUpLoot : MonoBehaviour
 {
+    public bool setItemLevelByPlayerLevel; // jos item leveli on asetettu leveli vai ei
     public Loot loot;
     public RolledLoot rLoot;
     public bool pickedUp = false;

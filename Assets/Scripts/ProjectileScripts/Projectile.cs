@@ -14,6 +14,9 @@ public class Projectile : MonoBehaviour
     public LayerMask playerLayer; //näit ei välttämättä tarvi ellei haluu jotain bounce juttuja ehkä?
     public LayerMask enemyLayer;
 
+    public delegate void ProjectileHitDelegate( Object target, float damage );
+    public static event ProjectileHitDelegate projectileHitEvent;
+
     Vector2 _velocity;
     public float _damage;
     bool collided;
@@ -24,6 +27,15 @@ public class Projectile : MonoBehaviour
     private void Awake ( )
     {
         rb = gameObject.GetComponent<Rigidbody2D> ( );
+
+        if(gameObject.CompareTag("Enemy"))
+        {
+            isPlayersProjectile = false;
+        }
+        if( gameObject.CompareTag("Player"))
+        {
+            isPlayersProjectile = true;
+        }
         if( isPlayersProjectile)
         {
             targetTag = "Enemy";
@@ -104,20 +116,25 @@ public class Projectile : MonoBehaviour
                 rb.isKinematic = true;
                 rb.simulated = false;
                 transform.SetParent ( collision.contacts [ 0 ].rigidbody.transform );
-                collision.transform.SendMessage ( "TakeDamage", _damage );
+                
 
             }
             else if ( _projectiletype == ProjectileType.MagicMissile )
             {
                 //Magic effect
                 //collision.rigidbody.AddForce (  , ForceMode2D.Impulse );
-                collision.transform.SendMessage ( "TakeDamage", _damage );
+                
                 Destroy ( gameObject );
             }
             else if ( _projectiletype == ProjectileType.Rock )
             {
                 //Kivi osuupelaajaan ei tartu pelaajaan
-                collision.transform.SendMessage ( "TakeDamage", _damage );
+                
+            }
+
+            if( projectileHitEvent != null)
+            {
+                projectileHitEvent ( collision.gameObject, _damage );
             }
 
         }

@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122999472}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.531, y: -0.546, z: 0}
+  m_LocalPosition: {x: 0.222, y: -0.546, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1643042880009106843}
@@ -42,10 +42,10 @@ BoxCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.045013472, y: 0.34167814}
+  m_Offset: {x: 0.10178086, y: 0.51849866}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -56,7 +56,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5093951, y: 0.71802664}
+  m_Size: {x: 0.8029838, y: 1.0716677}
   m_EdgeRadius: 0
 --- !u!114 &1122999474
 MonoBehaviour:
@@ -431,7 +431,6 @@ GameObject:
   - component: {fileID: 3375308404096916609}
   - component: {fileID: 2951910355810197899}
   - component: {fileID: 2951910355810197901}
-  - component: {fileID: 7105697184667014825}
   m_Layer: 12
   m_Name: Minotaur_Root
   m_TagString: Enemy
@@ -511,15 +510,12 @@ MonoBehaviour:
   flyingPatrolDirectionTime: 0
   eyes: {fileID: 1122999473}
   head: {fileID: 2770591779916734275}
-  floatingText: {fileID: 2701557179819223357, guid: bfb1c820644704d46a4ded9e64fde1a1,
-    type: 3}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 4096
   playerLayer:
     serializedVersion: 2
     m_Bits: 8192
-  flash: {fileID: 7105697184667014825}
   weaponLeft: {fileID: 0}
   weaponRight: {fileID: 0}
   chaseTarget: {fileID: 0}
@@ -533,6 +529,7 @@ MonoBehaviour:
   aiActive: 1
   attackRdy: 1
   hasTurn: 0
+  hasSplit: 0
 --- !u!114 &3375308404096916609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,6 +554,10 @@ MonoBehaviour:
   xpReward: 0
   chaseMultiplier: 3.4
   enemyType: 0
+  groundEnemyType: 0
+  flyingEnemyType: 0
+  bossEnemyType: 0
+  enemyVariations: 
 --- !u!50 &2951910355810197899
 Rigidbody2D:
   serializedVersion: 4
@@ -597,18 +598,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7105697184667014825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2951910355810197897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d5380269201b754f83ae9de557616e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3182558795360931544
 GameObject:
   m_ObjectHideFlags: 0

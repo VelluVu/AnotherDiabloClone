@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: BasicHelmet
+  m_EditorClassIdentifier: 
+  itemName: Helmet of Bronze
+  description: 'Protects the wearer when hit in head.
+
+'
+  itemID: 600
+  itemIcon: {fileID: 2800000, guid: ad44e5be20f123343a8466f1a2ff5a9d, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 3702217d234cd554881e06e417a1d8fd, type: 3}
+  lootSprite: {fileID: 21300000, guid: 3702217d234cd554881e06e417a1d8fd, type: 3}
+  Rarity: 0
+  itemLevel: 0
+  tags: 
+  attributes: []
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 0
+  damageMin: 0
+  damageMax: 0
+  armor: 0
+  armorSlot: 1
+  potency: 0
+  buyPrice: 0
+  sellPrice: 0

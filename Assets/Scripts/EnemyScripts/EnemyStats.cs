@@ -12,18 +12,22 @@ public class EnemyStats : MonoBehaviour
 
     public string myName = "Hirvitys";
 
-    public float moveSpeed;
-    public float jumpForce;
-    public float attackSpeed;
-    public float attackDamage;
-    public float health;
-    public float mana;
-    public float armor;
-
     public int xpReward;
 
+    public CharacterStat moveSpeed;
+    public CharacterStat jumpForce;
+    public CharacterStat attackSpeed;
+    public CharacterStat attackDamage;
+    public CharacterStat health;
+    public CharacterStat mana;
+    public CharacterStat armor;
+    public CharacterStat chaseMultiplier;
+
+    public StatModifier healthLoss;
+    public StatModifier healthFill;
+
     [Header ( "Kuinka nopeesti liikkuu jahdatessa pelaajaa" )]
-    public float chaseMultiplier;
+    
     public EnemyType enemyType;
     public GroundEnemyType groundEnemyType;
     public FlyingEnemyType flyingEnemyType;
@@ -33,13 +37,14 @@ public class EnemyStats : MonoBehaviour
     private void Awake ( )
     {
         myName = enemy._name;
-        moveSpeed = enemy._moveSpeed;
-        jumpForce = enemy._jumpForce;
-        attackSpeed = enemy._attackSpeed;
-        attackDamage = enemy._attackDamage;
-        health = enemy._health;
-        mana = enemy._mana;
-        armor = enemy._armor;
+        moveSpeed.BaseValue = enemy._moveSpeed;
+        chaseMultiplier.BaseValue = enemy._chaseMultiplier;
+        jumpForce.BaseValue = enemy._jumpForce;
+        attackSpeed.BaseValue = enemy._attackSpeed;
+        attackDamage.BaseValue = enemy._attackDamage;
+        health.BaseValue = enemy._health;
+        mana.BaseValue = enemy._mana;
+        armor.BaseValue = enemy._armor;
         xpReward = enemy._xpReward;
         enemyType = enemy._enemyType;
 

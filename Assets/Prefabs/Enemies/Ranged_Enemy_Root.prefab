@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 179047173}
   m_Layer: 12
   m_Name: Right_Weapon
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 582634661}
   m_Layer: 12
   m_Name: Left_Weapon
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -272,7 +272,6 @@ GameObject:
   - component: {fileID: 1772442517287954314}
   - component: {fileID: 2994367867294256741}
   - component: {fileID: 4572289657394412132}
-  - component: {fileID: 4608498246586991872}
   m_Layer: 12
   m_Name: Ranged_Enemy_Root
   m_TagString: Enemy
@@ -352,15 +351,12 @@ MonoBehaviour:
   flyingPatrolDirectionTime: 0
   eyes: {fileID: 8204483007419588562}
   head: {fileID: 6319583631003300824}
-  floatingText: {fileID: 2701557179819223357, guid: bfb1c820644704d46a4ded9e64fde1a1,
-    type: 3}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 4096
   playerLayer:
     serializedVersion: 2
     m_Bits: 8192
-  flash: {fileID: 4608498246586991872}
   weaponLeft: {fileID: 582634663}
   weaponRight: {fileID: 179047171}
   chaseTarget: {fileID: 0}
@@ -374,6 +370,7 @@ MonoBehaviour:
   aiActive: 1
   attackRdy: 1
   hasTurn: 0
+  hasSplit: 0
 --- !u!114 &1772442517287954314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,6 +395,10 @@ MonoBehaviour:
   xpReward: 0
   chaseMultiplier: 3.4
   enemyType: 0
+  groundEnemyType: 0
+  flyingEnemyType: 0
+  bossEnemyType: 0
+  enemyVariations: 
 --- !u!50 &2994367867294256741
 Rigidbody2D:
   serializedVersion: 4
@@ -438,18 +439,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4608498246586991872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 255067207205110632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d5380269201b754f83ae9de557616e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &403425267914869927
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +529,7 @@ GameObject:
   - component: {fileID: 8473249468196734646}
   m_Layer: 12
   m_Name: Right_Arm_Rotate
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -814,7 +803,7 @@ GameObject:
   - component: {fileID: 4891201547241347906}
   m_Layer: 12
   m_Name: Left_Arm_Rotate
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1782,7 +1771,7 @@ BoxCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.045013472, y: 0.34167814}

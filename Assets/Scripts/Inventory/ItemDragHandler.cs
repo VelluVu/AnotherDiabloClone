@@ -12,7 +12,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
     GameObject ToolTip;
     ToolTip TT; // tooltip
     public Transform movableObject;
-    public string key;
+    public ArmorSlot key;
     public Canvas sortCanvas;
     bool waitForEndDrag;
     EquipmentSlot ES; // check if changed
@@ -115,6 +115,10 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
                     ToolTip.SetActive(true);
                     TT.nameText.text = eSlot.item.itemName;
                     TT.descriptionText.text = eSlot.item.description;
+                    TT.icon.texture = eSlot.item.itemIcon;
+                    TT.rarity.color = PlayerInventory.instance.rarity[eSlot.item.Rarity];
+                    TT.itemRarityText.text = PlayerInventory.instance.rarityString[eSlot.item.Rarity];
+                    TT.itemTypeText.text = PlayerInventory.instance.typeDictionary[eSlot.item.armorSlot];
                     BuildMainText();
                     Debug.Log("FilledPointerEnter");
                 }
@@ -133,6 +137,10 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
                     ToolTip.SetActive(true);
                     TT.nameText.text = lSlot.item.itemName;
                     TT.descriptionText.text = lSlot.item.description;
+                    TT.icon.texture = lSlot.item.itemIcon;
+                    TT.rarity.color = PlayerInventory.instance.rarity[lSlot.item.Rarity];
+                    TT.itemRarityText.text = PlayerInventory.instance.rarityString[lSlot.item.Rarity];
+                    TT.itemTypeText.text = PlayerInventory.instance.typeDictionary[lSlot.item.armorSlot];
                     BuildMainText();
 
                 }
@@ -234,6 +242,11 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
         }
         if(eventData.button == PointerEventData.InputButton.Right && transform.parent.GetComponent<RolledLoot>().consumable) // consume item
         {
+            if (PlayerClass.instance.fullHealth && transform.parent.GetComponent<RolledLoot>().tags.Contains(Tags.HealingPotion))
+            {
+                Debug.LogWarning("Health is already full, can't use healing potion");
+                return;
+            }
             foreach(RollAttribute rAtt in transform.parent.GetComponent<RolledLoot>().attributes)
             {
                 rAtt.Consume();

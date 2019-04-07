@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using TMPro;
 
+
 public class LootSlot : MonoBehaviour
 {
 
@@ -123,7 +124,7 @@ public class LootSlot : MonoBehaviour
                         EquipItem(true);
                         return;
                     }
-                    else if (PlayerInventory.instance.equipmentConnect[i + 1].ES.isEmpty && PlayerInventory.instance.equipmentConnect[i].key == "Ring")
+                    else if (PlayerInventory.instance.equipmentConnect[i + 1].ES.isEmpty && PlayerInventory.instance.equipmentConnect[i].key == ArmorSlot.Ring)
                     {
                         
                         EquipItem(true);
@@ -167,7 +168,7 @@ public class LootSlot : MonoBehaviour
                                 emptySlot();
                                 return;
                             }
-                            else if(PlayerInventory.instance.equipmentConnect[i+1].ES.isEmpty &&  item.armorSlot == "Ring" && PlayerInventory.instance.equipmentConnect[i + 1].ES.SlotName == "Ring")
+                            else if(PlayerInventory.instance.equipmentConnect[i+1].ES.isEmpty &&  item.armorSlot == ArmorSlot.Ring && PlayerInventory.instance.equipmentConnect[i + 1].ES.armorSlot == ArmorSlot.Ring)
                             {
                                 RolledLoot tempLoot = PlayerInventory.instance.equipmentConnect[i+1].ES.EquipItem(item);
                                 item.transferLoot(tempLoot);
@@ -177,7 +178,7 @@ public class LootSlot : MonoBehaviour
                         }
                         else
                         {
-                            if(PlayerInventory.instance.equipmentConnect[i].key == "Ring")
+                            if(PlayerInventory.instance.equipmentConnect[i].key == ArmorSlot.Ring)
                             {
                                 if (PlayerInventory.instance.equipmentConnect[i].ES.isEmpty)
                                 {
@@ -195,7 +196,7 @@ public class LootSlot : MonoBehaviour
                                         UnequipItem();
                                     }
                                 }
-                                else if (PlayerInventory.instance.equipmentConnect[i + 1].ES.isEmpty && PlayerInventory.instance.equipmentConnect[i + 1].ES.SlotName == "Ring")
+                                else if (PlayerInventory.instance.equipmentConnect[i + 1].ES.isEmpty && PlayerInventory.instance.equipmentConnect[i + 1].ES.armorSlot ==ArmorSlot.Ring)
                                 {
                                     RolledLoot rempLoot = PlayerInventory.instance.equipmentConnect[i+1].ES.EquipItem(item);
                                     item.transferLoot(rempLoot);

@@ -19,6 +19,25 @@ public class LevelUp : MonoBehaviour
     [Header ( "STATPOINTS gained on level up" )]
     public float statPointGain;
 
+    public delegate void OnLevelUpDelegate ( );
+    public static event OnLevelUpDelegate levelUpEvent;
+
+    private void OnEnable ( )
+    {
+        StateController.enemyDeathEvent += GetEnemyDeathXpReward;
+    }
+
+    private void OnDisable ( )
+    {
+        StateController.enemyDeathEvent -= GetEnemyDeathXpReward;
+    }
+
+    public void GetEnemyDeathXpReward ( Transform enemyTransform , int xpReward )
+    {
+        GainXP ( xpReward, ReferenceHolder.instance.player.stats );
+        
+    }
+
     /// <summary>
     /// Lisää XPtä hahmolle!
     /// </summary>
@@ -48,18 +67,23 @@ public class LevelUp : MonoBehaviour
     /// <param name="playerClass"></param>
     public void GainLevel ( PlayerClass playerClass, int levelAmount )
     {
-
-        
+      
         playerClass.playerLevel.BaseValue += levelAmount;
         playerClass.statPoint.BaseValue += statPointGain;
         playerClass.health.BaseValue += playerClass.playerLevel.Value * playerClass.endurance.Value;
         playerClass.mana.BaseValue += playerClass.playerLevel.Value * playerClass.energy.Value;
-        gameObject.GetComponent<Player> ( ).PlayerMessage ( "Level " + playerClass.playerLevel.Value );
+        //gameObject.GetComponent<Player> ( ).PlayerMessage ( "Level " + playerClass.playerLevel.Value );
 
         //Lisätään vaan joka toinen level yks skillpojo
         if ( playerClass.playerLevel.Value % 2 == 0 )
         {
             playerClass.skillPoint.BaseValue += 1;
+        }
+
+        if ( levelUpEvent != null )
+        {
+            Debug.Log ( "Level Up" );
+            levelUpEvent ( );
         }
     }
 

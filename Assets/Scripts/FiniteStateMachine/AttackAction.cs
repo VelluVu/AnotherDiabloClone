@@ -25,13 +25,14 @@ public class AttackAction : Action
 
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
+            
             hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
 
             if ( hit.collider != false )
             {
                 if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance && controller.attackRdy )
                 {
-
+                    controller.rb.velocity = Vector2.zero;
                     controller.Attack ( );
 
                 }
@@ -39,6 +40,7 @@ public class AttackAction : Action
         }
         else
         {       
+
             hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
             Debug.DrawRay ( controller.eyes.position, controller.eyes.right * controller.spotDistance, Color.red );
             Debug.Log ( "Attack Ray HIT : " + hit.transform );
@@ -48,6 +50,7 @@ public class AttackAction : Action
                 //hit.distance on laaja niin tää on ehkä hölmö tapa testaa attackdistancee
                 if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance && controller.attackRdy )
                 {
+                    controller.rb.velocity = Vector2.zero;
 
                     controller.Attack ( );
 

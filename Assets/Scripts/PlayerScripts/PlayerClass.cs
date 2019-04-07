@@ -10,10 +10,10 @@ using TMPro;
 public class PlayerClass : MonoBehaviour
 {
 
-    
+    public static PlayerClass instance; // tekee tästä skriptin joka löytyy PlayerClass.instance
     [Header ("This List Includes all possible classes")]
     public List<PlayerStatsObject> classes = new List<PlayerStatsObject>();
-
+  
     public List<CharacterStat> listCharacterStats = new List<CharacterStat>();
     public string myName = "Jomppe";
     public string className = "Nephalem";
@@ -29,9 +29,13 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat baseAttackSpeed;
     public CharacterStat maxHealth;
     public CharacterStat health;
+    public CharacterStat maxMana;
     public CharacterStat mana;
     public CharacterStat stamina;
     public CharacterStat armor;
+
+    public CharacterStat criticalHitChance;
+    public CharacterStat criticalHitDamage;
     #region elemental resistances
     public CharacterStat fireResistance;
     public CharacterStat coldResistance;
@@ -63,11 +67,24 @@ public class PlayerClass : MonoBehaviour
     public TMP_Text leftSmallStatsText;
     public TMP_Text rightSmallStatsText;
     #endregion
+
+    #region bools
+    public bool fullHealth = false; // if health is full
+    public bool fullMana= false; // if mana is full
+    #endregion
     public int chosenClass = 0; //tää muuttuu sitten ku class selection ui on tehty
     public static bool isInitStats = false; //jos uusiHahmo asetetaan trueksi hahmon tehdessä ja tästä eteenpäin pitäisi olla false...
 
     private void Awake ( )
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(this);
+        }
         AddToList();
         isInitStats = true; //alustetaan vielä tässä vaiheessa ennen character selection UI:ta trueksi is initStats
         if ( isInitStats )
@@ -75,6 +92,10 @@ public class PlayerClass : MonoBehaviour
             isInitStats = false;
             InitializeHeroClass ( );
         }
+       
+    }
+    private void Start()
+    {
         checkForChanges();
     }
     public void checkForChanges()
@@ -92,12 +113,27 @@ public class PlayerClass : MonoBehaviour
     }
     public void checkHealth() // tarkistetaan että health ei ole suurempi kuin maxHealth;
     {
-        if (health.Value > maxHealth.Value)
+        if (health.Value >= maxHealth.Value)
         {
 
             health.AddModifier(new StatModifier(-(health.Value - maxHealth.Value), StatModType.Flat));
             checkForChanges();
+            fullHealth = true;
 
+        }
+        else
+        {
+            fullHealth = false;
+        }
+        if(mana.Value >= maxMana.Value)
+        {
+            mana.AddModifier(new StatModifier(-(mana.Value - maxMana.Value), StatModType.Flat));
+            checkForChanges();
+            fullMana = true;
+        }
+        else
+        {
+            fullHealth = false;
         }
     }
 
@@ -139,6 +175,11 @@ public class PlayerClass : MonoBehaviour
         stamina.BaseValue = classes [ chosenClass ]._stamina;
         armor.BaseValue = classes [ chosenClass ]._armor;
         maxHealth.BaseValue = classes[chosenClass]._maxHealth;
+        maxMana.BaseValue = classes[chosenClass]._maxMana;
+
+        criticalHitChance.BaseValue = classes[chosenClass]._criticalHitChance;
+        criticalHitDamage.BaseValue = classes[chosenClass]._criticalHitDamage;
+
 
         fireResistance.BaseValue = classes[chosenClass]._fireResistance;
         coldResistance.BaseValue = classes[chosenClass]._coldResistance;
@@ -150,16 +191,20 @@ public class PlayerClass : MonoBehaviour
         dexterity.BaseValue = classes [ chosenClass ]._dexterity;
         endurance.BaseValue = classes [ chosenClass ]._endurance;
         energy.BaseValue = classes [ chosenClass ]._energy;
+
+        
     }
 
     public void BuildSmallBoxStatsText()
     {
         leftSmallStatsText.text = "Strength: " + strength.Value.ToString() + "\nDexterity: " + dexterity.Value.ToString() 
             +"\nEndurance: "+endurance.Value.ToString() +"\nEnergy: "+ energy.Value.ToString();
-        rightSmallStatsText.text = "Armor: " + armor.Value.ToString() + "\nHealth: " +maxHealth.Value.ToString()+ "\nMana " + mana.Value.ToString()
+        rightSmallStatsText.text = "Armor: " + armor.Value.ToString() + "\nHealth: " +maxHealth.Value.ToString()+ "\nMana " + maxMana.Value.ToString()
             + "\nStamina: " + stamina.Value.ToString();
+        BigStatsBox.instance.BuildText();
+        
     }
-    public void AddToList() // tarkista että sama järjestys Attribute skriptin enumissa Stat
+    public void AddToList() // tarkista että sama järjestys joka on enumissa stat
     {
         listCharacterStats.Add(moveSpeed); // 0
         listCharacterStats.Add(jumpForce); // 1
@@ -180,6 +225,23 @@ public class PlayerClass : MonoBehaviour
         listCharacterStats.Add(energy);// 16
         listCharacterStats.Add(physicalResistance);//17
         listCharacterStats.Add(maxHealth); //18
+        listCharacterStats.Add(maxMana); //19
+        listCharacterStats.Add(criticalHitChance); //20
+        listCharacterStats.Add(criticalHitDamage); //21
+
 
     }
+
+}
+[SerializeField]
+public enum Stat // tarkista että on samassa järjesyksessä mikä addToList
+{
+    MoveSpeed, JumpForce, ExtraJumpForce, BaseDamage,
+    BaseAttackSpeed, Health, Mana, Stamina, Armor,
+    fireResistance, coldResistance, poisonResistance,
+    lightningResistance, Strength, Dexterity,
+    Endurance, Energy, physicalResistance, maxHealth, maxMana,
+    criticalHitChance,criticalHitDamage,
+
+
 }

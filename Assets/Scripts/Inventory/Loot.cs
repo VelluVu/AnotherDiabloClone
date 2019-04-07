@@ -14,11 +14,15 @@ public class Loot : ScriptableObject
     public Texture itemIcon; // itemin iconi
     public List<Sprite> equipmentSprites;
     public Sprite lootSprite; // sprite for the loot
-    public string Rarity; // item rarity
+    [SerializeField]
+    public Rarity Rarity; // item rarity
     public int itemLevel; // the level of the item
     #endregion
 
-
+    #region tags
+    [SerializeField]
+    public List<Tags> tags;
+    #endregion
     #region attributes
     public List<Attribute> attributes;
     #endregion
@@ -31,18 +35,14 @@ public class Loot : ScriptableObject
     public bool offHand;
     #endregion
 
-    #region weaponData
-    public float damageMin; // minimi damage mitä ase tekee
-    public float damageMax; // maksimi damage mitä ase tekee
-    #endregion
+   
 
     #region armorData
-    public float armor; // armorin määrä
-    public string armorSlot; // mihin slottiin tämä sopii
+    public ArmorSlot armorSlot; // mihin slottiin tämä sopii
     #endregion
 
     #region consumableData
-    public float potency; // consumablen vahvuus
+    public float consumablePotency; // consumablen vahvuus
     #endregion
 
     #region value
@@ -50,3 +50,4 @@ public class Loot : ScriptableObject
     public float sellPrice;
     #endregion
 }
+

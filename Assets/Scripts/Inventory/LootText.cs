@@ -8,7 +8,7 @@ public class LootText : MonoBehaviour
     public PickUpLoot pickLoot;
     public GameObject verticalLayoutObject;
     public Transform lootTextCanvas;
-    GameObject group;
+    public GameObject group;
     
 
     private void Awake()
@@ -19,22 +19,29 @@ public class LootText : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
+        
         if (collision.CompareTag("LootText"))
         {
-
+            
             if (group == null && collision.transform.parent.GetComponent<GridLayoutGroup>() == null)
             {
                 group = Instantiate<GameObject>(verticalLayoutObject, transform.position, Quaternion.identity);
                 group.transform.SetParent(lootTextCanvas);
                 transform.SetParent(group.transform);
-                Debug.Log("Instantiation!");
+                
             }
             if (transform.parent.childCount >= collision.transform.parent.childCount && transform.parent != collision.transform.parent)
             {
-                if (transform.parent.GetComponent<GridLayoutGroup>() != null)
+                if (group != null)
                 {
+                    
+                   
                     collision.transform.SetParent(group.transform);
 
+                }
+                else
+                {
+                    transform.SetParent(collision.transform.parent);
                 }
                 
             }
@@ -49,7 +56,9 @@ public class LootText : MonoBehaviour
         Debug.Log("Pickup");
         pickLoot.pickedUp = true;
         PlayerInventory.instance.AddItem(pickLoot.rLoot, pickLoot.Count, true);
-        pickLoot.gameObject.SetActive(false);
-        gameObject.SetActive(false);
+        //pickLoot.gameObject.SetActive(false);
+        Destroy(pickLoot.gameObject);
+        //gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

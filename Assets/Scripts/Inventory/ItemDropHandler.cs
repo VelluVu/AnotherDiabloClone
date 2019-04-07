@@ -21,7 +21,7 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                     
                     equipmentSlot = transform.parent.GetComponent<EquipmentSlot>();
                    
-                    if (droppedLoot.item.armorSlot != equipmentSlot.SlotName)
+                    if (droppedLoot.item.armorSlot != equipmentSlot.armorSlot)
                     {
 
                         return;
@@ -77,10 +77,8 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                             return;
                             
                         }
-                        else
-                        {
-
-                        }
+                        
+                        
                         RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
                         tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
                         int tempStackSize = transform.parent.GetComponent<LootSlot>().stackSize;
@@ -109,7 +107,7 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                 equipmentSlot = eventData.pointerDrag.transform.parent.GetComponent<EquipmentSlot>();
                 if (isEquipmentSlot) // equipment slot to equipment slot
                 {
-                    if (equipmentSlot.item.armorSlot != transform.parent.GetComponent<EquipmentSlot>().SlotName)
+                    if (equipmentSlot.item.armorSlot != transform.parent.GetComponent<EquipmentSlot>().armorSlot)
                     {
 
                         return;
@@ -133,14 +131,14 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                 {
                     if (!equipmentSlot.isEmpty)
                     {
-                        if (transform.parent.GetComponent<LootSlot>().item.armorSlot == equipmentSlot.SlotName || transform.parent.GetComponent<LootSlot>().isEmpty)
+                        if (transform.parent.GetComponent<LootSlot>().item.armorSlot == equipmentSlot.armorSlot || transform.parent.GetComponent<LootSlot>().isEmpty)
                         {
                             equipmentSlot.removeWeapons();
                             RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>();
                             tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
                             transform.parent.GetComponent<RolledLoot>().transferLoot(equipmentSlot.GetComponent<RolledLoot>());
                             equipmentSlot.GetComponent<RolledLoot>().transferLoot(tempLoot);
-
+                            transform.parent.GetComponent<LootSlot>().stackSize = 1;
                             if (transform.parent.GetComponent<LootSlot>().isEmpty)
                             {
                                 equipmentSlot.emptySlot();

@@ -14,13 +14,13 @@ public class RolledLoot : MonoBehaviour
     public Texture itemIcon; // itemin iconi
     public Sprite lootSprite;
     public List<Sprite> equipmentSprites;
-    public string Rarity; // item rarity
+    public Rarity Rarity; // item rarity
     public int itemLevel; // the level of the item
     #endregion
 
-
+    public List<Tags> tags;
     #region attributes
-    public List<RollAttribute> attributes;
+    public List<RollAttribute> attributes = new List<RollAttribute>();
     #endregion
 
     #region bools
@@ -31,18 +31,14 @@ public class RolledLoot : MonoBehaviour
     public bool offHand;
     #endregion
 
-    #region weaponData
-    public float damageMin; // minimi damage mitä ase tekee
-    public float damageMax; // maksimi damage mitä ase tekee
-    #endregion
+    
 
     #region armorData
-    public float armor; // armorin määrä
-    public string armorSlot; // mihin slottiin tämä sopii
+    public ArmorSlot armorSlot; // mihin slottiin tämä sopii
     #endregion
 
     #region consumableData
-    public float potency; // consumablen vahvuus
+    public float consumablePotency; // consumablen vahvuus
     #endregion
 
     #region value
@@ -50,6 +46,9 @@ public class RolledLoot : MonoBehaviour
     public float sellPrice;
     #endregion
 
+    #region Saving
+    public Loot originLoot;
+    #endregion
     //rollaa rollattavat muuttujat lootissa ja asettaa loput muuttujat
     public RolledLoot rollLoot (Loot loot)
     {
@@ -61,15 +60,9 @@ public class RolledLoot : MonoBehaviour
         this.equipmentSprites = loot.equipmentSprites;
         this.Rarity = loot.Rarity;
         this.itemLevel = loot.itemLevel;
-        int i = 0;
-        foreach(Attribute a in loot.attributes)
-        {
-            RollAttribute RA = gameObject.AddComponent<RollAttribute>();
-            attributes.Add(RA);
-            RA.rollAttribute(a);
-            Debug.Log(attributes[i]);
-            i++;
-        }
+        this.tags = loot.tags;
+      
+       
         // bools
         this.equippable = loot.equippable;
         this.consumable = loot.consumable;
@@ -77,13 +70,34 @@ public class RolledLoot : MonoBehaviour
         this.mainHand = loot.mainHand;
         this.offHand = loot.offHand;
 
-        this.damageMin = loot.damageMin;
-        this.damageMax = loot.damageMax;
-        this.armor = loot.armor;
+       
         this.armorSlot = loot.armorSlot;
-        this.potency = loot.potency;
+        this.consumablePotency = loot.consumablePotency;
         this.buyPrice = loot.buyPrice;
         this.sellPrice = loot.sellPrice;
+        this.originLoot = loot;
+        int i = 0;
+        foreach (Attribute a in loot.attributes)
+        {
+            RollAttribute RA = gameObject.AddComponent<RollAttribute>();
+            Debug.Log(attributes);
+            attributes.Add(RA);
+            RA.rollAttribute(a);
+            if (consumable)
+            {
+                RA.value = consumablePotency;
+            }
+            if (RA.RollValueByItemLevels)
+            {
+                RA.value = Random.Range(RA.value, RA.valueMax) * (1+itemLevel*0.2f);
+                RA.value2Min = Random.Range(RA.value2Min, RA.value2Max) * (1 + itemLevel * 0.2f);
+                RA.value = (int)RA.value;
+                RA.value2Min = (int)RA.value2Min ;
+            }
+          
+            Debug.Log(attributes[i]);
+            i++;
+        }
         return this;
     }
     // käytetään tiedonsiirton kun aseita equipataan tai siirettän eri inventoryslottiin
@@ -99,6 +113,7 @@ public class RolledLoot : MonoBehaviour
         this.Rarity = loot.Rarity;
         this.itemLevel = loot.itemLevel;
         this.attributes = loot.attributes;
+        this.tags = loot.tags;
         // bools
         this.equippable = loot.equippable;
         this.consumable = loot.consumable;
@@ -106,13 +121,12 @@ public class RolledLoot : MonoBehaviour
         this.mainHand = loot.mainHand;
         this.offHand = loot.offHand;
 
-        this.damageMin = loot.damageMin;
-        this.damageMax = loot.damageMax;
-        this.armor = loot.armor;
+        
         this.armorSlot = loot.armorSlot;
-        this.potency = loot.potency;
+        this.consumablePotency = loot.consumablePotency;
         this.buyPrice = loot.buyPrice;
         this.sellPrice = loot.sellPrice;
+        this.originLoot = loot.originLoot;
         return this;
       
         

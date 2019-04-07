@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Shooter
   _moveSpeed: 30
+  _chaseMultiplier: 1.2
   _jumpForce: 2
   _attackSpeed: 3
   _attackDamage: 10

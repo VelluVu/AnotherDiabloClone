@@ -5,31 +5,69 @@ using UnityEngine;
 public class ColorFlashScript : MonoBehaviour
 {
 
-    public IEnumerator ColorFlash ( float time, Color color )
+    private void OnEnable ( )
     {
+        Player.playerFlashEvent += ColorFlash;
+        StateController.enemyFlashEvent += ColorFlash;
+     }
 
+    private void OnDisable ( )
+    {
+        Player.playerFlashEvent -= ColorFlash;
+        StateController.enemyFlashEvent -= ColorFlash;
+    }
+
+    public IEnumerator ColorFlash ( GameObject source , float time, Color color, bool isFlashSpam )
+    {
         SpriteRenderer [ ] renderers;
-        renderers = gameObject.GetComponentsInChildren<SpriteRenderer> ( );
+        renderers = source.GetComponentsInChildren<SpriteRenderer> ( );
         //Color _color = renderers [ 0 ].color;
 
-        for ( int i = 0 ; i < renderers.Length ; i++ )
+        if ( !isFlashSpam )
         {
-            if ( renderers [ i ] != null )
+            for ( int i = 0 ; i < renderers.Length ; i++ )
             {
-                renderers [ i ].color = color;
+                if ( renderers [ i ] != null )
+                {
+                    renderers [ i ].color = color;
+                }
+            }
+
+            yield return new WaitForSeconds ( time );
+
+            for ( int i = 0 ; i < renderers.Length ; i++ )
+            {
+                if ( renderers [ i ] != null )
+                {
+                    renderers [ i ].color = Color.white;
+                }
+            }
+
+        }
+        else
+        {
+            for ( int t = 0 ; t < 5 ; t++ )
+            {
+                for ( int i = 0 ; i < renderers.Length ; i++ )
+                {
+                    if ( renderers [ i ] != null )
+                    {
+                        renderers [ i ].color = color;
+                    }
+                }
+
+                yield return new WaitForSeconds ( time * 0.10f );
+
+                for ( int i = 0 ; i < renderers.Length ; i++ )
+                {
+                    if ( renderers [ i ] != null )
+                    {
+                        renderers [ i ].color = Color.white;
+                    }
+                }
+                yield return new WaitForSeconds ( time * 0.10f );
             }
         }
-
-        yield return new WaitForSeconds ( time );
-
-        for ( int i = 0 ; i < renderers.Length ; i++ )
-        {
-            if ( renderers [ i ] != null )
-            {
-                renderers [ i ].color = Color.white;
-            }
-        }
-
     }
 
 }

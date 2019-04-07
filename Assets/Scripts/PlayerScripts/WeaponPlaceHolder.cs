@@ -17,8 +17,8 @@ public class WeaponPlaceHolder : MonoBehaviour
     public float _weaponDamage; //Aseen vahinko
     public float _weaponSpeed; //Aseen nopeus
     public bool isEquipped = false;
+    public WeaponType weaponType;
     bool hasHit;
-    public bool isShield;
 
     //for new equip
     public RolledLoot equippedWeapon;
@@ -29,7 +29,7 @@ public class WeaponPlaceHolder : MonoBehaviour
         _weaponSprite = gameObject.GetComponent<SpriteRenderer> ( );
         col = gameObject.GetComponent<BoxCollider2D> ( );
         sr = gameObject.GetComponent<SpriteRenderer> ( );
-       
+ 
     }
 
     public RolledLoot EquipWeapon(RolledLoot newWeapon)
@@ -125,34 +125,40 @@ public class WeaponPlaceHolder : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D ( Collision2D collision )
-    {
-        if ( collision.gameObject.CompareTag ( "Enemy" ) && !hasHit && !isShield )
-        {
-            hasHit = true;
-            Destroy ( Instantiate ( bloodSplash, collision.contacts[0].point, Quaternion.identity ), 2f );
-            Debug.Log ( gameObject.name );
-            gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject.GetComponent<StateController> ( ), _weaponDamage );
-            StartCoroutine ( HitReset ( ) );
+    //private void OnCollisionEnter2D ( Collision2D collision )
+    //{
+    //    if ( collision.gameObject.CompareTag ( "Enemy" ) )
+    //    {
+    //        if ( !hasHit && weaponType != WeaponType.Shield )
+    //        {
+    //            hasHit = true;
+    //            Destroy ( Instantiate ( bloodSplash, collision.contacts [ 0 ].point, Quaternion.identity ), 2f );
+    //            Debug.Log ( gameObject.name );
+    //            gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject.GetComponent<StateController> ( ), _weaponDamage );
+    //            col.enabled = false; // kun osuu ottaa colliderin pois
+    //            StartCoroutine ( HitReset ( ) );
+    //        }
+    //    }
+    //}
 
+    private void OnTriggerEnter2D ( Collider2D collision )
+    {
+        if ( collision.gameObject.CompareTag ( "Enemy" ) )
+        {
+            if ( !hasHit && weaponType != WeaponType.Shield )
+            {
+                
+                hasHit = true;
+                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
+                Debug.Log ( gameObject.name );
+                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject , _weaponDamage );
+                col.enabled = false; // kun osuu ottaa colliderin pois ettei iske kaikkialle
+                StartCoroutine ( HitReset ( ) );
+            }
         }
     }
 
-    /*private void OnTriggerEnter2D ( Collision2D collision )
-    {
-
-        if ( collision.gameObject.CompareTag ( "Enemy" ) && !hasHit && !isShield )
-        {
-            hasHit = true;
-            Destroy(Instantiate ( bloodSplash, collision.transform) , 2f);
-            Debug.Log ( gameObject.name );
-            gameObject.GetComponentInParent<Player> ( ).DealDamage ( collider.GetComponent<StateController> ( ), _weaponDamage );
-            StartCoroutine ( HitReset ( ) );
-
-        }
-    }*/
-   
-    IEnumerator HitReset()
+    IEnumerator HitReset ()
     {
         yield return new WaitForSeconds ( _weaponSpeed * gameObject.GetComponentInParent<PlayerClass>().baseAttackSpeed.Value );
         hasHit = false;

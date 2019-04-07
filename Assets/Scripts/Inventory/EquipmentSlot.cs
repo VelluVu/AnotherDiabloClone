@@ -12,7 +12,7 @@ public class EquipmentSlot : MonoBehaviour
     public bool isEmpty;
     public RawImage iconImage;
     public RawImage rarityImage;
-    public string SlotName;
+    public ArmorSlot armorSlot;
     TMPro.TMP_Text slotNameText;
     public List<WeaponPlaceHolder> hand = new List<WeaponPlaceHolder>();
     public List<SpriteRenderer> graphicsSpriteRenderers = new List<SpriteRenderer>();
@@ -74,11 +74,11 @@ public class EquipmentSlot : MonoBehaviour
     public void removeWeapons()
     {
         item.UnEquip();
-        if (SlotName == "WeaponMain")
+        if (armorSlot == ArmorSlot.Mainhand)
         {
             hand[0].UnEquipWeapon();
         }
-        if (SlotName == "WeaponOff")
+        if (armorSlot == ArmorSlot.Offhand)
         {
             hand[1].UnEquipWeapon();
         }
