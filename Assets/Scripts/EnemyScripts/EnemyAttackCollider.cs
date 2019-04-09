@@ -4,21 +4,13 @@ using UnityEngine;
 
 
 /// <summary>
-/// Käyttää tätä hyökkäys colliderina tällä hetkellä, mutta vihollisellekkin voisi laittaa weaponplaceholderin, mutta hämähäkillä pitäisi silloin olla se kans vaikkei asetta olisikaan.
+/// Käyttää tätä hyökkäys colliderina tällä hetkellä, mutta tietyille vihollisille voisi laittaa weaponplaceholder.
 /// </summary>
-public class EyesColliderScript : MonoBehaviour
+public class EnemyAttackCollider : MonoBehaviour
 {
 
     bool hasDealtDmg;
     public GameObject bloodSplash;
-
-    private void Update ( )
-    {
-        if ( gameObject.GetComponent<BoxCollider2D> ( ).isActiveAndEnabled )
-        {
-            hasDealtDmg = false;
-        }
-    }
 
     /// <summary>
     /// Osuuko collider pelaajaan ja onko tehnyt vahinkoa vielä, jos ei niin ilmoittaa statemachinelle käyttää dealdamage functiota
@@ -41,19 +33,17 @@ public class EyesColliderScript : MonoBehaviour
     //}
 
     ///Jos hirviöllä ei ole asetta
-    private void OnTriggerEnter2D ( Collider2D collision )
+    private void OnTriggerStay2D ( Collider2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "Player" ) )
+        if ( collision.gameObject.CompareTag ( "Player" ) && !hasDealtDmg )
         {
-            if ( !hasDealtDmg )
-            {
-                Debug.Log ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.name + " Hits you" );
-                hasDealtDmg = true;
-                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint( transform.position ), Quaternion.identity ), 2f );
-                gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject, 0 );
-                gameObject.GetComponent<Collider2D> ( ).enabled = false;
-                StartCoroutine ( DmgCooldown ( ) );
-            }
+
+            //Debug.Log ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.name + " Hits you" );
+            hasDealtDmg = true;
+            Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
+            gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject, 0 );
+            StartCoroutine ( DmgCooldown ( ) );
+
         }
     }
 

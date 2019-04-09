@@ -61,7 +61,7 @@ public class EquipmentSlot : MonoBehaviour
     }
     public void UnEquip()
     {
-        if (!isEmpty)
+        if (!isEmpty && !PlayerInventory.instance.IsLootSlotsFull())
         {
             PlayerInventory.instance.AddItem(item, 1,false);
             item.UnEquip();

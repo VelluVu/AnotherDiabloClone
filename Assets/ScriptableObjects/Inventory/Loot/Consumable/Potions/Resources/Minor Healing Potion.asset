@@ -22,15 +22,12 @@ MonoBehaviour:
   itemLevel: 0
   tags: 00000000
   attributes:
-  - {fileID: 11400000, guid: aa6a7baa969f4344693344a4601aff61, type: 2}
+  - {fileID: 11400000, guid: e7a6a5a4722204b479361c852fed773c, type: 2}
   equippable: 0
   consumable: 1
   stackable: 1
   mainHand: 0
   offHand: 0
-  damageMin: 0
-  damageMax: 0
-  armor: 0
   armorSlot: 13
   consumablePotency: 20
   buyPrice: 10

@@ -66,6 +66,15 @@ namespace Kryz.CharacterStats
 			}
 			return false;
 		}
+        public virtual void RemoveAllModifiers()
+        {
+
+
+            statModifiers.Clear();
+            isDirty = true;
+              
+           
+        }
 
 		protected virtual int CompareModifierOrder(StatModifier a, StatModifier b)
 		{

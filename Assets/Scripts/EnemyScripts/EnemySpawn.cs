@@ -12,6 +12,16 @@ public class EnemySpawn : MonoBehaviour
     GameObject spawnedEnemy;
     public bool isSpawn;
 
+    private void OnEnable ( )
+    {
+        CheckPoint.checkPointEvent += CheckPointCall;
+    }
+
+    private void OnDisable ( )
+    {
+        CheckPoint.checkPointEvent -= CheckPointCall;
+    }
+
     // Start is called before the first frame update
     void Start ( )
     {
@@ -20,15 +30,36 @@ public class EnemySpawn : MonoBehaviour
 
     private void Update ( )
     {
-        if(spawnedEnemy == null)
+        if ( spawnedEnemy == null )
         {
             isSpawn = false;
         }
     }
 
+    public void CheckPointCall()
+    {
+        SpawnEnemy ( );
+    }
+
     public void SpawnEnemy ( )
     {
-        spawnedEnemy = Instantiate ( enemies[Random.Range ( 0, enemies.Count )], transform );
-        isSpawn = true;
+       
+        if ( !isSpawn )
+        {
+            isSpawn = true;
+            spawnedEnemy = Instantiate ( enemies [ Random.Range ( 0, enemies.Count ) ], transform );
+        }
+        else
+        {
+            Destroy ( spawnedEnemy );
+            isSpawn = false;
+            SpawnEnemy ( );
+        }
+    }
+
+    private void OnDrawGizmos ( )
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere ( transform.position, 0.1f);
     }
 }

@@ -798,8 +798,6 @@ MonoBehaviour:
   head: {fileID: 3130571970728164858}
   rightHand: {fileID: 175132981}
   leftHand: {fileID: 808764570}
-  healthPool: {fileID: 0}
-  manaPool: {fileID: 0}
   feet: {fileID: 7607494358109977942}
   whatIsGround:
     serializedVersion: 2
@@ -809,7 +807,6 @@ MonoBehaviour:
     m_Bits: 4096
   main: {fileID: 0}
   off: {fileID: 0}
-  flash: {fileID: 0}
   isDashing: 0
   isDoubleJumpEnabled: 1
   isWallJumpEnabled: 1

@@ -78,7 +78,18 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                             
                         }
                         
-                        
+                        if(transform.parent.GetComponent<ConsumableSpot>() != null && !droppedLoot.item.consumable)
+                        {
+                            return;
+                        }
+                        else if(droppedLoot.item.consumable && !transform.parent.GetComponent<LootSlot>().isEmpty && droppedLoot.GetComponent<ConsumableSpot>() != null)
+                        {
+                            if (!transform.parent.GetComponent<LootSlot>().item.consumable)
+                            {
+                                return;
+                            }
+                            
+                        }
                         RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
                         tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
                         int tempStackSize = transform.parent.GetComponent<LootSlot>().stackSize;
@@ -97,8 +108,16 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                         {
                             droppedLoot.UnequipItem();
                         }
+                        
                         transform.parent.GetComponent<LootSlot>().UnequipItem();
+                        if (transform.parent.GetComponent<ConsumableSpot>() != null)
+                        {
+                            Debug.Log(transform.parent.GetChild(0).localPosition);
+                            Debug.Log(transform.parent.GetChild(0).position);
+                            transform.parent.GetChild(0).localPosition = new Vector3(0, 27) ;
+                        }
                         Destroy(tempLoot);
+                        
                     }
                 }
             }

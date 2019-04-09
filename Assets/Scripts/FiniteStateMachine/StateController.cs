@@ -19,6 +19,7 @@ public class StateController : MonoBehaviour
     [Header ( "EnemyStats Class" )]
     public EnemyStats enemyStats;
 
+    //Jos näissä haluaa saada selville tietyn vihollisen niin lisätään Transform/GameObject parametri
     #region Enemy Delegates
     public delegate void EnemyNotifyDelegate ( Transform transform, string message, Color color);
     public static event EnemyNotifyDelegate enemyNotifyEvent;
@@ -26,7 +27,7 @@ public class StateController : MonoBehaviour
     public delegate void EnemyTakeDamageDelegate ( float damage );
     public static event EnemyTakeDamageDelegate enemyTakeDamageEvent;
 
-    public delegate void EnemyDealDamageDelegate ( Object target, float damage );
+    public delegate void EnemyDealDamageDelegate ( GameObject target, float damage );
     public static event EnemyDealDamageDelegate enemyDealDamageEvent;
 
     public delegate void EnemyDeathDelegate ( Transform transform, int xp );
@@ -34,6 +35,12 @@ public class StateController : MonoBehaviour
 
     public delegate IEnumerator EnemyFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
     public static event EnemyFlashDelegate enemyFlashEvent;
+
+    public delegate void EnemyHealHealthDelegate ( float amount );
+    public static event EnemyHealHealthDelegate enemyHealHealthEvent;
+
+    public delegate void EnemyRestoreManaDelegate ( float amount );
+    public static event EnemyRestoreManaDelegate enemyRestoreManaEvent;
     #endregion
 
     #region Public Variables
@@ -99,11 +106,13 @@ public class StateController : MonoBehaviour
     private void OnEnable ( )
     {
         Player.playerDealDamageEvent += TakeDamage;
+        enemyTakeDamageEvent += OnEnemyTakeDamage;
     }
 
     private void OnDisable ( )
     {
         Player.playerDealDamageEvent -= TakeDamage;
+        enemyTakeDamageEvent -= OnEnemyTakeDamage;
     }
 
     private void Update ( )
@@ -133,7 +142,6 @@ public class StateController : MonoBehaviour
     {
         if ( dirRight )
         {
-
             transform.eulerAngles = rightDirection;
         }
         else if ( !dirRight )
@@ -227,16 +235,36 @@ public class StateController : MonoBehaviour
     /// Perus hyökkäys animaatio
     /// </summary>
     public void Attack ( )
-    {
-        Debug.Log ( enemyStats.name + " ATTACK" );
+    {       
         if ( attackRdy )
-        {
-            attackRdy = false;
+        {       
+            attackRdy = false;            
             rb.AddForce ( new Vector2 ( rb.velocity.x * 2, 2 ) * attackJump, ForceMode2D.Impulse );
-            animator.SetTrigger ( "Attack" );
             eyes.GetComponent<BoxCollider2D> ( ).enabled = true;
-            StartCoroutine ( AttackHitBoxDuration ( ) );
+            animator.SetTrigger ( "Attack" );         
             StartCoroutine ( AttackCooldown ( ) );
+        }
+    }
+
+    public void OnEnemyHeal( float amount)
+    {
+
+        enemyStats.RestoreEnemyHealth ( amount );
+
+        if( enemyHealHealthEvent != null)
+        {
+            enemyHealHealthEvent ( amount );
+        }
+    }
+
+    public void OnEnemyRestoreMana(float amount)
+    {
+
+        enemyStats.RestoreEnemyMana ( amount );
+
+        if(enemyRestoreManaEvent != null)
+        {
+            enemyRestoreManaEvent ( amount );
         }
     }
 
@@ -244,12 +272,12 @@ public class StateController : MonoBehaviour
     /// Tekee vahinkoa pelaajaan
     /// </summary>
     /// <param name="player"></param>
-    public void DealDamage ( Object target, float weaponDamage )
+    public void DealDamage ( GameObject target, float weaponDamage )
     {
         if ( target != null )
         {
             float calculatedDamage = enemyStats.attackDamage.Value + weaponDamage;
-
+            
             if ( enemyDealDamageEvent != null )
             {
                 enemyDealDamageEvent ( target, calculatedDamage );
@@ -270,8 +298,7 @@ public class StateController : MonoBehaviour
 
             float calculatedDamage = dmg - enemyStats.armor.Value;
 
-            enemyStats.healthLoss = new StatModifier ( -calculatedDamage, StatModType.Flat );
-            enemyStats.health.AddModifier ( enemyStats.healthLoss );
+            enemyStats.health.BaseValue -= calculatedDamage;
 
             if ( enemyNotifyEvent != null )
             {
@@ -280,7 +307,7 @@ public class StateController : MonoBehaviour
 
             if ( enemyFlashEvent != null )
             {
-                StartCoroutine ( enemyFlashEvent ( gameObject, 0.2f, color, true ) );
+                StartCoroutine ( enemyFlashEvent ( gameObject, 0.1f, color, true ) );
             }
 
             if ( enemyTakeDamageEvent != null )
@@ -329,17 +356,39 @@ public class StateController : MonoBehaviour
         
     }
 
+    public void OnEnemyTakeDamage( float damage)
+    {
+        Collider2D [ ] cols = Physics2D.OverlapCircleAll ( transform.position, 3f, playerLayer);      
+        Debug.Log ( gameObject.name +  " Hoksaa : Toinen vihu pulassa" );
+        for ( int i = 0 ; i < cols.Length ; i++ )
+        {
+            if(cols[i].gameObject.CompareTag("Player"))
+            {
+                Debug.Log ( cols[i].name + " Lähellä" );
+                chaseTarget = cols [ i ].gameObject.transform;
+                break;
+            }
+        }
+    }
+
+    private void OnDrawGizmos ( )
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere ( transform.position, 3f );
+    }
+
     #region Coroutines
     IEnumerator AttackCooldown ( )
     {
         yield return new WaitForSeconds ( enemyStats.attackSpeed.Value );
         attackRdy = true;
+        eyes.GetComponent<BoxCollider2D> ( ).enabled = false;
     }
 
     IEnumerator AttackHitBoxDuration ( )
     {
         yield return new WaitForSeconds ( enemyStats.attackSpeed.Value );
-        //eyes.GetComponent<BoxCollider2D> ( ).enabled = false;
+        eyes.GetComponent<BoxCollider2D> ( ).enabled = false;
 
     }
 

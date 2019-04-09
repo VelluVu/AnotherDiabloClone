@@ -6,6 +6,7 @@ using Kryz.CharacterStats;
 public class RollAttribute : MonoBehaviour
 {
 
+    public RolledLoot rolledLoot;
     public bool RollValueByItemLevels;
     public bool isBaseValue;
     public string attributeName;
@@ -68,8 +69,19 @@ public class RollAttribute : MonoBehaviour
     }
     public void Consume()
     {
-        characterStat.AddModifier(statModifier);
-        PC.checkForChanges();
+        if (rolledLoot.tags.Contains(Tags.HealingPotion))
+        {
+            //FindObjectOfType<Player>().OnRestoreHealth(0, true);
+            FindObjectOfType<Player>().OnRestoreHealth(value, false);
+        }
+        else if (rolledLoot.tags.Contains(Tags.ManaPotion))
+        {
+            FindObjectOfType<Player>().OnRestoreMana(value, false);
+        }
+       
+
+        //characterStat.AddModifier(statModifier);
+        //PC.checkForChanges();
     }
     public void EndConsume()
     {

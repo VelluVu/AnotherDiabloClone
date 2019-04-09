@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b84ea76521396d499fa12772145d438, type: 3}
   m_Name: Energy
   m_EditorClassIdentifier: 
+  rollValueByItemLevels: 1
   attributeName: Energy
   isBaseValue: 0
   stat: 16
   primary: 1
   value: 30
+  valueMax: 40
+  value2Min: 0
+  value2Max: 0
   statModType: 100
   characterStat:
     BaseValue: 0
     isDirty: 1
     lastBaseValue: 0
     _value: 0
-  PC: {fileID: 0}

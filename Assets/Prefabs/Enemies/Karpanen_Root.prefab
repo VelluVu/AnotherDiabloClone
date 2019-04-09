@@ -52,13 +52,12 @@ MonoBehaviour:
   enemyStats: {fileID: 3064845586492581640}
   attackJump: 0
   moveSpeedScale: 1.5
-  attackDistance: 0.75
+  attackDistance: 0.5
   searchDuration: 6
   spotDistance: 5
   sightDistance: 5
   stateTimeElapsed: 0
   radius: 1.1
-  floatingTextPosition: 0.3
   enemyDamageAreaDuration: 0.1
   amplitude: 100
   frequency: 0.5
@@ -99,15 +98,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: 31ad250bfe6f26648ab9c9b025738124, type: 2}
   myName: Hirvitys
-  moveSpeed: 0
-  jumpForce: 0
-  attackSpeed: 0
-  attackDamage: 0
-  health: 0
-  mana: 0
-  armor: 0
   xpReward: 0
-  chaseMultiplier: 2.5
+  moveSpeed:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  jumpForce:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  attackSpeed:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  attackDamage:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  maxHealth:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  health:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  maxMana:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  mana:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  armor:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  chaseMultiplier:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
   enemyType: 0
   groundEnemyType: 0
   flyingEnemyType: 0
@@ -271,7 +312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6024451483602743703}
   m_Layer: 12
-  m_Name: head
+  m_Name: Karpanen_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -302,8 +343,8 @@ GameObject:
   - component: {fileID: 7521639376812417443}
   - component: {fileID: 2942159223861381516}
   - component: {fileID: 3145583515979912420}
-  m_Layer: 12
-  m_Name: LedgeCheck
+  m_Layer: 2
+  m_Name: Karpanen_Eyes
   m_TagString: Eyes
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -336,7 +377,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.10674243, y: -0.103948}
+  m_Offset: {x: 0.13636586, y: -0.103948}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -347,7 +388,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.46196184, y: 1.0797689}
+  m_Size: {x: 0.40271497, y: 1.0797689}
   m_EdgeRadius: 0
 --- !u!114 &3145583515979912420
 MonoBehaviour:

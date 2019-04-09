@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4327373591739379204}
   m_Layer: 12
-  m_Name: head
+  m_Name: Spider_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,13 +183,12 @@ MonoBehaviour:
   enemyStats: {fileID: 468686282486943469}
   attackJump: 100
   moveSpeedScale: 1.5
-  attackDistance: 0.75
+  attackDistance: 0.5
   searchDuration: 6
   spotDistance: 4
   sightDistance: 5
   stateTimeElapsed: 0
   radius: 1.1
-  floatingTextPosition: 0.3
   enemyDamageAreaDuration: 0.1
   amplitude: 0
   frequency: 0
@@ -230,15 +229,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: d517951da5ec82846baa6f405d46de0f, type: 2}
   myName: Hirvitys
-  moveSpeed: 0
-  jumpForce: 0
-  attackSpeed: 0
-  attackDamage: 0
-  health: 0
-  mana: 0
-  armor: 0
   xpReward: 0
-  chaseMultiplier: 2.5
+  moveSpeed:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  jumpForce:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  attackSpeed:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  attackDamage:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  maxHealth:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  health:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  maxMana:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  mana:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  armor:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  chaseMultiplier:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
   enemyType: 0
   groundEnemyType: 6
   flyingEnemyType: 0
@@ -302,8 +343,8 @@ GameObject:
   - component: {fileID: 2672909280130531670}
   - component: {fileID: 4252917733827531450}
   - component: {fileID: 4207720142387538182}
-  m_Layer: 12
-  m_Name: LedgeCheck
+  m_Layer: 2
+  m_Name: Spider_Eyes
   m_TagString: Eyes
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -330,13 +371,13 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5637736323494378898}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0733525, y: -0.001821518}
+  m_Offset: {x: 0.10294922, y: -0.03990388}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -347,7 +388,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.39518198, y: 0.44857597}
+  m_Size: {x: 0.33598855, y: 0.6432209}
   m_EdgeRadius: 0
 --- !u!114 &4207720142387538182
 MonoBehaviour:

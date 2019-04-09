@@ -2,21 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// Vihollisen AsePaikka
+/// </summary>
 public class EnemyWeaponHolder : MonoBehaviour
 {
 
-    public Transform rotatingPoint;
-    public Transform launchPosition;
+    #region Necessary Components
     SpriteRenderer weaponGraphic;
     BoxCollider2D weaponCollider;
+    #endregion
+
+    #region Ranged
     public GameObject projectile;
+    public Transform rotatingPoint;
+    public Transform launchPosition;
+    #endregion
+
+    #region Melee Effects
+    public GameObject bloodSplash;
+    #endregion
+
+    #region Weapon
+    public float _weaponDamage;
+    #endregion
+
+    #region Bools
     bool isShootCDrdy = true;
     bool isTargetLocked;
+    bool hasHit;
+    #endregion
 
+    #region Enums Types
     public WeaponType weaponType;
     public DamageType damageType;
     public ProjectileType projectileType;
+    #endregion
 
     //Näihin otetaan talteen itemeistä tulleet muuttujat , esim. varsijousessa force riittää ampuun kauemmas
     public float _damage, _force, _weaponSpeed;
@@ -88,11 +109,11 @@ public class EnemyWeaponHolder : MonoBehaviour
             {
                 if ( hit.distance <= ( range * 0.5f ) )
                 {
-                    Debug.Log ( "hitDistance" + hit.distance );
+                    //Debug.Log ( "hitDistance" + hit.distance );
 
-                    Debug.Log ( "Etäisyys " + range * 0.5f );
+                    //Debug.Log ( "Etäisyys " + range * 0.5f );
 
-                    Debug.Log ( "kohde lähellä" );
+                    //Debug.Log ( "kohde lähellä" );
 
                     calculatedVelocity = new Vector2 ( Mathf.Cos ( angle * 0.3f ) * velocity, Mathf.Sin ( angle * 0.3f ) * velocity );
 
@@ -103,9 +124,9 @@ public class EnemyWeaponHolder : MonoBehaviour
                 else
                 {
 
-                    Debug.Log ( "Etäisyys " + range );
+                    //Debug.Log ( "Etäisyys " + range );
 
-                    Debug.Log ( "kohde kaukana" );
+                    //Debug.Log ( "kohde kaukana" );
 
                     isTargetLocked = true;
 
@@ -115,6 +136,29 @@ public class EnemyWeaponHolder : MonoBehaviour
         }
 
         return calculatedVelocity;
+    }
+
+    private void OnTriggerEnter2D ( Collider2D collision )
+    {
+        if ( collision.gameObject.CompareTag ( "Enemy" ) )
+        {
+            if ( !hasHit && (weaponType != WeaponType.Shield || weaponType != WeaponType.RangedWeapon || weaponType != WeaponType.TwoHandedRangedWeapon))
+            {
+
+                hasHit = true;
+                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
+                Debug.Log ( gameObject.name );
+                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject, _weaponDamage );
+                //col.enabled = false; // kun osuu ottaa colliderin pois ettei iske kaikkialle
+                StartCoroutine ( HitReset ( ) );
+            }
+        }
+    }
+
+    IEnumerator HitReset ( )
+    {
+        yield return new WaitForSeconds ( _weaponSpeed * gameObject.GetComponentInParent<PlayerClass> ( ).baseAttackSpeed.Value );
+        hasHit = false;
     }
 
     IEnumerator ShootCD ( float speed )

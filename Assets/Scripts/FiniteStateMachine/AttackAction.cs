@@ -22,12 +22,13 @@ public class AttackAction : Action
     {
 
         RaycastHit2D hit;
+        RaycastHit2D hitDown;
 
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
             
             hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
-
+           
             if ( hit.collider != false )
             {
                 if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance && controller.attackRdy )
@@ -42,18 +43,22 @@ public class AttackAction : Action
         {       
 
             hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
-            Debug.DrawRay ( controller.eyes.position, controller.eyes.right * controller.spotDistance, Color.red );
-            Debug.Log ( "Attack Ray HIT : " + hit.transform );
+            hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, -controller.eyes.up, controller.attackDistance, controller.playerLayer );
 
             if ( hit.collider != false )
-            {
-                //hit.distance on laaja niin tää on ehkä hölmö tapa testaa attackdistancee
+            {         
                 if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance && controller.attackRdy )
                 {
                     controller.rb.velocity = Vector2.zero;
-
                     controller.Attack ( );
-
+                }
+            }
+            if ( hitDown.collider != false )
+            {
+                if ( hitDown.collider.gameObject.CompareTag ( "Player" ) && hitDown.distance <= controller.attackDistance && controller.attackRdy )
+                {
+                    controller.rb.velocity = Vector2.zero;
+                    controller.Attack ( );
                 }
             }
         }

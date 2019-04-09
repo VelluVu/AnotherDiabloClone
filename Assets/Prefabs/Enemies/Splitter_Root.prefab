@@ -52,13 +52,12 @@ MonoBehaviour:
   enemyStats: {fileID: 5089975428950247703}
   attackJump: 100
   moveSpeedScale: 1.5
-  attackDistance: 0.75
+  attackDistance: 0.5
   searchDuration: 6
   spotDistance: 4
   sightDistance: 5
   stateTimeElapsed: 0
   radius: 1.1
-  floatingTextPosition: 0.3
   enemyDamageAreaDuration: 0.1
   amplitude: 0
   frequency: 0
@@ -99,15 +98,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: b47290fd1156d1d42bb2c7afd50f1ecf, type: 2}
   myName: Hirvitys
-  moveSpeed: 0
-  jumpForce: 0
-  attackSpeed: 0
-  attackDamage: 0
-  health: 0
-  mana: 0
-  armor: 0
   xpReward: 0
-  chaseMultiplier: 2.5
+  moveSpeed:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  jumpForce:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  attackSpeed:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  attackDamage:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  maxHealth:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  health:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  maxMana:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  mana:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  armor:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  chaseMultiplier:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
   enemyType: 0
   groundEnemyType: 5
   flyingEnemyType: 0
@@ -302,7 +343,7 @@ GameObject:
   - component: {fileID: 8683477143438971183}
   - component: {fileID: 8683477143438971181}
   - component: {fileID: 8683477143438971182}
-  m_Layer: 12
+  m_Layer: 2
   m_Name: Splitter_Eyes
   m_TagString: Eyes
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
@@ -330,13 +371,13 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8683477143438971152}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.073982045, y: -0.015898466}
+  m_Offset: {x: 0.103578776, y: -0.015898466}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -347,7 +388,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.39644107, y: 0.42042208}
+  m_Size: {x: 0.3372476, y: 0.42042208}
   m_EdgeRadius: 0
 --- !u!114 &8683477143438971182
 MonoBehaviour:

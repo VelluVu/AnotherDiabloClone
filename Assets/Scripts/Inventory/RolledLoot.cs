@@ -83,6 +83,7 @@ public class RolledLoot : MonoBehaviour
             Debug.Log(attributes);
             attributes.Add(RA);
             RA.rollAttribute(a);
+            RA.rolledLoot = this;
             if (consumable)
             {
                 RA.value = consumablePotency;
@@ -94,6 +95,13 @@ public class RolledLoot : MonoBehaviour
                 RA.value = (int)RA.value;
                 RA.value2Min = (int)RA.value2Min ;
             }
+            /*else
+            {
+                RA.value = Random.Range(RA.value, RA.valueMax);
+                RA.value2Min = Random.Range(RA.value2Min, RA.value2Max);
+                RA.value = (int)RA.value;
+                RA.value2Min = (int)RA.value2Min;
+            }*/
           
             Debug.Log(attributes[i]);
             i++;

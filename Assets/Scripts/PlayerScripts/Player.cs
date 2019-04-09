@@ -30,6 +30,15 @@ public class Player : MonoBehaviour
     public delegate void PlayerNotifyDelecate ( Transform transform, string message, Color color );
     public static event PlayerNotifyDelecate playerNotifyEvent;
 
+    public delegate void PlayerHealHealthDelegate ( float amount, bool restoreAll );
+    public static event PlayerHealHealthDelegate playerHealHealthEvent;
+
+    public delegate void PlayerRestoreManaDelegate ( float amount, bool restoreAll );
+    public static event PlayerRestoreManaDelegate playerRestoreManaEvent;
+
+    public delegate void PlayerUseManaDelegate ( float amount );
+    public static event PlayerUseManaDelegate playerUseManaEvent;
+
     #endregion
 
     #region GameObjects
@@ -42,10 +51,6 @@ public class Player : MonoBehaviour
     #region EssentialComponents
     [HideInInspector] Animator heroAnim;
     [HideInInspector] Rigidbody2D playerRB;
-    [HideInInspector] CameraControl camShaking;
-    [Header ( "Health and Mana UI" )]
-    public Image healthPool;
-    public Image manaPool;
     [HideInInspector] public Transform feet;
     [HideInInspector] public LayerMask whatIsGround;
     [HideInInspector] public LayerMask enemyLayer;
@@ -54,6 +59,8 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Booleans
+    //Väliaikainen spellcd
+    bool isSpellRdy = true;
     bool isWallJump = false;
     bool isBlocking = false;
     bool isAir = false;
@@ -79,9 +86,6 @@ public class Player : MonoBehaviour
     public float wallJumpPushBack;
     public float jumpTime;
     public float groundCheckRadius;
-    [Header ( "CameraShake Variables" )]
-    public float radius;
-    public float magnitude;
     #endregion
 
     #region Extra Variables
@@ -99,13 +103,11 @@ public class Player : MonoBehaviour
 
     private void Awake ( )
     {
-
-
         DontDestroyOnLoad ( this );
 
-
         ToolTip = FindObjectOfType<ToolTip> ( ).gameObject;
-
+        main = rightHand.GetComponent<WeaponPlaceHolder> ( );
+        off = leftHand.GetComponent<WeaponPlaceHolder> ( );
     }
 
     //Eventtien subscribausta varten
@@ -125,7 +127,6 @@ public class Player : MonoBehaviour
 
     private void Start ( )
     {
-        camShaking = Camera.main.GetComponent<CameraControl> ( );
         playerRB = gameObject.GetComponent<Rigidbody2D> ( );
         heroAnim = gameObject.GetComponent<Animator> ( );
         rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponSpeed = stats.baseAttackSpeed.Value;
@@ -143,6 +144,7 @@ public class Player : MonoBehaviour
         OpenInventory ( );
         PlayerBasicAttack ( );
         PlayerBasicBlock ( );
+        CastSpell ( );
 
         if ( !isBlocking )
         {
@@ -160,9 +162,6 @@ public class Player : MonoBehaviour
             Dash ( );
         }
 
-        HealthTrack ( stats.health.Value );
-        //Debug.Log ( stats.health.Value * 0.01f );
-        ManaTrack ( stats.mana.Value );
     }
 
     /// <summary>
@@ -380,13 +379,73 @@ public class Player : MonoBehaviour
     /// </summary>
     void PlayerBasicAttack ( )
     {
+
         if ( Input.GetMouseButtonDown ( 0 ) && !isBlocking && isAttackRdy )
         {
-            isAttackRdy = false;
-            heroAnim.SetTrigger ( "Attack" );
-            rightHand.GetComponent<BoxCollider2D> ( ).enabled = true;
-            StartCoroutine ( Attack ( ) );
-            StartCoroutine ( AttackCD ( ) );
+            if ( main.weaponType == WeaponType.MeleeWeapon || main.weaponType == WeaponType.TwoHandedMeleeWeapon )
+            {
+                isAttackRdy = false;
+                heroAnim.SetTrigger ( "Attack" );
+                rightHand.GetComponent<BoxCollider2D> ( ).enabled = true;
+                StartCoroutine ( Attack ( ) );
+                StartCoroutine ( AttackCD ( ) );
+
+            }
+            if ( main.weaponType == WeaponType.RangedWeapon || main.weaponType == WeaponType.TwoHandedRangedWeapon )
+            {
+                // Ampuminen hiiren suuntaan
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// Inputit ActionBaareille
+    /// </summary>
+    void CastSpell ( )
+    {
+        // Testailua varten
+        if ( Input.GetButton ( "ActionBar1" ) && stats.mana.Value >= 0.1f )
+        {
+            //ChannelSpell
+            //Tee taika            
+            OnManaUse ( 0.1f );
+        }
+        else if ( Input.GetButton ( "ActionBar2" ) )
+        {
+            if ( isSpellRdy && stats.mana.Value >= 10f )
+            {
+                isSpellRdy = false;
+                OnManaUse ( 10f );
+                StartCoroutine ( SpellCooldown ( 1f ) );
+            }
+        }
+        else if ( Input.GetButton ( "ActionBar3" ) )
+        {
+            if ( isSpellRdy && stats.mana.Value >= 15f )
+            {
+                isSpellRdy = false;
+                OnManaUse ( 15f );
+                StartCoroutine ( SpellCooldown ( 2f ) );
+            }
+        }
+        else if ( Input.GetButton ( "ActionBar4" ) )
+        {
+            if ( isSpellRdy && stats.mana.Value >= 50f )
+            {
+                isSpellRdy = false;
+                OnManaUse ( 50f );
+                StartCoroutine ( SpellCooldown ( 5f ) );
+            }
+        }
+        else if ( Input.GetButton ( "ActionBar5" ) )
+        {
+            if ( isSpellRdy && stats.mana.Value >= 100f )
+            {
+                isSpellRdy = false;
+                OnManaUse ( 100f );
+                StartCoroutine ( SpellCooldown ( 8f ) );
+            }
         }
     }
 
@@ -400,7 +459,7 @@ public class Player : MonoBehaviour
         if ( target != null )
         {
             float calculatedDamage = weaponPower + stats.baseDamage.Value;
-             
+
             if ( playerDealDamageEvent != null )
             {
                 playerDealDamageEvent ( target, calculatedDamage );
@@ -412,22 +471,31 @@ public class Player : MonoBehaviour
     /// Lisää pelaajalle hp
     /// </summary>
     /// <param name="amount"></param>
-    public void HealHealth ( float amount, bool max )
+    public void OnRestoreHealth ( float amount, bool restoreAll )
     {
-        if ( max )
+
+        if ( playerFlashEvent != null )
         {
+            StartCoroutine ( playerFlashEvent ( gameObject, 0.3f, Color.green, false ) );
+        }
 
-            stats.health.RemoveAllModifiersFromSource ( stats.healthLoss );
+        if ( playerNotifyEvent != null )
+        {
+            playerNotifyEvent ( head.transform, amount.ToString ( ), Color.green );
+        }
 
-            stats.health.RemoveAllModifiersFromSource ( stats.healthFill );
-
+        if ( restoreAll )
+        {
+            stats.FullyRestoreHealth ( );
         }
         else
         {
+            stats.RestoreHealth ( amount );
+        }
 
-            stats.healthFill = new StatModifier ( amount, StatModType.Flat );
-            stats.health.AddModifier ( stats.healthFill );
-
+        if ( playerHealHealthEvent != null )
+        {
+            playerHealHealthEvent ( amount, restoreAll );
         }
     }
 
@@ -435,24 +503,45 @@ public class Player : MonoBehaviour
     /// Lisää pelaajalle hp
     /// </summary>
     /// <param name="amount"></param>
-    public void RestoreMana ( float amount, bool max )
+    public void OnRestoreMana ( float amount, bool restoreAll )
     {
-        if ( max )
+
+        if ( playerFlashEvent != null )
         {
+            StartCoroutine ( playerFlashEvent ( gameObject, 0.3f, Color.blue, false ) );
+        }
 
-            //Asettaa healtit maximiin          
+        if ( playerNotifyEvent != null )
+        {
+            playerNotifyEvent ( head.transform, amount.ToString ( ), Color.blue );
+        }
 
-            stats.mana.RemoveAllModifiersFromSource ( stats.manaLoss );
-
-            stats.mana.RemoveAllModifiersFromSource ( stats.manaFill );
-
+        if ( restoreAll )
+        {
+            stats.FullyRestoreMana ( );
         }
         else
         {
+            stats.RestoreMana ( amount );
+        }
 
-            stats.manaFill = new StatModifier ( amount, StatModType.Flat );
-            stats.mana.AddModifier ( stats.manaFill );
+        if ( playerRestoreManaEvent != null )
+        {
+            playerRestoreManaEvent ( amount, restoreAll );
+        }
+    }
 
+    /// <summary>
+    /// Käyttää manaa taikoihin, voi aiheuttaa myös muita vaikutuksia
+    /// </summary>
+    /// <param name="amount"></param>
+    public void OnManaUse ( float amount )
+    {
+        stats.mana.BaseValue -= amount;
+
+        if ( playerUseManaEvent != null )
+        {
+            playerUseManaEvent ( amount );
         }
     }
 
@@ -460,86 +549,55 @@ public class Player : MonoBehaviour
     /// Player calculates defenses and how much damage is taken
     /// </summary>
     /// <param name="dmg"></param>
-    public void TakeDamage ( Object target, float dmg )
+    public void TakeDamage ( GameObject target, float dmg )
     {
         float calculatedDamage;
         Color color;
 
-        if ( target == gameObject )
+        if ( isBlocking )
         {
 
-            if ( isBlocking )
+            calculatedDamage = dmg - stats.armor.Value /*Tähän pitäis saada vielä shield defense*/;
+
+            //Ei saa mennä negatiiviseksi
+            if ( calculatedDamage < 0 )
             {
-
-                StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
-
-                calculatedDamage = dmg - stats.armor.Value * 2f;
-
-                //alle 0 jos ottais vahinkoa niin parantuisin
-                if ( calculatedDamage < 0 )
-                {
-                    calculatedDamage = 0;
-                }
-
-                color = Color.yellow;
-                stats.healthLoss = new StatModifier ( -calculatedDamage, StatModType.Flat );
-                stats.health.AddModifier ( stats.healthLoss );
-
-                Debug.Log ( dmg - stats.armor.Value * 2f + " Damage taken " ); Debug.Log ( stats.armor.Value * 2f + " Damage blocked " );
-
-            }
-            else
-            {
-
-                StartCoroutine ( camShaking.Shake ( radius, magnitude ) );
-
-                color = Color.red;
-                calculatedDamage = dmg - stats.armor.Value;
-
-                stats.healthLoss = new StatModifier ( -calculatedDamage, StatModType.Flat );
-                stats.health.AddModifier ( stats.healthLoss );
-
-                Debug.Log ( dmg - stats.armor.Value + " Damage Taken " );
-
+                calculatedDamage = 0;
             }
 
-            if ( playerNotifyEvent != null )
-            {
-                playerNotifyEvent ( head.transform, calculatedDamage.ToString ( ), color );
-            }
-            if ( playerFlashEvent != null )
-            {
-                StartCoroutine ( playerFlashEvent ( gameObject, 0.2f, color, true ) );
-            }
-            if ( playerTakeDamageEvent != null )
-            {
-                playerTakeDamageEvent ( calculatedDamage );
-            }
+            color = Color.yellow;
+            stats.health.BaseValue -= calculatedDamage;
 
-            //Kuolema
-            if ( stats.health.Value <= 0 )
-            {
-                Die ( );
-            }
         }
-    }
+        else
+        {
 
-    /// <summary>
-    /// Päivittää healthpoolia
-    /// </summary>
-    /// <param name="value"></param>
-    public void HealthTrack ( float value )
-    {
-        healthPool.fillAmount = value * 0.01f;
-    }
+            color = Color.red;
+            calculatedDamage = dmg - stats.armor.Value;
 
-    /// <summary>
-    /// Päivittää manapoolia
-    /// </summary>
-    /// <param name="value"></param>
-    public void ManaTrack ( float value )
-    {
-        manaPool.fillAmount = value * 0.01f;
+            stats.health.BaseValue -= calculatedDamage;
+
+        }
+
+        if ( playerNotifyEvent != null )
+        {
+            playerNotifyEvent ( head.transform, calculatedDamage.ToString ( ), color );
+        }
+        if ( playerFlashEvent != null )
+        {
+            StartCoroutine ( playerFlashEvent ( gameObject, 0.1f, color, true ) );
+        }
+        if ( playerTakeDamageEvent != null )
+        {
+            playerTakeDamageEvent ( calculatedDamage );
+        }
+
+        //Kuolema
+        if ( stats.health.Value <= 0 )
+        {
+            Die ( );
+        }
+
     }
 
     /// <summary>
@@ -550,6 +608,8 @@ public class Player : MonoBehaviour
 
         //esim partikkeli efekti
         //ääni
+        OnRestoreHealth ( stats.maxHealth.Value, true );
+        OnRestoreMana ( stats.maxHealth.Value, true );
 
         if ( playerNotifyEvent != null )
         {
@@ -736,6 +796,12 @@ public class Player : MonoBehaviour
         //ilmoittaa että dash on valmis
         //textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
         //floatingText.SpawnText ( "Ready To Dash", textPosition, Color.cyan );
+    }
+
+    IEnumerator SpellCooldown ( float cd )
+    {
+        yield return new WaitForSeconds ( cd );
+        isSpellRdy = true;
     }
     #endregion
 

@@ -8,21 +8,37 @@ using UnityEngine;
 public class WeaponPlaceHolder : MonoBehaviour
 {
 
+    public string _weaponName; //aseen nimi
+
+    public Item _currentWeapon = null;
+
+    #region Necessary Components
     BoxCollider2D col;
     SpriteRenderer sr;
-    public Item _currentWeapon = null;
-    public GameObject bloodSplash;
-    public string _weaponName; //aseen nimi
     public SpriteRenderer _weaponSprite;  //Aseen grafiikka
-    public float _weaponDamage; //Aseen vahinko
-    public float _weaponSpeed; //Aseen nopeus
-    public bool isEquipped = false;
-    public WeaponType weaponType;
-    bool hasHit;
-
     //for new equip
     public RolledLoot equippedWeapon;
-    
+    #endregion
+
+    #region MeleeEffects
+    public GameObject bloodSplash;
+    #endregion
+
+    #region Weapon Stats
+    public float _weaponDamage; //Aseen vahinko
+    public float _weaponSpeed; //Aseen nopeus
+    #endregion
+
+    #region Bools
+    bool hasHit;
+    public bool isEquipped = false;
+    #endregion
+
+    #region Enum Types
+    public WeaponType weaponType;
+    public DamageType damageType;
+    public ProjectileType projectileType;
+    #endregion
 
     private void Start ( )
     {
@@ -149,10 +165,8 @@ public class WeaponPlaceHolder : MonoBehaviour
             {
                 
                 hasHit = true;
-                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
-                Debug.Log ( gameObject.name );
+                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );              
                 gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject , _weaponDamage );
-                col.enabled = false; // kun osuu ottaa colliderin pois ettei iske kaikkialle
                 StartCoroutine ( HitReset ( ) );
             }
         }

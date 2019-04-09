@@ -11,7 +11,21 @@ public class CameraControl : MonoBehaviour {
     bool isShaking;
     public float smoothTime = 0.3F;
     Vector3 velocity = Vector3.zero;
-    
+
+    [Header ( "CameraShake Variables" )]
+    public float _duration;
+    public float _magnitude;
+
+    private void OnEnable ( )
+    {
+        Player.playerTakeDamageEvent += ShakeOnImpact;
+    }
+
+    private void OnDisable ( )
+    {
+        Player.playerTakeDamageEvent -= ShakeOnImpact;
+    }
+
     private void LateUpdate ( )
     {
         if ( !isShaking )
@@ -21,6 +35,11 @@ public class CameraControl : MonoBehaviour {
             transform.position = Vector3.SmoothDamp ( transform.position, targetPosition, ref velocity, smoothTime );
 
         }
+    }
+
+    public void ShakeOnImpact( float damage)
+    {
+        StartCoroutine ( Shake ( _duration, _magnitude ) );
     }
 
     public IEnumerator Shake ( float duration, float magnitude )

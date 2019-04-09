@@ -344,7 +344,6 @@ MonoBehaviour:
   sightDistance: 8
   stateTimeElapsed: 0
   radius: 1.1
-  floatingTextPosition: 0.3
   enemyDamageAreaDuration: 0.1
   amplitude: 0
   frequency: 0
@@ -385,15 +384,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: cfc7ad895720cf3409d512a4a49580fc, type: 2}
   myName: Hirvitys
-  moveSpeed: 0
-  jumpForce: 0
-  attackSpeed: 0
-  attackDamage: 0
-  health: 0
-  mana: 0
-  armor: 0
   xpReward: 0
-  chaseMultiplier: 3.4
+  moveSpeed:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  jumpForce:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  attackSpeed:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  attackDamage:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  health:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  mana:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  armor:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  chaseMultiplier:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
   enemyType: 0
   groundEnemyType: 0
   flyingEnemyType: 0
@@ -1740,7 +1771,7 @@ GameObject:
   - component: {fileID: 8204483007419588562}
   - component: {fileID: 3082740186406278318}
   - component: {fileID: 4698180176508017025}
-  m_Layer: 12
+  m_Layer: 2
   m_Name: Minotaur_Eyes
   m_TagString: Eyes
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}

@@ -53,6 +53,11 @@ public class LootText : MonoBehaviour
     }
     public void GainLoot()
     {
+        if (PlayerInventory.instance.IsLootSlotsFull())
+        {
+            Debug.LogWarning("Inventory Full");
+            return;
+        }
         Debug.Log("Pickup");
         pickLoot.pickedUp = true;
         PlayerInventory.instance.AddItem(pickLoot.rLoot, pickLoot.Count, true);

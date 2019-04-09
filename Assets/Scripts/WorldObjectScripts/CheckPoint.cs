@@ -12,19 +12,13 @@ using UnityEngine;
 /// </summary>
 public class CheckPoint : MonoBehaviour
 {
-    Player player;
+   
     public GameObject checkPointMenu;
     bool interactingCheckPoint;
     bool ableToInteractCheckPoint;
-    GameObject [ ] enemySpawnPoints;
 
-    public delegate void CheckPointDelegate ( );
+    public delegate void CheckPointDelegate (  );
     public static event CheckPointDelegate checkPointEvent;
-
-    private void Awake ( )
-    {
-        enemySpawnPoints = GameObject.FindGameObjectsWithTag ( "EnemySpawn" );
-    }
 
     private void OnTriggerEnter2D ( Collider2D collision )
     {
@@ -32,7 +26,7 @@ public class CheckPoint : MonoBehaviour
         if ( collision.gameObject.CompareTag("Player")  && !interactingCheckPoint )
         {
             ableToInteractCheckPoint = true;
-            player = GameObject.FindGameObjectWithTag ( "Player" ).GetComponent<Player>();
+            
         }
     }
 
@@ -52,32 +46,18 @@ public class CheckPoint : MonoBehaviour
 
             if(checkPointEvent != null)
             {
-                checkPointEvent ( );
+                checkPointEvent (  );
             }
-
-            foreach ( var spawn in enemySpawnPoints )
-            {
-                if ( !spawn.GetComponent<EnemySpawn> ( ).isSpawn )
-                {
-                    spawn.GetComponent<EnemySpawn> ( ).SpawnEnemy ( );
-                }
-            }
-
-            if ( player != null )
-            {
-                player.HealHealth ( 0, true );
-                player.RestoreMana ( 0, true );
-            }
-
+        
             interactingCheckPoint = true;
-            //checkPointMenu.SetActive ( true );
+            
             Time.timeScale = 0;
         }
 
         if ( Input.GetButtonDown ( "Cancel" ) && interactingCheckPoint)
         {
             interactingCheckPoint = false;
-            //checkPointMenu.SetActive ( false );
+           
             Time.timeScale = 1;
         }
     }

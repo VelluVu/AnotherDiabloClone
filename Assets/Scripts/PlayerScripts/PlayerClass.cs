@@ -11,13 +11,14 @@ public class PlayerClass : MonoBehaviour
 {
 
     public static PlayerClass instance; // tekee tästä skriptin joka löytyy PlayerClass.instance
-    [Header ("This List Includes all possible classes")]
-    public List<PlayerStatsObject> classes = new List<PlayerStatsObject>();
-  
-    public List<CharacterStat> listCharacterStats = new List<CharacterStat>();
+    [Header ( "This List Includes all possible classes" )]
+    public List<PlayerStatsObject> classes = new List<PlayerStatsObject> ( );
+
+    public List<CharacterStat> listCharacterStats = new List<CharacterStat> ( );
     public string myName = "Jomppe";
     public string className = "Nephalem";
     public ClassType classType;
+
     #region MovementStats
     public CharacterStat moveSpeed;
     public CharacterStat jumpForce;
@@ -62,7 +63,12 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat skillPoint;
     public CharacterStat playerLevel;
     #endregion
-    
+
+    #region Delegaatit
+    public delegate void PassiveManaRegenDelegate ( float amount );
+    public static event PassiveManaRegenDelegate passiveManaRegenEvent;
+    #endregion
+
     #region displayStats
     public TMP_Text leftSmallStatsText;
     public TMP_Text rightSmallStatsText;
@@ -70,88 +76,155 @@ public class PlayerClass : MonoBehaviour
 
     #region bools
     public bool fullHealth = false; // if health is full
-    public bool fullMana= false; // if mana is full
-    #endregion
+    public bool fullMana = false; // if mana is full 
     public int chosenClass = 0; //tää muuttuu sitten ku class selection ui on tehty
     public static bool isInitStats = false; //jos uusiHahmo asetetaan trueksi hahmon tehdessä ja tästä eteenpäin pitäisi olla false...
+    #endregion
 
     private void Awake ( )
     {
-        if (instance == null)
+        if ( instance == null )
         {
             instance = this;
         }
-        else if (instance != this)
+        else if ( instance != this )
         {
-            Destroy(this);
+            Destroy ( this );
         }
-        AddToList();
+        AddToList ( );
         isInitStats = true; //alustetaan vielä tässä vaiheessa ennen character selection UI:ta trueksi is initStats
         if ( isInitStats )
         {
             isInitStats = false;
             InitializeHeroClass ( );
         }
-       
+
     }
-    private void Start()
+
+    private void Start ( )
     {
-        checkForChanges();
+        checkForChanges ( );
     }
-    public void checkForChanges()
+
+    private void OnEnable ( )
     {
-        foreach (CharacterStat cStat in listCharacterStats)
+        CheckPoint.checkPointEvent += PlayerEnterCheckPoint;
+    }
+
+    private void OnDisable ( )
+    {
+        CheckPoint.checkPointEvent -= PlayerEnterCheckPoint;
+    }
+
+    public void checkForChanges ( )
+    {
+        foreach ( CharacterStat cStat in listCharacterStats )
         {
             float randomFloat = cStat.Value;
         }
-        BuildSmallBoxStatsText();
+        BuildSmallBoxStatsText ( );
     }
-    private void Update()
+
+    private void Update ( )
+    {
+        checkHealth ( );
+        PassiveManaRegen ( );
+    }
+
+    public void checkHealth ( ) // tarkistetaan että health ei ole suurempi kuin maxHealth;
     {
 
-        checkHealth();
-    }
-    public void checkHealth() // tarkistetaan että health ei ole suurempi kuin maxHealth;
-    {
-        if (health.Value >= maxHealth.Value)
+        if ( health.Value >= maxHealth.Value )
         {
 
-            health.AddModifier(new StatModifier(-(health.Value - maxHealth.Value), StatModType.Flat));
-            checkForChanges();
+            //health.AddModifier(new StatModifier(-(health.Value - maxHealth.Value), StatModType.Flat));
+
+            health.RemoveAllModifiers ( );
+            health.BaseValue = maxHealth.Value;
             fullHealth = true;
+            Debug.Log ( health.Value );
+
 
         }
         else
         {
             fullHealth = false;
         }
-        if(mana.Value >= maxMana.Value)
+        if ( mana.Value >= maxMana.Value )
         {
-            mana.AddModifier(new StatModifier(-(mana.Value - maxMana.Value), StatModType.Flat));
-            checkForChanges();
+            //mana.AddModifier(new StatModifier(-(mana.Value - maxMana.Value), StatModType.Flat));
+            mana.BaseValue = maxMana.Value;
+            mana.RemoveAllModifiers ( );
+
             fullMana = true;
         }
         else
         {
-            fullHealth = false;
+            fullMana = false;
         }
+    }
+
+    public void PassiveManaRegen()
+    {
+        mana.BaseValue += maxMana.Value * 0.01f * Time.deltaTime;
+
+        if(passiveManaRegenEvent != null)
+        {
+            passiveManaRegenEvent ( maxMana.Value * 0.01f * Time.deltaTime );
+        }
+    }
+
+    public void PlayerEnterCheckPoint ( )
+    {
+        FullyRestoreHealthAndMana ( );
+    }
+
+    public void FullyRestoreHealthAndMana ( )
+    {
+        FullyRestoreHealth ( );
+        FullyRestoreMana ( );
+        
+    }
+
+    public void FullyRestoreHealth ( )
+    {
+        health.RemoveAllModifiersFromSource ( healthLoss );
+        health.RemoveAllModifiersFromSource ( healthFill );
+        health.BaseValue = maxHealth.Value;
+    }
+
+    public void FullyRestoreMana ( )
+    {
+        mana.RemoveAllModifiersFromSource ( manaLoss );
+        mana.RemoveAllModifiersFromSource ( manaFill );
+        mana.BaseValue = maxMana.BaseValue;
+    }
+
+    public void RestoreHealth ( float amount )
+    {
+        health.BaseValue += amount;
+    }
+
+    public void RestoreMana ( float amount )
+    {
+        mana.BaseValue += amount;
     }
 
     /// <summary>
     /// Resetoi statit takas valitun classin mukaisiksi
     /// </summary>
-    public void ResetStats()
+    public void ResetStats ( )
     {
-       
+
         InitializeHeroClass ( );
-        
+
     }
 
     /// <summary>
     /// Asettaa valitun classin indexin muuttujaan chosenClass
     /// </summary>
     /// <param name="chosenClass"></param>
-    public void ChosenClass( int chosenClass)
+    public void ChosenClass ( int chosenClass )
     {
         this.chosenClass = chosenClass;
     }
@@ -174,60 +247,60 @@ public class PlayerClass : MonoBehaviour
         mana.BaseValue = classes [ chosenClass ]._mana;
         stamina.BaseValue = classes [ chosenClass ]._stamina;
         armor.BaseValue = classes [ chosenClass ]._armor;
-        maxHealth.BaseValue = classes[chosenClass]._maxHealth;
-        maxMana.BaseValue = classes[chosenClass]._maxMana;
+        maxHealth.BaseValue = classes [ chosenClass ]._maxHealth;
+        maxMana.BaseValue = classes [ chosenClass ]._maxMana;
 
-        criticalHitChance.BaseValue = classes[chosenClass]._criticalHitChance;
-        criticalHitDamage.BaseValue = classes[chosenClass]._criticalHitDamage;
+        criticalHitChance.BaseValue = classes [ chosenClass ]._criticalHitChance;
+        criticalHitDamage.BaseValue = classes [ chosenClass ]._criticalHitDamage;
 
 
-        fireResistance.BaseValue = classes[chosenClass]._fireResistance;
-        coldResistance.BaseValue = classes[chosenClass]._coldResistance;
-        poisonResistance.BaseValue = classes[chosenClass]._poisonResistance;
-        lightningResistance.BaseValue = classes[chosenClass]._lightningResistance;
-        physicalResistance.BaseValue = classes[chosenClass]._physicalResistance;
+        fireResistance.BaseValue = classes [ chosenClass ]._fireResistance;
+        coldResistance.BaseValue = classes [ chosenClass ]._coldResistance;
+        poisonResistance.BaseValue = classes [ chosenClass ]._poisonResistance;
+        lightningResistance.BaseValue = classes [ chosenClass ]._lightningResistance;
+        physicalResistance.BaseValue = classes [ chosenClass ]._physicalResistance;
 
         strength.BaseValue = classes [ chosenClass ]._strength;
         dexterity.BaseValue = classes [ chosenClass ]._dexterity;
         endurance.BaseValue = classes [ chosenClass ]._endurance;
         energy.BaseValue = classes [ chosenClass ]._energy;
 
-        
+
     }
 
-    public void BuildSmallBoxStatsText()
+    public void BuildSmallBoxStatsText ( )
     {
-        leftSmallStatsText.text = "Strength: " + strength.Value.ToString() + "\nDexterity: " + dexterity.Value.ToString() 
-            +"\nEndurance: "+endurance.Value.ToString() +"\nEnergy: "+ energy.Value.ToString();
-        rightSmallStatsText.text = "Armor: " + armor.Value.ToString() + "\nHealth: " +maxHealth.Value.ToString()+ "\nMana " + maxMana.Value.ToString()
-            + "\nStamina: " + stamina.Value.ToString();
-        BigStatsBox.instance.BuildText();
-        
+        leftSmallStatsText.text = "Strength: " + strength.Value.ToString ( ) + "\nDexterity: " + dexterity.Value.ToString ( )
+            + "\nEndurance: " + endurance.Value.ToString ( ) + "\nEnergy: " + energy.Value.ToString ( );
+        rightSmallStatsText.text = "Armor: " + armor.Value.ToString ( ) + "\nHealth: " + maxHealth.Value.ToString ( ) + "\nMana " + maxMana.Value.ToString ( )
+            + "\nStamina: " + stamina.Value.ToString ( );
+        BigStatsBox.instance.BuildText ( );
+
     }
-    public void AddToList() // tarkista että sama järjestys joka on enumissa stat
+    public void AddToList ( ) // tarkista että sama järjestys joka on enumissa stat
     {
-        listCharacterStats.Add(moveSpeed); // 0
-        listCharacterStats.Add(jumpForce); // 1
-        listCharacterStats.Add(extraJumpForce); // 2
-        listCharacterStats.Add(baseDamage); // 3
-        listCharacterStats.Add(baseAttackSpeed); // 4
-        listCharacterStats.Add(health); //5
-        listCharacterStats.Add(mana); // 6
-        listCharacterStats.Add(stamina); // 7
-        listCharacterStats.Add(armor);// 8
-        listCharacterStats.Add(fireResistance);// 9
-        listCharacterStats.Add(coldResistance);//10
-        listCharacterStats.Add(poisonResistance);// 11
-        listCharacterStats.Add(lightningResistance);// 12
-        listCharacterStats.Add(strength);// 13
-        listCharacterStats.Add(dexterity);// 14
-        listCharacterStats.Add(endurance);//15
-        listCharacterStats.Add(energy);// 16
-        listCharacterStats.Add(physicalResistance);//17
-        listCharacterStats.Add(maxHealth); //18
-        listCharacterStats.Add(maxMana); //19
-        listCharacterStats.Add(criticalHitChance); //20
-        listCharacterStats.Add(criticalHitDamage); //21
+        listCharacterStats.Add ( moveSpeed ); // 0
+        listCharacterStats.Add ( jumpForce ); // 1
+        listCharacterStats.Add ( extraJumpForce ); // 2
+        listCharacterStats.Add ( baseDamage ); // 3
+        listCharacterStats.Add ( baseAttackSpeed ); // 4
+        listCharacterStats.Add ( health ); //5
+        listCharacterStats.Add ( mana ); // 6
+        listCharacterStats.Add ( stamina ); // 7
+        listCharacterStats.Add ( armor );// 8
+        listCharacterStats.Add ( fireResistance );// 9
+        listCharacterStats.Add ( coldResistance );//10
+        listCharacterStats.Add ( poisonResistance );// 11
+        listCharacterStats.Add ( lightningResistance );// 12
+        listCharacterStats.Add ( strength );// 13
+        listCharacterStats.Add ( dexterity );// 14
+        listCharacterStats.Add ( endurance );//15
+        listCharacterStats.Add ( energy );// 16
+        listCharacterStats.Add ( physicalResistance );//17
+        listCharacterStats.Add ( maxHealth ); //18
+        listCharacterStats.Add ( maxMana ); //19
+        listCharacterStats.Add ( criticalHitChance ); //20
+        listCharacterStats.Add ( criticalHitDamage ); //21
 
 
     }
@@ -241,7 +314,7 @@ public enum Stat // tarkista että on samassa järjesyksessä mikä addToList
     fireResistance, coldResistance, poisonResistance,
     lightningResistance, Strength, Dexterity,
     Endurance, Energy, physicalResistance, maxHealth, maxMana,
-    criticalHitChance,criticalHitDamage,
+    criticalHitChance, criticalHitDamage,
 
 
 }

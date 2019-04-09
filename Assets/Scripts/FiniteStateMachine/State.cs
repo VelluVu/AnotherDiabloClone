@@ -19,7 +19,7 @@ public class State : ScriptableObject
     public Transition [ ] transitions;
 
     /// <summary>
-    /// Päivittää statee Siirtymien perusteella
+    /// Päivittää statea
     /// </summary>
     /// <param name="controller"></param>
     public void UpdateState(StateController controller)

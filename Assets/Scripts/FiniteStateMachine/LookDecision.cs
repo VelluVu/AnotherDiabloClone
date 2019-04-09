@@ -29,43 +29,48 @@ public class LookDecision : Decision
     {
 
         RaycastHit2D hit;
+        RaycastHit2D hitDown;
 
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
             hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, controller.eyes.right, controller.spotDistance, controller.playerLayer );
-
-            if ( hit.collider != false )
+            
+            if ( hit.collider != false)
             {
-                if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.spotDistance )
+                if ( hit.collider.gameObject.CompareTag ( "Player" ) )
                 {
 
                     controller.chaseTarget = hit.transform;
                     return true;
 
                 }
-            }
-
-            return false;
+            }   
         }
         else
         {
 
             hit = Physics2D.CircleCast ( controller.eyes.position, controller.radius, controller.eyes.right, controller.spotDistance, controller.playerLayer );
-            Debug.DrawRay ( controller.eyes.position, controller.eyes.right * controller.spotDistance, Color.red );
-            Debug.Log ( "Look Decision HIT : " + hit.transform );
+            hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, -controller.eyes.up, controller.spotDistance, controller.playerLayer );
 
-            if ( hit.collider != false )
+            if ( hit.collider != false  )
             {
-                if ( hit.collider.gameObject.CompareTag ( "Player" ) )
+                if ( hit.collider.gameObject.CompareTag ( "Player" ))
                 {
                     controller.chaseTarget = hit.transform;
                     return true;
                 }
             }
 
-
-            return false;
-
+            if ( hitDown.collider != false )
+            {
+                if ( hitDown.collider.gameObject.CompareTag ( "Player" ) )
+                {
+                    controller.chaseTarget = hit.transform;
+                    return true;
+                }
+            }      
         }
+
+        return false;
     }
 }

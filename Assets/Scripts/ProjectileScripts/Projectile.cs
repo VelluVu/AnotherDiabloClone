@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
     public LayerMask playerLayer; //näit ei välttämättä tarvi ellei haluu jotain bounce juttuja ehkä?
     public LayerMask enemyLayer;
 
-    public delegate void ProjectileHitDelegate( Object target, float damage );
+    public delegate void ProjectileHitDelegate( GameObject target, float damage );
     public static event ProjectileHitDelegate projectileHitEvent;
 
     Vector2 _velocity;

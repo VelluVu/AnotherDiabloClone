@@ -44,26 +44,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ElevatorLever
       objectReference: {fileID: 0}
-    - target: {fileID: 2349670892452061883, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
-        type: 3}
-      propertyPath: triggers.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2349670892452061883, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
-        type: 3}
-      propertyPath: elevators.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2349670892452061883, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
-        type: 3}
-      propertyPath: triggers.Array.data[0]
-      value: 
-      objectReference: {fileID: 1910652569546554342}
-    - target: {fileID: 2349670892452061883, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
-        type: 3}
-      propertyPath: elevators.Array.data[0]
-      value: 
-      objectReference: {fileID: 1910652570285874530}
     - target: {fileID: 2349670892452061882, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -129,6 +109,26 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.76139194
       objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061883, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
+        type: 3}
+      propertyPath: triggers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061883, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
+        type: 3}
+      propertyPath: elevators.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061883, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
+        type: 3}
+      propertyPath: triggers.Array.data[0]
+      value: 
+      objectReference: {fileID: 1910652569546554342}
+    - target: {fileID: 2349670892452061883, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
+        type: 3}
+      propertyPath: elevators.Array.data[0]
+      value: 
+      objectReference: {fileID: 1910652570285874530}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9530d34d0ef15ca4faa23b9a1c1b8756, type: 3}
 --- !u!4 &1910652571302437340 stripped
@@ -161,26 +161,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elevator
       objectReference: {fileID: 0}
-    - target: {fileID: 6888391114752263969, guid: b6af8205da593b548b8817db5772d4e5,
-        type: 3}
-      propertyPath: levers.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6888391114752263969, guid: b6af8205da593b548b8817db5772d4e5,
-        type: 3}
-      propertyPath: levers.Array.data[0]
-      value: 
-      objectReference: {fileID: 1910652571302437341}
-    - target: {fileID: 6888391114015236517, guid: b6af8205da593b548b8817db5772d4e5,
-        type: 3}
-      propertyPath: levers.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6888391114015236517, guid: b6af8205da593b548b8817db5772d4e5,
-        type: 3}
-      propertyPath: levers.Array.data[0]
-      value: 
-      objectReference: {fileID: 1910652571302437341}
     - target: {fileID: 6888391114752263971, guid: b6af8205da593b548b8817db5772d4e5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -236,6 +216,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6888391114752263969, guid: b6af8205da593b548b8817db5772d4e5,
+        type: 3}
+      propertyPath: levers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6888391114752263969, guid: b6af8205da593b548b8817db5772d4e5,
+        type: 3}
+      propertyPath: elevateSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6888391114752263969, guid: b6af8205da593b548b8817db5772d4e5,
+        type: 3}
+      propertyPath: levers.Array.data[0]
+      value: 
+      objectReference: {fileID: 1910652571302437341}
+    - target: {fileID: 6888391114015236517, guid: b6af8205da593b548b8817db5772d4e5,
+        type: 3}
+      propertyPath: levers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6888391114015236517, guid: b6af8205da593b548b8817db5772d4e5,
+        type: 3}
+      propertyPath: levers.Array.data[0]
+      value: 
+      objectReference: {fileID: 1910652571302437341}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6af8205da593b548b8817db5772d4e5, type: 3}
 --- !u!4 &1910652570285874528 stripped

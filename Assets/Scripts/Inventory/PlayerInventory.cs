@@ -72,9 +72,6 @@ public class PlayerInventory : MonoBehaviour
     };
     #endregion
     #region Saving
-    public List<RolledLoot> saveIdInventory = new List<RolledLoot>();
-    public List<RolledLoot> saveIdEquip = new List<RolledLoot>();
-    public List<int> saveStackSize = new List<int>();
     string saveName = "/inventory.dat"; // used for saving
     public Loot[] allLoot;
     RolledLoot placeHolder;
@@ -93,12 +90,25 @@ public class PlayerInventory : MonoBehaviour
             Destroy(this);
         }
         allLoot = Resources.FindObjectsOfTypeAll<Loot>();
-        
-
+    }
+    public bool IsLootSlotsFull()
+    {
+        foreach(LootSlot slot in LootList)
+        {
+            if (slot.isEmpty)
+            {
+                return false;
+            }
+        }
+        return true;
     }
     public void AddItem(RolledLoot loot, int count,bool autoEquip)
     {
-
+        if (IsLootSlotsFull())
+        {
+            Debug.LogWarning("Inventory Full");
+            return;
+        }
         if (loot.stackable)
         {
             foreach (LootSlot slot in LootList)
@@ -175,49 +185,47 @@ public class PlayerInventory : MonoBehaviour
             }
         }
     }
-    void ClearLists()
-    {
-        saveIdEquip.Clear();
-        saveIdInventory.Clear();
-        saveStackSize.Clear();
-    }
     public void SaveInventory()
     {
 
-        ClearLists();
-        foreach(LootSlot slot in LootList)
-        {
-            if (!slot.isEmpty)
-            {
-                saveIdInventory.Add(slot.item);
-                saveStackSize.Add(slot.stackSize);
-                
-            }
-            
-        }
-        foreach(equipmentSlots slot in equipmentConnect)
-        {
-            if (!slot.ES.isEmpty)
-            {
-                saveIdEquip.Add(slot.ES.item);
-            }
-        }
+       
         saveName = "/inventory.dat";
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + saveName);
         SaveData data = new SaveData();
-        for(int i = 0; i < saveIdInventory.Count; i++)
+        for(int i = 0; i < LootList.Count; i++)
         {
-            data.lootID.Add(saveIdInventory[i].originLoot.itemID);
-            data.lootCount.Add(saveStackSize[i]);
-            
-            Debug.Log(saveIdInventory[i].originLoot.itemID);
-            Debug.Log(saveStackSize[i]);
+            if (!LootList[i].isEmpty)
+            {
+                int attributeCount = 0;
+                data.lootID.Add(LootList[i].item.originLoot.itemID);
+                data.lootStackSize.Add(LootList[i].stackSize);
+                foreach(RollAttribute roll in LootList[i].item.attributes)
+                {
+                    attributeCount++;
+                    data.attributeValue.Add((int)roll.value);
+                    data.attributeValue2.Add((int)roll.value2Min);
+                }
+                data.attributeAmount.Add(attributeCount);
+            }
         }
-        for(int i = 0; i <saveIdEquip.Count;i++)
+
+        for(int i = 0; i < equipmentConnect.Count;i++)
         {
-            data.equipId.Add(saveIdEquip[i].originLoot.itemID);
+            if (!equipmentConnect[i].ES.isEmpty)
+            {
+                int attributeCount = 0;
+                data.equipId.Add(equipmentConnect[i].ES.item.originLoot.itemID);
+                foreach (RollAttribute roll in equipmentConnect[i].ES.item.attributes)
+                {
+                    attributeCount++;
+                    data.equipAttributeValue.Add((int)roll.value);
+                    data.equipAttributeValue2.Add((int)roll.value2Min);
+                }
+                data.equipAttributeAmount.Add(attributeCount);
+            }
         }
+        
           
            
             
@@ -232,28 +240,16 @@ public class PlayerInventory : MonoBehaviour
     {
         if (File.Exists(Application.persistentDataPath + saveName))
         {
-            Debug.Log("HELOOOEE");
+            Debug.Log("Inventory Loaded");
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + saveName, FileMode.Open);
             SaveData data = (SaveData)bf.Deserialize(file);
             file.Close();
             emptyEquipment();
             emptyInventory();
-            for(int i = 0;i<data.lootID.Count;i++)
-            {
-                for(int j = 0; j < allLoot.Length; j++)
-                {
-                    if(allLoot[j].itemID == data.lootID[i])
-                    {
-                        placeHolder = gameObject.AddComponent<RolledLoot>();
-                        placeHolder.rollLoot(allLoot[j]);
-                        AddItem(placeHolder,data.lootCount[i], false);
-                        Destroy(placeHolder);
-                    }
-                }
-            }
             //add equipped items
-            for(int i = 0; i < data.equipId.Count; i++)
+            int equipCount = 0;
+            for (int i = 0; i < data.equipId.Count; i++)
             {
                 for (int j = 0; j < allLoot.Length; j++)
                 {
@@ -261,11 +257,42 @@ public class PlayerInventory : MonoBehaviour
                     {
                         placeHolder = gameObject.AddComponent<RolledLoot>();
                         placeHolder.rollLoot(allLoot[j]);
+                        for (int k = 0; k < data.equipAttributeAmount[i]; k++)
+                        {
+                            placeHolder.attributes[k].value = data.equipAttributeValue[equipCount + k];
+                            placeHolder.attributes[k].value2Min = data.equipAttributeValue2[equipCount + k];
+
+                        }
+                        equipCount += data.equipAttributeAmount[i];
                         AddItem(placeHolder, 1, true);
                         Destroy(placeHolder);
                     }
                 }
             }
+            int count = 0;
+            for (int i = 0;i<data.lootID.Count;i++)
+            {
+                for(int j = 0; j < allLoot.Length; j++)
+                {
+                    if(allLoot[j].itemID == data.lootID[i])
+                    {
+                        
+                        placeHolder = gameObject.AddComponent<RolledLoot>();
+                        placeHolder.rollLoot(allLoot[j]);
+                        for(int k = 0;k < data.attributeAmount[i]; k++)
+                        {
+                            placeHolder.attributes[k].value = data.attributeValue[count+k];
+                            placeHolder.attributes[k].value2Min = data.attributeValue2[count+k];
+                            
+                        }
+                        count += data.attributeAmount[i];
+                       
+                        AddItem(placeHolder,data.lootStackSize[i], false);
+                        Destroy(placeHolder);
+                    }
+                }
+            }
+            
             
 
         }
@@ -277,13 +304,22 @@ public class PlayerInventory : MonoBehaviour
 class SaveData
 {
     
+    
     public List<int> lootID = new List<int>();
-    public List<int> lootCount = new List<int>();
+    public List<int> lootStackSize = new List<int>(); // stackSize
+    public List<int> attributeAmount = new List<int>();
+    public List<int> attributeValue = new List<int>();
+    public List<int> attributeValue2 = new List<int>();
+
+    public int Money;
 
     public List<int> equipId = new List<int>();
-    
-    //public List<int> rolledValue1;
-    //public List<int> rolledValue2;
+    public List<int> equipAttributeAmount = new List<int>();
+    public List<int> equipAttributeValue = new List<int>();
+    public List<int> equipAttributeValue2 = new List<int>();
+
+
+
     //public List<int> rolledValue3;
 
 }

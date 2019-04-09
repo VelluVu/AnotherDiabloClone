@@ -27,11 +27,11 @@ public class ChaseAction : Action
                 if ( Vector2.Distance ( controller.transform.position, controller.chaseTarget.position ) >= controller.attackDistance )
                 {
 
-                    if ( controller.transform.position.x > ( controller.chaseTarget.position.x + 0.4f ) )
+                    if ( controller.transform.position.x > ( controller.chaseTarget.position.x + controller.attackDistance ) )
                     {
                         controller.rb.velocity = ( controller.targetDir * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * -controller.enemyStats.chaseMultiplier.Value * Time.deltaTime );
                     }
-                    else if ( controller.transform.position.x < ( controller.chaseTarget.position.x - 0.4f ) )
+                    else if ( controller.transform.position.x < ( controller.chaseTarget.position.x - controller.attackDistance ) )
                     {
                         controller.rb.velocity = ( controller.targetDir * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime );
                     }

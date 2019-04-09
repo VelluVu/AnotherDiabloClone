@@ -99,6 +99,10 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
         }
 
         movableObject.localPosition = Vector3.zero;
+        if(transform.parent.GetComponent<ConsumableSpot>() != null)
+        {
+            movableObject.localPosition = new Vector3(0,27);
+        }
         Destroy(sortCanvas);
     }
 
@@ -244,9 +248,16 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
         {
             if (PlayerClass.instance.fullHealth && transform.parent.GetComponent<RolledLoot>().tags.Contains(Tags.HealingPotion))
             {
+                
                 Debug.LogWarning("Health is already full, can't use healing potion");
                 return;
             }
+            else if(PlayerClass.instance.fullMana && transform.parent.GetComponent<RolledLoot>().tags.Contains(Tags.ManaPotion))
+            {
+                Debug.LogWarning("Mana is already full, can't use mana potion");
+                return;
+            }
+
             foreach(RollAttribute rAtt in transform.parent.GetComponent<RolledLoot>().attributes)
             {
                 rAtt.Consume();
