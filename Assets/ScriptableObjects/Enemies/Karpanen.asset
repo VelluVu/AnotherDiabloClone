@@ -14,16 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "K\xE4rp\xE4nen"
   _moveSpeed: 50
-  _chaseMultiplier: 3
+  _chaseMultiplier: 4
   _jumpForce: 0
   _attackSpeed: 1
   _attackDamage: 1
   _health: 5
   _mana: 0
   _armor: 1
+  _fireResistance: 0
+  _frostResistance: 0
+  _poisonResistance: 0
+  _lightningResistance: 0
+  _physicalResistance: 0
   _xpReward: 5
   _enemyType: 1
-  _groundEnemyType: 0
+  _groundEnemyType: 17
   _flyingEnemyType: 0
-  _bossEnemyType: 0
+  _bossEnemyType: 4
   _enemyVariation: 

@@ -51,14 +51,14 @@ MonoBehaviour:
   remainState: {fileID: 11400000, guid: 0047f55aadf773f46a7717e368f04018, type: 2}
   enemyStats: {fileID: 3064845586492581640}
   attackJump: 0
-  moveSpeedScale: 1.5
-  attackDistance: 0.5
+  moveSpeedScale: 1
+  attackDistance: 0.05
   searchDuration: 6
   spotDistance: 5
   sightDistance: 5
+  alertedByEventDuration: 4
   stateTimeElapsed: 0
   radius: 1.1
-  enemyDamageAreaDuration: 0.1
   amplitude: 100
   frequency: 0.5
   flyingPatrolDirectionTime: 5
@@ -84,6 +84,7 @@ MonoBehaviour:
   attackRdy: 1
   hasTurn: 0
   hasSplit: 0
+  alertedByEvent: 0
 --- !u!114 &3064845586492581640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,6 +146,31 @@ MonoBehaviour:
     lastBaseValue: 0
     _value: 0
   chaseMultiplier:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  fireResistance:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  frostResistance:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  poisonResistance:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  lightningResistance:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  physicalResistance:
     BaseValue: 0
     isDirty: 1
     lastBaseValue: 0

@@ -31,6 +31,7 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                     {
                         droppedLoot.item.Equip();
                         droppedLoot.WeaponEquip();
+                        transform.parent.GetComponent<EquipmentSlot>().UnEquipItem();
                         RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
                         tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
                         transform.parent.GetComponent<RolledLoot>().transferLoot(droppedLoot.GetComponent<RolledLoot>());
@@ -155,7 +156,7 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                             equipmentSlot.removeWeapons();
                             RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>();
                             tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
-                            transform.parent.GetComponent<RolledLoot>().transferLoot(equipmentSlot.GetComponent<RolledLoot>());
+                            transform.parent.GetComponent<RolledLoot>().transferLoot(equipmentSlot.item);
                             equipmentSlot.GetComponent<RolledLoot>().transferLoot(tempLoot);
                             transform.parent.GetComponent<LootSlot>().stackSize = 1;
                             if (transform.parent.GetComponent<LootSlot>().isEmpty)
@@ -165,8 +166,12 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                             else
                             {
                                 equipmentSlot.fillSlot();
+                                
+
                             }
                             transform.parent.GetComponent<LootSlot>().UnequipItem();
+                            equipmentSlot.item.Equip();
+                            
                             Destroy(tempLoot);
 
                         }

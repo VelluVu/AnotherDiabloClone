@@ -22,6 +22,7 @@ public class RollAttribute : MonoBehaviour
     public CharacterStat characterStat;
     public PlayerClass PC;
     private float tempBaseValue;
+    private float tempBaseValueMax;
 
 
     public void CreateStatModifier()
@@ -38,12 +39,21 @@ public class RollAttribute : MonoBehaviour
         
         if (isBaseValue)
         {
+           
             tempBaseValue = characterStat.BaseValue;
-            characterStat.BaseValue = value;
             
+            characterStat.BaseValue = value;
+            if (theStat == Stat.BaseDamage)
+            {
+                   tempBaseValueMax = PC.baseDamageMax.BaseValue;
+                   PC.baseDamageMax.BaseValue = value2Min;
+                
+            }
+
         }
         else
         {
+            
             CreateStatModifier();
             characterStat.AddModifier(new StatModifier(value, statModType, this));
            
@@ -58,6 +68,12 @@ public class RollAttribute : MonoBehaviour
         if (isBaseValue)
         {
             characterStat.BaseValue = tempBaseValue;
+            if (theStat == Stat.BaseDamage)
+            {
+                PC.baseDamageMax.BaseValue = tempBaseValueMax ;
+                
+
+            }
         }
         else
         {

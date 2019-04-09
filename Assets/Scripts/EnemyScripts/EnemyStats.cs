@@ -27,15 +27,21 @@ public class EnemyStats : MonoBehaviour
     public CharacterStat chaseMultiplier;
     #endregion
 
+    #region Enemy Resistances
+    public CharacterStat fireResistance;
+    public CharacterStat frostResistance;
+    public CharacterStat poisonResistance;
+    public CharacterStat lightningResistance;
+    public CharacterStat physicalResistance;
+    #endregion
+
     #region EnemyStatMods
     public StatModifier healthLoss;
     public StatModifier healthFill;
     public StatModifier manaLoss;
     public StatModifier manaFill;
     #endregion
-
-    [Header ( "Kuinka nopeesti liikkuu jahdatessa pelaajaa" )]
-    
+ 
     public EnemyType enemyType;
     public GroundEnemyType groundEnemyType;
     public FlyingEnemyType flyingEnemyType;
@@ -45,18 +51,30 @@ public class EnemyStats : MonoBehaviour
     private void Awake ( )
     {
         myName = enemy._name;
+
         moveSpeed.BaseValue = enemy._moveSpeed;
         chaseMultiplier.BaseValue = enemy._chaseMultiplier;
         jumpForce.BaseValue = enemy._jumpForce;
+
         attackSpeed.BaseValue = enemy._attackSpeed;
         attackDamage.BaseValue = enemy._attackDamage;
+
         health.BaseValue = enemy._health;
         maxHealth.BaseValue = enemy._health;
         mana.BaseValue = enemy._mana;
         maxMana.BaseValue = enemy._mana;
+
         armor.BaseValue = enemy._armor;
+
+        fireResistance.BaseValue = enemy._fireResistance;
+        poisonResistance.BaseValue = enemy._poisonResistance;
+        frostResistance.BaseValue = enemy._frostResistance;
+        lightningResistance.BaseValue = enemy._lightningResistance;
+        physicalResistance.BaseValue = enemy._physicalResistance;
+
         xpReward = enemy._xpReward;
         enemyType = enemy._enemyType;
+        
 
         if ( enemyType == EnemyType.GroundEnemy )
         {

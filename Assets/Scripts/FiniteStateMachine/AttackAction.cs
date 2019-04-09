@@ -21,46 +21,9 @@ public class AttackAction : Action
     void Attack ( StateController controller )
     {
 
-        RaycastHit2D hit;
-        RaycastHit2D hitDown;
-
-        if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
+        if ( controller.attackRdy)
         {
-            
-            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
-           
-            if ( hit.collider != false )
-            {
-                if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance && controller.attackRdy )
-                {
-                    controller.rb.velocity = Vector2.zero;
-                    controller.Attack ( );
-
-                }
-            }
-        }
-        else
-        {       
-
-            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
-            hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, -controller.eyes.up, controller.attackDistance, controller.playerLayer );
-
-            if ( hit.collider != false )
-            {         
-                if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance && controller.attackRdy )
-                {
-                    controller.rb.velocity = Vector2.zero;
-                    controller.Attack ( );
-                }
-            }
-            if ( hitDown.collider != false )
-            {
-                if ( hitDown.collider.gameObject.CompareTag ( "Player" ) && hitDown.distance <= controller.attackDistance && controller.attackRdy )
-                {
-                    controller.rb.velocity = Vector2.zero;
-                    controller.Attack ( );
-                }
-            }
+            controller.Attack ( );
         }
     }
 }

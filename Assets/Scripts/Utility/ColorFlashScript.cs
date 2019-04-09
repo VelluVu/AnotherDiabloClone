@@ -9,12 +9,14 @@ public class ColorFlashScript : MonoBehaviour
     {
         Player.playerFlashEvent += ColorFlash;
         StateController.enemyFlashEvent += ColorFlash;
+        SpiderEgg.eggFlashEvent += ColorFlash;
      }
 
     private void OnDisable ( )
     {
         Player.playerFlashEvent -= ColorFlash;
         StateController.enemyFlashEvent -= ColorFlash;
+        SpiderEgg.eggFlashEvent -= ColorFlash;
     }
 
     public IEnumerator ColorFlash ( GameObject source , float time, Color color, bool isFlashSpam )

@@ -94,16 +94,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f02f7b00f5da8d46861543a54defa00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponName: 
   _currentWeapon: {fileID: 0}
+  _weaponSprite: {fileID: 0}
+  equippedWeapon: {fileID: 0}
   bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
     type: 3}
-  _weaponName: 
-  _weaponSprite: {fileID: 0}
   _weaponDamage: 0
   _weaponSpeed: 0
   isEquipped: 0
   weaponType: 0
-  equippedWeapon: {fileID: 0}
+  damageType: 0
+  projectileType: 0
 --- !u!61 &518753147
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -245,16 +247,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f02f7b00f5da8d46861543a54defa00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponName: 
   _currentWeapon: {fileID: 0}
+  _weaponSprite: {fileID: 0}
+  equippedWeapon: {fileID: 0}
   bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
     type: 3}
-  _weaponName: 
-  _weaponSprite: {fileID: 0}
   _weaponDamage: 0
   _weaponSpeed: 0
   isEquipped: 0
   weaponType: 4
-  equippedWeapon: {fileID: 0}
+  damageType: 0
+  projectileType: 0
 --- !u!61 &859306780
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -821,8 +825,6 @@ MonoBehaviour:
   wallJumpPushBack: 30
   jumpTime: 0.25
   groundCheckRadius: 0.2
-  radius: 0.05
-  magnitude: 0.05
   extraJumps: 1
   directionRight: 0
 --- !u!114 &244747911
@@ -996,7 +998,7 @@ MonoBehaviour:
     lastBaseValue: 0
     _value: 0
   toLevelXP:
-    BaseValue: 2
+    BaseValue: 100
     isDirty: 1
     lastBaseValue: 0
     _value: 0

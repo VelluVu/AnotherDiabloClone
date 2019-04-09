@@ -10,11 +10,11 @@ using UnityEngine;
 /// Actions : Attack, Chase, Patrol
 /// Stateja : AlertScan, ChaseScan, Chase, PatrolScan, Patrol, Remain
 /// </summary>
-[CreateAssetMenu (menuName = "PluggableAI/State")]
+[CreateAssetMenu ( menuName = "PluggableAI/State" )]
 public class State : ScriptableObject
 {
     [Header ( "Actionit, mitä state toteuttaa järjestyksessä" )]
-    public Action[] actions;
+    public Action [ ] actions;
     [Header ( "Staten vaihdot lisää listan kokoon numero, jos haluat tehdä uuden staten koneeseen" )]
     public Transition [ ] transitions;
 
@@ -22,7 +22,7 @@ public class State : ScriptableObject
     /// Päivittää statea
     /// </summary>
     /// <param name="controller"></param>
-    public void UpdateState(StateController controller)
+    public void UpdateState ( StateController controller )
     {
         DoActions ( controller );
         CheckTransitions ( controller );
@@ -32,7 +32,7 @@ public class State : ScriptableObject
     /// Tekee Lisättyjä Actioneita järjestyksessä
     /// </summary>
     /// <param name="controller"></param>
-    private void DoActions(StateController controller)
+    private void DoActions ( StateController controller )
     {
         for ( int i = 0 ; i < actions.Length ; i++ )
         {
@@ -44,13 +44,13 @@ public class State : ScriptableObject
     /// Tarkistaa onko päätetty vaihtaa statee
     /// </summary>
     /// <param name="controller"></param>
-    void CheckTransitions(StateController controller)
+    void CheckTransitions ( StateController controller )
     {
         for ( int i = 0 ; i < transitions.Length ; i++ )
         {
             bool decisionSucceded = transitions [ i ].decision.Decide ( controller );
 
-            if(decisionSucceded)
+            if ( decisionSucceded )
             {
                 controller.TransitionToState ( transitions [ i ].trueState );
             }
@@ -60,5 +60,4 @@ public class State : ScriptableObject
             }
         }
     }
-
 }

@@ -9,12 +9,23 @@ public class EnemyStatsObject : ScriptableObject
     public float _moveSpeed;
     public float _chaseMultiplier;
     public float _jumpForce;
+
     public float _attackSpeed;
     public float _attackDamage;
+
     public float _health;
     public float _mana;
+
     public float _armor;
+
+    public float _fireResistance;
+    public float _frostResistance;
+    public float _poisonResistance;
+    public float _lightningResistance;
+    public float _physicalResistance;
+
     public int _xpReward;
+
     public EnemyType _enemyType;
     public GroundEnemyType _groundEnemyType;
     public FlyingEnemyType _flyingEnemyType;

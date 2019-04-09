@@ -182,6 +182,7 @@ public class LootSlot : MonoBehaviour
                             {
                                 if (PlayerInventory.instance.equipmentConnect[i].ES.isEmpty)
                                 {
+                                    PlayerInventory.instance.equipmentConnect[i].ES.UnEquipItem();
                                     RolledLoot rempLoot = PlayerInventory.instance.equipmentConnect[i].ES.EquipItem(item);
                                     item.transferLoot(rempLoot);
                                     Debug.Log(rempLoot.itemID);
@@ -192,12 +193,14 @@ public class LootSlot : MonoBehaviour
                                     }
                                     else
                                     {
-
+                                       
                                         UnequipItem();
                                     }
+
                                 }
                                 else if (PlayerInventory.instance.equipmentConnect[i + 1].ES.isEmpty && PlayerInventory.instance.equipmentConnect[i + 1].ES.armorSlot ==ArmorSlot.Ring)
                                 {
+                                    PlayerInventory.instance.equipmentConnect[i].ES.UnEquipItem();
                                     RolledLoot rempLoot = PlayerInventory.instance.equipmentConnect[i+1].ES.EquipItem(item);
                                     item.transferLoot(rempLoot);
                                     Debug.Log(rempLoot.itemID);
@@ -208,12 +211,13 @@ public class LootSlot : MonoBehaviour
                                     }
                                     else
                                     {
-
+                                       
                                         UnequipItem();
                                     }
                                 }
                                 else
                                 {
+                                    PlayerInventory.instance.equipmentConnect[i].ES.UnEquipItem();
                                     RolledLoot rempLoot = PlayerInventory.instance.equipmentConnect[i].ES.EquipItem(item);
                                     item.transferLoot(rempLoot);
                                     Debug.Log(rempLoot.itemID);
@@ -224,7 +228,7 @@ public class LootSlot : MonoBehaviour
                                     }
                                     else
                                     {
-
+                                       
                                         UnequipItem();
                                     }
                                 }
@@ -239,6 +243,7 @@ public class LootSlot : MonoBehaviour
                                     SR.sprite = item.equipmentSprites[j];
                                     j++;
                                 }
+                                PlayerInventory.instance.equipmentConnect[i].ES.UnEquipItem();
                                 RolledLoot tempLoot = PlayerInventory.instance.equipmentConnect[i].ES.EquipItem(item);
                                 item.transferLoot(tempLoot);
                                 Debug.Log(tempLoot.itemID);
@@ -249,7 +254,7 @@ public class LootSlot : MonoBehaviour
                                 }
                                 else
                                 {
-
+                                   
                                     UnequipItem();
                                 }
                                 return;

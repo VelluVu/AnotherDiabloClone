@@ -12,6 +12,11 @@ public class EnemyAttackCollider : MonoBehaviour
     bool hasDealtDmg;
     public GameObject bloodSplash;
 
+
+    private void Awake ( )
+    {
+        gameObject.GetComponent<Collider2D> ( ).enabled = false;
+    }
     /// <summary>
     /// Osuuko collider pelaajaan ja onko tehnyt vahinkoa vielä, jos ei niin ilmoittaa statemachinelle käyttää dealdamage functiota
     /// </summary>

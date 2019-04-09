@@ -45,6 +45,7 @@ public enum GroundEnemyType
     ShieldWielder,
     Splitter,
     Spider,
+    SpiderLing,
     FireMage,
     IceMage,
     HealerMage,
@@ -53,13 +54,15 @@ public enum GroundEnemyType
     ArmoredRat,
     Ghoul,
     PoisonToad,
-    ParkRanger
+    ParkRanger,
+    none
 }
 
 public enum FlyingEnemyType
 {
     Bat,
-    DemonicBird
+    DemonicBird,
+    none
 }
 
 public enum BossEnemyType
@@ -67,7 +70,8 @@ public enum BossEnemyType
     SpiderQueen,
     FireLord,
     SummonerKing,
-    Medusa
+    Medusa,
+    none
 }
 
 public enum EnemyVariations

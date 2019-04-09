@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     public delegate IEnumerator PlayerFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
     public static event PlayerFlashDelegate playerFlashEvent;
 
-    public delegate void PlayerDealDamageDelegate ( Object enemy, float damage );
+    public delegate void PlayerDealDamageDelegate ( GameObject enemy, float damage );
     public static event PlayerDealDamageDelegate playerDealDamageEvent;
 
     public delegate void PlayerNotifyDelecate ( Transform transform, string message, Color color );
@@ -458,7 +458,11 @@ public class Player : MonoBehaviour
     {
         if ( target != null )
         {
-            float calculatedDamage = weaponPower + stats.baseDamage.Value;
+            float calculatedDamage = Random.Range((int)stats.baseDamage.Value, (int)stats.baseDamageMax.Value);
+            
+            
+            
+            
 
             if ( playerDealDamageEvent != null )
             {
@@ -608,8 +612,8 @@ public class Player : MonoBehaviour
 
         //esim partikkeli efekti
         //ääni
-        OnRestoreHealth ( stats.maxHealth.Value, true );
-        OnRestoreMana ( stats.maxHealth.Value, true );
+        //OnRestoreHealth ( stats.maxHealth.Value, true );
+        //OnRestoreMana ( stats.maxHealth.Value, true );
 
         if ( playerNotifyEvent != null )
         {
@@ -802,6 +806,13 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds ( cd );
         isSpellRdy = true;
+    }
+
+    IEnumerator DelayEvent ( float delayTime, bool delayRdy )
+    {
+        yield return new WaitForSeconds ( delayTime );
+        delayRdy = true;
+
     }
     #endregion
 

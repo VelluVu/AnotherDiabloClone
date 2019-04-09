@@ -71,6 +71,10 @@ public class EquipmentSlot : MonoBehaviour
         }
        
     }
+    public void UnEquipItem()
+    {
+        item.UnEquip();
+    }
     public void removeWeapons()
     {
         item.UnEquip();

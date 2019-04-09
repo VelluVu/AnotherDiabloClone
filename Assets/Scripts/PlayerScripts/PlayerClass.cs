@@ -27,6 +27,7 @@ public class PlayerClass : MonoBehaviour
 
     #region CombatStats
     public CharacterStat baseDamage;
+    public CharacterStat baseDamageMax;
     public CharacterStat baseAttackSpeed;
     public CharacterStat maxHealth;
     public CharacterStat health;
@@ -120,7 +121,7 @@ public class PlayerClass : MonoBehaviour
     {
         foreach ( CharacterStat cStat in listCharacterStats )
         {
-            float randomFloat = cStat.Value;
+            cStat.isDirty = true;
         }
         BuildSmallBoxStatsText ( );
     }

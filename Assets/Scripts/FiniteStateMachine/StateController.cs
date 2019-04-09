@@ -44,27 +44,47 @@ public class StateController : MonoBehaviour
     #endregion
 
     #region Public Variables
+    [Header ("For Enemies that jump on basic attack")]
     public float attackJump; //could be in enemyStats
+    [Header("Scalar for movespeed")]
     public float moveSpeedScale; //could be in enemyStats
+    [Header("The Melee attack state distance from enemy eyes to target")]
     public float attackDistance; //could be in enemyStats
+    [Header("Duration for Enemy search after losing the target")]
     public float searchDuration; //could be in enemyStats
+    [Header("Enemy spot range, from eyes to the target. Used in patrol to chasestate")]
     public float spotDistance; //could be in enemyStats
+    [Header("Raycast total distance")]
     public float sightDistance; //could be in enemyStats
+    [Header("Turns on when event happens nearby")]
+    public float alertedByEventDuration;
+    [Header( "The Elapsed time in current state")]
     public float stateTimeElapsed;
+
+    [Header ("Radius for circleCasts")]
     public float radius;
-    public float enemyDamageAreaDuration;
+
+    [Header ("Flying enemy motion variables")]
     public float amplitude;
     public float frequency;
     public float flyingPatrolDirectionTime;
     #endregion
 
     #region Necessary Variables
-    public Transform eyes; //silmät aseta manuaalisesti
+    [Header ("Transform for Look and Ledgecheck Raycasts")]
+    public Transform eyes;
+
+    [Header ("Head position and possibly for hit data etc.")]
     public GameObject head;
+
+    [Header ("LayerMasks for raycast detection")]
     public LayerMask enemyLayer;
     public LayerMask playerLayer;
+
+    [Header ("Humanoid enemy can wield weapons")]
     public EnemyWeaponHolder weaponLeft;
     public EnemyWeaponHolder weaponRight;
+
     [HideInInspector] public Transform chaseTarget;
     [HideInInspector] public Animator animator;
     [HideInInspector] public Rigidbody2D rb;
@@ -82,6 +102,8 @@ public class StateController : MonoBehaviour
     public bool attackRdy;
     public bool hasTurn;
     public bool hasSplit;
+    public bool alertedByEvent;
+    public bool notHatchedEgg;
     #endregion
 
     private void Awake ( )
@@ -107,12 +129,22 @@ public class StateController : MonoBehaviour
     {
         Player.playerDealDamageEvent += TakeDamage;
         enemyTakeDamageEvent += OnEnemyTakeDamage;
+        SpiderEgg.hatchEvent += Hatched;
     }
 
     private void OnDisable ( )
     {
         Player.playerDealDamageEvent -= TakeDamage;
         enemyTakeDamageEvent -= OnEnemyTakeDamage;
+        SpiderEgg.hatchEvent -= Hatched;
+    }
+
+    public void Hatched( GameObject parent)
+    {
+        if ( parent == gameObject )
+        {
+            notHatchedEgg = false;
+        }
     }
 
     private void Update ( )
@@ -133,6 +165,8 @@ public class StateController : MonoBehaviour
             CheckLedge ( );
         }
         CheckDirection ( );
+
+        
     }
 
     /// <summary>
@@ -289,7 +323,7 @@ public class StateController : MonoBehaviour
     /// Laskee tulevan vahingon lopullisen määrän
     /// </summary>
     /// <param name="dmg">Tuleva vahinko</param>
-    public void TakeDamage ( Object target , float dmg )
+    public void TakeDamage ( GameObject target , float dmg )
     {
         Color color = Color.red;
 
@@ -366,9 +400,13 @@ public class StateController : MonoBehaviour
             {
                 Debug.Log ( cols[i].name + " Lähellä" );
                 chaseTarget = cols [ i ].gameObject.transform;
+                alertedByEvent = true;
                 break;
             }
         }
+
+        StartCoroutine ( AlertedByEventTime ( alertedByEventDuration ) );
+
     }
 
     private void OnDrawGizmos ( )
@@ -392,11 +430,17 @@ public class StateController : MonoBehaviour
 
     }
 
+    IEnumerator AlertedByEventTime (float time)
+    {
+        yield return new WaitForSeconds ( time );
+        alertedByEvent = false;
+        Debug.Log ( gameObject.name + " No longer alerted from event" );
+    }
+
     public IEnumerator WaitTime ( float time )
     {
         yield return new WaitForSeconds ( time );
         hasTurn = false;
-
     }
 
     public IEnumerator TurnAfterTime ( float time, bool turnDir )
@@ -404,6 +448,6 @@ public class StateController : MonoBehaviour
         yield return new WaitForSeconds ( time );
         dirRight = turnDir;
     }
-
+  
     #endregion
 }
