@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Kryz.CharacterStats;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Pelaaja Prototyyppi
@@ -15,7 +16,7 @@ public class Player : MonoBehaviour
     public LevelUp levelUp;
 
     #region Player Delegates
-    public delegate void PlayerDeathDelegate ( Transform position );
+    public delegate void PlayerDeathDelegate ( Transform transform );
     public static event PlayerDeathDelegate playerDeathEvent;
 
     public delegate void PlayerTakeDamageDelegate ( float damage );
@@ -39,6 +40,9 @@ public class Player : MonoBehaviour
     public delegate void PlayerUseManaDelegate ( float amount );
     public static event PlayerUseManaDelegate playerUseManaEvent;
 
+    public delegate void PlayerAliveDelegate ( );
+    public static event PlayerAliveDelegate playerAliveEvent;
+
     #endregion
 
     #region GameObjects
@@ -51,28 +55,38 @@ public class Player : MonoBehaviour
     #region EssentialComponents
     [HideInInspector] Animator heroAnim;
     [HideInInspector] Rigidbody2D playerRB;
-    [HideInInspector] public Transform feet;
-    [HideInInspector] public LayerMask whatIsGround;
+    public Transform feet;
+    public LayerMask whatIsGround;
+    public LayerMask groundRayLayer;
     [HideInInspector] public LayerMask enemyLayer;
     [HideInInspector] public WeaponPlaceHolder main;
     [HideInInspector] public WeaponPlaceHolder off;
+    RaycastHit hit;
+    Vector2 mousePos;
+    Vector2 wallNormal;
     #endregion
 
     #region Booleans
     //Väliaikainen spellcd
     bool isSpellRdy = true;
-    bool isWallJump = false;
-    bool isBlocking = false;
-    bool isAir = false;
+    public bool canWallJump;
+    public bool isDoubleJumping;
+    bool isBlocking;
+    public bool isAir;
     bool isAttackRdy = true;
-    bool isJumping = false;
+    public bool isJumping;
+    public bool initialJump;
+    public bool isWallJumping;
     bool readyToDash = true;
-    [Header ( "Ability Unlocks" )]
     public bool isDashing;
-    public bool isDoubleJumpEnabled;
-    public bool isWallJumpEnabled;
-    public bool isDashEnabled;
     public bool isGrounded;
+    public bool mouseOnUI;
+
+    [Header ( "Ability Unlocks" )]
+    public bool isDoubleJumpLearned;
+    public bool isWallJumpLearned;
+    public bool isDashLearned;
+
     #endregion
 
     #region publicVariables  
@@ -82,23 +96,37 @@ public class Player : MonoBehaviour
     public float dashCooldown;
     public float dashSpeed;
     public float wallJumpScale;
+    public float extraJumpScale;
+    public float jumpScale;
     public float airSpeed;
     public float wallJumpPushBack;
     public float jumpTime;
     public float groundCheckRadius;
+    public float fallMultiplier;
+    public float lowJumpMultiplier;
+    public float fallToDeathTime;
+    public float lowFallDamageTime;
+    public float fallDamageMultiplier;
     #endregion
 
     #region Extra Variables
     public int extraJumps;
-    public bool directionRight;
-    int jumpsCount = 0;
+    bool directionRight;
+    int jumpsCount;
     float jumpTimeCounter;
-    int wallJumpDirection = -1;
+    //public int wallJumpDirection = -1;
     float moveX;
     float gravity;
+    float curYPos;
     Vector3 leftDir;
     Vector3 rightDir;
     Vector2 textPosition;
+    private float fallStartYPos;
+    private float distanceToFallHit;
+    private bool goingDown;
+    private bool takeFallDamage;
+    private float fallDamage;
+    private float fallTime;    
     #endregion
 
     private void Awake ( )
@@ -136,15 +164,25 @@ public class Player : MonoBehaviour
         gravity = playerRB.gravityScale;
     }
 
+    public void SetMouseOnUI ( bool isMouseOnUI ) { mouseOnUI = isMouseOnUI; }
+
     private void Update ( )
     {
+
         moveX = Input.GetAxis ( "Horizontal" );
+
+        FallToDeathCheck ( );
 
         GroundCheck ( );
         OpenInventory ( );
-        PlayerBasicAttack ( );
+
+        if ( !mouseOnUI )
+        {
+            PlayerBasicAttack ( );
+        }
+
         PlayerBasicBlock ( );
-        CastSpell ( );
+        //CastSpell ( );
 
         if ( !isBlocking )
         {
@@ -157,7 +195,7 @@ public class Player : MonoBehaviour
             WalkAnimation ( );
         }
 
-        if ( isDashEnabled )
+        if ( isDashLearned )
         {
             Dash ( );
         }
@@ -171,6 +209,19 @@ public class Player : MonoBehaviour
     {
         //layermask tapa tsekkaa grounded testi
         isGrounded = Physics2D.OverlapCircle ( feet.position, groundCheckRadius, whatIsGround );
+
+        if ( isGrounded )
+        {          
+            isDoubleJumping = false;
+            canWallJump = false;
+            isJumping = false;
+            isAir = false;
+            isWallJumping = false;
+            goingDown = false;
+            takeFallDamage = false;
+            fallTime = 0;
+            jumpsCount = extraJumps;
+        }
 
     }
 
@@ -188,8 +239,7 @@ public class Player : MonoBehaviour
     void TurnMousePointerDir ( )
     {
 
-        Vector2 mousePos = Input.mousePosition;
-        mousePos = Camera.main.ScreenToWorldPoint ( mousePos );
+        MousePosition ( );
 
         if ( playerRB.velocity.x == 0 )
         {
@@ -204,34 +254,55 @@ public class Player : MonoBehaviour
         }
     }
 
+    void MousePosition ( )
+    {
+        mousePos = Input.mousePosition;
+        mousePos = Camera.main.ScreenToWorldPoint ( mousePos );
+    }
+
+    void Dir ( bool dir )
+    {
+        if ( dir )
+        {
+            transform.eulerAngles = rightDir;
+        }
+        else
+        {
+            transform.eulerAngles = leftDir;
+        }
+    }
+
     /// <summary>
     /// Pelaajan liike X axelilla
     /// </summary>
     void PlayerMovement ( )
     {
+        if ( !isWallJumping )
+        {
+            //Turning
+            if ( moveX > 0.2f )
+            {
+                directionRight = true;
+                //wallJumpDirection = -1;
+                transform.eulerAngles = rightDir;
+            }
+            else if ( moveX < -0.2f )
+            {
+                directionRight = false;
+                //wallJumpDirection = 1;
+                transform.eulerAngles = leftDir;
+            }
 
-        //Turning
-        if ( moveX > 0.2f )
-        {
-            directionRight = true;
-            wallJumpDirection = -1;
-            transform.eulerAngles = rightDir;
-        }
-        else if ( moveX < -0.2f )
-        {
-            directionRight = false;
-            wallJumpDirection = 1;
-            transform.eulerAngles = leftDir;
-        }
+            //lisää air multiplierin speedscalen sijaan
 
-        //lisää air multiplierin speedscalen sijaan
-        if ( isAir )
-        {
-            playerRB.velocity = new Vector2 ( ( moveX * stats.moveSpeed.Value ) * airSpeed * Time.fixedDeltaTime, playerRB.velocity.y );
-        }
-        else
-        {
-            playerRB.velocity = new Vector2 ( ( moveX * stats.moveSpeed.Value ) * speedScale * Time.fixedDeltaTime, playerRB.velocity.y );
+            if ( isAir )
+            {
+                playerRB.velocity = new Vector2 ( ( moveX * stats.moveSpeed.Value ) * airSpeed * Time.fixedDeltaTime, playerRB.velocity.y );
+            }
+            else
+            {
+                playerRB.velocity = new Vector2 ( ( moveX * stats.moveSpeed.Value ) * speedScale * Time.fixedDeltaTime, playerRB.velocity.y );
+            }
         }
 
     }
@@ -262,62 +333,92 @@ public class Player : MonoBehaviour
     void PlayerJump ( )
     {
 
-        if ( isGrounded && Input.GetButtonDown ( "Jump" ) )
+        if ( isWallJumping )
         {
+            playerRB.gravityScale = 0.5f;
 
-            jumpsCount = extraJumps;
+        }
+        else
+        {
+            playerRB.gravityScale = 1f;
+        }
+
+        if ( Input.GetButtonDown ( "Jump" ) && !initialJump && isGrounded )
+        {
+            //Debug.Log ( "InitJump" );
+            initialJump = true;
+        }
+        //MarioJump
+        if ( Input.GetButton ( "Jump" ) && !isJumping && initialJump && !isDoubleJumping )
+        {
+            //Debug.Log ( "jumping" );
+            heroAnim.SetTrigger ( "Jump" );
             isJumping = true;
-            heroAnim.SetTrigger ( "Jump" );
-            jumpTimeCounter = jumpTime;
+            isAir = true;
+            playerRB.AddForce ( Vector2.up * stats.jumpForce.Value * jumpScale );
 
         }
 
-        //Double jump
-        if ( Input.GetButtonDown ( "Jump" ) && jumpsCount > 0 && !isJumping && !isWallJump && isDoubleJumpEnabled )
-        {
+        //Debug.Log ( playerRB.velocity.y );
 
+        //DoubleJump         
+        if ( Input.GetButtonDown ( "Jump" ) && jumpsCount > 0 && !canWallJump && isDoubleJumpLearned && isJumping && playerRB.velocity.y < 1.0f && !initialJump && !isGrounded )
+        {
+            //Debug.Log ( "DoubleJump" );
+            isDoubleJumping = true;
+            isWallJumping = false;
             jumpsCount--;
-            Debug.Log ( "DOUBLE JUMP" );
-            heroAnim.SetTrigger ( "Jump" );
-            playerRB.AddForce ( new Vector2 ( playerRB.velocity.x, stats.jumpForce.Value * stats.extraJumpForce.Value ), ForceMode2D.Impulse );
-
+            playerRB.AddForce ( Vector2.up * stats.extraJumpForce.Value * extraJumpScale, ForceMode2D.Impulse );
+        }
+        else if ( Input.GetButtonDown ( "Jump" ) && jumpsCount > 0 && !canWallJump && isDoubleJumpLearned && isJumping && playerRB.velocity.y >= 1.0f && !initialJump && !isGrounded )
+        {
+            //Debug.Log ( "Limiting the jump" );
+            isDoubleJumping = true;
+            isWallJumping = false;
+            jumpsCount--;
+            playerRB.AddForce ( Vector2.up * stats.extraJumpForce.Value * extraJumpScale * 0.5f, ForceMode2D.Impulse );
         }
 
-        //Wall jump
-        if ( isWallJump && Input.GetButtonDown ( "Jump" ) && isWallJumpEnabled )
+        //WallJump
+        if ( Input.GetButtonDown ( "Jump" ) && canWallJump && isWallJumpLearned && isJumping && !initialJump && !isGrounded )
         {
 
-            isWallJump = false;
-            Debug.Log ( "WALL JUMP" );
-            heroAnim.SetTrigger ( "Jump" );
-            playerRB.AddForce ( new Vector2 ( playerRB.velocity.x * wallJumpDirection * wallJumpPushBack, stats.extraJumpForce.Value * stats.jumpForce.Value * wallJumpScale ), ForceMode2D.Impulse );
+            isWallJumping = true;
 
-        }
-
-        if ( Input.GetButton ( "Jump" ) && isJumping )
-        {
-
-            if ( jumpTimeCounter > 0 )
+            //playerRB.velocity = Vector2.up * 0.2f * wallNormal * wallJumpPushBack * stats.extraWallJumpForce.Value * wallJumpScale * Time.deltaTime;
+            if ( playerRB.velocity.x > 0 )
             {
-
-                //playerRB.AddForce(Vector2.up * stats.jumpForce.Value, ForceMode2D.Impulse);
-                playerRB.velocity = new Vector2 ( playerRB.velocity.x, stats.jumpForce.Value );
-                jumpTimeCounter -= Time.deltaTime;
-
+                Dir ( true );
             }
             else
             {
-
-                isJumping = false;
-
+                Dir ( false );
             }
+
+            playerRB.AddForce ( ( Vector2.up * 0.8f + wallNormal ) * wallJumpPushBack * stats.extraWallJumpForce.Value * wallJumpScale, ForceMode2D.Impulse );
+
         }
 
         if ( Input.GetButtonUp ( "Jump" ) )
         {
-            isJumping = false;
+            canWallJump = false;
 
         }
+
+
+        //Better Gravity in jump
+        if ( playerRB.velocity.y < 0 )
+        {
+            playerRB.velocity += Vector2.up * Physics2D.gravity.y * ( fallMultiplier - 1 ) * Time.deltaTime;
+        }
+        else if ( !Input.GetButton ( "Jump" ) && playerRB.velocity.y > 0 )
+        {
+            Debug.Log ( "Input false" );
+            initialJump = false;
+            //isJumping = false;
+            playerRB.velocity += Vector2.up * Physics2D.gravity.y * ( lowJumpMultiplier - 1 ) * Time.deltaTime;
+        }
+
     }
 
     /// <summary>
@@ -327,7 +428,7 @@ public class Player : MonoBehaviour
     {
         if ( isDashing )
         {
-            Debug.Log ( "IS DASHING" );
+            //Debug.Log ( "IS DASHING" );
             heroAnim.SetBool ( "Walk", false );
             //dash animaatio
         }
@@ -335,7 +436,7 @@ public class Player : MonoBehaviour
         if ( Input.GetButtonDown ( "Dash" ) && !isDashing && readyToDash )
         {
             readyToDash = false;
-            Debug.Log ( "Started Dashing" );
+            //Debug.Log ( "Started Dashing" );
             playerRB.gravityScale = 0;
             isDashing = true;
             StartCoroutine ( DashTime ( ) );
@@ -344,7 +445,7 @@ public class Player : MonoBehaviour
 
         if ( Input.GetButton ( "Dash" ) && isDashing )
         {
-            Debug.Log ( "Holding Dash Key" );
+            //Debug.Log ( "Holding Dash Key" );
 
             if ( directionRight && isDashing )
             {
@@ -360,7 +461,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                Debug.Log ( "Stopped Dashing" );
+                //Debug.Log ( "Stopped Dashing" );
                 isDashing = false;
                 playerRB.gravityScale = gravity;
             }
@@ -368,7 +469,7 @@ public class Player : MonoBehaviour
 
         if ( Input.GetButtonUp ( "Dash" ) )
         {
-            Debug.Log ( "Stopped Dashing" );
+            //Debug.Log ( "Stopped Dashing" );
             isDashing = false;
             playerRB.gravityScale = gravity;
         }
@@ -404,7 +505,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void CastSpell ( )
     {
-        // Testailua varten
+        //// Testailua varten
         if ( Input.GetButton ( "ActionBar1" ) && stats.mana.Value >= 0.1f )
         {
             //ChannelSpell
@@ -458,11 +559,11 @@ public class Player : MonoBehaviour
     {
         if ( target != null )
         {
-            float calculatedDamage = Random.Range((int)stats.baseDamage.Value, (int)stats.baseDamageMax.Value);
-            
-            
-            
-            
+            float calculatedDamage = Random.Range ( ( int ) stats.baseDamage.Value, ( int ) stats.baseDamageMax.Value );
+
+
+
+
 
             if ( playerDealDamageEvent != null )
             {
@@ -557,11 +658,13 @@ public class Player : MonoBehaviour
     {
         float calculatedDamage;
         Color color;
-
+        Debug.Log ( dmg );
         if ( isBlocking )
         {
 
-            calculatedDamage = dmg - stats.armor.Value /*Tähän pitäis saada vielä shield defense*/;
+            //calculatedDamage = dmg - stats.armor.Value /*Tähän pitäis saada vielä shield defense*/;
+            calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * 100/*vihollisen level*/+ stats.armor.Value ) ) );
+            calculatedDamage = Mathf.Round ( calculatedDamage );
 
             //Ei saa mennä negatiiviseksi
             if ( calculatedDamage < 0 )
@@ -577,9 +680,12 @@ public class Player : MonoBehaviour
         {
 
             color = Color.red;
-            calculatedDamage = dmg - stats.armor.Value;
-
+            calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * 1/*vihollisen level*/+ stats.armor.Value ) ) );
+            Debug.Log ( ( stats.armor.Value / ( 50 * 1/*vihollisen level*/+ stats.armor.Value ) ) );
+            Debug.Log ( calculatedDamage );
+            calculatedDamage = Mathf.Round ( calculatedDamage );
             stats.health.BaseValue -= calculatedDamage;
+
 
         }
 
@@ -626,15 +732,67 @@ public class Player : MonoBehaviour
 
     }
 
+    public void FallToDeathCheck ( )
+    {
+       
+        if(playerRB.velocity.y > 0)
+        {
+            goingDown = false;
+        }
+
+        if ( !goingDown && playerRB.velocity.y < -0.05f )
+        {
+            Debug.Log ( "IS GOING DOWN !!!" );          
+            goingDown = true;
+            fallStartYPos = transform.position.y;
+            
+        }
+
+        if(goingDown)
+        {
+            fallTime += Time.deltaTime;
+        }
+
+        Debug.Log ( fallTime );
+        if(fallTime > lowFallDamageTime && !takeFallDamage)
+        {
+            takeFallDamage = true;
+            fallDamage = Mathf.Sqrt ( fallDamageMultiplier * Mathf.Abs ( Physics.gravity.y ) * fallStartYPos - transform.position.y );
+            TakeDamage ( gameObject, fallDamage );
+        }
+
+        if (fallTime > fallToDeathTime)
+        {
+            fallTime = 0;
+            Debug.Log ( "FELL TO DEATH" );
+            Die ( );     
+        }
+    }
+
+    public void Alive()
+    {
+
+        Time.timeScale = 1;
+
+        if (playerAliveEvent != null)
+        {
+            playerAliveEvent ( );
+        }
+    }
     /// <summary>
     /// Kuolllessa tapahtuvat jutut
     /// </summary>
     public void Die ( )
-    {
+    {     
         if ( playerDeathEvent != null )
         {
             playerDeathEvent ( transform );
         }
+
+        //AVAA UI DEATH CLASS , kun semmonen löytyy.
+
+        //Vois tehdä GetAreaName Jonnekki missä ilmoitetaan areanimestä ui
+         
         Debug.Log ( "I'm Dead" );
     }
 
@@ -695,35 +853,15 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D ( Collision2D collision )
     {
 
-        //tästä on toinenkin check, mutta toistaiseksi ei viiti ottaa poiskaan
-        if ( collision.gameObject.CompareTag ( "Ground" ) )
-        {
-            isAir = false;
-            isWallJump = false;
-        }
-
-        //tagin voisi muuttaa myös interactableWorldObject tai joksikin oviin ja näihin boxeihin, toisaalta jos avaimia ja muita tehdään niin varmaan olisi hyvä tietää mikä on kyseessä.
-        if ( collision.gameObject.CompareTag ( "TreasureChest" ) )
-        {
-            isAir = false;
-            isGrounded = true;
-        }
-
         //Seinästä seinähyppy hetkellisesti mahdolliseksi
         if ( collision.gameObject.CompareTag ( "Wall" ) )
         {
 
-            isWallJump = true;
-            StartCoroutine ( WallJumpRanOut ( ) );
+            canWallJump = true;
+            wallNormal = collision.contacts [ 0 ].normal;
+            Debug.DrawRay ( collision.contacts [ 0 ].point, wallNormal );
+            //StartCoroutine ( WallJumpRanOut ( ) );
 
-        }
-
-        //Enemyn päältä voi hypätä
-        if ( collision.gameObject.CompareTag ( "Enemy" ) )
-        {
-
-            isAir = false;
-            isGrounded = true;
         }
 
         //Tämä voisi olla myös collision stayssa ehkä, jos on buginen niin siirtää sinne <antaa dashaa vihujen lävitse>
@@ -740,26 +878,14 @@ public class Player : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionExit2D ( Collision2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "Ground" ) )
+        if ( collision.gameObject.CompareTag ( "Ground" ) || collision.gameObject.CompareTag ( "InteractableObject" ) || collision.gameObject.CompareTag ( "Enemy" ) )
         {
             isAir = true;
+            isGrounded = false;
         }
         if ( !isDashing && collision.gameObject.CompareTag ( "Enemy" ) )
         {
             Physics2D.IgnoreCollision ( gameObject.GetComponent<BoxCollider2D> ( ), collision.collider, false );
-        }
-    }
-
-    /// <summary>
-    /// Aukaisee oven tai arkun e näppäimestä, tähän voi lisätä muitakin
-    /// </summary>
-    /// <param name="collision"></param>
-    private void OnCollisionStay2D ( Collision2D collision )
-    {
-
-        if ( collision.gameObject.CompareTag ( "TreasureChest" ) && Input.GetButton ( "Interaction" ) )
-        {
-            collision.gameObject.SendMessage ( "Aukene" );
         }
     }
 
@@ -782,7 +908,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds ( 0.2f );
         Debug.Log ( "Wall Jump Ran Out" );
-        isWallJump = false;
+        canWallJump = false;
     }
 
     IEnumerator DashTime ( )

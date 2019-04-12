@@ -79,34 +79,34 @@ public class WeaponPlaceHolder : MonoBehaviour
     //Asettaa Esineen käyttöön
     public Item NewWeapon ( Item newWeapon )
     {
-        Debug.Log ( newWeapon );
-        if ( newWeapon != null )
-        {
-            Debug.Log ( newWeapon.weaponDamage );
-            Debug.Log ( newWeapon.weaponSpeed );
-            Debug.Log ( newWeapon.itemSprite );
-            Debug.Log ( newWeapon.itemInventoryImage );
-        }
+        //Debug.Log ( newWeapon );
+        //if ( newWeapon != null )
+        //{
+        //    Debug.Log ( newWeapon.weaponDamage );
+        //    Debug.Log ( newWeapon.weaponSpeed );
+        //    Debug.Log ( newWeapon.itemSprite );
+        //    Debug.Log ( newWeapon.itemInventoryImage );
+        //}
 
-        Debug.Log ( _currentWeapon );
-        if ( _currentWeapon != null )
-        {
-            Debug.Log ( _currentWeapon.weaponDamage );
-            Debug.Log ( _currentWeapon.weaponSpeed );
-            Debug.Log ( _currentWeapon.itemSprite );
-            Debug.Log ( _currentWeapon.itemInventoryImage );
-        }
+        //Debug.Log ( _currentWeapon );
+        //if ( _currentWeapon != null )
+        //{
+        //    Debug.Log ( _currentWeapon.weaponDamage );
+        //    Debug.Log ( _currentWeapon.weaponSpeed );
+        //    Debug.Log ( _currentWeapon.itemSprite );
+        //    Debug.Log ( _currentWeapon.itemInventoryImage );
+        //}
 
         Item oldWeapon = _currentWeapon;
 
-        Debug.Log ( oldWeapon );
-        if ( oldWeapon != null )
-        {
-            Debug.Log ( oldWeapon.weaponDamage );
-            Debug.Log ( oldWeapon.weaponSpeed );
-            Debug.Log ( oldWeapon.itemSprite );
-            Debug.Log ( oldWeapon.itemInventoryImage );
-        }
+        //Debug.Log ( oldWeapon );
+        //if ( oldWeapon != null )
+        //{
+        //    Debug.Log ( oldWeapon.weaponDamage );
+        //    Debug.Log ( oldWeapon.weaponSpeed );
+        //    Debug.Log ( oldWeapon.itemSprite );
+        //    Debug.Log ( oldWeapon.itemInventoryImage );
+        //}
 
         _weaponSprite.sprite = newWeapon.itemSprite;
         _weaponName = newWeapon.itemName;

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7960203738025695984}
   m_Layer: 0
-  m_Name: Door_root
+  m_Name: Door_root_with_lever
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,6 +42,10 @@ PrefabInstance:
     - target: {fileID: 1384855233, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
       propertyPath: m_Name
       value: WoodenDoorRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 1384855233, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
+      propertyPath: m_TagString
+      value: InteractableObject
       objectReference: {fileID: 0}
     - target: {fileID: 1384855236, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -122,6 +126,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DoorLever
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061881, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: m_TagString
+      value: InteractableObject
       objectReference: {fileID: 0}
     - target: {fileID: 2349670892452061882, guid: f60e3f0fc0e047b40990ab02c85f858a,
         type: 3}

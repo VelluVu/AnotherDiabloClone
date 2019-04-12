@@ -25,15 +25,13 @@ MonoBehaviour:
   itemLevel: 0
   tags: 
   attributes: []
+  randomAttributes: 1
   equippable: 1
   consumable: 0
   stackable: 0
   mainHand: 0
   offHand: 0
-  damageMin: 0
-  damageMax: 0
-  armor: 0
   armorSlot: 1
-  potency: 0
+  consumablePotency: 0
   buyPrice: 0
   sellPrice: 0

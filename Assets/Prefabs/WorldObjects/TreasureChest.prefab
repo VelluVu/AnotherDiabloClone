@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1008158259156194147}
   m_Layer: 0
   m_Name: TreasureChest
-  m_TagString: TreasureChest
+  m_TagString: InteractableObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

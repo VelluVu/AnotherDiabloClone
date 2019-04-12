@@ -224,7 +224,7 @@ MonoBehaviour:
     lastBaseValue: 0
     _value: 0
   enemyType: 0
-  groundEnemyType: 0
+  groundEnemyType: 7
   flyingEnemyType: 0
   bossEnemyType: 0
   enemyVariations: 

@@ -6,7 +6,8 @@ public enum ProjectileType
 {
     Arrow,
     MagicMissile,
-    Rock
+    Rock,
+    ThrowingAxe
 }
 
 public enum WeaponType
@@ -55,6 +56,7 @@ public enum GroundEnemyType
     Ghoul,
     PoisonToad,
     ParkRanger,
+    egg,
     none
 }
 
@@ -129,3 +131,11 @@ public enum ArmorSlot
 {
     None,Helm,Chest,Pants,Boots,Shoulder,Bracer,Glove,Belt,Mainhand,Offhand,Ring,Necklace,Consumable
 }
+
+public enum AreaName
+{
+    Area1,
+    Area2,
+    Area3,
+}
+

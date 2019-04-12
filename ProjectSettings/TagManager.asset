@@ -16,6 +16,8 @@ TagManager:
   - DamageText
   - LootText
   - EnemySpawn
+  - LootHolder
+  - InteractableObject
   layers:
   - Default
   - TransparentFX
@@ -34,8 +36,8 @@ TagManager:
   - LootText
   - Loot
   - Gore
-  - 
-  - 
+  - MouseOverUILayer
+  - InteractableObject
   - 
   - 
   - 

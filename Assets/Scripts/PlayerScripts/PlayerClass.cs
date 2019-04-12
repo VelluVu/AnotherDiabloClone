@@ -23,6 +23,7 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat moveSpeed;
     public CharacterStat jumpForce;
     public CharacterStat extraJumpForce;
+    public CharacterStat extraWallJumpForce;
     #endregion
 
     #region CombatStats
@@ -35,16 +36,28 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat mana;
     public CharacterStat stamina;
     public CharacterStat armor;
-
+    public CharacterStat healthRegeneration;
+    public CharacterStat healthOnKill;
+    
+    public CharacterStat cooldownReduction;
     public CharacterStat criticalHitChance;
     public CharacterStat criticalHitDamage;
+    public CharacterStat manaCostReduction;
+    public CharacterStat meleeDamageReduction;
+    public CharacterStat rangedDamageReduction;
+   
     #region elemental resistances
     public CharacterStat fireResistance;
     public CharacterStat coldResistance;
     public CharacterStat poisonResistance;
     public CharacterStat lightningResistance;
     public CharacterStat physicalResistance;
+    public CharacterStat allResistance;
     #endregion
+    #endregion
+    #region Utility Stats
+    public CharacterStat goldFind;
+    public CharacterStat magicFind;
     #endregion
 
     //Tässä vois olla vaikka boostit jne..
@@ -70,10 +83,7 @@ public class PlayerClass : MonoBehaviour
     public static event PassiveManaRegenDelegate passiveManaRegenEvent;
     #endregion
 
-    #region displayStats
-    public TMP_Text leftSmallStatsText;
-    public TMP_Text rightSmallStatsText;
-    #endregion
+    
 
     #region bools
     public bool fullHealth = false; // if health is full
@@ -143,7 +153,7 @@ public class PlayerClass : MonoBehaviour
             health.RemoveAllModifiers ( );
             health.BaseValue = maxHealth.Value;
             fullHealth = true;
-            Debug.Log ( health.Value );
+            //Debug.Log ( health.Value );
 
 
         }
@@ -242,6 +252,8 @@ public class PlayerClass : MonoBehaviour
         extraJumpForce.BaseValue = classes [ chosenClass ]._extraJumpForce;
         moveSpeed.BaseValue = classes [ chosenClass ]._moveSpeed;
         jumpForce.BaseValue = classes [ chosenClass ]._jumpForce;
+        extraWallJumpForce.BaseValue = classes [ chosenClass ]._extraWallJumpForce;
+
         baseDamage.BaseValue = classes [ chosenClass ]._baseDamage;
         baseAttackSpeed.BaseValue = classes [ chosenClass ]._baseAttackSpeed;
         health.BaseValue = classes [ chosenClass ]._health;
@@ -250,9 +262,15 @@ public class PlayerClass : MonoBehaviour
         armor.BaseValue = classes [ chosenClass ]._armor;
         maxHealth.BaseValue = classes [ chosenClass ]._maxHealth;
         maxMana.BaseValue = classes [ chosenClass ]._maxMana;
+        healthRegeneration.BaseValue = classes[chosenClass]._healthRegeneration;
+        healthOnKill.BaseValue = classes[chosenClass]._healthOnKill;
 
+        cooldownReduction.BaseValue = classes[chosenClass]._cooldownReduction;
         criticalHitChance.BaseValue = classes [ chosenClass ]._criticalHitChance;
         criticalHitDamage.BaseValue = classes [ chosenClass ]._criticalHitDamage;
+        manaCostReduction.BaseValue = classes[chosenClass]._manaCostReduction;
+        meleeDamageReduction.BaseValue = classes[chosenClass]._meleeDamageReduction;
+        rangedDamageReduction.BaseValue = classes[chosenClass]._rangedDamageReduction;
 
 
         fireResistance.BaseValue = classes [ chosenClass ]._fireResistance;
@@ -260,6 +278,10 @@ public class PlayerClass : MonoBehaviour
         poisonResistance.BaseValue = classes [ chosenClass ]._poisonResistance;
         lightningResistance.BaseValue = classes [ chosenClass ]._lightningResistance;
         physicalResistance.BaseValue = classes [ chosenClass ]._physicalResistance;
+        allResistance.BaseValue = classes[chosenClass]._allResistance;
+
+        goldFind.BaseValue = classes[chosenClass]._goldFind;
+        magicFind.BaseValue = classes[chosenClass]._magicFind;
 
         strength.BaseValue = classes [ chosenClass ]._strength;
         dexterity.BaseValue = classes [ chosenClass ]._dexterity;
@@ -271,11 +293,9 @@ public class PlayerClass : MonoBehaviour
 
     public void BuildSmallBoxStatsText ( )
     {
-        leftSmallStatsText.text = "Strength: " + strength.Value.ToString ( ) + "\nDexterity: " + dexterity.Value.ToString ( )
-            + "\nEndurance: " + endurance.Value.ToString ( ) + "\nEnergy: " + energy.Value.ToString ( );
-        rightSmallStatsText.text = "Armor: " + armor.Value.ToString ( ) + "\nHealth: " + maxHealth.Value.ToString ( ) + "\nMana " + maxMana.Value.ToString ( )
-            + "\nStamina: " + stamina.Value.ToString ( );
+       
         BigStatsBox.instance.BuildText ( );
+        
 
     }
     public void AddToList ( ) // tarkista että sama järjestys joka on enumissa stat
@@ -302,6 +322,17 @@ public class PlayerClass : MonoBehaviour
         listCharacterStats.Add ( maxMana ); //19
         listCharacterStats.Add ( criticalHitChance ); //20
         listCharacterStats.Add ( criticalHitDamage ); //21
+        listCharacterStats.Add (cooldownReduction);//22
+        listCharacterStats.Add(allResistance); //23
+        listCharacterStats.Add(goldFind); //24
+        listCharacterStats.Add(magicFind); //25
+        listCharacterStats.Add(healthRegeneration);//26
+        listCharacterStats.Add(manaCostReduction);//27
+        listCharacterStats.Add(meleeDamageReduction);//28
+        listCharacterStats.Add(rangedDamageReduction);//29
+        listCharacterStats.Add(healthOnKill);//30
+
+
 
 
     }
@@ -315,7 +346,9 @@ public enum Stat // tarkista että on samassa järjesyksessä mikä addToList
     fireResistance, coldResistance, poisonResistance,
     lightningResistance, Strength, Dexterity,
     Endurance, Energy, physicalResistance, maxHealth, maxMana,
-    criticalHitChance, criticalHitDamage,
-
-
+    criticalHitChance, criticalHitDamage,cooldownReduction,allResistance,
+    goldFind,magicFind,healthRegeneration,manaCostReduction,meleeDamageReduction,
+    rangedDamageReduction,healthOnKill
+    
 }
+

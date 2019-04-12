@@ -15,9 +15,10 @@ MonoBehaviour:
   _name: Jesse
   _className: JumalanPoeka
   _classType: 0
-  _moveSpeed: 50
-  _jumpForce: 5
-  _extraJumpForce: 60
+  _moveSpeed: 80
+  _jumpForce: 800
+  _extraJumpForce: 200
+  _extraWallJumpForce: 150
   _baseDamage: 5
   _baseAttackSpeed: 1
   _maxHealth: 100
@@ -26,11 +27,22 @@ MonoBehaviour:
   _mana: 100
   _stamina: 100
   _armor: 0
+  _cooldownReduction: 0
+  _criticalHitChance: 0
+  _criticalHitDamage: 0
   _fireResistance: 0
   _coldResistance: 0
   _poisonResistance: 0
   _lightningResistance: 0
   _physicalResistance: 0
+  _allResistance: 0
+  _goldFind: 0
+  _magicFind: 0
+  _healthRegeneration: 0
+  _manaCostReduction: 0
+  _meleeDamageReduction: 0
+  _rangedDamageReduction: 0
+  _healthOnKill: 0
   _strength: 10
   _dexterity: 10
   _endurance: 10

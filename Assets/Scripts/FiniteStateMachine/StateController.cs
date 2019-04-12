@@ -122,12 +122,14 @@ public class StateController : MonoBehaviour
         leftDirection = new Vector3 ( 0, -180, 0 );
         rightDirection = new Vector3 ( 0, 0, 0 );
         attackRdy = true;
-
+        aiActive = true; //Asetetaan herätessä aktiiviseksi
     }
 
     private void OnEnable ( )
     {
         Player.playerDealDamageEvent += TakeDamage;
+        Player.playerDeathEvent += PlayerIsDeadWeWin;
+        CheckPoint.checkPointEvent += DestroySpawnings;
         enemyTakeDamageEvent += OnEnemyTakeDamage;
         SpiderEgg.hatchEvent += Hatched;
     }
@@ -135,6 +137,8 @@ public class StateController : MonoBehaviour
     private void OnDisable ( )
     {
         Player.playerDealDamageEvent -= TakeDamage;
+        Player.playerDeathEvent -= PlayerIsDeadWeWin;
+        CheckPoint.checkPointEvent -= DestroySpawnings;
         enemyTakeDamageEvent -= OnEnemyTakeDamage;
         SpiderEgg.hatchEvent -= Hatched;
     }
@@ -150,6 +154,10 @@ public class StateController : MonoBehaviour
     private void Update ( )
     {
         //Debug.Log ( currentState.name );
+        if ( Input.GetButtonDown ( "Submit" ) )
+        {
+            aiActive = true;
+        }
 
         if ( !aiActive )
         {
@@ -232,6 +240,13 @@ public class StateController : MonoBehaviour
         }
     }
 
+    public void DestroySpawnings()
+    {
+        if ( enemyStats.groundEnemyType == GroundEnemyType.SpiderLing || enemyStats.groundEnemyType == GroundEnemyType.egg || enemyStats.groundEnemyType == GroundEnemyType.Splitter )
+        {
+            Destroy ( gameObject );
+        }
+    }
     /// <summary>
     /// Perus liikkumisen animointi nopeuksien mukaan
     /// </summary>
@@ -355,6 +370,12 @@ public class StateController : MonoBehaviour
             }
         }
 
+    }
+
+    public void PlayerIsDeadWeWin(Transform pTransform)
+    {
+        aiActive = false; // lopettaa toiminnan kun pelaaja kuolee
+  
     }
 
     public void Die ( )

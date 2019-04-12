@@ -16,9 +16,21 @@ public class CheckPoint : MonoBehaviour
     public GameObject checkPointMenu;
     bool interactingCheckPoint;
     bool ableToInteractCheckPoint;
+    public AreaName areaName;
 
     public delegate void CheckPointDelegate (  );
     public static event CheckPointDelegate checkPointEvent;
+
+
+    private void OnEnable ( )
+    {
+        Player.playerDeathEvent += ResetPlayerPosition;
+    }
+
+    private void OnDisable ( )
+    {
+        Player.playerDeathEvent -= ResetPlayerPosition;
+    }
 
     private void OnTriggerEnter2D ( Collider2D collision )
     {
@@ -59,6 +71,16 @@ public class CheckPoint : MonoBehaviour
             interactingCheckPoint = false;
            
             Time.timeScale = 1;
+        }
+    }
+
+    public void ResetPlayerPosition( Transform transform )
+    {
+        transform.position = this.transform.position;
+
+        if ( checkPointEvent != null )
+        {
+            checkPointEvent ( );
         }
     }
 }

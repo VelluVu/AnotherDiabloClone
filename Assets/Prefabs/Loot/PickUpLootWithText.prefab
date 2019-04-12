@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4df4256ef5da0a478a61aab4bdde633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setItemLevelByPlayerLevel: 0
   loot: {fileID: 0}
   rLoot: {fileID: 0}
   pickedUp: 0
@@ -170,13 +171,11 @@ MonoBehaviour:
   stackable: 0
   mainHand: 0
   offHand: 1
-  damageMin: 0
-  damageMax: 0
-  armor: 3
   armorSlot: 0
-  potency: 0
+  consumablePotency: 0
   buyPrice: 0
   sellPrice: 0
+  originLoot: {fileID: 0}
 --- !u!50 &4146536403548113096
 Rigidbody2D:
   serializedVersion: 4

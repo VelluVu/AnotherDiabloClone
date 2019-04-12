@@ -124,16 +124,24 @@ public class RollAttribute : MonoBehaviour
     }
     public string createText()
     {
-        string returnText;
-        if (theStat == Stat.BaseDamage)
+        string returnText = "";
+        if(statModType == StatModType.Flat)
         {
-            returnText = "+" + "<color=yellow>" + value.ToString() + "-" +value2Min.ToString()+"</color> " + attributeName;
+        
+            if (theStat == Stat.BaseDamage)
+            {
+                returnText = "+" + "<color=yellow>" + value.ToString() + "-" +value2Min.ToString()+"</color> " + attributeName;
+            }
+            else
+            {
+                returnText = "+" + "<color=yellow>" + value.ToString() + "</color> " + attributeName;
+            }
         }
-        else
+        else if(statModType == StatModType.PercentAdd)
         {
-            returnText = "+" + "<color=yellow>" + value.ToString() + "</color> " + attributeName;
+            returnText = "+" + "<color=yellow>" + value.ToString() + "%</color> " + attributeName;
         }
-       
+
 
         return returnText;
     }

@@ -9,6 +9,7 @@ public class SpiderEgg : MonoBehaviour
     public float health;
     public List<GameObject> spiderlings = new List<GameObject> ( );
     public float hatchTime;
+    public GroundEnemyType imEaster;
 
     public delegate void HatchDelegate( GameObject parent );
     public static event HatchDelegate hatchEvent;

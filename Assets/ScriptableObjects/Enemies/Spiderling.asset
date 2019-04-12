@@ -28,7 +28,7 @@ MonoBehaviour:
   _physicalResistance: 0
   _xpReward: 2
   _enemyType: 0
-  _groundEnemyType: 6
+  _groundEnemyType: 7
   _flyingEnemyType: 2
   _bossEnemyType: 4
   _enemyVariation: 

@@ -28,6 +28,7 @@ public class Loot : ScriptableObject
     #endregion
 
     #region bools
+    public bool randomAttributes = false;
     public bool equippable;
     public bool consumable;
     public bool stackable;

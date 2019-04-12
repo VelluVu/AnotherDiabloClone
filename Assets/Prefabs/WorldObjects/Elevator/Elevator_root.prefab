@@ -44,6 +44,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ElevatorLever
       objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061881, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
+        type: 3}
+      propertyPath: m_TagString
+      value: InteractableObject
+      objectReference: {fileID: 0}
     - target: {fileID: 2349670892452061882, guid: 9530d34d0ef15ca4faa23b9a1c1b8756,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -215,6 +220,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6888391114015236515, guid: b6af8205da593b548b8817db5772d4e5,
+        type: 3}
+      propertyPath: m_TagString
+      value: InteractableObject
       objectReference: {fileID: 0}
     - target: {fileID: 6888391114752263969, guid: b6af8205da593b548b8817db5772d4e5,
         type: 3}

@@ -12,6 +12,8 @@ public class PlayerStatsObject : ScriptableObject
     public float _moveSpeed;
     public float _jumpForce;
     public float _extraJumpForce;
+    public float _extraWallJumpForce;
+
     public float _baseDamage;
     public float _baseAttackSpeed;
     public float _maxHealth;
@@ -20,6 +22,7 @@ public class PlayerStatsObject : ScriptableObject
     public float _mana;
     public float _stamina; //rajoittaa liikkumista jotenkin?
     public float _armor;
+    public float _cooldownReduction;
     public float _criticalHitChance;
     public float _criticalHitDamage;
     public float _fireResistance;
@@ -27,6 +30,14 @@ public class PlayerStatsObject : ScriptableObject
     public float _poisonResistance;
     public float _lightningResistance;
     public float _physicalResistance;
+    public float _allResistance;
+    public float _goldFind;
+    public float _magicFind;
+    public float _healthRegeneration;
+    public float _manaCostReduction;
+    public float _meleeDamageReduction;
+    public float _rangedDamageReduction;
+    public float _healthOnKill;
 
     public int _strength;
     public int _dexterity;

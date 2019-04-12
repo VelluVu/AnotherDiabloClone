@@ -697,6 +697,8 @@ GameObject:
   - component: {fileID: 2482208905895880362}
   - component: {fileID: 244747911}
   - component: {fileID: 63406691}
+  - component: {fileID: 2061390177}
+  - component: {fileID: 2061390178}
   m_Layer: 13
   m_Name: MainHero_Root
   m_TagString: Player
@@ -753,7 +755,7 @@ Rigidbody2D:
   m_Mass: 50
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -805,28 +807,44 @@ MonoBehaviour:
   feet: {fileID: 7607494358109977942}
   whatIsGround:
     serializedVersion: 2
+    m_Bits: 5120
+  groundRayLayer:
+    serializedVersion: 2
     m_Bits: 1024
   enemyLayer:
     serializedVersion: 2
     m_Bits: 4096
   main: {fileID: 0}
   off: {fileID: 0}
+  canWallJump: 0
+  isDoubleJumping: 0
+  isAir: 0
+  isJumping: 0
+  initialJump: 0
+  isWallJumping: 0
   isDashing: 0
-  isDoubleJumpEnabled: 1
-  isWallJumpEnabled: 1
-  isDashEnabled: 1
-  isGrounded: 0
-  speedScale: 1.8
+  isGrounded: 1
+  mouseOnUI: 0
+  isDoubleJumpLearned: 1
+  isWallJumpLearned: 1
+  isDashLearned: 1
+  speedScale: 1
   dashTime: 0.3
   dashCooldown: 2
   dashSpeed: 3
-  wallJumpScale: 1.6
-  airSpeed: 2
-  wallJumpPushBack: 30
+  wallJumpScale: 1
+  extraJumpScale: 1
+  jumpScale: 1
+  airSpeed: 1
+  wallJumpPushBack: 1
   jumpTime: 0.25
   groundCheckRadius: 0.2
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
+  fallToDeathTime: 2
+  lowFallDamageTime: 0.6
+  fallDamageMultiplier: 4
   extraJumps: 1
-  directionRight: 0
 --- !u!114 &244747911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,7 +878,17 @@ MonoBehaviour:
     isDirty: 1
     lastBaseValue: 0
     _value: 0
+  extraWallJumpForce:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
   baseDamage:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  baseDamageMax:
     BaseValue: 0
     isDirty: 1
     lastBaseValue: 0
@@ -900,12 +928,42 @@ MonoBehaviour:
     isDirty: 1
     lastBaseValue: 0
     _value: 0
+  healthRegeneration:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  healthOnKill:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  cooldownReduction:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
   criticalHitChance:
     BaseValue: 0
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   criticalHitDamage:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  manaCostReduction:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  meleeDamageReduction:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  rangedDamageReduction:
     BaseValue: 0
     isDirty: 1
     lastBaseValue: 0
@@ -931,6 +989,21 @@ MonoBehaviour:
     lastBaseValue: 0
     _value: 0
   physicalResistance:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  allResistance:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  goldFind:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  magicFind:
     BaseValue: 0
     isDirty: 1
     lastBaseValue: 0
@@ -970,8 +1043,6 @@ MonoBehaviour:
     isDirty: 1
     lastBaseValue: 0
     _value: 0
-  leftSmallStatsText: {fileID: 0}
-  rightSmallStatsText: {fileID: 0}
   fullHealth: 0
   fullMana: 0
   chosenClass: 0
@@ -1004,6 +1075,43 @@ MonoBehaviour:
     _value: 0
   toLevelXPMultiplier: 1.2
   statPointGain: 3
+--- !u!114 &2061390177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2482208905895880361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e68743dc325c79408b43338c8eca64c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
+  range: 0
+  duration: 0
+  heal: 0
+  damage: 0
+  damageBuff: 0
+  speedBuff: 0
+--- !u!114 &2061390178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2482208905895880361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf258f9306575b840941b8623d15ab79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb2D: {fileID: 0}
+  projectileForce: 200
+  damage: 0
+  mass: 0
+  healingEnemy: 0
+  healingPlayer: 0
 --- !u!1 &3130571970728164858
 GameObject:
   m_ObjectHideFlags: 0

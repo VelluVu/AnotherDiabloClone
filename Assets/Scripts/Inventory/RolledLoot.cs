@@ -52,6 +52,7 @@ public class RolledLoot : MonoBehaviour
     //rollaa rollattavat muuttujat lootissa ja asettaa loput muuttujat
     public RolledLoot rollLoot (Loot loot)
     {
+        
         this.itemName = loot.itemName;
         this.description = loot.description;
         this.itemID = loot.itemID;
@@ -76,8 +77,35 @@ public class RolledLoot : MonoBehaviour
         this.buyPrice = loot.buyPrice;
         this.sellPrice = loot.sellPrice;
         this.originLoot = loot;
+        RollAttributes(loot);
+       
+        return this;
+    }
+    public void RollAttributes(Loot loot)
+    {
+        List<Attribute> tempList = new List<Attribute>();
+        if (loot.randomAttributes)
+        {
+            SlotAttribute SA = AttributePerSlot.instance.findSlot(armorSlot);
+            foreach(Attribute att in SA.constantAttributes)
+            {
+                tempList.Add(att);
+            }
+            if (Rarity == Rarity.Common)
+            {
+
+                
+                tempList.Add(SA.primaryAttributes[Random.Range(0, (int)SA.primaryAttributes.Count)]);
+                tempList.Add(SA.secondaryAttributes[Random.Range(0, (int)SA.secondaryAttributes.Count)]);
+
+            }
+        }
+        else
+        {
+            tempList = loot.attributes;
+        }
         int i = 0;
-        foreach (Attribute a in loot.attributes)
+        foreach (Attribute a in tempList/*loot.attributes*/)
         {
             RollAttribute RA = gameObject.AddComponent<RollAttribute>();
             Debug.Log(attributes);
@@ -88,25 +116,24 @@ public class RolledLoot : MonoBehaviour
             {
                 RA.value = consumablePotency;
             }
-            if (RA.RollValueByItemLevels)
+            else if (RA.RollValueByItemLevels)
             {
-                RA.value = Random.Range(RA.value, RA.valueMax) * (1+itemLevel*0.2f);
+                RA.value = Random.Range(RA.value, RA.valueMax) * (1 + itemLevel * 0.2f);
                 RA.value2Min = Random.Range(RA.value2Min, RA.value2Max) * (1 + itemLevel * 0.2f);
                 RA.value = (int)RA.value;
-                RA.value2Min = (int)RA.value2Min ;
+                RA.value2Min = (int)RA.value2Min;
             }
-            /*else
+            else
             {
                 RA.value = Random.Range(RA.value, RA.valueMax);
                 RA.value2Min = Random.Range(RA.value2Min, RA.value2Max);
                 RA.value = (int)RA.value;
                 RA.value2Min = (int)RA.value2Min;
-            }*/
-          
+            }
+
             Debug.Log(attributes[i]);
             i++;
         }
-        return this;
     }
     // käytetään tiedonsiirton kun aseita equipataan tai siirettän eri inventoryslottiin
     public RolledLoot transferLoot(RolledLoot loot)

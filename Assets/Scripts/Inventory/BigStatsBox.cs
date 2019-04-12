@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class BigStatsBox : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class BigStatsBox : MonoBehaviour
     public TMP_Text detailsText;
 
     public List<TMP_Text> textList = new List<TMP_Text>();
-    
+    public List<TMP_Text> smallStatsTextList = new List<TMP_Text>();
+
+
     private void Awake()
     {
         if (instance == null)
@@ -35,11 +38,24 @@ public class BigStatsBox : MonoBehaviour
         textList[2].text = "Endurance " + PlayerClass.instance.endurance.Value;
         textList[3].text = "Energy: " + PlayerClass.instance.energy.Value;
         // Offensive Stats
-        textList[4].text = "Critical Hit Chance: " + PlayerClass.instance.criticalHitChance.Value +"%";
-        textList[5].text = "Critical Hit Damage: " + PlayerClass.instance.criticalHitDamage.Value;
-        //textList[6].text = "Energy: " + PlayerClass.instance.energy.Value;
+        textList[4].text = PlayerClass.instance.criticalHitChance.Value +"%"+" Critical Hit Chance";
+        textList[5].text = PlayerClass.instance.criticalHitDamage.Value + "%"+" Critical Hit Damage";
+        //textList[6].text = ": " + PlayerClass.instance.energy.Value;
         //textList[7].text = "Energy: " + PlayerClass.instance.energy.Value;
 
+
+
+
+        smallStatsTextList[0].text = "Strength: " + PlayerClass.instance.strength.Value.ToString();
+        smallStatsTextList[1].text = "Dexterity:" + PlayerClass.instance.dexterity.Value.ToString();
+        smallStatsTextList[2].text = "Endurance " + PlayerClass.instance.endurance.Value.ToString();
+        smallStatsTextList[3].text = "Energy: " + PlayerClass.instance.energy.Value.ToString();
+        smallStatsTextList[4].text = "Armor: " + PlayerClass.instance.armor.Value.ToString();
+        smallStatsTextList[5].text = "Health: " + PlayerClass.instance.maxHealth.Value.ToString();
+        smallStatsTextList[6].text = "Mana: " + PlayerClass.instance.maxMana.Value.ToString();
+        smallStatsTextList[7].text = "Stamina: " + PlayerClass.instance.stamina.Value.ToString();
+
+       
     }
     public void Open(bool open)
     {
@@ -56,6 +72,6 @@ public class BigStatsBox : MonoBehaviour
             detailsButton.onClick.AddListener(() => Open(true));
         }
     }
-    
 
+    
 }

@@ -150,7 +150,7 @@ public class Projectile : MonoBehaviour
             }
             else if ( _projectiletype == ProjectileType.Rock )
             {
-               
+                Destroy ( gameObject, 2f );
             }
             else
             {

@@ -25,8 +25,6 @@ public class SpiderLayEggDecision : Decision
             {
                 controller.chaseTarget = col.gameObject.transform;
 
-                Debug.Log ( Vector2.Distance ( controller.transform.position, controller.chaseTarget.position ) );
-
                 if ( Vector2.Distance ( controller.transform.position, controller.chaseTarget.position ) > safeDistance )
                 {
                     return true;
