@@ -8,10 +8,7 @@ using UnityEngine;
 [System.Serializable]
 public class Transition
 {
-    [Header ("Päätös minkä perusteella vaihtaa statee")]
-    public Decision decision;
-    [Header ( "State mihin siirrytään jos päätös palauttaa true" )]
-    public State trueState;
-    [Header ( "State mihin vaihdetaan jos päätös palauttaa false" )]
-    public State falseState;
+    [Tooltip ("Päätös minkä perusteella vaihtaa statee")] public Decision decision;
+    [Tooltip ( "State mihin siirrytään jos päätös palauttaa true" )] public State trueState;
+    [Tooltip ( "State mihin vaihdetaan jos päätös palauttaa false" )] public State falseState;
 }

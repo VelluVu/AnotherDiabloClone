@@ -20,7 +20,7 @@ public class MouseOverUI : MonoBehaviour
         if( EventSystem.current.IsPointerOverGameObject()) { 
       
             ReferenceHolder.instance.player.SetMouseOnUI ( true );
-            Debug.Log("TRUEEE");
+            
         }
         else
         {

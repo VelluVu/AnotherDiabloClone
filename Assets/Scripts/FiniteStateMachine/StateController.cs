@@ -7,16 +7,17 @@ using UnityEngine;
 /// <summary>
 /// Yleinen StateContoller aseta viholliselle componentiksi ja huolehdi että animatorin animaatio parametrit on samalla nimellä, sekä silmät asetettu paikoilleen.
 /// </summary>
+[RequireComponent (typeof(EnemyStats))]
 public class StateController : MonoBehaviour
 {
 
-    [Header ( "Currently In This State" )]
+    [Tooltip ( "Currently In This State" )]
     public State currentState;
-    [Header ( "State To Remain" )]
+    [Tooltip ( "State To Remain" )]
     public State remainState;
 
     //EnemyStats? Scriptable Object Class?
-    [Header ( "EnemyStats Class" )]
+    [Tooltip ( "EnemyStats Class" )]
     public EnemyStats enemyStats;
 
     //Jos näissä haluaa saada selville tietyn vihollisen niin lisätään Transform/GameObject parametri
@@ -44,51 +45,35 @@ public class StateController : MonoBehaviour
     #endregion
 
     #region Public Variables
-    [Header ("For Enemies that jump on basic attack")]
+    [Header ("Range and scalar variables")]
+    [Tooltip ( "For Enemies that jump on basic attack")]
     public float attackJump; //could be in enemyStats
-    [Header("Scalar for movespeed")]
-    public float moveSpeedScale; //could be in enemyStats
-    [Header("The Melee attack state distance from enemy eyes to target")]
-    public float attackDistance; //could be in enemyStats
-    [Header("Duration for Enemy search after losing the target")]
-    public float searchDuration; //could be in enemyStats
-    [Header("Enemy spot range, from eyes to the target. Used in patrol to chasestate")]
-    public float spotDistance; //could be in enemyStats
-    [Header("Raycast total distance")]
-    public float sightDistance; //could be in enemyStats
-    [Header("Turns on when event happens nearby")]
-    public float alertedByEventDuration;
-    [Header( "The Elapsed time in current state")]
-    public float stateTimeElapsed;
-
-    [Header ("Radius for circleCasts")]
-    public float radius;
-    [Header( "Radius for hunching different events and flying enemys spot distance")]
-    public float senseArea;
+    [Tooltip ( "Scalar for movespeed")] [Range ( 0.1f, 5f )] public float moveSpeedScale; //could be in enemyStats
+    [Tooltip ( "The Melee attack state distance from enemy eyes to target")] [Range ( 0.1f, 5f )] public float attackDistance; //could be in enemyStats
+    [Tooltip ( "Duration for Enemy search after losing the target")] [Range ( 0.1f, 10f )] public float searchDuration; //could be in enemyStats
+    [Tooltip ( "Enemy spot range, from eyes to the target. Used in patrol to chasestate")] [Range ( 0.1f, 10f )] public float spotDistance; //could be in enemyStats
+    [Tooltip ( "Raycast total distance")] [Range ( 0.1f, 20f )] public float sightDistance; //could be in enemyStats
+    [Tooltip ( "Turns on when event happens nearby")] [Range ( 0.1f, 10f )] public float alertedByEventDuration;
+    [Tooltip ( "The Elapsed time in current state")] public float stateTimeElapsed;
+    [Tooltip ( "Radius for circleCasts")] [Range ( 0.1f, 5f )] public float radius;
+    [Tooltip ( "Radius for hunching different events and flying enemys spot distance")] [Range ( 0.1f, 5f )] public float senseArea;
 
     [Header ("Flying enemy motion variables")]
-    public float amplitude;
-    public float frequency;
-    public float flyingPatrolDirectionTime;
+    [Range ( 0.1f, 5f )] public float amplitude;
+    [Range ( 0.1f, 5f )] public float frequency;
+    [Range ( 0.1f, 5f )] public float flyingPatrolDirectionTime;
     #endregion
 
     #region Necessary Variables
-    [Header ("Transform for Look and Ledgecheck Raycasts")]
-    public Transform eyes;
+    [Tooltip ( "Transform for Look and Ledgecheck Raycasts")] public Transform eyes;
+    [Tooltip ( "Enemy Back")] public Transform back;
+    [Tooltip ( "Head position and possibly for hit data etc.")] public GameObject head;
 
-    [Header ("Enemy Back")]
-    public Transform back;
+    [Tooltip ( "LayerMasks for raycast detection")] public LayerMask enemyLayer;
+    [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask playerLayer;
 
-    [Header ("Head position and possibly for hit data etc.")]
-    public GameObject head;
-
-    [Header ("LayerMasks for raycast detection")]
-    public LayerMask enemyLayer;
-    public LayerMask playerLayer;
-
-    [Header ("Humanoid enemy can wield weapons")]
-    public EnemyWeaponHolder weaponLeft;
-    public EnemyWeaponHolder weaponRight;
+    [Tooltip ( "Humanoid enemy weapons")] public EnemyWeaponHolder weaponLeft;
+    [Tooltip ( "Humanoid enemy weapons" )] public EnemyWeaponHolder weaponRight;
 
     [HideInInspector] public Transform chaseTarget;
     [HideInInspector] public Animator animator;
@@ -102,6 +87,7 @@ public class StateController : MonoBehaviour
     #endregion
 
     #region Booleans
+    [Header ("Enemy Booleans")]
     public bool dirRight;
     public bool aiActive;
     public bool attackRdy;

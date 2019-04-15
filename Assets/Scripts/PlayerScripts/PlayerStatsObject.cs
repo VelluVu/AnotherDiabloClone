@@ -7,8 +7,10 @@ public class PlayerStatsObject : ScriptableObject
 {
 
     public string _name = "Jesse";
-    public string _className = "JumalanPoeka";
+    public string _className = "Mercenary";
     public ClassType _classType;
+
+    [Header ("Player Stats")]
     public float _moveSpeed;
     public float _jumpForce;
     public float _extraJumpForce;

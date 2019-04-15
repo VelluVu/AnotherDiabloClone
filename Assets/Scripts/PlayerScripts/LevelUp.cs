@@ -10,13 +10,13 @@ public class LevelUp : MonoBehaviour
 {
   
     public CharacterStat currentXP;
-    [Header ("TO BOOST XP gains, add modifiers to this stat ( 1.0 +)")]
+    [Tooltip ( "TO BOOST XP gains, add modifiers to this stat ( 1.0 +)")]
     public CharacterStat xpBoost;
-    [Header ("XP reguired to Level Up")]
+    [Tooltip ( "XP reguired to Level Up")]
     public CharacterStat toLevelXP;
-    [Header ("XP reguirement to next level multiplier")]
+    [Tooltip ( "XP reguirement to next level multiplier")]
     public float toLevelXPMultiplier;
-    [Header ( "STATPOINTS gained on level up" )]
+    [Tooltip ( "STATPOINTS gained on level up" )]
     public float statPointGain;
 
     public delegate void OnLevelUpDelegate ( );

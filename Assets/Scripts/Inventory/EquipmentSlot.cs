@@ -80,11 +80,11 @@ public class EquipmentSlot : MonoBehaviour
         item.UnEquip();
         if (armorSlot == ArmorSlot.Mainhand)
         {
-            hand[0].UnEquipWeapon();
+            //hand[0].UnEquipWeapon();
         }
         if (armorSlot == ArmorSlot.Offhand)
         {
-            hand[1].UnEquipWeapon();
+            //hand[1].UnEquipWeapon();
         }
         foreach (var v in PlayerInventory.instance.equipmentConnect) // check which equipment position this can be placed in
         {

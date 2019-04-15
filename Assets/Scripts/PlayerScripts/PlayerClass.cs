@@ -11,7 +11,7 @@ public class PlayerClass : MonoBehaviour
 {
 
     public static PlayerClass instance; // tekee tästä skriptin joka löytyy PlayerClass.instance
-    [Header ( "This List Includes all possible classes" )]
+    [Tooltip ( "This List Includes all possible classes" )]
     public List<PlayerStatsObject> classes = new List<PlayerStatsObject> ( );
 
     public List<CharacterStat> listCharacterStats = new List<CharacterStat> ( );
@@ -27,6 +27,7 @@ public class PlayerClass : MonoBehaviour
     #endregion
 
     #region CombatStats
+    [Header ("All Player Stats")]
     public CharacterStat baseDamage;
     public CharacterStat baseDamageMax;
     public CharacterStat baseAttackSpeed;
@@ -55,6 +56,7 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat allResistance;
     #endregion
     #endregion
+
     #region Utility Stats
     public CharacterStat goldFind;
     public CharacterStat magicFind;
@@ -83,8 +85,6 @@ public class PlayerClass : MonoBehaviour
     public delegate void PassiveManaRegenDelegate ( float amount );
     public static event PassiveManaRegenDelegate passiveManaRegenEvent;
     #endregion
-
-    
 
     #region bools
     public bool fullHealth = false; // if health is full

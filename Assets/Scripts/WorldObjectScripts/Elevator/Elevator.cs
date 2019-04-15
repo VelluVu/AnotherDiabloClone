@@ -5,17 +5,20 @@ using UnityEngine;
 public class Elevator : MonoBehaviour
 {
 
-    public float elevateSpeed;
-    public bool up;
-    public float maxDistance;
+    [Range ( 0.1f, 5f )] public float elevateSpeed;   
+    [Range ( 0f, 25f )] public float maxDistance;
+
     Rigidbody2D rb;
     Vector2 pos;
     ElevatorTrigger trig;
+    Transform next;
+
     public List<ElevatorLever> levers = new List<ElevatorLever> ( );
     public List<Transform> checkpoints = new List<Transform> ( );
+
+    public bool up;
     public bool started;
-    Transform next;
-    public bool isSimpleUpDownElevator;
+    [Tooltip ("Uncheck to make it work with checkpoints")] public bool isSimpleUpDownElevator;
 
     public delegate void ElevatorMovedDelegate ( GameObject elevator, int checkpointIndex );
     public static event ElevatorMovedDelegate elevatorMovedEvent;
@@ -40,13 +43,13 @@ public class Elevator : MonoBehaviour
     private void OnEnable ( )
     {
         elevatorMovedEvent += OnLastCheckPoint;
-     
+
     }
 
     private void OnDisable ( )
     {
         elevatorMovedEvent -= OnLastCheckPoint;
-    
+
     }
 
     private void Update ( )
@@ -88,7 +91,7 @@ public class Elevator : MonoBehaviour
         {
             Traverse ( );
 
-            
+
         }
         if ( !started )
         {
@@ -104,19 +107,14 @@ public class Elevator : MonoBehaviour
 
     public void Traverse ( )
     {
-        if ( Vector2.Distance ( transform.position, next.position ) > 0 )
+        if ( Vector2.Distance ( transform.position, next.position ) != 0 )
         {
-            transform.Translate ( ( next.position - transform.position ) * elevateSpeed * Time.deltaTime );
+            //transform.Translate ( ( next.position - transform.position ) * elevateSpeed * Time.deltaTime );
+            transform.position = Vector3.MoveTowards ( transform.position, next.position, elevateSpeed * Time.deltaTime );
         }
-    }
-
-    private void OnTriggerEnter2D ( Collider2D collision )
-    {     
-            if ( collision.gameObject.transform == next )
-            {
-                Debug.Log ( collision.gameObject.name );
-
-            if ( checkpoints [ checkpoints.Count - 1 ] == collision.gameObject.transform )
+        if ( Vector2.Distance ( transform.position, next.position ) <= 0.1f )
+        {
+            if ( checkpoints [ checkpoints.Count - 1 ] == next.gameObject.transform )
             {
                 Debug.Log ( "End Checkpoint" );
                 if ( elevatorMovedEvent != null )
@@ -124,7 +122,7 @@ public class Elevator : MonoBehaviour
                     elevatorMovedEvent ( gameObject, checkpoints.Count - 1 );
                 }
             }
-            else if ( checkpoints [ 0 ] == collision.gameObject.transform )
+            else if ( checkpoints [ 0 ] == next.gameObject.transform )
             {
                 Debug.Log ( "Start Checkpoint" );
                 if ( elevatorMovedEvent != null )
@@ -136,17 +134,58 @@ public class Elevator : MonoBehaviour
             {
                 if ( up )
                 {
-                    Debug.Log ( collision.gameObject.name );
-                    next = checkpoints [ checkpoints.IndexOf ( collision.gameObject.transform ) + 1 ];
+                    Debug.Log ( next.gameObject.name );
+                    next = checkpoints [ checkpoints.IndexOf ( next.gameObject.transform ) + 1 ];
                 }
                 else
                 {
-                    Debug.Log ( collision.gameObject.name );
-                    next = checkpoints [ checkpoints.IndexOf ( collision.gameObject.transform ) - 1 ];
+                    Debug.Log ( next.gameObject.name );
+                    next = checkpoints [ checkpoints.IndexOf ( next.gameObject.transform ) - 1 ];
                 }
             }
         }
     }
+
+    //private void OnTriggerEnter2D ( Collider2D collision )
+    //{
+
+    //    if ( collision.gameObject.transform == next )
+    //    {
+
+    //        Debug.Log ( collision.gameObject.name );
+
+    //        if ( checkpoints [ checkpoints.Count - 1 ] == collision.gameObject.transform )
+    //        {
+    //            Debug.Log ( "End Checkpoint" );
+    //            if ( elevatorMovedEvent != null )
+    //            {
+    //                elevatorMovedEvent ( gameObject, checkpoints.Count - 1 );
+    //            }
+    //        }
+    //        else if ( checkpoints [ 0 ] == collision.gameObject.transform )
+    //        {
+    //            Debug.Log ( "Start Checkpoint" );
+    //            if ( elevatorMovedEvent != null )
+    //            {
+    //                elevatorMovedEvent ( gameObject, 0 );
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if ( up )
+    //            {
+    //                Debug.Log ( collision.gameObject.name );
+    //                next = checkpoints [ checkpoints.IndexOf ( collision.gameObject.transform ) + 1 ];
+    //            }
+    //            else
+    //            {
+    //                Debug.Log ( collision.gameObject.name );
+    //                next = checkpoints [ checkpoints.IndexOf ( collision.gameObject.transform ) - 1 ];
+    //            }
+
+    //        }
+    //    }
+    //}
 
 
     public void SimpleElevator ( )

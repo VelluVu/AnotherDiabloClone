@@ -268,12 +268,12 @@ public class LootSlot : MonoBehaviour
     public void WeaponEquip(){
         if (item.mainHand)// laitetaan ase main handiin
         {
-            hand[0].EquipWeapon(item);
+            //hand[0].EquipWeapon(item);
 
         }
         else if (item.offHand) // laitetaan ase off handiin
         {
-            hand[1].EquipWeapon(item);
+            //hand[1].EquipWeapon(item);
 
         }
 
