@@ -27,7 +27,7 @@ public class StateController : MonoBehaviour
     public delegate void EnemyTakeDamageDelegate ( float damage );
     public static event EnemyTakeDamageDelegate enemyTakeDamageEvent;
 
-    public delegate void EnemyDealDamageDelegate ( GameObject target, float damage );
+    public delegate void EnemyDealDamageDelegate ( GameObject target, float damage, DamageType damageType ,int level);
     public static event EnemyDealDamageDelegate enemyDealDamageEvent;
 
     public delegate void EnemyDeathDelegate ( Transform transform, int xp );
@@ -63,6 +63,8 @@ public class StateController : MonoBehaviour
 
     [Header ("Radius for circleCasts")]
     public float radius;
+    [Header( "Radius for hunching different events and flying enemys spot distance")]
+    public float senseArea;
 
     [Header ("Flying enemy motion variables")]
     public float amplitude;
@@ -73,6 +75,9 @@ public class StateController : MonoBehaviour
     #region Necessary Variables
     [Header ("Transform for Look and Ledgecheck Raycasts")]
     public Transform eyes;
+
+    [Header ("Enemy Back")]
+    public Transform back;
 
     [Header ("Head position and possibly for hit data etc.")]
     public GameObject head;
@@ -105,6 +110,8 @@ public class StateController : MonoBehaviour
     public bool alertedByEvent;
     public bool notHatchedEgg;
     #endregion
+
+    
 
     private void Awake ( )
     {
@@ -233,7 +240,7 @@ public class StateController : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D ( Collision2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "TreasureChest" ) || collision.gameObject.CompareTag ( "Door" ) || collision.gameObject.CompareTag ( "Wall" ) || collision.gameObject.CompareTag ( "Enemy" ) )
+        if ( collision.gameObject.CompareTag ( "InteractableObject" ) || collision.gameObject.CompareTag ( "Enemy" ) )
         {
             if ( dirRight ) { rb.velocity += Vector2.left; dirRight = false; } else { rb.velocity += Vector2.right; dirRight = true; }
 
@@ -316,12 +323,31 @@ public class StateController : MonoBehaviour
             enemyRestoreManaEvent ( amount );
         }
     }
+    // laittaa tekemaan reapetillä damagee
+    public void setDotToTarget(GameObject target, float dotDamage, int duration, DamageType damageType)
+    {
+        StartCoroutine(dotActivated(target, dotDamage, duration, damageType));
+    }
 
+    IEnumerator dotActivated(GameObject target, float dotDamage,int duration , DamageType damageType)
+    {
+        
+        int counter = 0;
+        while(counter < duration)
+        {
+            
+            TakeDamage(target, dotDamage, damageType);
+            counter++;
+            yield return new WaitForSeconds(1);
+        }
+
+    }
+    
     /// <summary>
     /// Tekee vahinkoa pelaajaan
     /// </summary>
     /// <param name="player"></param>
-    public void DealDamage ( GameObject target, float weaponDamage )
+    public void DealDamage ( GameObject target, float weaponDamage, DamageType damageType )
     {
         if ( target != null )
         {
@@ -329,7 +355,7 @@ public class StateController : MonoBehaviour
             
             if ( enemyDealDamageEvent != null )
             {
-                enemyDealDamageEvent ( target, calculatedDamage );
+                enemyDealDamageEvent ( target, calculatedDamage, damageType,enemyStats.level);
             }
         }
     }
@@ -338,16 +364,25 @@ public class StateController : MonoBehaviour
     /// Laskee tulevan vahingon lopullisen määrän
     /// </summary>
     /// <param name="dmg">Tuleva vahinko</param>
-    public void TakeDamage ( GameObject target , float dmg )
+    public void TakeDamage ( GameObject target , float dmg, DamageType damageType )
     {
         Color color = Color.red;
+        float calculatedDamage;
 
         if ( target == gameObject )
         {
-
-            float calculatedDamage = dmg - enemyStats.armor.Value;
-
-            enemyStats.health.BaseValue -= calculatedDamage;
+            if ( damageType == DamageType.Raw )
+            {
+                color = Color.red;           
+                calculatedDamage = Mathf.Round ( dmg );
+                enemyStats.health.BaseValue -= calculatedDamage;
+            }
+            else
+            {
+                calculatedDamage = dmg - enemyStats.armor.Value;
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+                enemyStats.health.BaseValue -= calculatedDamage;
+            }
 
             if ( enemyNotifyEvent != null )
             {
@@ -432,8 +467,11 @@ public class StateController : MonoBehaviour
 
     private void OnDrawGizmos ( )
     {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere ( transform.position, senseArea );
+
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere ( transform.position, 3f );
+        Gizmos.DrawWireSphere ( transform.position, radius );      
     }
 
     #region Coroutines

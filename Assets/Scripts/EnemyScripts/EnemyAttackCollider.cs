@@ -11,7 +11,7 @@ public class EnemyAttackCollider : MonoBehaviour
 
     bool hasDealtDmg;
     public GameObject bloodSplash;
-
+    public DamageType damageType;
 
     private void Awake ( )
     {
@@ -46,7 +46,7 @@ public class EnemyAttackCollider : MonoBehaviour
             //Debug.Log ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.name + " Hits you" );
             hasDealtDmg = true;
             Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
-            gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject, 0 );
+            gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject, 0, damageType );
             StartCoroutine ( DmgCooldown ( ) );
 
         }

@@ -7,12 +7,13 @@ using Kryz.CharacterStats;
 /// </summary>
 public class EnemyStats : MonoBehaviour
 {
-    
+    [Header ("Drag and Drop Enemy Scriptable Object here")]
     public EnemyStatsObject enemy;
 
     public string myName = "Hirvitys";
 
     public int xpReward;
+    public int level;
 
     #region enemyStats
     public CharacterStat moveSpeed;
@@ -74,6 +75,7 @@ public class EnemyStats : MonoBehaviour
 
         xpReward = enemy._xpReward;
         enemyType = enemy._enemyType;
+        level = enemy._level;
         
 
         if ( enemyType == EnemyType.GroundEnemy )

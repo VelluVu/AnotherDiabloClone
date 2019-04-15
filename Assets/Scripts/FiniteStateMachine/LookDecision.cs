@@ -29,7 +29,7 @@ public class LookDecision : Decision
     {
 
         RaycastHit2D hit;
-        RaycastHit2D hitDown;
+        //RaycastHit2D hitDown;
     
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
@@ -49,26 +49,31 @@ public class LookDecision : Decision
         else
         {
 
-            hit = Physics2D.CircleCast ( controller.eyes.position, controller.radius, controller.eyes.right, controller.spotDistance, controller.playerLayer );
-            hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, -controller.eyes.up, controller.spotDistance, controller.playerLayer );
+            //hit = Physics2D.CircleCast ( controller.eyes.position, controller.radius, controller.eyes.right, controller.spotDistance, controller.playerLayer );
+            //hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, -controller.eyes.up, controller.spotDistance, controller.playerLayer );
 
-            if ( hit.collider != false  )
+            //if ( hit.collider != false  )
+            //{
+            //    if ( hit.collider.gameObject.CompareTag ( "Player" ))
+            //    {
+            //        controller.chaseTarget = hit.transform;
+            //        return true;
+            //    }
+            //}
+
+            //if ( hitDown.collider != false )
+            //{
+            //    if ( hitDown.collider.gameObject.CompareTag ( "Player" ) )
+            //    {
+            //        controller.chaseTarget = hit.transform;
+            //        return true;
+            //    }
+            //}      
+            if (Physics2D.OverlapCircle(controller.eyes.position, controller.senseArea, controller.playerLayer))
             {
-                if ( hit.collider.gameObject.CompareTag ( "Player" ))
-                {
-                    controller.chaseTarget = hit.transform;
-                    return true;
-                }
+                controller.chaseTarget = Physics2D.OverlapCircle ( controller.eyes.position, controller.senseArea, controller.playerLayer ).transform;
+                return true;
             }
-
-            if ( hitDown.collider != false )
-            {
-                if ( hitDown.collider.gameObject.CompareTag ( "Player" ) )
-                {
-                    controller.chaseTarget = hit.transform;
-                    return true;
-                }
-            }      
         }
 
         if ( controller.alertedByEvent )

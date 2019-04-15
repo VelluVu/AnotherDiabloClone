@@ -15,7 +15,7 @@ public class Loot : ScriptableObject
     public List<Sprite> equipmentSprites;
     public Sprite lootSprite; // sprite for the loot
     [SerializeField]
-    public Rarity Rarity; // item rarity
+    public Rarity rarity; // item rarity
     public int itemLevel; // the level of the item
     #endregion
 

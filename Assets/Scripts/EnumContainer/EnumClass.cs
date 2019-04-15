@@ -24,7 +24,8 @@ public enum DamageType
     Physical,
     Fire,
     Frost,
-    Poison
+    Poison,
+    Raw,
 }
 
 public enum EnemyType
@@ -137,5 +138,10 @@ public enum AreaName
     Area1,
     Area2,
     Area3,
+}
+[System.Serializable]
+public enum AttributeTag 
+{
+    Resistance,primary,secondary
 }
 

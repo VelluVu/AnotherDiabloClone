@@ -16,9 +16,7 @@ public class LifeAndManaTracker : MonoBehaviour
         Player.playerHealHealthEvent += HealHealth;
         Player.playerRestoreManaEvent += RestoreMana;
         Player.playerUseManaEvent += LoseMana;
-        PlayerClass.passiveManaRegenEvent += ManaRegen;
-        CheckPoint.checkPointEvent += checkPointCall;
-
+        PlayerClass.passiveManaRegenEvent += ManaRegen;   
     }
 
     private void OnDisable ( )
@@ -27,15 +25,7 @@ public class LifeAndManaTracker : MonoBehaviour
         Player.playerHealHealthEvent -= HealHealth;
         Player.playerRestoreManaEvent -= RestoreMana;
         Player.playerUseManaEvent -= LoseMana;
-        PlayerClass.passiveManaRegenEvent -= ManaRegen;
-        CheckPoint.checkPointEvent -= checkPointCall;
-
-    }
-
-    public void checkPointCall ( )
-    {
-        HealHealth ( 0, true );
-        RestoreMana ( 0, true );
+        PlayerClass.passiveManaRegenEvent -= ManaRegen;    
     }
 
     public void ManaRegen ( float value )

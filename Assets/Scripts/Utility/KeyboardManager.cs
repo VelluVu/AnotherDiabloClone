@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class KeyboardManager : MonoBehaviour
 {
     public static KeyboardManager instance;
+    public delegate void LootTextAppear();
+    public static event LootTextAppear LootTextAppearEvent;
 
     public bool holdingShift; // if holding shift
     private void Awake()
@@ -19,26 +23,22 @@ public class KeyboardManager : MonoBehaviour
         }
 
     }
+
     private void Update()
     {
-
-        ShowLoot();
+        if (Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKey(KeyCode.L))
+        {
+            ShowLoot();
+        }
         ShiftKey();
     }
     public void ShowLoot()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        if(LootTextAppearEvent != null)
         {
-            if (GameObject.Find("LootTextCanvas").GetComponent<Canvas>().enabled)
-            {
-                GameObject.Find("LootTextCanvas").GetComponent<Canvas>().enabled = false;
-            }
-            else
-            {
-                GameObject.Find("LootTextCanvas").GetComponent<Canvas>().enabled = true;
-            }
-
+            LootTextAppearEvent();
         }
+        
     }
     public void ShiftKey()
     {

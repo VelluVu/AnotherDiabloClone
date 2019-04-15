@@ -6,29 +6,32 @@ public class TreasureChest : MonoBehaviour
 {
 
     Animator treasureAnimator;
-    BoxCollider2D treasureCollider;
+    Collider2D treasureCollider;
+    Collider2D triggerArea;
 
+    
+   
     private void Start ( )
     {
         treasureAnimator = gameObject.GetComponent<Animator> ( );
-        treasureCollider = gameObject.GetComponent<BoxCollider2D> ( );
+        treasureCollider = gameObject.GetComponent<Collider2D> ( );
+        triggerArea = gameObject.GetComponentInChildren<Collider2D> ( );
     }
 
     public void Aukene ( )
     {
 
         treasureAnimator.SetTrigger ( "Open" );
+        triggerArea.enabled = false;
         treasureCollider.enabled = false;
         gameObject.GetComponent<TreasureChest> ( ).enabled = false;
+        
 
-    }
+    } 
 
-    private void OnCollisionStay2D ( Collision2D collision )
+    public void Triggered()
     {
-        if (collision.gameObject.CompareTag("Player") && Input.GetButtonDown("Interaction"))
-        {
-            Aukene ( );
-        }
+        Aukene ( );
     }
 
 }

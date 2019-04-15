@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e8748d8b8c79947b93a84acb83c361, type: 3}
+  m_Name: Ogre
+  m_EditorClassIdentifier: 
+  _name: Ogre
+  _moveSpeed: 50
+  _chaseMultiplier: 2
+  _jumpForce: 1
+  _attackSpeed: 1
+  _attackDamage: 50
+  _health: 200
+  _mana: 20
+  _armor: 10
+  _fireResistance: 5
+  _frostResistance: 5
+  _poisonResistance: 20
+  _lightningResistance: 5
+  _physicalResistance: 5
+  _xpReward: 10
+  _level: 1
+  _enemyType: 2
+  _groundEnemyType: 2
+  _flyingEnemyType: 2
+  _bossEnemyType: 4
+  _enemyVariation: 

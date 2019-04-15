@@ -19,7 +19,7 @@ public class Attribute: ScriptableObject
     public StatModifier statModifier;
     [HideInInspector] public CharacterStat characterStat;
     
-   
+    public int id = 0;
    
    
     

@@ -16,14 +16,15 @@ public class MouseOverUI : MonoBehaviour
 
     public void CheckMouseHover ( )
     {
-        if( EventSystem.current.currentSelectedGameObject != null)
-        {
+
+        if( EventSystem.current.IsPointerOverGameObject()) { 
+      
             ReferenceHolder.instance.player.SetMouseOnUI ( true );
+            Debug.Log("TRUEEE");
         }
         else
         {
             ReferenceHolder.instance.player.SetMouseOnUI ( false );
         }
     }
-
 }

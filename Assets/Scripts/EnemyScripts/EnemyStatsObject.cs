@@ -25,6 +25,7 @@ public class EnemyStatsObject : ScriptableObject
     public float _physicalResistance;
 
     public int _xpReward;
+    public int _level;
 
     public EnemyType _enemyType;
     public GroundEnemyType _groundEnemyType;

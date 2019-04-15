@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 59.9599, y: -102.899994}
+  m_AnchoredPosition: {x: 59.960003, y: -142.89992}
   m_SizeDelta: {x: 112.89, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3046442699657587731
@@ -67,7 +67,6 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Endurance: 10
 
-    Energy: 10
 
 '
   m_isRightToLeft: 0
@@ -139,10 +138,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2153884315363933272}
-    characterCount: 25
+    characterCount: 15
     spriteCount: 0
-    spaceCount: 4
-    wordCount: 4
+    spaceCount: 3
+    wordCount: 2
     linkCount: 0
     lineCount: 2
     pageCount: 1
@@ -199,7 +198,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 59.9599, y: -102.899994}
+  m_AnchoredPosition: {x: 59.960003, y: -162.8999}
   m_SizeDelta: {x: 112.89, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4388046400364320005
@@ -232,7 +231,6 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Endurance: 10
 
-    Energy: 10
 
 '
   m_isRightToLeft: 0
@@ -304,10 +302,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 5857317351520734874}
-    characterCount: 25
+    characterCount: 15
     spriteCount: 0
-    spaceCount: 4
-    wordCount: 4
+    spaceCount: 3
+    wordCount: 2
     linkCount: 0
     lineCount: 2
     pageCount: 1
@@ -1625,7 +1623,15 @@ MonoBehaviour:
   - {fileID: 3309730965655915432}
   - {fileID: 3309730966212033517}
   - {fileID: 3309730965490741863}
-  smallStatsTextList: []
+  smallStatsTextList:
+  - {fileID: 3309730965777365874}
+  - {fileID: 5348154007658706320}
+  - {fileID: 4191493568596731556}
+  - {fileID: 4821443238946162429}
+  - {fileID: 3309730967453809164}
+  - {fileID: 1426224992384788899}
+  - {fileID: 2153884315363933272}
+  - {fileID: 5857317351520734874}
 --- !u!1 &3309730966500237522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2931,7 +2937,6 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Endurance: 10
 
-    Energy: 10
 
 '
   m_isRightToLeft: 0
@@ -3003,10 +3008,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 3309730967453809164}
-    characterCount: 25
+    characterCount: 15
     spriteCount: 0
-    spaceCount: 4
-    wordCount: 4
+    spaceCount: 3
+    wordCount: 2
     linkCount: 0
     lineCount: 2
     pageCount: 1
@@ -3063,7 +3068,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 59.9599, y: -102.89996}
+  m_AnchoredPosition: {x: 59.960003, y: -122.899994}
   m_SizeDelta: {x: 112.89, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5658693507855796588
@@ -3096,7 +3101,6 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Endurance: 10
 
-    Energy: 10
 
 '
   m_isRightToLeft: 0
@@ -3168,10 +3172,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1426224992384788899}
-    characterCount: 25
+    characterCount: 15
     spriteCount: 0
-    spaceCount: 4
-    wordCount: 4
+    spaceCount: 3
+    wordCount: 2
     linkCount: 0
     lineCount: 2
     pageCount: 1
@@ -8298,7 +8302,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -11528,7 +11532,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -11730,7 +11734,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -12053,7 +12057,7 @@ MonoBehaviour:
   isEmpty: 1
   iconImage: {fileID: 6987449533931788008}
   rarityImage: {fileID: 6987449532166547324}
-  armorSlot: 1
+  armorSlot: 2
   hand:
   - {fileID: 0}
   - {fileID: 0}
@@ -12077,7 +12081,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -13206,7 +13210,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -13410,7 +13414,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -13783,7 +13787,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -13962,7 +13966,7 @@ MonoBehaviour:
   isEmpty: 1
   iconImage: {fileID: 6987449532413847570}
   rarityImage: {fileID: 6987449532831170017}
-  armorSlot: 2
+  armorSlot: 3
   hand:
   - {fileID: 0}
   - {fileID: 0}
@@ -13989,7 +13993,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -14292,7 +14296,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -14422,7 +14426,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -15087,7 +15091,7 @@ MonoBehaviour:
   isEmpty: 1
   iconImage: {fileID: 6987449532319323617}
   rarityImage: {fileID: 6987449533177240559}
-  armorSlot: 0
+  armorSlot: 1
   hand:
   - {fileID: 0}
   - {fileID: 0}
@@ -15111,7 +15115,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -15315,6 +15319,7 @@ MonoBehaviour:
   - key: 12
     ES: {fileID: 5397394298718392626}
   allLoot: []
+  consumablespot: {fileID: 0}
 --- !u!1 &6987449533404413323
 GameObject:
   m_ObjectHideFlags: 0
@@ -15819,7 +15824,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -16583,7 +16588,7 @@ MonoBehaviour:
   isEmpty: 1
   iconImage: {fileID: 6987449532097843433}
   rarityImage: {fileID: 6987449533723376157}
-  armorSlot: 3
+  armorSlot: 4
   hand:
   - {fileID: 0}
   - {fileID: 0}
@@ -16608,7 +16613,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -16810,7 +16815,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -19441,7 +19446,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -19826,7 +19831,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -20976,7 +20981,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -21288,7 +21293,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -21491,7 +21496,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -21621,7 +21626,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -21897,7 +21902,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -22027,7 +22032,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -22230,7 +22235,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -22360,7 +22365,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -23036,7 +23041,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -23166,7 +23171,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -23296,7 +23301,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -23426,7 +23431,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -23702,7 +23707,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -24087,7 +24092,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -24399,7 +24404,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -24529,7 +24534,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -25205,7 +25210,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -25408,7 +25413,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -26995,7 +27000,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -27890,7 +27895,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
@@ -28166,7 +28171,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   lootSprite: {fileID: 0}
   equipmentSprites: []
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []

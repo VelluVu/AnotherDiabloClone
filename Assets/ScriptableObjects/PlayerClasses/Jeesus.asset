@@ -28,8 +28,8 @@ MonoBehaviour:
   _stamina: 100
   _armor: 0
   _cooldownReduction: 0
-  _criticalHitChance: 0
-  _criticalHitDamage: 0
+  _criticalHitChance: 1
+  _criticalHitDamage: 1.5
   _fireResistance: 0
   _coldResistance: 0
   _poisonResistance: 0
@@ -38,6 +38,7 @@ MonoBehaviour:
   _allResistance: 0
   _goldFind: 0
   _magicFind: 0
+  _pickupRadius: 2
   _healthRegeneration: 0
   _manaCostReduction: 0
   _meleeDamageReduction: 0

@@ -61,7 +61,7 @@ public class EnemyWeaponHolder : MonoBehaviour
     /// <param name="damage"></param>
     /// <param name="force"></param>
     /// <param name="speed"></param>
-    public void Shoot ( float damage, float weaponSpeed, float range, Transform target, LayerMask playerLayer )
+    public void Shoot ( float damage, float weaponSpeed, float range, Transform target, LayerMask playerLayer,int level )
     {
 
         Vector2 velocity = AimWithRangedWeapon ( target, range, playerLayer );
@@ -72,6 +72,8 @@ public class EnemyWeaponHolder : MonoBehaviour
             isShootCDrdy = false;
             GameObject newProjectile = Instantiate ( projectile, launchPosition.position, launchPosition.rotation ) as GameObject;
             newProjectile.GetComponent<Projectile> ( ).LaunchProjectile ( damage, velocity, damageType, projectileType );
+            newProjectile.GetComponent<Projectile>().enemyLevel = level;
+            
 
             StartCoroutine ( ShootCD ( weaponSpeed ) );
 
@@ -148,7 +150,7 @@ public class EnemyWeaponHolder : MonoBehaviour
                 hasHit = true;
                 Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
                 Debug.Log ( gameObject.name );
-                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject, _weaponDamage );
+                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject, _weaponDamage, damageType );
                 //col.enabled = false; // kun osuu ottaa colliderin pois ettei iske kaikkialle
                 StartCoroutine ( HitReset ( ) );
             }

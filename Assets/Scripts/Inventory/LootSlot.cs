@@ -71,7 +71,7 @@ public class LootSlot : MonoBehaviour
             item.transferLoot(loot);
             iconImage.color = new Color(iconImage.color.r, iconImage.color.g, iconImage.color.b, 1); // set alpha to 1;
             iconImage.texture = loot.itemIcon;
-            rarityImage.color = PlayerInventory.instance.rarity[loot.Rarity];
+            rarityImage.color = PlayerInventory.instance.rarity[loot.rarity];
             
 
             isEmpty = false;
@@ -283,7 +283,7 @@ public class LootSlot : MonoBehaviour
     {
         iconImage.color = new Color(iconImage.color.r, iconImage.color.g, iconImage.color.b, 1); // set alpha to 1;
         iconImage.texture = item.itemIcon;
-        rarityImage.color = PlayerInventory.instance.rarity[item.Rarity];
+        rarityImage.color = PlayerInventory.instance.rarity[item.rarity];
         isEmpty = false;
         Debug.Log("Unequipped Item");
     }

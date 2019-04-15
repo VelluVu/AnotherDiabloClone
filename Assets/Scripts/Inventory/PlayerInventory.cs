@@ -59,6 +59,22 @@ public class PlayerInventory : MonoBehaviour
         {Rarity.Legendary,"Legendary"},
 
     };
+    public Dictionary<Rarity,int> rarityLootCountPrimary = new Dictionary<Rarity, int> ()
+    {
+        {Rarity.Common,1},
+        {Rarity.Uncommon,2},
+        {Rarity.Rare,3},
+        {Rarity.Epic,4},
+        {Rarity.Legendary,5},
+    };
+    public Dictionary<Rarity,int> rarityLootCountSecondary= new Dictionary<Rarity, int> ()
+    {
+        {Rarity.Common,1},
+        {Rarity.Uncommon,1},
+        {Rarity.Rare,2},
+        {Rarity.Epic,2},
+        {Rarity.Legendary,2},
+    };
     public Dictionary<ArmorSlot, string> typeDictionary = new Dictionary<ArmorSlot, string>
     {
         {ArmorSlot.Belt,"Belt"},{ArmorSlot.Boots,"Boots"},{ArmorSlot.Bracer,"Bracers"},
@@ -75,7 +91,9 @@ public class PlayerInventory : MonoBehaviour
     string saveName = "/inventory.dat"; // used for saving
     public Loot[] allLoot;
     RolledLoot placeHolder;
+    public LootSlot consumablespot;
     #endregion
+    
     
 
     private void Awake()
@@ -89,7 +107,13 @@ public class PlayerInventory : MonoBehaviour
         {
             Destroy(this);
         }
+        int lootCount = 0;
         allLoot = Resources.FindObjectsOfTypeAll<Loot>();
+        foreach (Loot loot in allLoot)
+        {
+            loot.itemID = lootCount;
+            lootCount++;
+        }   
     }
     public bool IsLootSlotsFull()
     {
@@ -205,6 +229,7 @@ public class PlayerInventory : MonoBehaviour
                     attributeCount++;
                     data.attributeValue.Add((int)roll.value);
                     data.attributeValue2.Add((int)roll.value2Min);
+                    data.attributeId.Add((int)roll.originAttribute.id);
                 }
                 data.attributeAmount.Add(attributeCount);
             }
@@ -216,15 +241,26 @@ public class PlayerInventory : MonoBehaviour
             {
                 int attributeCount = 0;
                 data.equipId.Add(equipmentConnect[i].ES.item.originLoot.itemID);
+                
                 foreach (RollAttribute roll in equipmentConnect[i].ES.item.attributes)
                 {
-                    attributeCount++;
-                    data.equipAttributeValue.Add((int)roll.value);
-                    data.equipAttributeValue2.Add((int)roll.value2Min);
+                attributeCount++;
+                data.equipAttributeValue.Add((int)roll.value);
+                data.equipAttributeValue2.Add((int)roll.value2Min);
+                data.equipAttributeId.Add((int)roll.originAttribute.id);
                 }
+               
+                
                 data.equipAttributeAmount.Add(attributeCount);
             }
         }
+        if(!consumablespot.isEmpty)
+        {
+            data.consumableID = consumablespot.item.originLoot.itemID;
+            data.consumableStackSize = consumablespot.stackSize;
+        }
+        data.Money = gold;
+       
         
           
            
@@ -259,8 +295,11 @@ public class PlayerInventory : MonoBehaviour
                         placeHolder.rollLoot(allLoot[j]);
                         for (int k = 0; k < data.equipAttributeAmount[i]; k++)
                         {
+                            RollAttribute tempAttribute =gameObject.AddComponent<RollAttribute>();
+                            placeHolder.attributes[k] = tempAttribute.rollAttribute(AttributePerSlot.instance.allAttributes[data.equipAttributeId[equipCount+k]]);
                             placeHolder.attributes[k].value = data.equipAttributeValue[equipCount + k];
                             placeHolder.attributes[k].value2Min = data.equipAttributeValue2[equipCount + k];
+                            Destroy(tempAttribute);
 
                         }
                         equipCount += data.equipAttributeAmount[i];
@@ -281,8 +320,11 @@ public class PlayerInventory : MonoBehaviour
                         placeHolder.rollLoot(allLoot[j]);
                         for(int k = 0;k < data.attributeAmount[i]; k++)
                         {
+                            RollAttribute tempAttribute =gameObject.AddComponent<RollAttribute>();
+                            placeHolder.attributes[k] = tempAttribute.rollAttribute(AttributePerSlot.instance.allAttributes[data.attributeId[count+k]]);
                             placeHolder.attributes[k].value = data.attributeValue[count+k];
                             placeHolder.attributes[k].value2Min = data.attributeValue2[count+k];
+                            Destroy(tempAttribute);
                             
                         }
                         count += data.attributeAmount[i];
@@ -292,7 +334,21 @@ public class PlayerInventory : MonoBehaviour
                     }
                 }
             }
-            
+            if(data.consumableID != -1)
+            {
+                consumablespot.emptySlot();
+                consumablespot.item.attributes.Clear();
+                consumablespot.item.rollLoot(allLoot[data.consumableID]);
+                consumablespot.stackSize = data.consumableStackSize;
+                consumablespot.stackSizeTextEnable(true);
+                consumablespot.UnequipItem();
+                gold = data.Money;
+            }
+            else
+            {
+                consumablespot.emptySlot();
+            }
+           
             
 
         }
@@ -304,23 +360,29 @@ public class PlayerInventory : MonoBehaviour
 class SaveData
 {
     
-    
+    //inventory
     public List<int> lootID = new List<int>();
     public List<int> lootStackSize = new List<int>(); // stackSize
     public List<int> attributeAmount = new List<int>();
     public List<int> attributeValue = new List<int>();
     public List<int> attributeValue2 = new List<int>();
+    public List<int> attributeId = new List<int>();
 
     public int Money;
 
+//equipped
     public List<int> equipId = new List<int>();
     public List<int> equipAttributeAmount = new List<int>();
     public List<int> equipAttributeValue = new List<int>();
     public List<int> equipAttributeValue2 = new List<int>();
 
+     public List<int> equipAttributeId = new List<int>();
 
 
-    //public List<int> rolledValue3;
+
+    //Save consumablespot
+    public  int consumableID = -1;
+    public  int consumableStackSize;
 
 }
 

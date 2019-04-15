@@ -33,6 +33,7 @@ public class PlayerStatsObject : ScriptableObject
     public float _allResistance;
     public float _goldFind;
     public float _magicFind;
+    public float _pickupRadius;
     public float _healthRegeneration;
     public float _manaCostReduction;
     public float _meleeDamageReduction;

@@ -30,6 +30,36 @@ Transform:
   m_Father: {fileID: 539592504089980514}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3902147874685575265
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2078460924905478825}
+  m_Layer: 12
+  m_Name: Spider_Back
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2078460924905478825
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902147874685575265}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -0.466, y: 0.393, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 539592504089980514}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &4809590387090903704
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,6 +91,7 @@ Transform:
   m_Children:
   - {fileID: 2672909280130531670}
   - {fileID: 4327373591739379204}
+  - {fileID: 2078460924905478825}
   m_Father: {fileID: 3399712467213212518}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -99,7 +130,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 644545703
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4ff882381a2b5d5478c8198f025674f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -194,6 +225,7 @@ MonoBehaviour:
   frequency: 0
   flyingPatrolDirectionTime: 0
   eyes: {fileID: 2672909280130531670}
+  back: {fileID: 2078460924905478825}
   head: {fileID: 101209244877765073}
   enemyLayer:
     serializedVersion: 2
@@ -216,6 +248,7 @@ MonoBehaviour:
   hasTurn: 0
   hasSplit: 0
   alertedByEvent: 0
+  notHatchedEgg: 0
 --- !u!114 &468686282486943469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,8 +341,8 @@ MonoBehaviour:
     _value: 0
   enemyType: 0
   groundEnemyType: 6
-  flyingEnemyType: 0
-  bossEnemyType: 0
+  flyingEnemyType: 2
+  bossEnemyType: 4
   enemyVariations: 
 --- !u!50 &3089341525962246
 Rigidbody2D:

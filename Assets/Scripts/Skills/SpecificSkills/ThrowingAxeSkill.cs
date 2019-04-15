@@ -10,6 +10,7 @@ public class ThrowingAxeSkill : MonoBehaviour
     private bool isGoingLeft = true;
     private float spinSpeed = 1500;
     private PlayerClass playerClass;
+    public DamageType damageType;
 
     private float damage;
 
@@ -19,22 +20,22 @@ public class ThrowingAxeSkill : MonoBehaviour
         //playerClass = player.GetComponent<PlayerClass>();
         //playerClass.hea
     }
-
+    
     void Start()
     {
-
         if (GetComponent<AbilityINFO>() == null)
         {
             Debug.Log("ThrowingAxe dont have AbilityINFO script.. it has been added");
             this.gameObject.AddComponent<AbilityINFO>();
         }
-     
+
         info = GetComponent<AbilityINFO>();
         damage = info._damage;
         flip();
     }
     private void OnEnable()
     {
+        
         player = GameObject.FindGameObjectWithTag("Player");
 
     }
@@ -42,17 +43,19 @@ public class ThrowingAxeSkill : MonoBehaviour
 
     void flip()
     {
-
+       
        
         float dotR = Vector2.Dot(info._direction, info._spawnPos);
        
         if(dotR > 0)
         {
-           // vasenmalla puolella
+            // vasenmalla puolella
+            Debug.Log("vasen");
         }
         else
         {
             //oikella puolella
+            
             spriteRenderer.flipX = true;
             isGoingLeft = false;
         }
@@ -72,6 +75,7 @@ public class ThrowingAxeSkill : MonoBehaviour
     void Update()
     {
         spin();
+        
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -87,7 +91,7 @@ public class ThrowingAxeSkill : MonoBehaviour
 
             if (go.GetComponent<StateController>() != null)
             {
-                go.GetComponent<StateController>().TakeDamage(go, damage);
+                go.GetComponent<StateController>().TakeDamage(go, damage, damageType);
             }
 
             Destroy(this.gameObject);

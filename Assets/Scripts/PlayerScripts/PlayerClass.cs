@@ -58,6 +58,7 @@ public class PlayerClass : MonoBehaviour
     #region Utility Stats
     public CharacterStat goldFind;
     public CharacterStat magicFind;
+    public CharacterStat pickupRadius;
     #endregion
 
     //Tässä vois olla vaikka boostit jne..
@@ -282,6 +283,7 @@ public class PlayerClass : MonoBehaviour
 
         goldFind.BaseValue = classes[chosenClass]._goldFind;
         magicFind.BaseValue = classes[chosenClass]._magicFind;
+        pickupRadius.BaseValue = classes[chosenClass]._pickupRadius;
 
         strength.BaseValue = classes [ chosenClass ]._strength;
         dexterity.BaseValue = classes [ chosenClass ]._dexterity;
@@ -331,6 +333,7 @@ public class PlayerClass : MonoBehaviour
         listCharacterStats.Add(meleeDamageReduction);//28
         listCharacterStats.Add(rangedDamageReduction);//29
         listCharacterStats.Add(healthOnKill);//30
+        listCharacterStats.Add(pickupRadius);//31
 
 
 
@@ -348,7 +351,7 @@ public enum Stat // tarkista että on samassa järjesyksessä mikä addToList
     Endurance, Energy, physicalResistance, maxHealth, maxMana,
     criticalHitChance, criticalHitDamage,cooldownReduction,allResistance,
     goldFind,magicFind,healthRegeneration,manaCostReduction,meleeDamageReduction,
-    rangedDamageReduction,healthOnKill
+    rangedDamageReduction,healthOnKill,pickupRadius,
     
 }
 

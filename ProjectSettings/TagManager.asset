@@ -18,6 +18,7 @@ TagManager:
   - EnemySpawn
   - LootHolder
   - InteractableObject
+  - Gold
   layers:
   - Default
   - TransparentFX
@@ -38,8 +39,8 @@ TagManager:
   - Gore
   - MouseOverUILayer
   - InteractableObject
-  - 
-  - 
+  - BackGround
+  - Gold
   - 
   - 
   - 
@@ -52,11 +53,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: BackGround
     uniqueID: 428374677
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: Ground
     uniqueID: 2822588361

@@ -82,7 +82,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
             {
                 if (!v.ES.isEmpty)
                 {
-                    v.ES.gameObject.GetComponent<RawImage>().color = PlayerInventory.instance.rarity[v.ES.item.Rarity];
+                    v.ES.gameObject.GetComponent<RawImage>().color = PlayerInventory.instance.rarity[v.ES.item.rarity];
                 }
                 else
                 {
@@ -120,8 +120,8 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
                     TT.nameText.text = eSlot.item.itemName;
                     TT.descriptionText.text = eSlot.item.description;
                     TT.icon.texture = eSlot.item.itemIcon;
-                    TT.rarity.color = PlayerInventory.instance.rarity[eSlot.item.Rarity];
-                    TT.itemRarityText.text = PlayerInventory.instance.rarityString[eSlot.item.Rarity];
+                    TT.rarity.color = PlayerInventory.instance.rarity[eSlot.item.rarity];
+                    TT.itemRarityText.text = PlayerInventory.instance.rarityString[eSlot.item.rarity];
                     TT.itemTypeText.text = PlayerInventory.instance.typeDictionary[eSlot.item.armorSlot];
                     BuildMainText();
                     Debug.Log("FilledPointerEnter");
@@ -142,8 +142,8 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
                     TT.nameText.text = lSlot.item.itemName;
                     TT.descriptionText.text = lSlot.item.description;
                     TT.icon.texture = lSlot.item.itemIcon;
-                    TT.rarity.color = PlayerInventory.instance.rarity[lSlot.item.Rarity];
-                    TT.itemRarityText.text = PlayerInventory.instance.rarityString[lSlot.item.Rarity];
+                    TT.rarity.color = PlayerInventory.instance.rarity[lSlot.item.rarity];
+                    TT.itemRarityText.text = PlayerInventory.instance.rarityString[lSlot.item.rarity];
                     TT.itemTypeText.text = PlayerInventory.instance.typeDictionary[lSlot.item.armorSlot];
                     BuildMainText();
 

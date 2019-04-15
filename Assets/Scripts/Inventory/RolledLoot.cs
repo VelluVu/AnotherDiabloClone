@@ -14,7 +14,7 @@ public class RolledLoot : MonoBehaviour
     public Texture itemIcon; // itemin iconi
     public Sprite lootSprite;
     public List<Sprite> equipmentSprites;
-    public Rarity Rarity; // item rarity
+    public Rarity rarity; // item rarity
     public int itemLevel; // the level of the item
     #endregion
 
@@ -48,6 +48,8 @@ public class RolledLoot : MonoBehaviour
 
     #region Saving
     public Loot originLoot;
+    int primaryCount;
+    int secondaryCount;
     #endregion
     //rollaa rollattavat muuttujat lootissa ja asettaa loput muuttujat
     public RolledLoot rollLoot (Loot loot)
@@ -59,7 +61,7 @@ public class RolledLoot : MonoBehaviour
         this.itemIcon = loot.itemIcon;
         this.lootSprite = loot.lootSprite;
         this.equipmentSprites = loot.equipmentSprites;
-        this.Rarity = loot.Rarity;
+        this.rarity = loot.rarity;
         this.itemLevel = loot.itemLevel;
         this.tags = loot.tags;
       
@@ -84,28 +86,58 @@ public class RolledLoot : MonoBehaviour
     public void RollAttributes(Loot loot)
     {
         List<Attribute> tempList = new List<Attribute>();
+        List<Attribute> tempPrimary = new List<Attribute>();
+        List<Attribute> tempSecondary = new List<Attribute>();
+        primaryCount = PlayerInventory.instance.rarityLootCountPrimary[rarity];
+        secondaryCount = PlayerInventory.instance.rarityLootCountSecondary[rarity];
+        
         if (loot.randomAttributes)
         {
+            
+            Debug.Log(AttributePerSlot.instance);
             SlotAttribute SA = AttributePerSlot.instance.findSlot(armorSlot);
+            foreach(Attribute att in SA.primaryAttributes){
+                tempPrimary.Add(att);
+            }
+            foreach(Attribute att in SA.secondaryAttributes){
+                tempSecondary.Add(att);
+            }
+            Debug.Log(SA.secondaryAttributes.Count);
+            Debug.Log("tempsecondary size "+tempSecondary.Count);
             foreach(Attribute att in SA.constantAttributes)
             {
                 tempList.Add(att);
             }
-            if (Rarity == Rarity.Common)
+            
+            for(int k = 0;k<primaryCount;k++)
+            {
+                int randomPrimary =Random.Range(0, (int)tempPrimary.Count);
+                Debug.Log("RandomPrimary"+randomPrimary);
+                tempList.Add(tempPrimary[randomPrimary]);
+                tempPrimary.RemoveAt(randomPrimary);
+            }
+            for(int k = 0;k<secondaryCount;k++)
             {
 
+                int randomSecondary =Random.Range(0, (int)tempSecondary.Count);
+                Debug.Log("RandomSecondary"+randomSecondary);
+                Debug.Log(tempSecondary.Count);
+                tempList.Add(tempSecondary[randomSecondary]);
+                tempSecondary.RemoveAt(randomSecondary);
                 
-                tempList.Add(SA.primaryAttributes[Random.Range(0, (int)SA.primaryAttributes.Count)]);
-                tempList.Add(SA.secondaryAttributes[Random.Range(0, (int)SA.secondaryAttributes.Count)]);
-
             }
+               
+               
+                
+               
+           
         }
         else
         {
             tempList = loot.attributes;
         }
         int i = 0;
-        foreach (Attribute a in tempList/*loot.attributes*/)
+        foreach (Attribute a in tempList)
         {
             RollAttribute RA = gameObject.AddComponent<RollAttribute>();
             Debug.Log(attributes);
@@ -145,7 +177,7 @@ public class RolledLoot : MonoBehaviour
         this.itemIcon = loot.itemIcon;
         this.lootSprite = loot.lootSprite;
         this.equipmentSprites = loot.equipmentSprites;
-        this.Rarity = loot.Rarity;
+        this.rarity = loot.rarity;
         this.itemLevel = loot.itemLevel;
         this.attributes = loot.attributes;
         this.tags = loot.tags;

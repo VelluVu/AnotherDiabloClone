@@ -17,6 +17,7 @@ public class FloatingCombatTextManager: MonoBehaviour
 
         Player.playerNotifyEvent += NotifyEvent;
         StateController.enemyNotifyEvent += NotifyEvent;
+        DoorLeverScript.leverActivationFloatingTextEvent += SpawnText;
      
     }
 
@@ -25,6 +26,7 @@ public class FloatingCombatTextManager: MonoBehaviour
         
         Player.playerNotifyEvent -= NotifyEvent;
         StateController.enemyNotifyEvent -= NotifyEvent;
+        DoorLeverScript.leverActivationFloatingTextEvent -= SpawnText;
 
     }
 
@@ -50,6 +52,4 @@ public class FloatingCombatTextManager: MonoBehaviour
         textMesh.text = message;
 
     }
-
-
 }

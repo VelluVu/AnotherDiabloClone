@@ -21,8 +21,8 @@ MonoBehaviour:
   equipmentSprites:
   - {fileID: 21300000, guid: 3702217d234cd554881e06e417a1d8fd, type: 3}
   lootSprite: {fileID: 21300000, guid: 3702217d234cd554881e06e417a1d8fd, type: 3}
-  Rarity: 0
-  itemLevel: 0
+  rarity: 0
+  itemLevel: 1
   tags: 
   attributes: []
   randomAttributes: 1

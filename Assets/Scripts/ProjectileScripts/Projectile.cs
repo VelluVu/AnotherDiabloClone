@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
     public LayerMask playerLayer; //näit ei välttämättä tarvi ellei haluu jotain bounce juttuja ehkä?
     public LayerMask enemyLayer;
 
-    public delegate void ProjectileHitDelegate( GameObject target, float damage );
+    public delegate void ProjectileHitDelegate( GameObject target, float damage, DamageType damageType,int level );
     public static event ProjectileHitDelegate projectileHitEvent;
 
     Vector2 _velocity;
@@ -22,6 +22,9 @@ public class Projectile : MonoBehaviour
     bool collided;
     public bool isPlayersProjectile;
     string targetTag;
+    [HideInInspector]
+    public int enemyLevel;
+    
     //public float _speed;
 
     private void Awake ( )
@@ -134,7 +137,7 @@ public class Projectile : MonoBehaviour
 
             if( projectileHitEvent != null)
             {
-                projectileHitEvent ( collision.gameObject, _damage );
+                projectileHitEvent ( collision.gameObject, _damage, _damageType ,enemyLevel);
             }
 
         }

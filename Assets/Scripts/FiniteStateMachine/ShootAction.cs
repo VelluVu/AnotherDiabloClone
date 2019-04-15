@@ -45,7 +45,7 @@ public class ShootAction : Action
         if ( weapon.GetIsShootRdy ( ) )
         {
             //Tää muuttuu kun ranged weapon asetetaan vihun kouraan
-            weapon.Shoot ( controller.enemyStats.attackDamage.Value, controller.enemyStats.attackSpeed.Value, controller.spotDistance, controller.chaseTarget, controller.playerLayer );
+            weapon.Shoot ( controller.enemyStats.attackDamage.Value, controller.enemyStats.attackSpeed.Value, controller.spotDistance, controller.chaseTarget, controller.playerLayer,controller.enemyStats.level );
         }
     }
 }

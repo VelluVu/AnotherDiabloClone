@@ -36,7 +36,7 @@ public class EquipmentSlot : MonoBehaviour
     {
         iconImage.color = new Color(iconImage.color.r, iconImage.color.g, iconImage.color.b, 1); // set alpha to 0;
         rarityImage.color = new Color(rarityImage.color.r, rarityImage.color.g, rarityImage.color.b, 1); // set alpha to 0;
-        rarityImage.color = PlayerInventory.instance.rarity[item.Rarity];
+        rarityImage.color = PlayerInventory.instance.rarity[item.rarity];
         iconImage.texture = item.itemIcon;
         isEmpty = false;
         slotNameText.enabled = false;
@@ -48,7 +48,7 @@ public class EquipmentSlot : MonoBehaviour
         tempObject.transferLoot(item);
         loot.Equip();
         item.transferLoot(loot);
-        rarityImage.color = PlayerInventory.instance.rarity[loot.Rarity];
+        rarityImage.color = PlayerInventory.instance.rarity[loot.rarity];
         iconImage.texture = loot.itemIcon;
         if (isEmpty)
         {

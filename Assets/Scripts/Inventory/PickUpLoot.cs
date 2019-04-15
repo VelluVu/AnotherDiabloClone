@@ -30,7 +30,7 @@ public class PickUpLoot : MonoBehaviour
         text = GetComponentInChildren<TMPro.TMP_Text>();
         text.text = rLoot.itemName;
         rawImage = GetComponentInChildren<RawImage>();
-        rawImage.color = PlayerInventory.instance.rarity[rLoot.Rarity];
+        rawImage.color = PlayerInventory.instance.rarity[rLoot.rarity];
         rawImage.color = new Color(rawImage.color.r, rawImage.color.g, rawImage.color.b, 0.7f);
         
 
@@ -40,7 +40,7 @@ public class PickUpLoot : MonoBehaviour
         text = GetComponentInChildren<TMPro.TMP_Text>();
         text.text = rLoot.itemName;
         rawImage = GetComponentInChildren<RawImage>();
-        rawImage.color = PlayerInventory.instance.rarity[rLoot.Rarity];
+        rawImage.color = PlayerInventory.instance.rarity[rLoot.rarity];
         rawImage.color = new Color(rawImage.color.r, rawImage.color.g, rawImage.color.b, 0.7f);
     }
     

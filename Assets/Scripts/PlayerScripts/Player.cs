@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     public delegate IEnumerator PlayerFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
     public static event PlayerFlashDelegate playerFlashEvent;
 
-    public delegate void PlayerDealDamageDelegate ( GameObject enemy, float damage );
+    public delegate void PlayerDealDamageDelegate ( GameObject enemy, float damage, DamageType damageType );
     public static event PlayerDealDamageDelegate playerDealDamageEvent;
 
     public delegate void PlayerNotifyDelecate ( Transform transform, string message, Color color );
@@ -67,50 +67,61 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Booleans
-    //Väliaikainen spellcd
-    bool isSpellRdy = true;
+    [Header ( "Action Booleans")]
+    public bool isSpellRdy = true;
     public bool canWallJump;
     public bool isDoubleJumping;
-    bool isBlocking;
+    public bool isBlocking;
     public bool isAir;
-    bool isAttackRdy = true;
+    public bool isAttackRdy = true;
     public bool isJumping;
     public bool initialJump;
     public bool isWallJumping;
-    bool readyToDash = true;
+    public bool readyToDash = true;
     public bool isDashing;
     public bool isGrounded;
     public bool mouseOnUI;
+    public bool hitsGround;
+    public bool takeFallDamage;
+    public bool goingDown;
+    bool hasChanged;
+    bool invulnerable;
 
     [Header ( "Ability Unlocks" )]
     public bool isDoubleJumpLearned;
     public bool isWallJumpLearned;
     public bool isDashLearned;
-
     #endregion
 
     #region publicVariables  
     [Header ( "Movement Variables" )]
     public float speedScale;
+    public float airSpeed;
     public float dashTime;
     public float dashCooldown;
     public float dashSpeed;
+
+    [Header ("Jump variables")]
     public float wallJumpScale;
     public float extraJumpScale;
     public float jumpScale;
-    public float airSpeed;
+    public int extraJumps;  
     public float wallJumpPushBack;
+    public float wallJumpVerticalVectorMultipier;
     public float jumpTime;
-    public float groundCheckRadius;
     public float fallMultiplier;
     public float lowJumpMultiplier;
+    public float groundCheckRadius;
+
+    [Header("Fall Damage Variables")]
     public float fallToDeathTime;
     public float lowFallDamageTime;
     public float fallDamageMultiplier;
+
     #endregion
 
     #region Extra Variables
-    public int extraJumps;
+    
     bool directionRight;
     int jumpsCount;
     float jumpTimeCounter;
@@ -123,10 +134,9 @@ public class Player : MonoBehaviour
     Vector2 textPosition;
     private float fallStartYPos;
     private float distanceToFallHit;
-    private bool goingDown;
-    private bool takeFallDamage;
     private float fallDamage;
-    private float fallTime;    
+    private float fallTime;
+
     #endregion
 
     private void Awake ( )
@@ -143,6 +153,8 @@ public class Player : MonoBehaviour
     {
         LevelUp.levelUpEvent += OnLevelUp;
         StateController.enemyDealDamageEvent += TakeDamage;
+        CheckPoint.checkPointEvent += RestoreCharacter;
+        PlayerDeathUI.respawnPlayerEvent += Alive;
         Projectile.projectileHitEvent += TakeDamage;
     }
 
@@ -150,6 +162,8 @@ public class Player : MonoBehaviour
     {
         LevelUp.levelUpEvent -= OnLevelUp;
         StateController.enemyDealDamageEvent -= TakeDamage;
+        CheckPoint.checkPointEvent -= RestoreCharacter;
+        PlayerDeathUI.respawnPlayerEvent -= Alive;
         Projectile.projectileHitEvent -= TakeDamage;
     }
 
@@ -211,16 +225,20 @@ public class Player : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle ( feet.position, groundCheckRadius, whatIsGround );
 
         if ( isGrounded )
-        {          
+        {
+            fallTime = 0;
             isDoubleJumping = false;
             canWallJump = false;
             isJumping = false;
             isAir = false;
             isWallJumping = false;
-            goingDown = false;
-            takeFallDamage = false;
-            fallTime = 0;
+            hitsGround = true;
             jumpsCount = extraJumps;
+        }
+        else
+        {
+            hitsGround = false;
+            isAir = true;
         }
 
     }
@@ -336,7 +354,7 @@ public class Player : MonoBehaviour
         if ( isWallJumping )
         {
             playerRB.gravityScale = 0.5f;
-
+            goingDown = false;
         }
         else
         {
@@ -395,7 +413,7 @@ public class Player : MonoBehaviour
                 Dir ( false );
             }
 
-            playerRB.AddForce ( ( Vector2.up * 0.8f + wallNormal ) * wallJumpPushBack * stats.extraWallJumpForce.Value * wallJumpScale, ForceMode2D.Impulse );
+            playerRB.AddForce ( ( Vector2.up * wallJumpVerticalVectorMultipier + wallNormal ) * wallJumpPushBack * stats.extraWallJumpForce.Value * wallJumpScale, ForceMode2D.Impulse );
 
         }
 
@@ -405,7 +423,6 @@ public class Player : MonoBehaviour
 
         }
 
-
         //Better Gravity in jump
         if ( playerRB.velocity.y < 0 )
         {
@@ -413,7 +430,7 @@ public class Player : MonoBehaviour
         }
         else if ( !Input.GetButton ( "Jump" ) && playerRB.velocity.y > 0 )
         {
-            Debug.Log ( "Input false" );
+            //Debug.Log ( "Input false" );
             initialJump = false;
             //isJumping = false;
             playerRB.velocity += Vector2.up * Physics2D.gravity.y * ( lowJumpMultiplier - 1 ) * Time.deltaTime;
@@ -555,19 +572,15 @@ public class Player : MonoBehaviour
     /// </summary>
     /// <param name="target"></param>
     /// <param name="weaponPower"></param>
-    public void DealDamage ( GameObject target, float weaponPower )
+    public void DealDamage ( GameObject target, float weaponPower, DamageType damageType )
     {
         if ( target != null )
         {
             float calculatedDamage = Random.Range ( ( int ) stats.baseDamage.Value, ( int ) stats.baseDamageMax.Value );
 
-
-
-
-
             if ( playerDealDamageEvent != null )
             {
-                playerDealDamageEvent ( target, calculatedDamage );
+                playerDealDamageEvent ( target, calculatedDamage, damageType );
             }
         }
     }
@@ -636,6 +649,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void RestoreCharacter ( )
+    {
+        OnRestoreHealth ( stats.maxHealth.Value, true );
+        OnRestoreMana ( stats.maxMana.Value, true );
+    }
+
     /// <summary>
     /// Käyttää manaa taikoihin, voi aiheuttaa myös muita vaikutuksia
     /// </summary>
@@ -654,16 +673,23 @@ public class Player : MonoBehaviour
     /// Player calculates defenses and how much damage is taken
     /// </summary>
     /// <param name="dmg"></param>
-    public void TakeDamage ( GameObject target, float dmg )
+    public void TakeDamage ( GameObject target, float dmg, DamageType damageType,int level )
     {
         float calculatedDamage;
         Color color;
         Debug.Log ( dmg );
+        Debug.Log ( damageType );
+
+        if ( float.IsNaN ( dmg )  || invulnerable)
+        {
+            return;
+        }
+
         if ( isBlocking )
         {
 
             //calculatedDamage = dmg - stats.armor.Value /*Tähän pitäis saada vielä shield defense*/;
-            calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * 100/*vihollisen level*/+ stats.armor.Value ) ) );
+            calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * level+ stats.armor.Value ) ) );
             calculatedDamage = Mathf.Round ( calculatedDamage );
 
             //Ei saa mennä negatiiviseksi
@@ -678,14 +704,42 @@ public class Player : MonoBehaviour
         }
         else
         {
+            /*
+            switch ( damageType )
+            {   
+                case DamageType.Physical:
+                    break;
+                case DamageType.Fire:
+                    break;
+                case DamageType.Frost:
+                    break;
+                case DamageType.Poison:
+                    break;
+                case DamageType.Raw:
+                    break;
+                default:
+                    break;
+            }*/
 
-            color = Color.red;
-            calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * 1/*vihollisen level*/+ stats.armor.Value ) ) );
-            Debug.Log ( ( stats.armor.Value / ( 50 * 1/*vihollisen level*/+ stats.armor.Value ) ) );
-            Debug.Log ( calculatedDamage );
-            calculatedDamage = Mathf.Round ( calculatedDamage );
-            stats.health.BaseValue -= calculatedDamage;
-
+            if ( damageType == DamageType.Raw )
+            {
+                color = Color.red;
+                calculatedDamage = Mathf.Round ( dmg );
+                stats.health.BaseValue -= calculatedDamage;
+            }
+            else
+            {
+                color = Color.red;
+                calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
+                Debug.Log ( ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
+                Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+                if (calculatedDamage < 1 && calculatedDamage >0)
+                {
+                    calculatedDamage = 1;
+                }
+                stats.health.BaseValue -= calculatedDamage;
+            }
 
         }
 
@@ -702,11 +756,13 @@ public class Player : MonoBehaviour
             playerTakeDamageEvent ( calculatedDamage );
         }
 
+
         //Kuolema
         if ( stats.health.Value <= 0 )
         {
             Die ( );
         }
+
 
     }
 
@@ -734,47 +790,56 @@ public class Player : MonoBehaviour
 
     public void FallToDeathCheck ( )
     {
-       
-        if(playerRB.velocity.y > 0)
+        if ( playerRB.velocity.y > 0 )
         {
             goingDown = false;
+            fallTime = 0;
         }
 
-        if ( !goingDown && playerRB.velocity.y < -0.05f )
+        if ( !goingDown && playerRB.velocity.y < 0 )
         {
-            Debug.Log ( "IS GOING DOWN !!!" );          
+            Debug.Log ( "IS GOING DOWN !!!" );
             goingDown = true;
             fallStartYPos = transform.position.y;
-            
         }
 
-        if(goingDown)
+        if ( goingDown )
         {
             fallTime += Time.deltaTime;
         }
 
-        Debug.Log ( fallTime );
-        if(fallTime > lowFallDamageTime && !takeFallDamage)
+        //Debug.Log ( fallTime );
+        if ( fallTime > lowFallDamageTime )
         {
             takeFallDamage = true;
-            fallDamage = Mathf.Sqrt ( fallDamageMultiplier * Mathf.Abs ( Physics.gravity.y ) * fallStartYPos - transform.position.y );
-            TakeDamage ( gameObject, fallDamage );
         }
 
-        if (fallTime > fallToDeathTime)
+        if ( takeFallDamage && hitsGround && goingDown )
         {
-            fallTime = 0;
+            Debug.Log ( fallStartYPos );
+            fallDamage = Mathf.Sqrt ( playerRB.mass * Mathf.Abs ( Physics2D.gravity.y ) * fallStartYPos - transform.position.y ) * fallDamageMultiplier;
+            TakeDamage ( gameObject, fallDamage, DamageType.Raw,1);
+            takeFallDamage = false;
+            hitsGround = false;
+        }
+
+        if ( fallTime > fallToDeathTime )
+        {
             Debug.Log ( "FELL TO DEATH" );
-            Die ( );     
+            fallTime = 0;
+            Die ( );
         }
     }
 
-    public void Alive()
+    public void Alive ( Transform playerPos )
     {
+        playerRB.simulated = true;
+        OnRestoreHealth ( stats.maxHealth.Value, true );
+        OnRestoreMana ( stats.maxMana.Value, true );
+        invulnerable = true;
+        StartCoroutine ( Invulnerable ( 1f ) );
 
-        Time.timeScale = 1;
-
-        if (playerAliveEvent != null)
+        if ( playerAliveEvent != null )
         {
             playerAliveEvent ( );
         }
@@ -783,16 +848,16 @@ public class Player : MonoBehaviour
     /// Kuolllessa tapahtuvat jutut
     /// </summary>
     public void Die ( )
-    {     
+    {
+        playerRB.simulated = false;
+        OnRestoreHealth ( -stats.maxHealth.Value, false );
+        OnRestoreMana ( -stats.maxMana.Value, false );
+
         if ( playerDeathEvent != null )
         {
             playerDeathEvent ( transform );
         }
 
-        //AVAA UI DEATH CLASS , kun semmonen löytyy.
-
-        //Vois tehdä GetAreaName Jonnekki missä ilmoitetaan areanimestä ui
-         
         Debug.Log ( "I'm Dead" );
     }
 
@@ -852,7 +917,6 @@ public class Player : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D ( Collision2D collision )
     {
-
         //Seinästä seinähyppy hetkellisesti mahdolliseksi
         if ( collision.gameObject.CompareTag ( "Wall" ) )
         {
@@ -878,11 +942,6 @@ public class Player : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionExit2D ( Collision2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "Ground" ) || collision.gameObject.CompareTag ( "InteractableObject" ) || collision.gameObject.CompareTag ( "Enemy" ) )
-        {
-            isAir = true;
-            isGrounded = false;
-        }
         if ( !isDashing && collision.gameObject.CompareTag ( "Enemy" ) )
         {
             Physics2D.IgnoreCollision ( gameObject.GetComponent<BoxCollider2D> ( ), collision.collider, false );
@@ -923,9 +982,6 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds ( dashCooldown );
         readyToDash = true;
-        //ilmoittaa että dash on valmis
-        //textPosition = new Vector2 ( transform.position.x, head.transform.position.y + floatingTextPosition );
-        //floatingText.SpawnText ( "Ready To Dash", textPosition, Color.cyan );
     }
 
     IEnumerator SpellCooldown ( float cd )
@@ -940,6 +996,13 @@ public class Player : MonoBehaviour
         delayRdy = true;
 
     }
+
+    IEnumerator Invulnerable ( float time )
+    {
+        yield return new WaitForSeconds ( time );
+        invulnerable = false;
+    }
+
     #endregion
 
 }

@@ -10,12 +10,18 @@ public class ProjectileShootTrigger : MonoBehaviour
     [HideInInspector] public float mass;
     [HideInInspector] public float healingEnemy;
     [HideInInspector] public float healingPlayer;
+    [HideInInspector] public float manaUsage;
     private Transform spawn;
     private Vector2 dir;
 
     public void Launch()
     {
-        
+        if(this.gameObject.GetComponent<Player> ()  != null)
+        {
+            this.gameObject.GetComponent<Player>().OnManaUse(manaUsage);
+        }
+            
+
         spawn = transform;
         // tästä saadaan hiiren osoittama suunta ja laukstaan se siihe suuntaan
         dir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - spawn.position;

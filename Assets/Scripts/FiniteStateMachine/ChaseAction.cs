@@ -57,5 +57,8 @@ public class ChaseAction : Action
                 }
             }
         }
+
+        controller.chaseTarget = null;
+      
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class LootText : MonoBehaviour
 {
@@ -9,14 +10,27 @@ public class LootText : MonoBehaviour
     public GameObject verticalLayoutObject;
     public Transform lootTextCanvas;
     public GameObject group;
+    CanvasGroup canvasGroup;
     
 
-    private void Awake()
+
+    private void Start()
     {
         lootTextCanvas = GameObject.Find("LootTextCanvas").transform;
         GetComponent<Button>().onClick.AddListener(() => GainLoot());
+        canvasGroup = GetComponent<CanvasGroup>();
+        StartCoroutine(TimerHideLootText());
         
     }
+    private void OnEnable()
+    {
+        KeyboardManager.LootTextAppearEvent += ShowLootText;
+    }
+    private void OnDisable()
+    {
+        KeyboardManager.LootTextAppearEvent -= ShowLootText;
+    }
+    
     private void OnTriggerStay2D(Collider2D collision)
     {
         
@@ -39,7 +53,7 @@ public class LootText : MonoBehaviour
                     collision.transform.SetParent(group.transform);
 
                 }
-                else
+                else 
                 {
                     transform.SetParent(collision.transform.parent);
                 }
@@ -61,9 +75,38 @@ public class LootText : MonoBehaviour
         Debug.Log("Pickup");
         pickLoot.pickedUp = true;
         PlayerInventory.instance.AddItem(pickLoot.rLoot, pickLoot.Count, true);
-        //pickLoot.gameObject.SetActive(false);
         Destroy(pickLoot.gameObject);
-        //gameObject.SetActive(false);
         Destroy(gameObject);
     }
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Update()
+    {
+        if (Vector2.Distance(ReferenceHolder.instance.player.transform.position, transform.position)<3)
+        {
+            canvasGroup.interactable = true;
+        }
+        else
+        {
+            canvasGroup.interactable = false;
+        }
+    }
+    public IEnumerator TimerHideLootText()
+    {
+        yield return new WaitForSeconds(Settings.instance.lootTextDisappearTimer);
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+    }
+    public void ShowLootText()
+    {
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+
+        TimerHideLootText();
+    }
+
 }

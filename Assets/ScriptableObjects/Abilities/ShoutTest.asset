@@ -16,10 +16,11 @@ MonoBehaviour:
   _sprite: {fileID: 21300000, guid: 0ce311e9e6a051b488983f16840ea41e, type: 3}
   _sound: {fileID: 0}
   _cooldown: 2
-  _range: 1
-  _duration: 1
-  _heal: 0
-  _damage: 0
-  _damageBuff: 0
+  _manaUsage: 20
+  _range: 2
+  _duration: 10
+  _heal: 10
+  _damage: 5
+  _dotDamage: 10
   _speedBuff: 0
-  _prefab: {fileID: 7743055455586709803, guid: 6b5cf1d7dbc442a45a30688e81b4a75a, type: 3}
+  _fearEnemy: 0

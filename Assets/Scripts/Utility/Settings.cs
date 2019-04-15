@@ -8,6 +8,9 @@ public class Settings : MonoBehaviour
 
     #region gameplaySettings
     public bool autoEquip; //autoequip items when picked up on empty slots
+    public float lootTextDisappearTimer = 20;
+
+    
     #endregion
     private void Awake()
     {
@@ -21,4 +24,5 @@ public class Settings : MonoBehaviour
         }
 
     }
+    
 }

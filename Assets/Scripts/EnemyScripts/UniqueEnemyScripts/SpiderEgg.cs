@@ -59,7 +59,7 @@ public class SpiderEgg : MonoBehaviour
         Destroy ( gameObject ,3f );
     }
 
-    public void TakeDamage(GameObject target, float dmg)
+    public void TakeDamage(GameObject target, float dmg, DamageType damageType)
     {
 
         if ( target == gameObject )

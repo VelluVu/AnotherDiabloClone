@@ -1,14 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Pelaajan interactatessa activoi menun, aiheuittaa hirviöiden respawnin ja pysäyttää ajan
-/// Menu:
-/// 1. Pelaaja voi asettaa levelpojoja / skillpojoja -> avaa toisen valikon
-/// 2. Pelaaja voi vaihtaa skillejä, mitä osaa -> avaa toisen valikon
-/// 3. Pelaaja voi portata erialueelle -> avaa kartan / valikon missä lista paikoista
-/// 4. Pelaaja voi tallentaa/load 
 /// </summary>
 public class CheckPoint : MonoBehaviour
 {
@@ -24,12 +20,21 @@ public class CheckPoint : MonoBehaviour
 
     private void OnEnable ( )
     {
-        Player.playerDeathEvent += ResetPlayerPosition;
+        PlayerDeathUI.respawnPlayerEvent += ResetPlayerPosition;
+        CheckPointUIScript.onExitCheckPointUIExitEvent += ExitCheckPoint;
     }
 
     private void OnDisable ( )
     {
-        Player.playerDeathEvent -= ResetPlayerPosition;
+        PlayerDeathUI.respawnPlayerEvent -= ResetPlayerPosition;
+        CheckPointUIScript.onExitCheckPointUIExitEvent -= ExitCheckPoint;
+    }
+
+    public void ExitCheckPoint ( )
+    {
+        interactingCheckPoint = false;
+
+        Time.timeScale = 1;
     }
 
     private void OnTriggerEnter2D ( Collider2D collision )
@@ -53,34 +58,34 @@ public class CheckPoint : MonoBehaviour
     private void Update ( )
     {
 
-        if (ableToInteractCheckPoint && Input.GetButtonDown ( "Interaction" ) )
-        {
+        EnterCheckPoint ( );
 
-            if(checkPointEvent != null)
+
+    }
+
+    public void EnterCheckPoint()
+    {
+        if ( ableToInteractCheckPoint && Input.GetButtonDown ( "Interaction" ) )
+        {
+            if ( checkPointEvent != null )
             {
-                checkPointEvent (  );
+                checkPointEvent ( );
             }
-        
-            interactingCheckPoint = true;
-            
-            Time.timeScale = 0;
-        }
 
-        if ( Input.GetButtonDown ( "Cancel" ) && interactingCheckPoint)
-        {
-            interactingCheckPoint = false;
-           
-            Time.timeScale = 1;
+            interactingCheckPoint = true;
+
+            Time.timeScale = 0;
         }
     }
 
     public void ResetPlayerPosition( Transform transform )
     {
+
         transform.position = this.transform.position;
 
-        if ( checkPointEvent != null )
-        {
-            checkPointEvent ( );
-        }
+        //if ( checkPointEvent != null )
+        //{
+        //    checkPointEvent ( );
+        //}
     }
 }

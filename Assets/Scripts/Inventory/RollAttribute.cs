@@ -21,6 +21,7 @@ public class RollAttribute : MonoBehaviour
     public StatModifier statModifier;
     public CharacterStat characterStat;
     public PlayerClass PC;
+    public Attribute originAttribute;
     private float tempBaseValue;
     private float tempBaseValueMax;
 
@@ -118,6 +119,7 @@ public class RollAttribute : MonoBehaviour
         value2Min = attribute.value2Min;
         value2Max = attribute.value2Max;
         RollValueByItemLevels = attribute.rollValueByItemLevels;
+        originAttribute = attribute;
         PC = FindObjectOfType<PlayerClass>();
         CreateStatModifier();
         return this;

@@ -166,7 +166,7 @@ public class WeaponPlaceHolder : MonoBehaviour
                 
                 hasHit = true;
                 Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );              
-                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject , _weaponDamage );
+                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject , _weaponDamage, damageType );
                 StartCoroutine ( HitReset ( ) );
             }
         }

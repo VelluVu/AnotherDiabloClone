@@ -27,6 +27,7 @@ MonoBehaviour:
   _lightningResistance: 0
   _physicalResistance: 0
   _xpReward: 50
+  _level: 1
   _enemyType: 0
   _groundEnemyType: 2
   _flyingEnemyType: 2
