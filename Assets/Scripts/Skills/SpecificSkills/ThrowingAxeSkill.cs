@@ -23,6 +23,7 @@ public class ThrowingAxeSkill : MonoBehaviour
     
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         if (GetComponent<AbilityINFO>() == null)
         {
             Debug.Log("ThrowingAxe dont have AbilityINFO script.. it has been added");
@@ -32,22 +33,19 @@ public class ThrowingAxeSkill : MonoBehaviour
         info = GetComponent<AbilityINFO>();
         damage = info._damage;
         flip();
-    }
-    private void OnEnable()
+    }    
+
+    bool isLeft(Vector2 a, Vector2 b)
     {
-        
-        player = GameObject.FindGameObjectWithTag("Player");
-
+        return (-a.x * b.y + a.y * b.x) < 0;
     }
-
-
     void flip()
     {
+        Vector2 dirPos = (info._direction - (Vector2)player.transform.position);
        
+        //float dotR = Vector2.Dot(dirPos, (Vector2)player.transform.position + new Vector2(0,1));
        
-        float dotR = Vector2.Dot(info._direction, info._spawnPos);
-       
-        if(dotR > 0)
+        if(Vector2.Dot(dirPos,player.transform.position)<0)
         {
             // vasenmalla puolella
             Debug.Log("vasen");

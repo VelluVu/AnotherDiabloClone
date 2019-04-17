@@ -298,9 +298,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityButton: 1
+  id: 0
+  clickButton: {fileID: 0}
   darkMask: {fileID: 2064097980}
   coolDownTextDisplay: {fileID: 1553162255}
-  ability: {fileID: 11400000, guid: ef483308ed0b9a24a9d3516bd1c23087, type: 2}
+  abilityName: {fileID: 0}
 --- !u!212 &104678701 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 2935884590778641539, guid: 8065378aafe23e64681a0488572b62a6,
@@ -1259,7 +1261,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -2128,6 +2130,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: CD
+      objectReference: {fileID: 0}
+    - target: {fileID: 1102244470, guid: d760b24f5f64dd34d9f4de5621657849, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1900316715, guid: d760b24f5f64dd34d9f4de5621657849, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 626998985, guid: d760b24f5f64dd34d9f4de5621657849, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2064097979, guid: d760b24f5f64dd34d9f4de5621657849, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049892904, guid: d760b24f5f64dd34d9f4de5621657849, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d760b24f5f64dd34d9f4de5621657849, type: 3}
@@ -3842,9 +3864,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityButton: 1
+  id: 0
+  clickButton: {fileID: 0}
   darkMask: {fileID: 1900316716}
   coolDownTextDisplay: {fileID: 998584122}
-  ability: {fileID: 11400000, guid: 4e11224582f7c4a4394acfa40190151f, type: 2}
+  abilityName: {fileID: 0}
 --- !u!114 &1553162255 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 998121463142165283, guid: d760b24f5f64dd34d9f4de5621657849,
@@ -5930,12 +5954,12 @@ PrefabInstance:
       propertyPath: m_Icon
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4273978143370010408, guid: a1b7502ec05fdb442ae0eff0a8168eec,
+    - target: {fileID: 5070148079722795980, guid: a1b7502ec05fdb442ae0eff0a8168eec,
         type: 3}
       propertyPath: m_Icon
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 5070148079722795980, guid: a1b7502ec05fdb442ae0eff0a8168eec,
+    - target: {fileID: 4273978143370010408, guid: a1b7502ec05fdb442ae0eff0a8168eec,
         type: 3}
       propertyPath: m_Icon
       value: 
@@ -7453,6 +7477,11 @@ PrefabInstance:
       propertyPath: m_ColliderPaths.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3068460925616846986, guid: 925c692fc414c1d4fa888054dbc68847,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 925c692fc414c1d4fa888054dbc68847, type: 3}
 --- !u!224 &3035159864808546010 stripped
@@ -7528,11 +7557,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5566796841073207699, guid: 8065378aafe23e64681a0488572b62a6,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: 87a582f11fb96004f9be9c312eae4d7f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8065378aafe23e64681a0488572b62a6, type: 3}
 --- !u!4 &5105717740548971131 stripped

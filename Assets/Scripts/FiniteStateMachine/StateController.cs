@@ -70,6 +70,7 @@ public class StateController : MonoBehaviour
     [Tooltip ( "Head position and possibly for hit data etc.")] public GameObject head;
 
     [Tooltip ( "LayerMasks for raycast detection")] public LayerMask enemyLayer;
+    [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask groundLayer;
     [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask playerLayer;
 
     [Tooltip ( "Humanoid enemy weapons")] public EnemyWeaponHolder weaponLeft;
@@ -97,8 +98,6 @@ public class StateController : MonoBehaviour
     public bool notHatchedEgg;
     #endregion
 
-    
-
     private void Awake ( )
     {
         //GetComponents
@@ -125,6 +124,7 @@ public class StateController : MonoBehaviour
         CheckPoint.checkPointEvent += DestroySpawnings;
         enemyTakeDamageEvent += OnEnemyTakeDamage;
         SpiderEgg.hatchEvent += Hatched;
+        SpiderEgg.eggDestroyedEvent += Hatched; //Tähän vois lisätä omat functiot vaik et hämy menee sekasi ja hyökkää pelaajaan
     }
 
     private void OnDisable ( )
@@ -134,6 +134,7 @@ public class StateController : MonoBehaviour
         CheckPoint.checkPointEvent -= DestroySpawnings;
         enemyTakeDamageEvent -= OnEnemyTakeDamage;
         SpiderEgg.hatchEvent -= Hatched;
+        SpiderEgg.eggDestroyedEvent -= Hatched;
     }
 
     public void Hatched( GameObject parent)
@@ -165,6 +166,7 @@ public class StateController : MonoBehaviour
         {
             CheckLedge ( );
         }
+
         CheckDirection ( );
 
         
@@ -228,17 +230,25 @@ public class StateController : MonoBehaviour
     {
         if ( collision.gameObject.CompareTag ( "InteractableObject" ) || collision.gameObject.CompareTag ( "Enemy" ) )
         {
-            if ( dirRight ) { rb.velocity += Vector2.left; dirRight = false; } else { rb.velocity += Vector2.right; dirRight = true; }
+            if ( dirRight )
+            {
+                rb.velocity += Vector2.left;
+                dirRight = false;
+            }
+            else
+            {
+                rb.velocity += Vector2.right;
+                dirRight = true;
+            }
 
         }
     }
 
     public void DestroySpawnings()
     {
-        if ( enemyStats.groundEnemyType == GroundEnemyType.SpiderLing || enemyStats.groundEnemyType == GroundEnemyType.egg || enemyStats.groundEnemyType == GroundEnemyType.Splitter )
-        {
-            Destroy ( gameObject );
-        }
+
+        Destroy ( gameObject );
+        
     }
     /// <summary>
     /// Perus liikkumisen animointi nopeuksien mukaan
@@ -265,11 +275,18 @@ public class StateController : MonoBehaviour
     void CheckLedge ( )
     {
 
-        gaze = Physics2D.Raycast ( eyes.transform.position, -Vector2.up, sightDistance );
+        gaze = Physics2D.Raycast ( eyes.transform.position, -Vector2.up, 3, groundLayer );
 
         if ( gaze.collider == false )
         {
-            dirRight = dirRight ? false : true;
+            if (dirRight)
+            {
+                dirRight = false;
+            }
+            else
+            {
+                dirRight = true;
+            }
         }
     }
 

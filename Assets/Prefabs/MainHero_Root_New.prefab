@@ -309,13 +309,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1058562718592394236}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.014, y: -0.025, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2631187541623436336}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!114 &6011629118065500137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,13 +650,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3711628038237003984}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.006, y: -0.044, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8499362300878538149}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!114 &7391706078199241481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2097,6 +2097,8 @@ GameObject:
   - component: {fileID: 3219682470792519087}
   - component: {fileID: 6396014201375378752}
   - component: {fileID: 811391890461806274}
+  - component: {fileID: 7009999718720898312}
+  - component: {fileID: 397100565}
   m_Layer: 13
   m_Name: MainHero_Root_New
   m_TagString: Player
@@ -2127,7 +2129,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8875967764980965159}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -2135,7 +2137,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 87a582f11fb96004f9be9c312eae4d7f, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -2153,7 +2155,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.018194333, y: -0.11436415}
+  m_Offset: {x: 0.0014695972, y: -0.099497676}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2164,7 +2166,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.17345986, y: 0.7920656}
+  m_Size: {x: 0.20690933, y: 0.881264}
   m_EdgeRadius: 0
 --- !u!114 &4435809389874474224
 MonoBehaviour:
@@ -2178,11 +2180,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c23de5c5efe9fe748b70281de8e94e86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 5400792684223559201}
-  levelUp: {fileID: 3219682470792519087}
   head: {fileID: 2519323538690244043}
   rightHand: {fileID: 3711628038237003984}
   leftHand: {fileID: 1058562718592394236}
+  stats: {fileID: 5400792684223559201}
+  levelUp: {fileID: 3219682470792519087}
   feet: {fileID: 465333549647028381}
   whatIsGround:
     serializedVersion: 2
@@ -2196,15 +2198,15 @@ MonoBehaviour:
   main: {fileID: 7391706078199241481}
   off: {fileID: 6011629118065500137}
   isSpellRdy: 1
+  isAttackRdy: 1
+  readyToDash: 1
   canWallJump: 0
   isDoubleJumping: 0
   isBlocking: 0
   isAir: 0
-  isAttackRdy: 1
   isJumping: 0
   initialJump: 0
   isWallJumping: 0
-  readyToDash: 1
   isDashing: 0
   isGrounded: 1
   mouseOnUI: 0
@@ -2214,6 +2216,17 @@ MonoBehaviour:
   isDoubleJumpLearned: 1
   isWallJumpLearned: 1
   isDashLearned: 1
+  jumpHeightMax: 1.3
+  jumpHeightMin: 0.4
+  timeToJumpApex: 0.3
+  newMoveSpeed: 2
+  airAccelerationTime: 0.15
+  groundAccelerationTime: 0.1
+  wallSlideSpeedMax: 1.2
+  wallStickTime: 0.25
+  wallJumpClimb: {x: 1, y: 8}
+  wallJumpOff: {x: 4, y: 3}
+  wallLeap: {x: 8, y: 8}
   speedScale: 1
   airSpeed: 1
   dashTime: 0.3
@@ -2225,10 +2238,10 @@ MonoBehaviour:
   extraJumps: 1
   wallJumpPushBack: 1
   wallJumpVerticalVectorMultipier: 1
-  jumpTime: 0.25
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   groundCheckRadius: 0.1
+  jumpTime: 0.25
   fallToDeathTime: 2
   lowFallDamageTime: 0.45
   fallDamageMultiplier: 1
@@ -2483,9 +2496,11 @@ MonoBehaviour:
   duration: 0
   heal: 0
   damage: 0
+  increaseDamage: 0
   dotDamage: 0
   speedBuff: 0
   manaUsage: 0
+  spawneGameobj: {fileID: 0}
   fearEnemy: 0
 --- !u!114 &811391890461806274
 MonoBehaviour:
@@ -2506,3 +2521,38 @@ MonoBehaviour:
   healingEnemy: 0
   healingPlayer: 0
   manaUsage: 0
+--- !u!114 &7009999718720898312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875967764980965159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81ae177a0411c5b4a9047120f294674e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 7168
+  collisionDashMask:
+    serializedVersion: 2
+    m_Bits: 3072
+  horizontalRayCount: 4
+  verticalRayCount: 8
+  maxSlopeAngle: 70
+  maxSlopeDescentAngle: 70
+  dashing: 0
+--- !u!114 &397100565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875967764980965159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bc34cc60dc61174588150eaa1c34c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

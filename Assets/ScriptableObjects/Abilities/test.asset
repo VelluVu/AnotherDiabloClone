@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb2a40b0c63a9ab4ca14e3d78b2f51b6, type: 3}
   m_Name: test
   m_EditorClassIdentifier: 
-  _name: test
+  _name: Throwing Axe
   _sprite: {fileID: 21300000, guid: 8db4ee940d6022340b00fdebaad84380, type: 3}
   _sound: {fileID: 0}
   _cooldown: 0.2
+  _manaUsage: 0
+  caster: {fileID: 0}
   _protectileForce: 100
   _damange: 16
   _mass: 0.2
-  _healingEnemy: 0
-  _healingPlayer: 0
+  _healingEnemy: 5
+  _healingPlayer: 22
+  manaUsage: 10
   _rb2D: {fileID: 3901646589032044834, guid: 50f667b77a6947d4dab71970109ec65f, type: 3}

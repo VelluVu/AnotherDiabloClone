@@ -10,13 +10,13 @@ public class ShoutScript : MonoBehaviour
     [HideInInspector] public float duration;
     [HideInInspector] public float heal;
     [HideInInspector] public float damage;
+    [HideInInspector] public float increaseDamage;
     [HideInInspector] public float dotDamage;
     [HideInInspector] public float speedBuff;
     [HideInInspector] public bool fearEnemy;
 
     GameObject holder;
-
-    
+  
     Player playerC;
 
      
@@ -24,7 +24,7 @@ public class ShoutScript : MonoBehaviour
 
     private void Start()
     {
-        
+        Debug.Log("Shout script " + heal );
         holder = this.gameObject;
         if(holder.GetComponent<Player>() != null)
         {
@@ -32,6 +32,7 @@ public class ShoutScript : MonoBehaviour
         }
         if(heal > 0)
         {
+            Debug.Log("HEAALL");
             playerC.OnRestoreHealth(heal, false);
         }
 
@@ -39,6 +40,14 @@ public class ShoutScript : MonoBehaviour
         {
             
             getEnemiesInRangeSetDotOrDamage(false);
+        }
+        if(increaseDamage != 0)
+        {
+            Debug.Log("INcrease damage ei ole implementoitu");
+        }
+        if(fearEnemy)
+        {
+            Debug.Log("fearia ei ole implementoitu");
         }
         if(dotDamage > 0 && range > 0)
         {
@@ -50,10 +59,12 @@ public class ShoutScript : MonoBehaviour
         {
             playerC.speedScale +=speedBuff;
             speedBuffOn = true;
+           
             Destroy(this, duration);
         }
         else
         {
+            
             Destroy(this);
         }
         

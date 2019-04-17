@@ -5,17 +5,42 @@ using UnityEngine;
 public class ProjectileShootTrigger : MonoBehaviour
 {
     [HideInInspector] public Rigidbody2D rb2D;
-    [HideInInspector] public float projectileForce = 200f;
+    [HideInInspector] public float projectileForce;
     [HideInInspector] public float damage;
     [HideInInspector] public float mass;
     [HideInInspector] public float healingEnemy;
     [HideInInspector] public float healingPlayer;
     [HideInInspector] public float manaUsage;
+   
     private Transform spawn;
     private Vector2 dir;
 
-    public void Launch()
+
+    public void setValues(ProjectileAbility skill)
     {
+        rb2D = skill._rb2D;
+        projectileForce = skill._protectileForce;
+        damage = skill._damange;
+        mass = skill._mass;
+        healingPlayer = skill._healingPlayer;
+        healingEnemy = skill._healingEnemy;
+        manaUsage = skill.manaUsage;
+        
+
+    }
+
+    public void Launch(Ability skill)
+    {
+        if(skill is ProjectileAbility)
+        {
+            setValues(skill as ProjectileAbility);
+        }
+        else
+        {
+            Debug.Log("ABILITY wasn't protectile ability");
+            return;
+        }
+
         if(this.gameObject.GetComponent<Player> ()  != null)
         {
             this.gameObject.GetComponent<Player>().OnManaUse(manaUsage);

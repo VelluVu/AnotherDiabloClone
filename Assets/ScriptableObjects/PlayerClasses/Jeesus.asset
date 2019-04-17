@@ -15,8 +15,8 @@ MonoBehaviour:
   _name: Jesse
   _className: JumalanPoeka
   _classType: 0
-  _moveSpeed: 80
-  _jumpForce: 800
+  _moveSpeed: 5
+  _jumpForce: 8
   _extraJumpForce: 200
   _extraWallJumpForce: 150
   _baseDamage: 5

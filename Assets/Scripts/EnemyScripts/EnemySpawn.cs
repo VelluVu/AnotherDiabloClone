@@ -51,7 +51,7 @@ public class EnemySpawn : MonoBehaviour
         }
         else
         {
-            Destroy ( spawnedEnemy );
+            //Destroy ( spawnedEnemy );
             isSpawn = false;
             SpawnEnemy ( );
         }

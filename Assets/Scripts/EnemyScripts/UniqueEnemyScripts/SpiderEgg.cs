@@ -14,6 +14,9 @@ public class SpiderEgg : MonoBehaviour
     public delegate void HatchDelegate( GameObject parent );
     public static event HatchDelegate hatchEvent;
 
+    public delegate void EggDestroyedDelegate ( GameObject parent );
+    public static event EggDestroyedDelegate eggDestroyedEvent;
+
     public delegate IEnumerator EggFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
     public static event EggFlashDelegate eggFlashEvent;
     
@@ -25,11 +28,13 @@ public class SpiderEgg : MonoBehaviour
     private void OnEnable ( )
     {
         Player.playerDealDamageEvent += TakeDamage;
+        CheckPoint.checkPointEvent += Die;
     }
 
     private void OnDisable ( )
     {
         Player.playerDealDamageEvent -= TakeDamage;
+        CheckPoint.checkPointEvent -= Die;
     }
 
     public void SetParent( GameObject parent)
@@ -73,14 +78,19 @@ public class SpiderEgg : MonoBehaviour
 
             if ( health <= 0 )
             {
-                if ( hatchEvent != null )
-                {
-                    hatchEvent ( parent );
-                }
-                StopAllCoroutines ( );
-                Destroy ( gameObject );
+                Die ( );
             }
         }
+    }
+
+    public void Die()
+    {
+        if ( eggDestroyedEvent != null )
+        {
+            eggDestroyedEvent ( parent );
+        }
+        StopAllCoroutines ( );
+        Destroy ( gameObject );
     }
 
     IEnumerator HatchCoroutine(float hatchTime)

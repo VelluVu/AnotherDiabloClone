@@ -221,6 +221,7 @@ MonoBehaviour:
   alertedByEventDuration: 3
   stateTimeElapsed: 0
   radius: 1.1
+  senseArea: 0
   amplitude: 0
   frequency: 0
   flyingPatrolDirectionTime: 0
@@ -230,6 +231,9 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 4096
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   playerLayer:
     serializedVersion: 2
     m_Bits: 8192
@@ -264,6 +268,7 @@ MonoBehaviour:
   enemy: {fileID: 11400000, guid: d517951da5ec82846baa6f405d46de0f, type: 2}
   myName: Hirvitys
   xpReward: 0
+  level: 0
   moveSpeed:
     BaseValue: 0
     isDirty: 1
@@ -463,3 +468,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
     type: 3}
+  damageType: 0
