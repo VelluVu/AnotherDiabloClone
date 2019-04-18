@@ -7,21 +7,22 @@ public class EventMessage : MonoBehaviour
 {
 
     public TextMeshProUGUI text;
-    bool appearing;
 
     private void OnEnable ( )
     {
-        DoorLeverScript.leverActivationInfoEvent += OnMessageReceive;
+        DoorLeverScript.LeverActivationInfoEvent += DoorLeverActivateMessage;
+        ElevatorLever.OnElevatorLeverActivateEvent += ElevatorLeverActivateMessage;
     }
 
     private void OnDisable ( )
     {
-        DoorLeverScript.leverActivationInfoEvent -= OnMessageReceive;
+        DoorLeverScript.LeverActivationInfoEvent -= DoorLeverActivateMessage;
+        ElevatorLever.OnElevatorLeverActivateEvent -= ElevatorLeverActivateMessage;
     }
 
-    public void OnMessageReceive( string message, Color color, float fontSize, float fadeTime )
+    public void DoorLeverActivateMessage( string message, Color color, float fontSize, float fadeTime )
     {
-        appearing = true;
+       
         text.text = message;
         text.color = color;
         text.fontSize = fontSize;
@@ -30,9 +31,18 @@ public class EventMessage : MonoBehaviour
               
     }
 
-    public IEnumerator FadeTextToFullAlpha ( float t, TextMeshProUGUI i )
+    public void ElevatorLeverActivateMessage(Vector2 position, float fadeTime)
     {
-        Debug.Log ( appearing );      
+        
+        text.text = "An Elevator Started Moving Somewhere";
+        text.color = Color.white;
+        text.fontSize = 64;
+   
+        StartCoroutine ( FadeTextToFullAlpha ( fadeTime * 0.5f, text ) );
+    }
+
+    public IEnumerator FadeTextToFullAlpha ( float t, TextMeshProUGUI i )
+    {          
         i.color = new Color ( i.color.r, i.color.g, i.color.b, 0 );
         while ( i.color.a < 1.0f )
         {
@@ -44,8 +54,7 @@ public class EventMessage : MonoBehaviour
     }
 
     public IEnumerator FadeTextToZeroAlpha ( float t, TextMeshProUGUI i )
-    {
-        Debug.Log ( appearing );
+    {     
         i.color = new Color ( i.color.r, i.color.g, i.color.b, 1 );
         while ( i.color.a > 0.0f )
         {

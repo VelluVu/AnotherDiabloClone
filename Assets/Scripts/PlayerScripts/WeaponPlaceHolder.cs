@@ -13,8 +13,7 @@ public class WeaponPlaceHolder : MonoBehaviour
     public Item _currentWeapon = null;
 
     #region Necessary Components
-    BoxCollider2D col;
-    SpriteRenderer sr;
+    public BoxCollider2D _weaponCol;
     public SpriteRenderer _weaponSprite;  //Aseen grafiikka
     //for new equip
     public RolledLoot equippedWeapon;
@@ -43,9 +42,7 @@ public class WeaponPlaceHolder : MonoBehaviour
     private void Start ( )
     {
         _weaponSprite = gameObject.GetComponent<SpriteRenderer> ( );
-        col = gameObject.GetComponent<BoxCollider2D> ( );
-        sr = gameObject.GetComponent<SpriteRenderer> ( );
- 
+        _weaponCol = gameObject.GetComponent<BoxCollider2D> ( );
     }
 
     public RolledLoot EquipWeapon(RolledLoot newWeapon)
@@ -55,8 +52,9 @@ public class WeaponPlaceHolder : MonoBehaviour
         _weaponSprite.sprite = newWeapon.equipmentSprites[0];
         equippedWeapon = newWeapon;
         isEquipped = true;
-        col.offset = new Vector2 ( 0, -0.2f ); //asettaa aseen collider kohilleen
-        col.size = new Vector2 ( sr.sprite.bounds.size.x, sr.sprite.bounds.size.y ); //asettaa aseen collider reunat kohillee spriten reunojen perusteella
+
+        _weaponCol.offset = new Vector2 ( 0, -0.2f );
+        _weaponCol.size = new Vector2 ( _weaponSprite.sprite.bounds.size.x, _weaponSprite.sprite.bounds.size.x );
 
         if (tempWeapon != null)
         {
@@ -76,37 +74,10 @@ public class WeaponPlaceHolder : MonoBehaviour
         isEquipped = false;
     }
 
-    //Asettaa Esineen käyttöön
     public Item NewWeapon ( Item newWeapon )
     {
-        //Debug.Log ( newWeapon );
-        //if ( newWeapon != null )
-        //{
-        //    Debug.Log ( newWeapon.weaponDamage );
-        //    Debug.Log ( newWeapon.weaponSpeed );
-        //    Debug.Log ( newWeapon.itemSprite );
-        //    Debug.Log ( newWeapon.itemInventoryImage );
-        //}
-
-        //Debug.Log ( _currentWeapon );
-        //if ( _currentWeapon != null )
-        //{
-        //    Debug.Log ( _currentWeapon.weaponDamage );
-        //    Debug.Log ( _currentWeapon.weaponSpeed );
-        //    Debug.Log ( _currentWeapon.itemSprite );
-        //    Debug.Log ( _currentWeapon.itemInventoryImage );
-        //}
-
+       
         Item oldWeapon = _currentWeapon;
-
-        //Debug.Log ( oldWeapon );
-        //if ( oldWeapon != null )
-        //{
-        //    Debug.Log ( oldWeapon.weaponDamage );
-        //    Debug.Log ( oldWeapon.weaponSpeed );
-        //    Debug.Log ( oldWeapon.itemSprite );
-        //    Debug.Log ( oldWeapon.itemInventoryImage );
-        //}
 
         _weaponSprite.sprite = newWeapon.itemSprite;
         _weaponName = newWeapon.itemName;
@@ -114,12 +85,10 @@ public class WeaponPlaceHolder : MonoBehaviour
         _weaponSpeed = newWeapon.weaponSpeed;
         _currentWeapon = newWeapon;
         isEquipped = true;
-        col.offset = new Vector2 ( 0, -0.2f );
-        col.size = new Vector2 ( sr.sprite.bounds.size.x, sr.sprite.bounds.size.y);
+        _weaponCol.size = new Vector2 ( _weaponSprite.sprite.bounds.size.x, _weaponSprite.sprite.bounds.size.y);
         return oldWeapon;
     }
 
-    //Saattaa tarvita tyhjää käsi
     public Item EmptyHand ( )
     {
         //Käsi ei ole tyhjä palauta nykyinen ase
@@ -140,22 +109,6 @@ public class WeaponPlaceHolder : MonoBehaviour
         return null;
 
     }
-
-    //private void OnCollisionEnter2D ( Collision2D collision )
-    //{
-    //    if ( collision.gameObject.CompareTag ( "Enemy" ) )
-    //    {
-    //        if ( !hasHit && weaponType != WeaponType.Shield )
-    //        {
-    //            hasHit = true;
-    //            Destroy ( Instantiate ( bloodSplash, collision.contacts [ 0 ].point, Quaternion.identity ), 2f );
-    //            Debug.Log ( gameObject.name );
-    //            gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject.GetComponent<StateController> ( ), _weaponDamage );
-    //            col.enabled = false; // kun osuu ottaa colliderin pois
-    //            StartCoroutine ( HitReset ( ) );
-    //        }
-    //    }
-    //}
 
     private void OnTriggerEnter2D ( Collider2D collision )
     {

@@ -17,7 +17,8 @@ public class FloatingCombatTextManager: MonoBehaviour
 
         Player.playerNotifyEvent += NotifyEvent;
         StateController.enemyNotifyEvent += NotifyEvent;
-        DoorLeverScript.leverActivationFloatingTextEvent += SpawnText;
+        DoorLeverScript.LeverActivationFloatingTextEvent += SpawnText;
+        ElevatorLever.OnElevatorLeverActivateEvent += NotifyEvent;
      
     }
 
@@ -26,8 +27,14 @@ public class FloatingCombatTextManager: MonoBehaviour
         
         Player.playerNotifyEvent -= NotifyEvent;
         StateController.enemyNotifyEvent -= NotifyEvent;
-        DoorLeverScript.leverActivationFloatingTextEvent -= SpawnText;
+        DoorLeverScript.LeverActivationFloatingTextEvent -= SpawnText;
+        ElevatorLever.OnElevatorLeverActivateEvent -= NotifyEvent;
 
+    }
+
+    public void NotifyEvent ( Vector2 position, float fadeTime )
+    {
+        SpawnText ( position, "Clunk", Color.yellow );
     }
 
     public void NotifyEvent ( Transform transform, string message, Color color )

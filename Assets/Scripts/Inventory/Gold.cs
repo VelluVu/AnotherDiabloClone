@@ -5,10 +5,14 @@ using UnityEngine;
 public class Gold : MonoBehaviour
 {
 
-    
 
-   
+
+    public TMPro.TMP_Text goldText;
     public int amount;
+    private void Start()
+    {
+        goldText.text = amount + " Gold";
+    }
     // Update is called once per frame
     void Update()
     {

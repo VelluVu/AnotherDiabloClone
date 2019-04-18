@@ -101,20 +101,24 @@ PrefabInstance:
       value: WoodenDoorRight
       objectReference: {fileID: 0}
     - target: {fileID: 1384855233, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1384855233, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
       propertyPath: m_TagString
       value: InteractableObject
       objectReference: {fileID: 0}
     - target: {fileID: 1384855236, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.1928177
+      value: -0.0441
       objectReference: {fileID: 0}
     - target: {fileID: 1384855236, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.1673704
+      value: -0.45
       objectReference: {fileID: 0}
     - target: {fileID: 1384855236, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.037109375
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1384855236, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
       propertyPath: m_LocalRotation.x
@@ -147,6 +151,14 @@ PrefabInstance:
     - target: {fileID: 1384855236, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1384855236, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3054805
+      objectReference: {fileID: 0}
+    - target: {fileID: 1384855236, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2613
       objectReference: {fileID: 0}
     - target: {fileID: 455089174, guid: 050c202c84b57834cbb49b6f586409bd, type: 3}
       propertyPath: doorType
@@ -193,17 +205,17 @@ PrefabInstance:
     - target: {fileID: 2349670892452061882, guid: f60e3f0fc0e047b40990ab02c85f858a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.52
+      value: 5.8586
       objectReference: {fileID: 0}
     - target: {fileID: 2349670892452061882, guid: f60e3f0fc0e047b40990ab02c85f858a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.88
+      value: 6.9153
       objectReference: {fileID: 0}
     - target: {fileID: 2349670892452061882, guid: f60e3f0fc0e047b40990ab02c85f858a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.18945312
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2349670892452061882, guid: f60e3f0fc0e047b40990ab02c85f858a,
         type: 3}
@@ -245,6 +257,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061882, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0192
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061882, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8653
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061892, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.06059365
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061892, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.25174546
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061892, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.8729811
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349670892452061892, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.3455839
+      objectReference: {fileID: 0}
     - target: {fileID: 1058855346209643933, guid: f60e3f0fc0e047b40990ab02c85f858a,
         type: 3}
       propertyPath: doors.Array.size
@@ -255,6 +297,21 @@ PrefabInstance:
       propertyPath: doors.Array.data[0]
       value: 
       objectReference: {fileID: 1272484168964437801}
+    - target: {fileID: 1058855346209643933, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: messageFontSize
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058855346209643933, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: messageDisplayTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058855346209643933, guid: f60e3f0fc0e047b40990ab02c85f858a,
+        type: 3}
+      propertyPath: eventDuration
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f60e3f0fc0e047b40990ab02c85f858a, type: 3}
 --- !u!4 &5684640204970154621 stripped

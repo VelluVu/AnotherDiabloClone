@@ -63,6 +63,7 @@ public class AbilityCoolDown : MonoBehaviour, IPointerEnterHandler, IPointerExit
         bool coolDownComplete = (Time.time > nextReadyTime);
         if (coolDownComplete)
         {
+            
             AbilityReady();
             if (Input.GetKeyDown(abilityButton))
             {

@@ -13,14 +13,14 @@ public class DoorLeverScript : MonoBehaviour
     public float messageDisplayTime;
     public float eventDuration;
 
-    public delegate void LeverActivationDelegate ( float eventDuration );
-    public static event LeverActivationDelegate leverActivationEvent;
+    public delegate void DoorLeverActivationInfoDurationDelegate ( float duration );
+    public static event DoorLeverActivationInfoDurationDelegate DoorLeverActivationInfoDurationEvent;
 
-    public delegate void LeverActivationFloatingTextDelegate ( Vector2 position, string message, Color color );
-    public static event LeverActivationFloatingTextDelegate leverActivationFloatingTextEvent;
+    public delegate void DoorLeverActivationFloatingTextDelegate ( Vector2 position, string message, Color color );
+    public static event DoorLeverActivationFloatingTextDelegate LeverActivationFloatingTextEvent;
 
-    public delegate void LeverActivationInfoDelegate ( string message, Color color, float fontSize, float fadeTime );
-    public static event LeverActivationInfoDelegate leverActivationInfoEvent;
+    public delegate void DoorLeverActivationInfoDelegate ( string message, Color color, float fontSize, float fadeTime );
+    public static event DoorLeverActivationInfoDelegate LeverActivationInfoEvent;
 
     private void Awake ( )
     {
@@ -40,30 +40,38 @@ public class DoorLeverScript : MonoBehaviour
         {
             if (Input.GetButton("Interaction"))
             {
+                int doorCount = 0;
+
                 foreach ( var door in doors )
-                {
-                    if(!door.isOpen)
+                {                    
+                    if (!door.isOpen)
                     {
-                        OnLeverActivation ( );
+                        doorCount++;
+
+                        if ( doorCount <= 1 )
+                        {
+                            OnLeverActivation ( );
+                        }
                         door.Aukene ( );
                     }
-                }
+                }               
             }
         }
     }
     public void OnLeverActivation()
     {
-        if ( leverActivationEvent != null )
+        if(DoorLeverActivationInfoDurationEvent != null)
         {
-            leverActivationEvent ( eventDuration );
+            DoorLeverActivationInfoDurationEvent ( messageDisplayTime );
         }
-        if ( leverActivationFloatingTextEvent != null)
+
+        if ( LeverActivationFloatingTextEvent != null)
         {
-            leverActivationFloatingTextEvent ( transform.position, "Clunk", Color.yellow );       
+            LeverActivationFloatingTextEvent ( transform.position, "Clunk", Color.yellow );       
         }
-        if(leverActivationInfoEvent != null)
+        if(LeverActivationInfoEvent != null)
         {
-            leverActivationInfoEvent ( message, Color.white, messageFontSize , messageDisplayTime);
+            LeverActivationInfoEvent ( message, Color.white, messageFontSize , messageDisplayTime);
         }
     }
 }

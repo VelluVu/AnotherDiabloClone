@@ -1,35 +1,22 @@
 ﻿
 using UnityEngine;
 
-[RequireComponent (typeof(Player))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : RayCastScript
 {
 
-    public LayerMask collisionMask;
-    public LayerMask collisionDashMask;
-
-    const float skinWidth = .015f;
-    public int horizontalRayCount = 4;
-    public int verticalRayCount = 4;
     public float maxSlopeAngle = 70;
     public float maxSlopeDescentAngle = 70;
 
-    float horizontalRaySpacing;
-    float verticalRaySpacing;
+    public CollisionInfo collisions;
 
     public bool dashing;
 
-    BoxCollider2D col;
-    RayCastOrigins rayCastOrigins;
-    public CollisionInfo collisions;
-
-    private void Awake ( )
+    public override void Start ( )
     {
-        col = gameObject.GetComponent<BoxCollider2D> ( );
-        CalculateRaySpacing ( );
+        base.Start ( );
         collisions.faceDirection = 1;
     }
-  
+
     public void Move ( Vector2 velocity )
     {
         UpdateRayCastOrigins ( );
@@ -53,6 +40,11 @@ public class PlayerMovement : MonoBehaviour
         if ( velocity.y != 0 )
         {
             VerticalCollisions ( ref velocity );
+        }
+
+        if ( !collisions.onElevator )
+        {
+            transform.SetParent ( null );
         }
 
         transform.Translate ( velocity );
@@ -101,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
                         distanceToSlopeStart = hit.distance - skinWidth;
                         velocity.x -= distanceToSlopeStart * directionX;
                     }
-                    ClimpSlope ( ref velocity, slopeAngle );
+                    ClimbSlope ( ref velocity, slopeAngle );
                     velocity.x += distanceToSlopeStart * directionX;
                 }
 
@@ -143,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             Debug.DrawRay ( rayOrigin, Vector2.up * directionY *  rayLength, Color.red );
-
+    
             if(hit)
             {
                 velocity.y = (hit.distance - skinWidth) * directionY;
@@ -156,6 +148,16 @@ public class PlayerMovement : MonoBehaviour
 
                 collisions.below = directionY == -1;
                 collisions.above = directionY == 1;
+
+                if ( hit.collider.gameObject.CompareTag ( "MovingPlatform" ) && collisions.below )
+                {
+                    collisions.onElevator = true;
+
+                    if ( collisions.onElevator )
+                    {
+                        ExtensionMethods.SetParent ( transform, hit.collider.transform );                
+                    }              
+                }
             }
         }
         if(collisions.climbingSlope)
@@ -172,12 +174,12 @@ public class PlayerMovement : MonoBehaviour
                 {
                     velocity.x = ( hit.distance - skinWidth ) * directionX;
                     collisions.slopeAngle = slopeAngle;
-                }
+                }              
             }
         }
     }
 
-    void ClimpSlope(ref Vector2 velocity, float slopeAngle)
+    void ClimbSlope(ref Vector2 velocity, float slopeAngle)
     {
         float moveDistance = Mathf.Abs ( velocity.x );
         float climpVelocityY = Mathf.Sin ( slopeAngle * Mathf.Deg2Rad ) * moveDistance;
@@ -220,42 +222,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void UpdateRayCastOrigins ( )
-    {
-        Bounds bounds = col.bounds;
-        bounds.Expand ( skinWidth * -2 );
-
-        rayCastOrigins.bottomLeft = new Vector2 ( bounds.min.x, bounds.min.y );
-        rayCastOrigins.bottomRight = new Vector2 ( bounds.max.x, bounds.min.y );
-        rayCastOrigins.topLeft = new Vector2 ( bounds.min.x, bounds.max.y );
-        rayCastOrigins.topRight = new Vector2 ( bounds.max.x, bounds.max.y );
-    }
-
-    void CalculateRaySpacing ( )
-    {
-        Bounds bounds = col.bounds;
-        bounds.Expand ( skinWidth * -2 );
-
-        horizontalRayCount = Mathf.Clamp ( horizontalRayCount, 2, int.MaxValue );
-        horizontalRayCount = Mathf.Clamp ( verticalRayCount, 2, int.MaxValue );
-
-        horizontalRaySpacing = bounds.size.y / ( horizontalRayCount - 1 );
-        verticalRaySpacing = bounds.size.x / ( verticalRayCount - 1 );
-    }
-
-    struct RayCastOrigins
-    {
-        public Vector2 topLeft, topRight;
-        public Vector2 bottomLeft, bottomRight;
-    }
-
     public struct CollisionInfo
     {
         public bool above, below;
         public bool left, right;
         public bool descendSlope;
         public bool climbingSlope;
-        public float slopeAngle, slopeAngleOld;
+        public bool onElevator;
+        public float slopeAngle, slopeAngleOld;      
         public Vector2 velocityOld;
         public int faceDirection;
 
@@ -264,7 +238,8 @@ public class PlayerMovement : MonoBehaviour
             above = below = false;
             left = right = false;
             climbingSlope = false;
-            descendSlope = false;        
+            descendSlope = false;
+            onElevator = false;
             slopeAngleOld = slopeAngle;
             slopeAngle = 0;
         }

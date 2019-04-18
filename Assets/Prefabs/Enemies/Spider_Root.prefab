@@ -221,8 +221,8 @@ MonoBehaviour:
   alertedByEventDuration: 3
   stateTimeElapsed: 0
   radius: 1.1
-  senseArea: 0
-  amplitude: 0
+  senseArea: 1.11
+  amplitude: 0.1
   frequency: 0
   flyingPatrolDirectionTime: 0
   eyes: {fileID: 2672909280130531670}

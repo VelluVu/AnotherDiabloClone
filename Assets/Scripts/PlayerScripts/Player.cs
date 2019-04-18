@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// Pelaaja Prototyyppi
 /// </summary>
-[RequireComponent ( typeof ( PlayerClass ), typeof ( PlayerInput ), typeof ( PlayerMovement ))]
+[RequireComponent ( typeof ( PlayerClass ), typeof ( PlayerInput ), typeof ( PlayerMovement ) )]
 public class Player : MonoBehaviour
 {
 
@@ -54,8 +54,8 @@ public class Player : MonoBehaviour
     [HideInInspector] Animator heroAnim;
     [HideInInspector] Rigidbody2D playerRB;
     PlayerMovement movement;
-    public PlayerClass stats; //pelaajan statit
-    public LevelUp levelUp;
+    public PlayerClass stats; //pelaajan statit public , koska halutaan päästä käsiksi pelaajan kautta.
+    public LevelUp levelUp; //Tähänkin halutaan varmaan päästä vaikuttaan ulkopuolelta
     public Transform feet;
     public LayerMask whatIsGround;
     public LayerMask groundRayLayer;
@@ -70,23 +70,20 @@ public class Player : MonoBehaviour
     #region Booleans
     [Header ( "Action Booleans" )]
     public bool isSpellRdy = true;
-    public bool isAttackRdy = true;
+    public bool isMainAttackRdy = true;
+    public bool isOffAttackRdy = true;
     public bool readyToDash = true;
     public bool canWallJump;
-    public bool isDoubleJumping;
     public bool isBlocking;
     public bool isAir;
-    public bool isJumping;
-    public bool initialJump;
-    public bool isWallJumping;
     public bool isDashing;
-    public bool isGrounded;
     public bool mouseOnUI;
     public bool hitsGround;
     public bool takeFallDamage;
     public bool goingDown;
-    bool hasChanged;
     bool invulnerable;
+    public bool isDead = false;
+    public bool isAlive = true;
 
     [Header ( "Ability Unlocks" )]
     public bool isDoubleJumpLearned;
@@ -96,17 +93,17 @@ public class Player : MonoBehaviour
 
     #region NewMovementVariables
     [Header ( "New Movement Variables, Calculates on start don't try tweak during runtime" )]
-    [Range ( 0.1f, 10f )] public float jumpHeightMax = 4f;
-    [Range ( 0.1f, 10f )] public float jumpHeightMin = 1f;
-    [Range ( 0.1f, 1f )] public float timeToJumpApex = .4f;
-    [Range ( 0.1f, 10f )] public float newMoveSpeed = 3;
-    [Range ( 0.01f, 1f )] public float airAccelerationTime = .2f;
-    [Range ( 0.01f, 1f )] public float groundAccelerationTime = .1f;
-    [Range ( 0.1f, 10f )] public float wallSlideSpeedMax = 3;
-    [Range ( 0.01f, 1f )] public float wallStickTime = .25f;
-    public Vector2 wallJumpClimb;
-    public Vector2 wallJumpOff;
-    public Vector2 wallLeap;
+    [Range ( 0.1f, 10f )] [Tooltip ( "Jump maxheight, when jump button pressed" )] public float jumpHeightMax = 4f;
+    [Range ( 0.1f, 10f )] [Tooltip ( "Jump minheight, when jump button pressed fast" )] public float jumpHeightMin = 1f;
+    [Range ( 0.1f, 1f )] [Tooltip ( "Time to reach the jump apex, lakipiste" )] public float timeToJumpApex = .4f;
+    [Range ( 0.1f, 10f )] [Tooltip ( "Movement Speed" )] public float newMoveSpeed = 3;
+    [Range ( 0.01f, 1f )] [Tooltip ( "Acceleration in the Air" )] public float airAccelerationTime = .2f;
+    [Range ( 0.01f, 1f )] [Tooltip ( "Acceleration in the Ground" )] public float groundAccelerationTime = .1f;
+    [Range ( 0.1f, 10f )] [Tooltip ( "The Player's velocity down when moving against the wall" )] public float wallSlideSpeedMax = 3;
+    [Range ( 0.01f, 1f )] [Tooltip ( "Reaction time for player, when deciding how to jump off from the wall" )] public float wallStickTime = .25f;
+    [Tooltip ( "If horizontal Input is against wall and press jump button. The player moves to this direction" )] public Vector2 wallJumpClimb;
+    [Tooltip ( "If no horizontal Input and press jump button. The player moves to this direction" )] public Vector2 wallJumpOff;
+    [Tooltip ( "If horizontal Input is away from the wall and press jump button. The player moves to this direction" )] public Vector2 wallLeap;
     float newGravity;
     float jumpVelocityMax;
     float jumpVelocityMin;
@@ -121,48 +118,28 @@ public class Player : MonoBehaviour
     #region publicVariables  
     [Header ( "Movement Variables" )]
     [Range ( 0.1f, 5f )] public float speedScale;
-    [Range ( 0.1f, 5f )] public float airSpeed;
     [Range ( 0.1f, 5f )] public float dashTime;
     [Range ( 0.1f, 5f )] public float dashCooldown;
     [Range ( 0.1f, 5f )] public float dashSpeed;
 
     [Header ( "Jump variables" )]
-    [Range ( 0.1f, 5f )] public float wallJumpScale;
     [Range ( 0.1f, 5f )] public float extraJumpScale;
     [Range ( 0.1f, 5f )] public float jumpScale;
     [Tooltip ( "Extra jumps after intial jump" )] public int extraJumps;
-    [Range ( 0.1f, 5f )] public float wallJumpPushBack;
-    [Range ( 0.1f, 5f )] public float wallJumpVerticalVectorMultipier;
-    [Range ( 0.1f, 5f )] public float fallMultiplier;
-    [Range ( 0.1f, 5f )] public float lowJumpMultiplier;
-    [Range ( 0.1f, 1f )] public float groundCheckRadius;
-
-    public float jumpTime;
 
     [Header ( "Fall Damage Variables" )]
     [Range ( 0.1f, 5f )] public float fallToDeathTime;
     [Range ( 0.1f, 5f )] public float lowFallDamageTime;
     [Range ( 0.1f, 5f )] public float fallDamageMultiplier;
-
     #endregion
 
     #region Extra Variables
-
     bool directionRight;
     int jumpsCount;
-    float jumpTimeCounter;
-    //public int wallJumpDirection = -1;
-    float moveX;
-    float gravity;
-    float curYPos;
-    Vector3 leftDir;
-    Vector3 rightDir;
-    Vector2 textPosition;
     private float fallStartYPos;
-    private float distanceToFallHit;
     private float fallDamage;
-    private float fallTime;
-
+    float fallTime;
+    float fallDamageMultiplierBonus;
     #endregion
 
     #region Unity Monobehavior Functions
@@ -195,14 +172,11 @@ public class Player : MonoBehaviour
     {
         playerRB = gameObject.GetComponent<Rigidbody2D> ( );
         heroAnim = gameObject.GetComponentInChildren<Animator> ( );
-        rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponSpeed = stats.baseAttackSpeed.Value;
-        rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponDamage = stats.baseDamage.Value;
-        leftDir = new Vector3 ( 0, -180, 0 );
-        rightDir = new Vector3 ( 0, 0, 0 );
+        //rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponSpeed = stats.baseAttackSpeed.Value;
+        //rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponDamage = stats.baseDamage.Value;
         newGravity = -( 2 * jumpHeightMax ) / ( timeToJumpApex * timeToJumpApex );
         jumpVelocityMax = Mathf.Abs ( newGravity ) * timeToJumpApex;
         jumpVelocityMin = Mathf.Sqrt ( 2 * Mathf.Abs ( newGravity ) * jumpHeightMin );
-        gravity = playerRB.gravityScale;
     }
     private void Update ( )
     {
@@ -210,19 +184,26 @@ public class Player : MonoBehaviour
         CalculateVelocity ( );
         HandleWallSliding ( );
 
-        movement.Move ( newVelocity * Time.deltaTime );
+        if ( !isDead && !isBlocking)
+            movement.Move ( new Vector2 ( newVelocity.x * speedScale, newVelocity.y * jumpScale ) * Time.deltaTime );
 
         UpdateDirection ( );
 
-        if ( movement.collisions.above || movement.collisions.below )
+        if ( newVelocity.x <= 0.1f && newVelocity.x >= -0.1f )
+            TurnMousePointerDir ( );
+
+        if ( movement.collisions.above || movement.collisions.below  )
         {
             newVelocity.y = 0;
+
         }
+
+        Grounded ( );
 
         FallToDeathCheck ( );
 
         if ( !isDashing )
-        {        
+        {
             WalkAnimation ( );
         }
     }
@@ -253,8 +234,9 @@ public class Player : MonoBehaviour
                     newVelocity.y = wallLeap.y;
                 }
             }
-            if ( movement.collisions.below )
+            if ( movement.collisions.below || !movement.collisions.below && jumpsCount >= 0 )
             {
+                jumpsCount--;
                 newVelocity.y = jumpVelocityMax;
             }
         }
@@ -279,8 +261,7 @@ public class Player : MonoBehaviour
             }
 
             if ( isBlocking )
-            {
-                newVelocity = Vector2.zero;
+            {              
                 leftHand.GetComponent<BoxCollider2D> ( ).enabled = true;
             }
             else
@@ -290,29 +271,31 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if ( isAttackRdy )
+            if ( isOffAttackRdy )
             {
                 if ( off.weaponType == WeaponType.MeleeWeapon )
                 {
-                    isAttackRdy = false;
+                    isOffAttackRdy = false;
                     //heroAnim.SetTrigger ( "Attack" );
                     rightHand.GetComponent<BoxCollider2D> ( ).enabled = true;
                     StartCoroutine ( Attack ( ) );
-                    StartCoroutine ( AttackCD ( ) );
+                    StartCoroutine ( OffAttackCD ( ) );
 
                 }
                 if ( off.weaponType == WeaponType.RangedWeapon )
                 {
                     // Ampuminen hiiren suuntaan
                     StartCoroutine ( Attack ( ) );
-                    StartCoroutine ( AttackCD ( ) );
+                    StartCoroutine ( OffAttackCD ( ) );
                 }
             }
         }
     }
     public void GetSecondMouseButtonUp ( )
     {
+        Debug.Log ( "Released block" );
         isBlocking = false;
+        leftHand.GetComponent<BoxCollider2D> ( ).enabled = false;
     }
     public void OpenInventory ( )
     {
@@ -331,20 +314,22 @@ public class Player : MonoBehaviour
     }
     public void PlayerBasicAttack ( )
     {
-        if ( !isBlocking && isAttackRdy && !mouseOnUI )
+        if ( !isBlocking && isMainAttackRdy && !mouseOnUI )
         {
             if ( main.weaponType == WeaponType.MeleeWeapon || main.weaponType == WeaponType.TwoHandedMeleeWeapon )
             {
-                isAttackRdy = false;
+                isMainAttackRdy = false;
                 //heroAnim.SetTrigger ( "Attack" );
                 rightHand.GetComponent<BoxCollider2D> ( ).enabled = true;
                 StartCoroutine ( Attack ( ) );
-                StartCoroutine ( AttackCD ( ) );
+                StartCoroutine ( MainAttackCD ( ) );
 
             }
             if ( main.weaponType == WeaponType.RangedWeapon || main.weaponType == WeaponType.TwoHandedRangedWeapon )
             {
                 // Ampuminen hiiren suuntaan
+                StartCoroutine ( Attack ( ) );
+                StartCoroutine ( MainAttackCD ( ) );
             }
         }
     }
@@ -365,7 +350,7 @@ public class Player : MonoBehaviour
     {
         if ( isDashing )
         {
-            
+
             //Debug.Log ( "Holding Dash Key" );
             //Debug.Log ( "IS DASHING" );
             //heroAnim.SetBool ( "Walk", false );
@@ -381,18 +366,14 @@ public class Player : MonoBehaviour
                 newVelocity = new Vector2 ( newVelocity.x, 0 );
                 transform.Translate ( new Vector2 ( -dashSpeed * Time.deltaTime, 0 ) );
 
-            }      
+            }
         }
     }
     public void DashInputUp ( )
     {
-
         //Debug.Log ( "Stopped Dashing" );
-        newVelocity = Vector2.zero;
         isDashing = false;
         movement.dashing = false;
-        playerRB.gravityScale = gravity;
-
     }
     #endregion
 
@@ -403,6 +384,16 @@ public class Player : MonoBehaviour
     {
         OnRestoreHealth ( stats.maxHealth.Value, true );
         OnRestoreMana ( stats.maxMana.Value, true );
+    }
+    void Grounded ( )
+    {
+        if ( movement.collisions.below )
+        {
+            hitsGround = true;
+            jumpsCount = extraJumps;
+            fallDamageMultiplierBonus = 0;
+            isAir = false;
+        }
     }
     void HandleWallSliding ( )
     {
@@ -453,11 +444,13 @@ public class Player : MonoBehaviour
         {
             if ( mousePos.x > transform.position.x )
             {
-                transform.eulerAngles = rightDir;
+                transform.localScale = new Vector3 ( 1, 1, 1 );
+                directionRight = true;
             }
             if ( mousePos.x < transform.position.x )
             {
-                transform.eulerAngles = leftDir;
+                transform.localScale = new Vector3 ( -1, 1, 1 );
+                directionRight = false;
             }
         }
     }
@@ -727,6 +720,17 @@ public class Player : MonoBehaviour
             fallTime = 0;
         }
 
+        if ( newVelocity.y > 0 )
+        {
+            takeFallDamage = false;
+            hitsGround = false;
+        }
+
+        if ( newVelocity.y > 0 || !movement.collisions.below )
+        {
+            isAir = true;
+        }
+
         if ( !goingDown && newVelocity.y < 0 && !movement.collisions.below )
         {
             Debug.Log ( "IS GOING DOWN !!!" );
@@ -737,6 +741,14 @@ public class Player : MonoBehaviour
         if ( goingDown )
         {
             fallTime += Time.deltaTime;
+            fallDamageMultiplierBonus += fallTime;
+        }
+
+        if ( isDashing || wallSliding || isDead )
+        {
+            fallTime = 0;
+            fallDamageMultiplierBonus = 0;
+            takeFallDamage = false;
         }
 
         //Debug.Log ( fallTime );
@@ -745,10 +757,15 @@ public class Player : MonoBehaviour
             takeFallDamage = true;
         }
 
-        if ( takeFallDamage && hitsGround && goingDown )
+        if ( newVelocity.y == 0 )
+        {
+            hitsGround = true;
+        }
+
+        if ( takeFallDamage && hitsGround && movement.collisions.below )
         {
             Debug.Log ( fallStartYPos );
-            fallDamage = Mathf.Sqrt ( playerRB.mass * Mathf.Abs ( Physics2D.gravity.y ) * fallStartYPos - transform.position.y ) * fallDamageMultiplier;
+            fallDamage = Mathf.Sqrt ( playerRB.mass * 2 * Mathf.Abs ( Physics2D.gravity.y ) * fallStartYPos - transform.position.y ) * ( fallDamageMultiplier + fallDamageMultiplierBonus );
             TakeDamage ( gameObject, fallDamage, DamageType.Raw, 1 );
             takeFallDamage = false;
             hitsGround = false;
@@ -768,7 +785,9 @@ public class Player : MonoBehaviour
     /// <param name="playerPos"></param>
     public void Alive ( Transform playerPos )
     {
-        playerRB.simulated = true;
+
+        isDead = false;
+        isAlive = true;
         OnRestoreHealth ( stats.maxHealth.Value, true );
         OnRestoreMana ( stats.maxMana.Value, true );
         invulnerable = true;
@@ -785,7 +804,9 @@ public class Player : MonoBehaviour
     /// </summary>
     public void Die ( )
     {
-        playerRB.simulated = false;
+
+        isAlive = false;
+        isDead = true;
         OnRestoreHealth ( -stats.maxHealth.Value, false );
         OnRestoreMana ( -stats.maxMana.Value, false );
 
@@ -821,30 +842,30 @@ public class Player : MonoBehaviour
     #region Coroutines
     IEnumerator Attack ( )
     {
+
         yield return new WaitForSeconds ( heroAnim.GetCurrentAnimatorStateInfo ( 0 ).length );
         rightHand.GetComponent<BoxCollider2D> ( ).enabled = false;
 
     }
 
-    IEnumerator AttackCD ( )
+    IEnumerator MainAttackCD ( )
     {
-        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value * rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponSpeed );
-        isAttackRdy = true;
+        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value * main._weaponSpeed );
+        isMainAttackRdy = true;
 
     }
 
-    IEnumerator WallJumpRanOut ( )
+    IEnumerator OffAttackCD ( )
     {
-        yield return new WaitForSeconds ( 0.2f );
-        Debug.Log ( "Wall Jump Ran Out" );
-        canWallJump = false;
+        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value * main._weaponSpeed );
+        isOffAttackRdy = true;
+
     }
 
     IEnumerator DashTime ( )
     {
         yield return new WaitForSeconds ( dashTime );
         isDashing = false;
-        playerRB.gravityScale = gravity;
         Debug.Log ( "Stopped Dashing" );
     }
 

@@ -12,17 +12,18 @@ public class PickUpLoot : MonoBehaviour
     public int Count = 1; 
     TMPro.TMP_Text text;
     RawImage rawImage;
+    bool setupDone = false;
 
     public void Awake()
     {
-        if(loot != null)
+        if(loot != null && setupDone == false)
         {
-            Setup();
+            Setup(loot.itemLevel);
         }
         
         
     }
-    public void Setup()
+    public void Setup(int itemLevel)
     {
         GetComponent<SpriteRenderer>().sprite = loot.lootSprite;
         rLoot = gameObject.GetComponent<RolledLoot>();
@@ -32,7 +33,7 @@ public class PickUpLoot : MonoBehaviour
         rawImage = GetComponentInChildren<RawImage>();
         rawImage.color = PlayerInventory.instance.rarity[rLoot.rarity];
         rawImage.color = new Color(rawImage.color.r, rawImage.color.g, rawImage.color.b, 0.7f);
-        
+        setupDone = true;
 
     }
     public void DropSetup()
@@ -42,6 +43,7 @@ public class PickUpLoot : MonoBehaviour
         rawImage = GetComponentInChildren<RawImage>();
         rawImage.color = PlayerInventory.instance.rarity[rLoot.rarity];
         rawImage.color = new Color(rawImage.color.r, rawImage.color.g, rawImage.color.b, 0.7f);
+        setupDone = true;
     }
     
 

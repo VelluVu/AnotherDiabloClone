@@ -51,6 +51,6 @@ public class PlayerInput : MonoBehaviour
         if ( Input.GetButtonUp ( "Dash" ) )
         {
             player.DashInputUp ( );
-        }
+        }  
     }
 }

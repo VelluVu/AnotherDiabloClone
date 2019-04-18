@@ -19,6 +19,7 @@ TagManager:
   - LootHolder
   - InteractableObject
   - Gold
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX
@@ -41,7 +42,7 @@ TagManager:
   - InteractableObject
   - BackGround
   - Gold
-  - 
+  - MovingPlatform
   - 
   - 
   - 

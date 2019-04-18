@@ -429,6 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3067bf05481b741bdf83e8c88de902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldText: {fileID: 990943809}
   amount: 25
 --- !u!50 &3464001231089030262
 Rigidbody2D:

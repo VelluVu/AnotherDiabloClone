@@ -330,6 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponName: 
   _currentWeapon: {fileID: 0}
+  weaponCol: {fileID: 6640050483557403131}
   _weaponSprite: {fileID: 0}
   equippedWeapon: {fileID: 0}
   bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
@@ -347,7 +348,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1058562718592394236}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -423,7 +424,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 644545703
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -632,10 +633,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2198477578692921992}
+  - component: {fileID: 1411104371}
   - component: {fileID: 7391706078199241481}
   - component: {fileID: 6555086630381230785}
   - component: {fileID: 8131655113102551163}
-  - component: {fileID: 1411104371}
   m_Layer: 13
   m_Name: Right_Weapon
   m_TagString: Untagged
@@ -657,77 +658,6 @@ Transform:
   m_Father: {fileID: 8499362300878538149}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
---- !u!114 &7391706078199241481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3711628038237003984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f02f7b00f5da8d46861543a54defa00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _weaponName: 
-  _currentWeapon: {fileID: 0}
-  _weaponSprite: {fileID: 0}
-  equippedWeapon: {fileID: 0}
-  bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
-    type: 3}
-  _weaponDamage: 0
-  _weaponSpeed: 0
-  isEquipped: 0
-  weaponType: 0
-  damageType: 0
-  projectileType: 0
---- !u!61 &6555086630381230785
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3711628038237003984}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!50 &8131655113102551163
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3711628038237003984}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 0
 --- !u!212 &1411104371
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -776,6 +706,78 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7391706078199241481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3711628038237003984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f02f7b00f5da8d46861543a54defa00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponName: 
+  _currentWeapon: {fileID: 0}
+  weaponCol: {fileID: 6555086630381230785}
+  _weaponSprite: {fileID: 0}
+  equippedWeapon: {fileID: 0}
+  bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
+    type: 3}
+  _weaponDamage: 0
+  _weaponSpeed: 0
+  isEquipped: 0
+  weaponType: 0
+  damageType: 0
+  projectileType: 0
+--- !u!61 &6555086630381230785
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3711628038237003984}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!50 &8131655113102551163
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3711628038237003984}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &3927175552967989919
 GameObject:
   m_ObjectHideFlags: 0
@@ -1902,6 +1904,8 @@ GameObject:
   - component: {fileID: 2631187541623436336}
   - component: {fileID: 5586084288016743490}
   - component: {fileID: 8641040686908424182}
+  - component: {fileID: 8075940912949390952}
+  - component: {fileID: 2830682922929217094}
   m_Layer: 13
   m_Name: Left_Hand
   m_TagString: Untagged
@@ -1985,6 +1989,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultSprite: {fileID: 21300000, guid: 27832e93b8e61954792b586573b3e0cf, type: 3}
+--- !u!61 &8075940912949390952
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641040686908424181}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.025820382, y: -0.042895228}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.44835922, y: 0.58579046}
+    oldSize: {x: 0.5, y: 0.5}
+    newSize: {x: 0.5, y: 0.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5}
+  m_EdgeRadius: 0
+--- !u!50 &2830682922929217094
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641040686908424181}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &8651265185406147062
 GameObject:
   m_ObjectHideFlags: 0
@@ -2188,7 +2239,7 @@ MonoBehaviour:
   feet: {fileID: 465333549647028381}
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 5120
+    m_Bits: 2102272
   groundRayLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -2198,53 +2249,43 @@ MonoBehaviour:
   main: {fileID: 7391706078199241481}
   off: {fileID: 6011629118065500137}
   isSpellRdy: 1
-  isAttackRdy: 1
+  isMainAttackRdy: 1
+  isOffAttackRdy: 1
   readyToDash: 1
   canWallJump: 0
-  isDoubleJumping: 0
   isBlocking: 0
   isAir: 0
-  isJumping: 0
-  initialJump: 0
-  isWallJumping: 0
   isDashing: 0
-  isGrounded: 1
   mouseOnUI: 0
   hitsGround: 0
   takeFallDamage: 0
   goingDown: 0
+  isDead: 0
+  isAlive: 1
   isDoubleJumpLearned: 1
   isWallJumpLearned: 1
   isDashLearned: 1
-  jumpHeightMax: 1.3
+  jumpHeightMax: 1.2
   jumpHeightMin: 0.4
-  timeToJumpApex: 0.3
+  timeToJumpApex: 0.357
   newMoveSpeed: 2
-  airAccelerationTime: 0.15
-  groundAccelerationTime: 0.1
+  airAccelerationTime: 0.103
+  groundAccelerationTime: 0.07
   wallSlideSpeedMax: 1.2
   wallStickTime: 0.25
-  wallJumpClimb: {x: 1, y: 8}
+  wallJumpClimb: {x: 3, y: 6}
   wallJumpOff: {x: 4, y: 3}
-  wallLeap: {x: 8, y: 8}
+  wallLeap: {x: 6, y: 5}
   speedScale: 1
-  airSpeed: 1
   dashTime: 0.3
   dashCooldown: 2
   dashSpeed: 3
-  wallJumpScale: 1
   extraJumpScale: 1
   jumpScale: 1
   extraJumps: 1
-  wallJumpPushBack: 1
-  wallJumpVerticalVectorMultipier: 1
-  fallMultiplier: 2.5
-  lowJumpMultiplier: 2
-  groundCheckRadius: 0.1
-  jumpTime: 0.25
   fallToDeathTime: 2
-  lowFallDamageTime: 0.45
-  fallDamageMultiplier: 1
+  lowFallDamageTime: 0.5
+  fallDamageMultiplier: 0.4
 --- !u!114 &5400792684223559201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2535,15 +2576,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
-    m_Bits: 7168
+    m_Bits: 2104320
   collisionDashMask:
     serializedVersion: 2
-    m_Bits: 3072
+    m_Bits: 2100224
   horizontalRayCount: 4
   verticalRayCount: 8
+  horizontalRaySpacing: 0
+  verticalRaySpacing: 0
+  dashing: 0
+  col: {fileID: 0}
   maxSlopeAngle: 70
   maxSlopeDescentAngle: 70
-  dashing: 0
 --- !u!114 &397100565
 MonoBehaviour:
   m_ObjectHideFlags: 0
