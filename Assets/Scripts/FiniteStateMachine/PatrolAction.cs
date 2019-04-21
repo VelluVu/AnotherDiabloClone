@@ -17,17 +17,6 @@ public class PatrolAction : Action
     void Patrol ( StateController controller )
     {
 
-        MoveForward ( controller );
-
-    }
-
-    /// <summary>
-    /// Liikkuu ees taas...
-    /// </summary>
-    /// <param name="controller"></param>
-    void MoveForward ( StateController controller )
-    {
-
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
             if ( controller.dirRight )

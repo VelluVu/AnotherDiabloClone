@@ -31,7 +31,7 @@ public class StateController : MonoBehaviour
     public delegate void EnemyDealDamageDelegate ( GameObject target, float damage, DamageType damageType ,int level);
     public static event EnemyDealDamageDelegate enemyDealDamageEvent;
 
-    public delegate void EnemyDeathDelegate ( Transform transform, int xp );
+    public delegate void EnemyDeathDelegate ( Transform transform, int xp,StateController origin );
     public static event EnemyDeathDelegate enemyDeathEvent;
 
     public delegate IEnumerator EnemyFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
@@ -69,9 +69,11 @@ public class StateController : MonoBehaviour
     [Tooltip ( "Enemy Back")] public Transform back;
     [Tooltip ( "Head position and possibly for hit data etc.")] public GameObject head;
 
-    [Tooltip ( "LayerMasks for raycast detection")] public LayerMask enemyLayer;
+    [Tooltip ( "LayerMasks for raycast detection")] public LayerMask friendlyTargetLayer;
     [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask groundLayer;
-    [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask playerLayer;
+    [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask targetLayer;
+    [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask blockSightLayer;
+
 
     [Tooltip ( "Humanoid enemy weapons")] public EnemyWeaponHolder weaponLeft;
     [Tooltip ( "Humanoid enemy weapons" )] public EnemyWeaponHolder weaponRight;
@@ -120,8 +122,9 @@ public class StateController : MonoBehaviour
     private void OnEnable ( )
     {
         Player.playerDealDamageEvent += TakeDamage;
-        Player.playerDeathEvent += PlayerIsDeadWeWin;
+        Player.playerDeathEvent += PlayerIsDeadWeWin;    
         CheckPoint.checkPointEvent += DestroySpawnings;
+        PlayerDeathUI.respawnPlayerEvent += ResetEnemiesOnPlayerRespawn;
         enemyTakeDamageEvent += OnEnemyTakeDamage;
         SpiderEgg.hatchEvent += Hatched;
         SpiderEgg.eggDestroyedEvent += Hatched; //Tähän vois lisätä omat functiot vaik et hämy menee sekasi ja hyökkää pelaajaan
@@ -130,19 +133,12 @@ public class StateController : MonoBehaviour
     private void OnDisable ( )
     {
         Player.playerDealDamageEvent -= TakeDamage;
-        Player.playerDeathEvent -= PlayerIsDeadWeWin;
+        Player.playerDeathEvent -= PlayerIsDeadWeWin;      
         CheckPoint.checkPointEvent -= DestroySpawnings;
+        PlayerDeathUI.respawnPlayerEvent -= ResetEnemiesOnPlayerRespawn;
         enemyTakeDamageEvent -= OnEnemyTakeDamage;
         SpiderEgg.hatchEvent -= Hatched;
         SpiderEgg.eggDestroyedEvent -= Hatched;
-    }
-
-    public void Hatched( GameObject parent)
-    {
-        if ( parent == gameObject )
-        {
-            notHatchedEgg = false;
-        }
     }
 
     private void Update ( )
@@ -159,6 +155,7 @@ public class StateController : MonoBehaviour
         }
 
         currentState.UpdateState ( this );
+
         AnimateMovement ( );
 
         //Lentävän vihollisen ei tarvi pelätä tippumista
@@ -228,7 +225,7 @@ public class StateController : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D ( Collision2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "InteractableObject" ) || collision.gameObject.CompareTag ( "Enemy" ) )
+        if ( collision.gameObject.CompareTag ( "InteractableObject" ) || collision.gameObject.CompareTag ( "Enemy" ) || collision.gameObject.CompareTag("Wall"))
         {
             if ( dirRight )
             {
@@ -250,6 +247,14 @@ public class StateController : MonoBehaviour
         Destroy ( gameObject );
         
     }
+
+    public void ResetEnemiesOnPlayerRespawn ( Transform playerPos )
+    {
+
+        Destroy ( gameObject );
+
+    }
+
     /// <summary>
     /// Perus liikkumisen animointi nopeuksien mukaan
     /// </summary>
@@ -289,6 +294,15 @@ public class StateController : MonoBehaviour
             }
         }
     }
+
+    public void Hatched ( GameObject parent )
+    {
+        if ( parent == gameObject )
+        {
+            notHatchedEgg = false;
+        }
+    }
+
 
     /// <summary>
     /// Perus hyökkäys animaatio
@@ -420,7 +434,7 @@ public class StateController : MonoBehaviour
     {
         if(enemyDeathEvent != null)
         {
-            enemyDeathEvent ( head.transform, enemyStats.xpReward );
+            enemyDeathEvent ( head.transform, enemyStats.xpReward,this );
         }
 
         if ( enemyStats.groundEnemyType == GroundEnemyType.Splitter && !hasSplit)
@@ -451,7 +465,7 @@ public class StateController : MonoBehaviour
 
     public void OnEnemyTakeDamage( float damage)
     {
-        Collider2D [ ] cols = Physics2D.OverlapCircleAll ( transform.position, 3f, playerLayer);      
+        Collider2D [ ] cols = Physics2D.OverlapCircleAll ( transform.position, 3f, targetLayer);      
         Debug.Log ( gameObject.name +  " Hoksaa : Toinen vihu pulassa" );
         for ( int i = 0 ; i < cols.Length ; i++ )
         {

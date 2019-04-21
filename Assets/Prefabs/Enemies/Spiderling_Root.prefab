@@ -114,15 +114,18 @@ MonoBehaviour:
   eyes: {fileID: 1285330586533316817}
   back: {fileID: 7072799514844620926}
   head: {fileID: 5270276107605513808}
-  enemyLayer:
+  friendlyTargetLayer:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 0
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1024
-  playerLayer:
+    m_Bits: 2098176
+  targetLayer:
     serializedVersion: 2
     m_Bits: 8192
+  blockSightLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   weaponLeft: {fileID: 0}
   weaponRight: {fileID: 0}
   chaseTarget: {fileID: 0}

@@ -36,7 +36,7 @@ public class LootDropGenerator : MonoBehaviour
     {
         
     }
-    public void CreateDrop(Transform trans,int number)
+    public void CreateDrop(Transform trans,int number,StateController origin)
     {
         List<Loot> tempRarityLootList = new List<Loot>();
         int randomInt = Random.Range(1, 101);
@@ -48,7 +48,7 @@ public class LootDropGenerator : MonoBehaviour
         Debug.Log("Random Gold Int: " + randomGoldInt);
         if (randomGoldInt > 30)
         {
-            CreateGoldDrop(number,trans,randomGoldInt);
+            CreateGoldDrop(number,trans,randomGoldInt,origin);
         }
         
         Debug.Log("XP reward: " + number);
@@ -92,18 +92,18 @@ public class LootDropGenerator : MonoBehaviour
                 }
             }
             createdObject.GetComponent<PickUpLoot>().loot = tempRarityLootList[Random.Range(0, tempRarityLootList.Count)];
-            createdObject.GetComponent<PickUpLoot>().Setup(2);
+            createdObject.GetComponent<PickUpLoot>().Setup(origin.enemyStats.level);
 
         }
         
         
     }
-    public void CreateGoldDrop(int xp,Transform trans,int randomRoll)
+    public void CreateGoldDrop(int xp,Transform trans,int randomRoll,StateController origin)
     {
         GameObject gold = Instantiate(goldDrop, LootHolder.transform);
         gold.transform.position = trans.position;
         
-        gold.GetComponent<Gold>().amount = randomRoll + xp;
-        Debug.Log("Gold Dropped: " + randomRoll + xp);
+        gold.GetComponent<Gold>().amount = (randomRoll + xp )*origin.enemyStats.level;
+        Debug.Log("Gold Dropped: " + (randomRoll + xp)*origin.enemyStats.level);
     }
 }

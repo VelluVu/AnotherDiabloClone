@@ -330,8 +330,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponName: 
   _currentWeapon: {fileID: 0}
-  weaponCol: {fileID: 6640050483557403131}
-  _weaponSprite: {fileID: 0}
+  _weaponCol: {fileID: 6640050483557403131}
+  _weaponSprite: {fileID: 1169824648}
   equippedWeapon: {fileID: 0}
   bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
     type: 3}
@@ -348,7 +348,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1058562718592394236}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -424,7 +424,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 644545703
   m_SortingLayer: 3
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -720,8 +720,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponName: 
   _currentWeapon: {fileID: 0}
-  weaponCol: {fileID: 6555086630381230785}
-  _weaponSprite: {fileID: 0}
+  _weaponCol: {fileID: 6555086630381230785}
+  _weaponSprite: {fileID: 1411104371}
   equippedWeapon: {fileID: 0}
   bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
     type: 3}
@@ -738,7 +738,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3711628038237003984}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -1904,8 +1904,6 @@ GameObject:
   - component: {fileID: 2631187541623436336}
   - component: {fileID: 5586084288016743490}
   - component: {fileID: 8641040686908424182}
-  - component: {fileID: 8075940912949390952}
-  - component: {fileID: 2830682922929217094}
   m_Layer: 13
   m_Name: Left_Hand
   m_TagString: Untagged
@@ -1989,53 +1987,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultSprite: {fileID: 21300000, guid: 27832e93b8e61954792b586573b3e0cf, type: 3}
---- !u!61 &8075940912949390952
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8641040686908424181}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.025820382, y: -0.042895228}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.44835922, y: 0.58579046}
-    oldSize: {x: 0.5, y: 0.5}
-    newSize: {x: 0.5, y: 0.5}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
-  m_EdgeRadius: 0
---- !u!50 &2830682922929217094
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8641040686908424181}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &8651265185406147062
 GameObject:
   m_ObjectHideFlags: 0
@@ -2584,10 +2535,10 @@ MonoBehaviour:
   verticalRayCount: 8
   horizontalRaySpacing: 0
   verticalRaySpacing: 0
-  dashing: 0
   col: {fileID: 0}
   maxSlopeAngle: 70
   maxSlopeDescentAngle: 70
+  dashing: 0
 --- !u!114 &397100565
 MonoBehaviour:
   m_ObjectHideFlags: 0

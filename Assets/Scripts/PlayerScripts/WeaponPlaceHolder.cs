@@ -26,6 +26,7 @@ public class WeaponPlaceHolder : MonoBehaviour
     #region Weapon Stats
     public float _weaponDamage; //Aseen vahinko
     public float _weaponSpeed; //Aseen nopeus
+    float hitcd;
     #endregion
 
     #region Bools
@@ -45,6 +46,19 @@ public class WeaponPlaceHolder : MonoBehaviour
         _weaponCol = gameObject.GetComponent<BoxCollider2D> ( );
     }
 
+    /*private void Update ( )
+    {
+        if (hasHit)
+        {
+            hitcd += Time.deltaTime;
+        }
+        if( hitcd >= _weaponSpeed * gameObject.GetComponentInParent<PlayerClass> ( ).baseAttackSpeed.Value )
+        {
+            hasHit = false;
+            hitcd = 0;
+        }
+    }*/
+
     public RolledLoot EquipWeapon(RolledLoot newWeapon)
     {
         RolledLoot tempWeapon = equippedWeapon;
@@ -53,8 +67,7 @@ public class WeaponPlaceHolder : MonoBehaviour
         equippedWeapon = newWeapon;
         isEquipped = true;
 
-        _weaponCol.offset = new Vector2 ( 0, -0.2f );
-        _weaponCol.size = new Vector2 ( _weaponSprite.sprite.bounds.size.x, _weaponSprite.sprite.bounds.size.x );
+        SetColliderBounds ( );
 
         if (tempWeapon != null)
         {
@@ -64,6 +77,15 @@ public class WeaponPlaceHolder : MonoBehaviour
         return null;
         
     }
+
+    public void SetColliderBounds()
+    {
+        _weaponCol.offset = new Vector2 ( 0, 0 );
+        _weaponCol.size = new Vector3 ( _weaponSprite.bounds.size.x / transform.lossyScale.x,
+                                                              _weaponSprite.bounds.size.y / transform.lossyScale.y,
+                                                              _weaponSprite.bounds.size.z / transform.lossyScale.z );
+    }
+
     public void UnEquipWeapon()
     {
         _weaponSprite.sprite = null;

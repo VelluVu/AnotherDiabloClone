@@ -54,11 +54,11 @@ MonoBehaviour:
   moveSpeedScale: 1
   attackDistance: 0.05
   searchDuration: 6
-  spotDistance: 5
+  spotDistance: 2.5
   sightDistance: 5
   alertedByEventDuration: 4
   stateTimeElapsed: 0
-  radius: 1.1
+  radius: 2.5
   senseArea: 2.5
   amplitude: 100
   frequency: 0.5
@@ -66,15 +66,18 @@ MonoBehaviour:
   eyes: {fileID: 7521639376812417443}
   back: {fileID: 8994341199349573898}
   head: {fileID: 4370191046562373227}
-  enemyLayer:
+  friendlyTargetLayer:
     serializedVersion: 2
     m_Bits: 4096
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1024
-  playerLayer:
+    m_Bits: 2098176
+  targetLayer:
     serializedVersion: 2
     m_Bits: 8192
+  blockSightLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   weaponLeft: {fileID: 0}
   weaponRight: {fileID: 0}
   chaseTarget: {fileID: 0}

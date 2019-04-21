@@ -14,6 +14,7 @@ public class DoorScript : MonoBehaviour
 
     Animator doorAnimator;
     BoxCollider2D doorCollider;
+    BoxCollider2D triggerCol;
     [Header ("Millä tavoin ovi aukaistaan")]
     public DoorType doorType;
     [Header ("AvainTyyppi minkä tarvii jos on avaimella avattava")]
@@ -26,7 +27,7 @@ public class DoorScript : MonoBehaviour
     {
         doorAnimator = gameObject.GetComponent<Animator> ( );
         doorCollider = gameObject.GetComponent<BoxCollider2D> ( );
-
+        triggerCol = gameObject.GetComponentInChildren<BoxCollider2D> ( );
         
     }
 
@@ -36,6 +37,8 @@ public class DoorScript : MonoBehaviour
         doorAnimator.SetTrigger ( "OpenDoor" );
         isOpen = true;
         doorCollider.enabled = false;
+        triggerCol.enabled = false;
+        gameObject.layer = LayerMask.NameToLayer("Default");
         gameObject.GetComponent<DoorScript> ( ).enabled = false;
 
     }

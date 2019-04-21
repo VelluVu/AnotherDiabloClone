@@ -15,11 +15,13 @@ public class EnemySpawn : MonoBehaviour
     private void OnEnable ( )
     {
         CheckPoint.checkPointEvent += CheckPointCall;
+        PlayerDeathUI.respawnPlayerEvent += RespawnEnemy;
     }
 
     private void OnDisable ( )
     {
         CheckPoint.checkPointEvent -= CheckPointCall;
+        PlayerDeathUI.respawnPlayerEvent -= RespawnEnemy;
     }
 
     // Start is called before the first frame update
@@ -55,6 +57,13 @@ public class EnemySpawn : MonoBehaviour
             isSpawn = false;
             SpawnEnemy ( );
         }
+    }
+
+    public void RespawnEnemy( Transform playerPos )
+    {
+
+        SpawnEnemy ( );
+        
     }
 
     private void OnDrawGizmos ( )

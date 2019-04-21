@@ -32,7 +32,7 @@ public class LevelUp : MonoBehaviour
         StateController.enemyDeathEvent -= GetEnemyDeathXpReward;
     }
 
-    public void GetEnemyDeathXpReward ( Transform enemyTransform , int xpReward )
+    public void GetEnemyDeathXpReward ( Transform enemyTransform , int xpReward,StateController origin )
     {
         GainXP ( xpReward, ReferenceHolder.instance.player.stats );
         

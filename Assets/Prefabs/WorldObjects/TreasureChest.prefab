@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1373712397}
   - component: {fileID: 1373712398}
-  - component: {fileID: 1373712399}
+  - component: {fileID: 711587214}
   m_Layer: 18
   m_Name: triggerCol
   m_TagString: InteractableObject
@@ -45,7 +45,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.22556925, y: 0.5250706}
+  m_Offset: {x: 0.22556925, y: 0.5539169}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -56,9 +56,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.4190035, y: 0.75379145}
+  m_Size: {x: 1.4190035, y: 0.74994576}
   m_EdgeRadius: 0
---- !u!114 &1373712399
+--- !u!114 &711587214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,9 +67,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1373712396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bae470738b27e840a089c3ba1275758, type: 3}
+  m_Script: {fileID: 11500000, guid: 1dfadeacde3a6b342a1a7e2cbadd8af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myParent: {fileID: 1008158259156194148}
+  TriggeringLayerName: Player
 --- !u!1 &1008158259156194148
 GameObject:
   m_ObjectHideFlags: 0

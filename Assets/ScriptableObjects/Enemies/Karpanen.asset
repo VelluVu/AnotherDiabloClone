@@ -29,7 +29,7 @@ MonoBehaviour:
   _xpReward: 5
   _level: 1
   _enemyType: 1
-  _groundEnemyType: 17
+  _groundEnemyType: 18
   _flyingEnemyType: 0
   _bossEnemyType: 4
   _enemyVariation: 

@@ -17,7 +17,7 @@ public class SpiderLayEggDecision : Decision
     bool SensePlayerNear(StateController controller)
     {
 
-        Collider2D [ ] cols = Physics2D.OverlapCircleAll ( controller.transform.position, 3f, controller.playerLayer );
+        Collider2D [ ] cols = Physics2D.OverlapCircleAll ( controller.transform.position, 3f, controller.targetLayer );
 
         foreach ( var col in cols )
         {

@@ -19,7 +19,7 @@ public class MeleeAttackDecision : Decision
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
 
-            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
+            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.targetLayer );
 
             if ( hit.collider != false )
             {
@@ -34,8 +34,8 @@ public class MeleeAttackDecision : Decision
         else
         {
 
-            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.playerLayer );
-            hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, -controller.eyes.up, controller.attackDistance, controller.playerLayer );
+            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.targetLayer );
+            hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, -controller.eyes.up, controller.attackDistance, controller.targetLayer );
 
             if ( hit.collider != false )
             {

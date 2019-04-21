@@ -30,12 +30,12 @@ public class LookDecision : Decision
 
         RaycastHit2D hit;
         //RaycastHit2D hitDown;
-    
+
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
-            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, controller.eyes.right, controller.spotDistance, controller.playerLayer );
-            
-            if ( hit.collider != false)
+            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, controller.eyes.right, controller.spotDistance, controller.targetLayer + controller.blockSightLayer );
+
+            if ( hit.collider != false )
             {
                 if ( hit.collider.gameObject.CompareTag ( "Player" ) )
                 {
@@ -44,40 +44,43 @@ public class LookDecision : Decision
                     return true;
 
                 }
-            }   
+            }
         }
         else
         {
 
-            //hit = Physics2D.CircleCast ( controller.eyes.position, controller.radius, controller.eyes.right, controller.spotDistance, controller.playerLayer );
-            //hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.1f, -controller.eyes.up, controller.spotDistance, controller.playerLayer );
-
-            //if ( hit.collider != false  )
-            //{
-            //    if ( hit.collider.gameObject.CompareTag ( "Player" ))
-            //    {
-            //        controller.chaseTarget = hit.transform;
-            //        return true;
-            //    }
-            //}
-
-            //if ( hitDown.collider != false )
-            //{
-            //    if ( hitDown.collider.gameObject.CompareTag ( "Player" ) )
-            //    {
-            //        controller.chaseTarget = hit.transform;
-            //        return true;
-            //    }
-            //}      
-            if (Physics2D.OverlapCircle(controller.eyes.position, controller.senseArea, controller.playerLayer))
+            Collider2D [ ] cols = Physics2D.OverlapCircleAll ( controller.eyes.position, controller.senseArea, controller.targetLayer );
+            if ( cols != null )
             {
-                controller.chaseTarget = Physics2D.OverlapCircle ( controller.eyes.position, controller.senseArea, controller.playerLayer ).transform;
-                return true;
+                foreach ( var col in cols )
+                {
+                    controller.chaseTarget = col.transform;
+
+                    hit = Physics2D.CircleCast ( controller.eyes.position, controller.radius * 0.2f, controller.chaseTarget.position - controller.eyes.position, controller.spotDistance, controller.targetLayer + controller.blockSightLayer );
+                 
+                    Debug.DrawRay ( controller.eyes.position, controller.chaseTarget.position - controller.eyes.position, Color.green, 1f );
+                    if ( hit )
+                    {
+                        
+                        if (hit.collider.gameObject.CompareTag("Wall"))
+                        {
+                            return false;
+                        }
+                        if(hit.collider.gameObject.CompareTag("Player"))
+                        {
+                            return true;
+                        }
+                    }
+                   
+
+                }
             }
         }
 
+
         if ( controller.alertedByEvent )
         {
+            controller.chaseTarget = ReferenceHolder.instance.player.gameObject.transform;
             return true;
         }
 

@@ -84,6 +84,8 @@ public class Player : MonoBehaviour
     bool invulnerable;
     public bool isDead = false;
     public bool isAlive = true;
+    public bool climbingLadder;
+    public bool jump;
 
     [Header ( "Ability Unlocks" )]
     public bool isDoubleJumpLearned;
@@ -183,6 +185,7 @@ public class Player : MonoBehaviour
 
         CalculateVelocity ( );
         HandleWallSliding ( );
+        HandleClimbing ( );
 
         if ( !isDead && !isBlocking)
             movement.Move ( new Vector2 ( newVelocity.x * speedScale, newVelocity.y * jumpScale ) * Time.deltaTime );
@@ -216,6 +219,7 @@ public class Player : MonoBehaviour
     {
         if ( !isBlocking )
         {
+            jump = true;
             if ( wallSliding )
             {
                 if ( wallDirX == directionalInput.x )
@@ -234,9 +238,13 @@ public class Player : MonoBehaviour
                     newVelocity.y = wallLeap.y;
                 }
             }
-            if ( movement.collisions.below || !movement.collisions.below && jumpsCount >= 0 )
+            if ( movement.collisions.below || !movement.collisions.below && jumpsCount >= 0)
             {
                 jumpsCount--;
+                newVelocity.y = jumpVelocityMax;
+            }
+            if(climbingLadder)
+            {
                 newVelocity.y = jumpVelocityMax;
             }
         }
@@ -393,6 +401,8 @@ public class Player : MonoBehaviour
             jumpsCount = extraJumps;
             fallDamageMultiplierBonus = 0;
             isAir = false;
+            jump = false;
+            climbingLadder = false;
         }
     }
     void HandleWallSliding ( )
@@ -427,6 +437,13 @@ public class Player : MonoBehaviour
             {
                 timeToWallUnstick = wallStickTime;
             }
+        }
+    }
+    void HandleClimbing()
+    {      
+        if (climbingLadder && directionalInput.y == 0 && !jump )
+        {
+            newVelocity.y = 0;
         }
     }
     void CalculateVelocity ( )
@@ -744,7 +761,7 @@ public class Player : MonoBehaviour
             fallDamageMultiplierBonus += fallTime;
         }
 
-        if ( isDashing || wallSliding || isDead )
+        if ( isDashing || wallSliding || isDead || climbingLadder )
         {
             fallTime = 0;
             fallDamageMultiplierBonus = 0;
@@ -835,6 +852,37 @@ public class Player : MonoBehaviour
         if ( !isDashing && collision.gameObject.CompareTag ( "Enemy" ) )
         {
             Physics2D.IgnoreCollision ( gameObject.GetComponent<BoxCollider2D> ( ), collision.collider, false );
+        }
+    }
+    private void OnTriggerStay2D ( Collider2D collision )
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Ladder"))
+        {
+            climbingLadder = true;
+            if(directionalInput.y > 0)
+            {
+                jump = false;
+                newVelocity.y = newMoveSpeed * speedScale;
+            }
+            if ( directionalInput.y < 0 )
+            {
+                jump = false;
+                newVelocity.y = -newMoveSpeed * speedScale;
+            }
+        }             
+    }
+    private void OnTriggerExit2D ( Collider2D collision )
+    {
+        if ( collision.gameObject.layer == LayerMask.NameToLayer ( "Ladder" ) )
+        {
+            climbingLadder = false;
+        }
+    }
+    private void OnTriggerEnter2D ( Collider2D collision )
+    {
+        if ( collision.gameObject.layer == LayerMask.NameToLayer ( "Ladder" ) )
+        {
+            jump = false;
         }
     }
     #endregion

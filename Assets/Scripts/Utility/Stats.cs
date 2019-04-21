@@ -40,7 +40,7 @@ public class Stats : MonoBehaviour
         StateController.enemyDeathEvent -= addEnemiesKilled;
 
     }
-    public void addEnemiesKilled(Transform enemyTransform, int xpReward)
+    public void addEnemiesKilled(Transform enemyTransform, int xpReward,StateController origin) // add different types of enemies killed
     {
         enemiesKilled++;
     }
