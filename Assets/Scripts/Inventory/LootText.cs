@@ -33,9 +33,11 @@ public class LootText : MonoBehaviour
     
     private void OnTriggerStay2D(Collider2D collision)
     {
+
         
-        if (collision.CompareTag("LootText"))
+        if (collision.CompareTag("LootText") && pickLoot.GetComponent<Rigidbody2D>().velocity.magnitude < 0.01f)
         {
+            
             
             if (group == null && collision.transform.parent.GetComponent<GridLayoutGroup>() == null)
             {
@@ -90,6 +92,11 @@ public class LootText : MonoBehaviour
         else
         {
             canvasGroup.interactable = false;
+            
+        }
+        if(transform.rotation.z != 0)
+        {
+            transform.rotation = Quaternion.identity;
         }
     }
     public IEnumerator TimerHideLootText()

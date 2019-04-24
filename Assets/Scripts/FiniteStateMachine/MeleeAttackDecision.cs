@@ -19,12 +19,16 @@ public class MeleeAttackDecision : Decision
         if ( controller.enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
 
-            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.targetLayer );
+            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.circleCastRadius, controller.eyes.right, controller.attackDistance, controller.targetLayer );
+
+            Debug.DrawRay ( controller.eyes.transform.position, controller.eyes.right, Color.red, 1f );
 
             if ( hit.collider != false )
             {
+                
                 if ( hit.collider.gameObject.CompareTag ( "Player" ) && hit.distance <= controller.attackDistance )
                 {
+                   
                     controller.rb.velocity = Vector2.zero;
                     return true;
 
@@ -34,8 +38,11 @@ public class MeleeAttackDecision : Decision
         else
         {
 
-            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, controller.eyes.right, controller.attackDistance, controller.targetLayer );
-            hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.radius * 0.2f, -controller.eyes.up, controller.attackDistance, controller.targetLayer );
+            hit = Physics2D.CircleCast ( controller.eyes.transform.position, controller.circleCastRadius, controller.eyes.right, controller.attackDistance, controller.targetLayer );
+            hitDown = Physics2D.CircleCast ( controller.eyes.transform.position, controller.circleCastRadius, -controller.eyes.up, controller.attackDistance, controller.targetLayer );
+
+            Debug.DrawRay ( controller.eyes.transform.position, controller.eyes.right, Color.red, 1f );
+            Debug.DrawRay ( controller.eyes.transform.position, -controller.eyes.up, Color.red, 1f );
 
             if ( hit.collider != false )
             {

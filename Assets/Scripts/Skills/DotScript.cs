@@ -12,20 +12,10 @@ public class DotScript : MonoBehaviour
     private int counter = 0;
     public DamageType _damageType;
 
-    //public void setDotDamage(float dmg)
-    //{
-    //    _dotDamage = dmg;
-    //}
-    //public void setDuration(float dur)
-    //{
-    //    _duration = dur;
-    //}
-
     private void Start()
     {
         if(GetComponent<StateController>() != null)
-        {
-            Debug.Log("StateIS");
+        {            
             enemyState = GetComponent<StateController>();
         }
         if(GetComponent<Player>() != null)
@@ -44,7 +34,7 @@ public class DotScript : MonoBehaviour
             counter++; 
             nextAct += 1;
             enemyState.TakeDamage(this.gameObject, _dotDamage, _damageType);
-            Debug.Log("COUNTER: " + counter);
+            
         }
     }
 

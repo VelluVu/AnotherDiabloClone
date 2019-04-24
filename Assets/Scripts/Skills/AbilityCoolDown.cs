@@ -13,14 +13,11 @@ public class AbilityCoolDown : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public Image darkMask;
     public Text coolDownTextDisplay;
     public Text abilityName;
-
-    //public GameObject root;
-    //public AbilityBarScript barS;
-    
-
-    //tämä ability pitää määrittää vielä jossain nyt testiks se o serial..
+    public bool notInCooldown;
+ 
     private Ability ability;
-    private GameObject player;
+    //private GameObject player;
+    private AbilityBarScript bar;
 
     private Image myButtonImage;
     private AudioSource abilitySource;
@@ -30,13 +27,11 @@ public class AbilityCoolDown : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
         clickButton.onClick.AddListener(ButtonTriggered);
-        //root = transform.root.gameObject;
-        //barS = root.GetComponentInChildren<AbilityBarScript>();
-
-        //väli aikainen
-        //Initialize(ability, player);
+        bar = GetComponentInParent<AbilityBarScript>();
+        
+        
     }
 
     public void Initialize(Ability selectedAbility, GameObject player)
@@ -61,6 +56,7 @@ public class AbilityCoolDown : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         
         bool coolDownComplete = (Time.time > nextReadyTime);
+        notInCooldown = coolDownComplete;
         if (coolDownComplete)
         {
             
@@ -111,11 +107,17 @@ public class AbilityCoolDown : MonoBehaviour, IPointerEnterHandler, IPointerExit
         ((IPointerEnterHandler)clickButton).OnPointerEnter(eventData);
         
         abilityName.enabled = true;
+        bar.mouseOverId = id;
+        
+        
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         ((IPointerExitHandler)clickButton).OnPointerExit(eventData);
         abilityName.enabled = false;
+        bar.mouseOverId = -1;
+        
     }
 }

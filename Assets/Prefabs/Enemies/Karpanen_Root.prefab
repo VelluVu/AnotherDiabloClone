@@ -32,6 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 573376844963550076}
+  - {fileID: 7783233197200102498}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -52,7 +53,7 @@ MonoBehaviour:
   enemyStats: {fileID: 3064845586492581640}
   attackJump: 0
   moveSpeedScale: 1
-  attackDistance: 0.05
+  attackDistance: 0.1
   searchDuration: 6
   spotDistance: 2.5
   sightDistance: 5
@@ -60,12 +61,22 @@ MonoBehaviour:
   stateTimeElapsed: 0
   radius: 2.5
   senseArea: 2.5
+  circleCastRadius: 0.26
+  fallToDeathHeight: 100
+  riseUpTime: 0
+  riseUpTimeCounter: 0
+  changedPos: 0
+  phase1: 0
+  phase2: 0
+  phase3: 0
+  phase4: 0
   amplitude: 100
   frequency: 0.5
   flyingPatrolDirectionTime: 5
   eyes: {fileID: 7521639376812417443}
   back: {fileID: 8994341199349573898}
   head: {fileID: 4370191046562373227}
+  attackBox: {fileID: 7783233197200102498}
   friendlyTargetLayer:
     serializedVersion: 2
     m_Bits: 4096
@@ -87,6 +98,7 @@ MonoBehaviour:
   targetDir: {x: 0, y: 0}
   leftDirection: {x: 0, y: 0, z: 0}
   rightDirection: {x: 0, y: 0, z: 0}
+  positions: []
   dirRight: 1
   aiActive: 1
   attackRdy: 1
@@ -378,8 +390,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7521639376812417443}
-  - component: {fileID: 2942159223861381516}
-  - component: {fileID: 3145583515979912420}
   m_Layer: 2
   m_Name: Karpanen_Eyes
   m_TagString: Eyes
@@ -401,20 +411,67 @@ Transform:
   m_Father: {fileID: 573376844963550076}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &2942159223861381516
+--- !u!1 &8406156021011562302
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7783233197200102498}
+  - component: {fileID: 3668300751287696181}
+  - component: {fileID: 8751815785139796382}
+  m_Layer: 26
+  m_Name: AttackHitBox
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7783233197200102498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406156021011562302}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.62, y: 0.377, z: -0.055664062}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 55943099567247593}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3668300751287696181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406156021011562302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e8f85d1cd9083478821f2a70ad430a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
+    type: 3}
+  damageType: 0
+--- !u!61 &8751815785139796382
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7554215608112742878}
-  m_Enabled: 1
+  m_GameObject: {fileID: 8406156021011562302}
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.13636586, y: -0.103948}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -425,23 +482,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.40271497, y: 1.0797689}
+  m_Size: {x: 0.4169378, y: 0.9505577}
   m_EdgeRadius: 0
---- !u!114 &3145583515979912420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7554215608112742878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05e8f85d1cd9083478821f2a70ad430a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
-    type: 3}
-  damageType: 0
 --- !u!1 &8734088466681638537
 GameObject:
   m_ObjectHideFlags: 0

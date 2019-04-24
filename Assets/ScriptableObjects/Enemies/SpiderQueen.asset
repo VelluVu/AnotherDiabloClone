@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpiderQueen
   m_EditorClassIdentifier: 
   _name: SpiderQueen
-  _moveSpeed: 80
+  _moveSpeed: 30
   _chaseMultiplier: 3
   _jumpForce: 3
   _attackSpeed: 2

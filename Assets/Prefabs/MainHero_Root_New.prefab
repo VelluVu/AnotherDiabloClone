@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 6640050483557403131}
   - component: {fileID: 7852784705096150757}
   - component: {fileID: 1169824648}
-  m_Layer: 13
+  m_Layer: 25
   m_Name: Left_Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,6 +337,7 @@ MonoBehaviour:
     type: 3}
   _weaponDamage: 0
   _weaponSpeed: 0
+  weaponSwing: 0
   isEquipped: 0
   weaponType: 4
   damageType: 0
@@ -365,7 +366,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.0001, y: 0.0001}
   m_EdgeRadius: 0
 --- !u!50 &7852784705096150757
 Rigidbody2D:
@@ -637,7 +638,7 @@ GameObject:
   - component: {fileID: 7391706078199241481}
   - component: {fileID: 6555086630381230785}
   - component: {fileID: 8131655113102551163}
-  m_Layer: 13
+  m_Layer: 25
   m_Name: Right_Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -692,9 +693,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 813841489
-  m_SortingLayer: 4
-  m_SortingOrder: 0
+  m_SortingLayerID: 644545703
+  m_SortingLayer: 3
+  m_SortingOrder: 35
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -727,6 +728,7 @@ MonoBehaviour:
     type: 3}
   _weaponDamage: 0
   _weaponSpeed: 0
+  weaponSwing: 0
   isEquipped: 0
   weaponType: 0
   damageType: 0
@@ -755,7 +757,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.0001, y: 0.0001}
   m_EdgeRadius: 0
 --- !u!50 &8131655113102551163
 Rigidbody2D:
@@ -1322,7 +1324,7 @@ Animator:
   m_GameObject: {fileID: 6715336927336710896}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: acfa24d08345e0d44b509bb9584f1115, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2101,6 +2103,7 @@ GameObject:
   - component: {fileID: 811391890461806274}
   - component: {fileID: 7009999718720898312}
   - component: {fileID: 397100565}
+  - component: {fileID: 1971475494}
   m_Layer: 13
   m_Name: MainHero_Root_New
   m_TagString: Player
@@ -2211,8 +2214,12 @@ MonoBehaviour:
   hitsGround: 0
   takeFallDamage: 0
   goingDown: 0
+  slowed: 0
   isDead: 0
   isAlive: 1
+  climbingLadder: 0
+  climbingRobe: 0
+  jump: 0
   isDoubleJumpLearned: 1
   isWallJumpLearned: 1
   isDashLearned: 1
@@ -2220,6 +2227,8 @@ MonoBehaviour:
   jumpHeightMin: 0.4
   timeToJumpApex: 0.357
   newMoveSpeed: 2
+  ladderClimbSpeed: 1.5
+  robeClimbSpeed: 1.5
   airAccelerationTime: 0.103
   groundAccelerationTime: 0.07
   wallSlideSpeedMax: 1.2
@@ -2237,6 +2246,7 @@ MonoBehaviour:
   fallToDeathTime: 2
   lowFallDamageTime: 0.5
   fallDamageMultiplier: 0.4
+  swingSpeed: 1.03
 --- !u!114 &5400792684223559201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2330,6 +2340,11 @@ MonoBehaviour:
     isDirty: 1
     lastBaseValue: 0
     _value: 0
+  block:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
   cooldownReduction:
     BaseValue: 0
     isDirty: 1
@@ -2386,6 +2401,11 @@ MonoBehaviour:
     lastBaseValue: 0
     _value: 0
   allResistance:
+    BaseValue: 0
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  fallDamageReduction:
     BaseValue: 0
     isDirty: 1
     lastBaseValue: 0
@@ -2549,5 +2569,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bc34cc60dc61174588150eaa1c34c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1971475494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875967764980965159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7eb4f568937b1241859a576051f58d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -32,7 +32,10 @@ public class ShootAction : Action
     /// <param name="controller"></param>
     public void ShootAtTarget ( StateController controller, EnemyWeaponHolder weapon )
     {
-
+        if ( controller.chaseTarget == null)
+        {
+            return;
+        }
         if ( controller.transform.position.x < controller.chaseTarget.transform.position.x )
         {
             controller.dirRight = true;

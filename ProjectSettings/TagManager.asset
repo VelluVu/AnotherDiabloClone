@@ -20,6 +20,7 @@ TagManager:
   - InteractableObject
   - Gold
   - MovingPlatform
+  - Web
   layers:
   - Default
   - TransparentFX
@@ -45,9 +46,9 @@ TagManager:
   - MovingPlatform
   - Door
   - Ladder
-  - 
-  - 
-  - 
+  - Rope
+  - PlayersAttackCollider
+  - EnemyAttackCollider
   - 
   - 
   - 

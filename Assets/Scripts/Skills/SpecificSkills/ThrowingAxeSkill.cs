@@ -5,7 +5,7 @@ using UnityEngine;
 public class ThrowingAxeSkill : MonoBehaviour
 {
     private AbilityINFO info;
-    private GameObject player;
+    //private GameObject player;
     private SpriteRenderer spriteRenderer;
     private bool isGoingLeft = true;
     private float spinSpeed = 1500;
@@ -23,7 +23,7 @@ public class ThrowingAxeSkill : MonoBehaviour
     
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
         if (GetComponent<AbilityINFO>() == null)
         {
             Debug.Log("ThrowingAxe dont have AbilityINFO script.. it has been added");
@@ -41,11 +41,15 @@ public class ThrowingAxeSkill : MonoBehaviour
     }
     void flip()
     {
-        Vector2 dirPos = (info._direction - (Vector2)player.transform.position);
-       
+
+        float playerX = transform.position.x;
+        float dirPosX = info._direction.x;
+
+        Debug.Log("player X" + playerX);
+        Debug.Log("dirPos X" + dirPosX);
         //float dotR = Vector2.Dot(dirPos, (Vector2)player.transform.position + new Vector2(0,1));
-       
-        if(Vector2.Dot(dirPos,player.transform.position)<0)
+        
+        if( dirPosX < playerX)
         {
             // vasenmalla puolella
             Debug.Log("vasen");

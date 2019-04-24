@@ -5,6 +5,8 @@ using UnityEngine;
 public class TreasureChest : MonoBehaviour
 {
 
+    public Rarity chestRarity;
+    public int chestLevel = 1;
     Animator treasureAnimator;
     Collider2D treasureCollider;
     Collider2D triggerArea;
@@ -57,6 +59,7 @@ public class TreasureChest : MonoBehaviour
             triggerArea.enabled = false;
             treasureCollider.enabled = false;
             gameObject.GetComponent<TreasureChest> ( ).enabled = false;
+            LootDropGenerator.instance.ChestDrop(transform,chestRarity,chestLevel);
         }
     }
 }

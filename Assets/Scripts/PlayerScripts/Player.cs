@@ -82,9 +82,11 @@ public class Player : MonoBehaviour
     public bool takeFallDamage;
     public bool goingDown;
     bool invulnerable;
+    public bool slowed;
     public bool isDead = false;
     public bool isAlive = true;
     public bool climbingLadder;
+    public bool climbingRobe;
     public bool jump;
 
     [Header ( "Ability Unlocks" )]
@@ -99,6 +101,8 @@ public class Player : MonoBehaviour
     [Range ( 0.1f, 10f )] [Tooltip ( "Jump minheight, when jump button pressed fast" )] public float jumpHeightMin = 1f;
     [Range ( 0.1f, 1f )] [Tooltip ( "Time to reach the jump apex, lakipiste" )] public float timeToJumpApex = .4f;
     [Range ( 0.1f, 10f )] [Tooltip ( "Movement Speed" )] public float newMoveSpeed = 3;
+    [Range ( 0.1f, 10f )] [Tooltip ( "Movement Speed" )] public float ladderClimbSpeed = 1.5f;
+    [Range ( 0.1f, 10f )] [Tooltip ( "Movement Speed" )] public float robeClimbSpeed = 1.5f;
     [Range ( 0.01f, 1f )] [Tooltip ( "Acceleration in the Air" )] public float airAccelerationTime = .2f;
     [Range ( 0.01f, 1f )] [Tooltip ( "Acceleration in the Ground" )] public float groundAccelerationTime = .1f;
     [Range ( 0.1f, 10f )] [Tooltip ( "The Player's velocity down when moving against the wall" )] public float wallSlideSpeedMax = 3;
@@ -111,6 +115,7 @@ public class Player : MonoBehaviour
     float jumpVelocityMin;
     float velocityXSmoothing;
     float timeToWallUnstick;
+    float slowEffect;
     Vector2 newVelocity;
     Vector2 directionalInput;
     bool wallSliding;
@@ -133,6 +138,8 @@ public class Player : MonoBehaviour
     [Range ( 0.1f, 5f )] public float fallToDeathTime;
     [Range ( 0.1f, 5f )] public float lowFallDamageTime;
     [Range ( 0.1f, 5f )] public float fallDamageMultiplier;
+
+    [Range ( 1f, 1.2f )] public float swingSpeed;
     #endregion
 
     #region Extra Variables
@@ -147,7 +154,6 @@ public class Player : MonoBehaviour
     #region Unity Monobehavior Functions
     private void Awake ( )
     {
-        DontDestroyOnLoad ( this );
         movement = gameObject.GetComponent<PlayerMovement> ( );
         stats = gameObject.GetComponent<PlayerClass> ( );
         ToolTip = FindObjectOfType<ToolTip> ( ).gameObject;
@@ -176,29 +182,31 @@ public class Player : MonoBehaviour
         heroAnim = gameObject.GetComponentInChildren<Animator> ( );
         //rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponSpeed = stats.baseAttackSpeed.Value;
         //rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponDamage = stats.baseDamage.Value;
+        slowEffect = 1;
         newGravity = -( 2 * jumpHeightMax ) / ( timeToJumpApex * timeToJumpApex );
         jumpVelocityMax = Mathf.Abs ( newGravity ) * timeToJumpApex;
         jumpVelocityMin = Mathf.Sqrt ( 2 * Mathf.Abs ( newGravity ) * jumpHeightMin );
+        OpenInventory ( );
     }
     private void Update ( )
     {
 
         CalculateVelocity ( );
         HandleWallSliding ( );
-        HandleClimbing ( );
-
-        if ( !isDead && !isBlocking)
-            movement.Move ( new Vector2 ( newVelocity.x * speedScale, newVelocity.y * jumpScale ) * Time.deltaTime );
-
+        HandleLadderClimbing ( );
+        HandleRobeClimb ( );
+        HandleSlows ( );
         UpdateDirection ( );
+
+        if ( !isDead && !isBlocking )
+            movement.Move ( new Vector2 ( newVelocity.x * speedScale * slowEffect, newVelocity.y * jumpScale * slowEffect ) * Time.deltaTime );
 
         if ( newVelocity.x <= 0.1f && newVelocity.x >= -0.1f )
             TurnMousePointerDir ( );
 
-        if ( movement.collisions.above || movement.collisions.below  )
+        if ( movement.collisions.above || movement.collisions.below )
         {
             newVelocity.y = 0;
-
         }
 
         Grounded ( );
@@ -238,12 +246,12 @@ public class Player : MonoBehaviour
                     newVelocity.y = wallLeap.y;
                 }
             }
-            if ( movement.collisions.below || !movement.collisions.below && jumpsCount >= 0)
+            if ( movement.collisions.below || !movement.collisions.below && jumpsCount >= 0 )
             {
                 jumpsCount--;
                 newVelocity.y = jumpVelocityMax;
             }
-            if(climbingLadder)
+            if ( climbingLadder || climbingRobe )
             {
                 newVelocity.y = jumpVelocityMax;
             }
@@ -269,41 +277,35 @@ public class Player : MonoBehaviour
             }
 
             if ( isBlocking )
-            {              
-                leftHand.GetComponent<BoxCollider2D> ( ).enabled = true;
+            {
+                off.UseWeapon ( );
             }
             else
             {
-                leftHand.GetComponent<BoxCollider2D> ( ).enabled = false;
+                off.HaltWeapon ( );
             }
         }
         else
         {
-            if ( isOffAttackRdy )
-            {
-                if ( off.weaponType == WeaponType.MeleeWeapon )
-                {
-                    isOffAttackRdy = false;
-                    //heroAnim.SetTrigger ( "Attack" );
-                    rightHand.GetComponent<BoxCollider2D> ( ).enabled = true;
-                    StartCoroutine ( Attack ( ) );
-                    StartCoroutine ( OffAttackCD ( ) );
 
-                }
-                if ( off.weaponType == WeaponType.RangedWeapon )
-                {
-                    // Ampuminen hiiren suuntaan
-                    StartCoroutine ( Attack ( ) );
-                    StartCoroutine ( OffAttackCD ( ) );
-                }
+            if ( off.weaponType == WeaponType.MeleeWeapon )
+            {
+        
+                off.UseWeapon ( );
+
             }
+            if ( off.weaponType == WeaponType.RangedWeapon )
+            {
+
+            }
+
         }
     }
     public void GetSecondMouseButtonUp ( )
     {
         Debug.Log ( "Released block" );
         isBlocking = false;
-        leftHand.GetComponent<BoxCollider2D> ( ).enabled = false;
+        off.HaltWeapon ( );
     }
     public void OpenInventory ( )
     {
@@ -320,26 +322,25 @@ public class Player : MonoBehaviour
             PlayerInventory.instance.gameObject.SetActive ( true );
         }
     }
-    public void PlayerBasicAttack ( )
+    public void GetFirstMouseButton ( )
     {
-        if ( !isBlocking && isMainAttackRdy && !mouseOnUI )
+        if ( !isBlocking && !mouseOnUI )
         {
             if ( main.weaponType == WeaponType.MeleeWeapon || main.weaponType == WeaponType.TwoHandedMeleeWeapon )
             {
-                isMainAttackRdy = false;
-                //heroAnim.SetTrigger ( "Attack" );
-                rightHand.GetComponent<BoxCollider2D> ( ).enabled = true;
-                StartCoroutine ( Attack ( ) );
-                StartCoroutine ( MainAttackCD ( ) );
+             
+                main.UseWeapon ( );
 
             }
             if ( main.weaponType == WeaponType.RangedWeapon || main.weaponType == WeaponType.TwoHandedRangedWeapon )
             {
-                // Ampuminen hiiren suuntaan
-                StartCoroutine ( Attack ( ) );
-                StartCoroutine ( MainAttackCD ( ) );
+
             }
         }
+    }
+    public void GetFirstMouseButtonUp ( )
+    {
+        main.HaltWeapon ( );
     }
     public void DashInputDown ( )
     {
@@ -402,7 +403,6 @@ public class Player : MonoBehaviour
             fallDamageMultiplierBonus = 0;
             isAir = false;
             jump = false;
-            climbingLadder = false;
         }
     }
     void HandleWallSliding ( )
@@ -439,12 +439,91 @@ public class Player : MonoBehaviour
             }
         }
     }
-    void HandleClimbing()
-    {      
-        if (climbingLadder && directionalInput.y == 0 && !jump )
+    void HandleLadderClimbing ( )
+    {
+        if ( climbingLadder )
         {
-            newVelocity.y = 0;
+            if ( directionalInput.y > 0 )
+            {
+                jump = false;
+                newVelocity.y = ladderClimbSpeed * speedScale;
+            }
+            if ( directionalInput.y < 0 )
+            {
+                jump = false;
+                newVelocity.y = -ladderClimbSpeed * speedScale;
+            }
+
+            if ( directionalInput.y == 0 && !jump )
+            {
+                newVelocity.y = 0;
+            }
         }
+    }
+    void HandleRobeClimb ( )
+    {
+        if ( climbingRobe )
+        {
+            if ( !jump && directionalInput.y == 0 && newVelocity.x != 0 )
+            {
+                newVelocity.y = 0;
+            }
+        }
+    }
+    void HandleSlows ( )
+    {
+        if ( !slowed )
+        {
+            slowEffect = 1;
+        }
+        if ( slowed )
+        {
+            StartCoroutine ( RemoveSlow ( ) );
+        }
+    }
+    private void ClimbRobe ( Collider2D collision )
+    {
+
+        climbingRobe = true;
+
+        if ( climbingRobe )
+        {
+            if ( !jump )
+            {
+
+                newVelocity = collision.attachedRigidbody.velocity;
+
+            }
+            if ( directionalInput.x > 0 && !jump && climbingRobe && collision.attachedRigidbody.velocity.x > 0 || collision.attachedRigidbody.velocity.x == 0 )
+            {
+                collision.attachedRigidbody.velocity = new Vector2 ( newVelocity.x * swingSpeed, collision.attachedRigidbody.velocity.y );
+
+            }
+            if ( directionalInput.x < 0 && !jump && climbingRobe && collision.attachedRigidbody.velocity.x < 0 || collision.attachedRigidbody.velocity.x == 0 )
+            {
+                collision.attachedRigidbody.velocity = new Vector2 ( newVelocity.x * swingSpeed, collision.attachedRigidbody.velocity.y );
+
+            }
+
+            if ( directionalInput.y > 0 )
+            {
+                jump = false;
+                newVelocity.y = robeClimbSpeed * speedScale;
+                newVelocity.x = collision.attachedRigidbody.velocity.x;
+
+            }
+            if ( directionalInput.y < 0 )
+            {
+                jump = false;
+                newVelocity.y = -robeClimbSpeed * speedScale * 0.5f;
+                newVelocity.x = collision.attachedRigidbody.velocity.x;
+
+            }
+        }
+    }
+    private void ClimbLadder ( )
+    {
+        climbingLadder = true;
     }
     void CalculateVelocity ( )
     {
@@ -624,11 +703,15 @@ public class Player : MonoBehaviour
         {
             return;
         }
+        float fullResistance = stats.allResistance.Value;
+        fullResistance += PlayerClass.instance.damageTypes [ damageType ].Value;
 
         if ( isBlocking )
         {
 
-            //calculatedDamage = dmg - stats.armor.Value /*Tähän pitäis saada vielä shield defense*/;
+
+            calculatedDamage = dmg * ( 1 - ( fullResistance / ( 20 * level + fullResistance ) ) );
+            calculatedDamage = dmg * ( 1 - ( stats.block.Value / ( 10 * level + stats.block.Value ) ) );
             calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
             calculatedDamage = Mathf.Round ( calculatedDamage );
 
@@ -670,6 +753,7 @@ public class Player : MonoBehaviour
             else
             {
                 color = Color.red;
+                calculatedDamage = dmg * ( 1 - ( fullResistance / ( 20 * level + fullResistance ) ) );
                 calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
                 Debug.Log ( ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
                 Debug.Log ( calculatedDamage );
@@ -761,7 +845,7 @@ public class Player : MonoBehaviour
             fallDamageMultiplierBonus += fallTime;
         }
 
-        if ( isDashing || wallSliding || isDead || climbingLadder )
+        if ( isDashing || wallSliding || isDead || climbingLadder || climbingRobe )
         {
             fallTime = 0;
             fallDamageMultiplierBonus = 0;
@@ -856,20 +940,24 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerStay2D ( Collider2D collision )
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Ladder"))
+        if ( collision.gameObject.layer == LayerMask.NameToLayer ( "Ladder" ) )
         {
-            climbingLadder = true;
-            if(directionalInput.y > 0)
-            {
-                jump = false;
-                newVelocity.y = newMoveSpeed * speedScale;
-            }
-            if ( directionalInput.y < 0 )
-            {
-                jump = false;
-                newVelocity.y = -newMoveSpeed * speedScale;
-            }
-        }             
+
+            ClimbLadder ( );
+
+        }
+        if ( collision.gameObject.layer == LayerMask.NameToLayer ( "Rope" ) )
+        {
+
+            ClimbRobe ( collision );
+
+        }
+
+        if ( collision.gameObject.CompareTag ( "Web" ) )
+        {
+            slowed = true;
+            slowEffect = collision.gameObject.GetComponent<SpiderWebSpot> ( ).GetSlowPercent ( );
+        }
     }
     private void OnTriggerExit2D ( Collider2D collision )
     {
@@ -877,6 +965,15 @@ public class Player : MonoBehaviour
         {
             climbingLadder = false;
         }
+        if ( collision.gameObject.layer == LayerMask.NameToLayer ( "Rope" ) )
+        {
+            climbingRobe = false;
+        }
+        if ( collision.gameObject.CompareTag ( "Web" ) )
+        {
+            slowed = false;
+        }
+
     }
     private void OnTriggerEnter2D ( Collider2D collision )
     {
@@ -891,21 +988,24 @@ public class Player : MonoBehaviour
     IEnumerator Attack ( )
     {
 
-        yield return new WaitForSeconds ( heroAnim.GetCurrentAnimatorStateInfo ( 0 ).length );
+        //yield return new WaitForSeconds ( heroAnim.GetCurrentAnimatorStateInfo ( 0 ).length );
+        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value );
         rightHand.GetComponent<BoxCollider2D> ( ).enabled = false;
 
     }
 
     IEnumerator MainAttackCD ( )
     {
-        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value * main._weaponSpeed );
+
+        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value );
         isMainAttackRdy = true;
 
     }
 
     IEnumerator OffAttackCD ( )
     {
-        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value * main._weaponSpeed );
+
+        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value );
         isOffAttackRdy = true;
 
     }
@@ -940,6 +1040,12 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds ( time );
         invulnerable = false;
+    }
+
+    IEnumerator RemoveSlow ( )
+    {
+        yield return new WaitForSeconds ( 3 );
+        slowed = false;
     }
 
     #endregion

@@ -7,7 +7,8 @@ public enum ProjectileType
     Arrow,
     MagicMissile,
     Rock,
-    ThrowingAxe
+    ThrowingAxe,
+    Spiderweb,
 }
 
 public enum WeaponType
@@ -23,9 +24,10 @@ public enum DamageType
 {
     Physical,
     Fire,
-    Frost,
+    Cold,
     Poison,
     Raw,
+    Lightning,
 }
 
 public enum EnemyType
@@ -143,5 +145,11 @@ public enum AreaName
 public enum AttributeTag 
 {
     Resistance,primary,secondary
+}
+
+public enum ClimpObjectType
+{
+    Robe,
+    Ladder,
 }
 

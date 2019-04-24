@@ -111,12 +111,7 @@ public class EnemyWeaponHolder : MonoBehaviour
             {
                 if ( hit.distance <= ( range * 0.5f ) )
                 {
-                    //Debug.Log ( "hitDistance" + hit.distance );
-
-                    //Debug.Log ( "Etäisyys " + range * 0.5f );
-
-                    //Debug.Log ( "kohde lähellä" );
-
+          
                     calculatedVelocity = new Vector2 ( Mathf.Cos ( angle * 0.3f ) * velocity, Mathf.Sin ( angle * 0.3f ) * velocity );
 
                     isTargetLocked = true;
@@ -124,11 +119,7 @@ public class EnemyWeaponHolder : MonoBehaviour
                     return calculatedVelocity;
                 }
                 else
-                {
-
-                    //Debug.Log ( "Etäisyys " + range );
-
-                    //Debug.Log ( "kohde kaukana" );
+                {             
 
                     isTargetLocked = true;
 

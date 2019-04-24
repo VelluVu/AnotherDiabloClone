@@ -30,7 +30,7 @@ RectTransform:
   m_LocalScale: {x: 1.000001, y: 1.000001, z: 1.000001}
   m_Children: []
   m_Father: {fileID: 5032209511657821367}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -109,7 +109,7 @@ RectTransform:
   m_LocalScale: {x: 1.0000051, y: 1.0000051, z: 1.0000051}
   m_Children: []
   m_Father: {fileID: 1698592092165749549}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -262,7 +262,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1169218556854119156}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -336,7 +336,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2462707173242781202}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -410,7 +410,7 @@ RectTransform:
   m_LocalScale: {x: 1.000001, y: 1.000001, z: 1.000001}
   m_Children: []
   m_Father: {fileID: 3268906831086707082}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -705,7 +705,7 @@ RectTransform:
   m_LocalScale: {x: 1.0000103, y: 1.0000103, z: 1.0000103}
   m_Children: []
   m_Father: {fileID: 1698592092165749549}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -779,7 +779,7 @@ RectTransform:
   m_LocalScale: {x: 1.000001, y: 1.000001, z: 1.000001}
   m_Children: []
   m_Father: {fileID: 1169218556854119156}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1033,7 +1033,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5032209511657821367}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1107,7 +1107,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3268906831086707082}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1363,7 +1363,7 @@ RectTransform:
   m_LocalScale: {x: 1.000001, y: 1.000001, z: 1.000001}
   m_Children: []
   m_Father: {fileID: 2462707173242781202}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1442,9 +1442,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 373018716700146220}
   - {fileID: 2064097979}
   - {fileID: 1049892904}
+  - {fileID: 373018716700146220}
   m_Father: {fileID: 751841833018596107}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1508,6 +1508,7 @@ MonoBehaviour:
   darkMask: {fileID: 2064097980}
   coolDownTextDisplay: {fileID: 998121463142165283}
   abilityName: {fileID: 1049892905}
+  notInCooldown: 0
 --- !u!1 &133268523037342294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1538,7 +1539,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1698592092165749549}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1803,16 +1804,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502813684914858001}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d99f691e294123345bcdade423a6b831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  abilityContainer: {fileID: 11400000, guid: 2e2ccfc07252f73439adaf600de9d9c7, type: 2}
-  activeAbilities: []
-  activeIDs: 
+  cooldownTextColor: {r: 1, g: 1, b: 1, a: 0.78431374}
+  darkMaskColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+  displayTextColor: {r: 0.21568629, g: 0.21568629, b: 0.21568629, a: 1}
+  mouseOverId: -1
+  abilityInMouse: {fileID: 0}
   cooldownButtons: []
+  abilityContainer: {fileID: 11400000, guid: 2e2ccfc07252f73439adaf600de9d9c7, type: 2}
 --- !u!1 &1225661824318614558
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,9 +2021,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8857490463250600056}
   - {fileID: 1900316715}
   - {fileID: 626998985}
+  - {fileID: 8857490463250600056}
   m_Father: {fileID: 400217757110625085}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2084,6 +2087,7 @@ MonoBehaviour:
   darkMask: {fileID: 1900316716}
   coolDownTextDisplay: {fileID: 1472129811565410598}
   abilityName: {fileID: 626998986}
+  notInCooldown: 0
 --- !u!1 &2124111513764177898
 GameObject:
   m_ObjectHideFlags: 0
@@ -2484,7 +2488,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5032209511657821367}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2618,6 +2622,7 @@ GameObject:
   - component: {fileID: 140956796296592851}
   - component: {fileID: 7082633797874746810}
   - component: {fileID: 5469824266608924027}
+  - component: {fileID: 84542021}
   m_Layer: 5
   m_Name: ActionBar_BackGround
   m_TagString: Untagged
@@ -2682,6 +2687,25 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &84542021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4739760861821205590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d99f691e294123345bcdade423a6b831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownTextColor: {r: 1, g: 1, b: 1, a: 1}
+  darkMaskColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+  displayTextColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  mouseOverId: -1
+  abilityInMouse: {fileID: 0}
+  cooldownButtons: []
+  abilityContainer: {fileID: 0}
 --- !u!1 &5708817959100935820
 GameObject:
   m_ObjectHideFlags: 0
@@ -2712,9 +2736,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2758777117343724866}
   - {fileID: 1002805656}
   - {fileID: 2140266774}
+  - {fileID: 2758777117343724866}
   m_Father: {fileID: 3065186491010284653}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2778,6 +2802,7 @@ MonoBehaviour:
   darkMask: {fileID: 1002805657}
   coolDownTextDisplay: {fileID: 4331197600739767841}
   abilityName: {fileID: 2140266775}
+  notInCooldown: 0
 --- !u!1 &5772405325749276987
 GameObject:
   m_ObjectHideFlags: 0
@@ -2883,9 +2908,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1924299413802281405}
   - {fileID: 900206177}
   - {fileID: 1925857215}
+  - {fileID: 1924299413802281405}
   m_Father: {fileID: 3716593323796257165}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2949,6 +2974,7 @@ MonoBehaviour:
   darkMask: {fileID: 900206178}
   coolDownTextDisplay: {fileID: 5049346128814803059}
   abilityName: {fileID: 1925857216}
+  notInCooldown: 0
 --- !u!1 &7541145485392633449
 GameObject:
   m_ObjectHideFlags: 0
@@ -2979,7 +3005,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1169218556854119156}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3058,7 +3084,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2462707173242781202}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3137,9 +3163,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7481287903006053746}
   - {fileID: 2049641977}
   - {fileID: 28285383}
+  - {fileID: 7481287903006053746}
   m_Father: {fileID: 983301429841621979}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3203,6 +3229,7 @@ MonoBehaviour:
   darkMask: {fileID: 2049641978}
   coolDownTextDisplay: {fileID: 2004712134409211101}
   abilityName: {fileID: 28285384}
+  notInCooldown: 0
 --- !u!1 &8264247048846984118
 GameObject:
   m_ObjectHideFlags: 0
@@ -3233,7 +3260,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3268906831086707082}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

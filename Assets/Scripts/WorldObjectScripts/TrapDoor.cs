@@ -38,6 +38,8 @@ public class TrapDoor : MonoBehaviour
         yield return new WaitForSeconds ( time );
         anim.SetTrigger ( "TriggerTrap" );
         col.enabled = false;
+        gameObject.layer = LayerMask.NameToLayer("Default");
+        
     }
 
 }

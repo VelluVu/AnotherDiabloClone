@@ -313,7 +313,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.01347734, y: -0.34406757}
+  m_Offset: {x: 0.013477325, y: -0.1756177}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -324,7 +324,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.51943314, y: 1.0945873}
+  m_Size: {x: 0.51943314, y: 1.4314871}
   m_EdgeRadius: 0
 --- !u!114 &2140037966588788327
 MonoBehaviour:
@@ -350,13 +350,23 @@ MonoBehaviour:
   alertedByEventDuration: 0
   stateTimeElapsed: 0
   radius: 1.1
-  senseArea: 0
+  senseArea: 2.01
+  circleCastRadius: 0.3
+  fallToDeathHeight: 100
+  riseUpTime: 0
+  riseUpTimeCounter: 0
+  changedPos: 0
+  phase1: 0
+  phase2: 0
+  phase3: 0
+  phase4: 0
   amplitude: 0
   frequency: 0
   flyingPatrolDirectionTime: 0
   eyes: {fileID: 8204483007419588562}
   back: {fileID: 6191178983487104881}
   head: {fileID: 6319583631003300824}
+  attackBox: {fileID: 0}
   friendlyTargetLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -378,6 +388,7 @@ MonoBehaviour:
   targetDir: {x: 0, y: 0}
   leftDirection: {x: 0, y: 0, z: 0}
   rightDirection: {x: 0, y: 0, z: 0}
+  positions: []
   dirRight: 0
   aiActive: 1
   attackRdy: 1
@@ -1235,7 +1246,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8150276375131961457}
   - component: {fileID: 3051279671420414417}
-  - component: {fileID: 8078694373773822968}
   m_Layer: 12
   m_Name: Minotaur_Head
   m_TagString: Enemy
@@ -1306,32 +1316,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &8078694373773822968
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6319583631003300824}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.047476947, y: 0.17459384}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.26550207, y: 0.07194837}
-    oldSize: {x: 1.09375, y: 0.5625}
-    newSize: {x: 1.09375, y: 0.5625}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5224695, y: 0.5276656}
-  m_EdgeRadius: 0
 --- !u!1 &6422389359219028863
 GameObject:
   m_ObjectHideFlags: 0
@@ -1850,8 +1834,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204483007419588562}
-  - component: {fileID: 3082740186406278318}
-  - component: {fileID: 4698180176508017025}
   m_Layer: 2
   m_Name: Minotaur_Eyes
   m_TagString: Eyes
@@ -1873,44 +1855,3 @@ Transform:
   m_Father: {fileID: 4199463826464430328}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &3082740186406278318
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9039906682666255454}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.045013472, y: 0.34167814}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5093951, y: 0.71802664}
-  m_EdgeRadius: 0
---- !u!114 &4698180176508017025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9039906682666255454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05e8f85d1cd9083478821f2a70ad430a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
-    type: 3}
-  damageType: 0

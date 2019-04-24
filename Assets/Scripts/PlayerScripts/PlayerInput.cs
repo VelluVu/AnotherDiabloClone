@@ -38,9 +38,13 @@ public class PlayerInput : MonoBehaviour
         }
         if( Input.GetMouseButton ( 0 ) )
         {
-            player.PlayerBasicAttack ( );
+            player.GetFirstMouseButton ( );
         }
-        if( Input.GetButtonDown ( "Dash" ) )
+        if ( Input.GetMouseButtonUp ( 0 ) )
+        {
+            player.GetFirstMouseButtonUp ( );
+        }
+        if ( Input.GetButtonDown ( "Dash" ) )
         {
             player.DashInputDown ( );
         }

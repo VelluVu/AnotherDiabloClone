@@ -5,30 +5,25 @@ using UnityEngine.UI;
 
 public class skillPanel : MonoBehaviour
 {
+    public int countOfButtons = 4;
     public Transform scrollpanel;
     public GameObject button;
+    public GameObject leftButton;
+    public GameObject rightButton;
     public List<Ability> abilities;
     private List<Ability> xAb;
-    public List<GameObject> buttons;
-
-    private ScrollRect scrollRect;
+    [HideInInspector]public List<GameObject> buttons;
 
     private RectTransform buttonRect;
     private float widthButton;
     private float heighButton;
     private float cap = 20;
-    private int countOFbuttons = 5;
-
-    private void Awake()
-    {
-        scrollRect = GetComponent<ScrollRect>();
-    }
+       
     void Start()
     {
         buttonRect = scrollpanel.GetComponent<RectTransform>();
         widthButton = buttonRect.rect.width;
-        widthButton = buttonRect.rect.height;
-        
+        heighButton = buttonRect.rect.height;
 
         setButtons();
     }
@@ -40,7 +35,7 @@ public class skillPanel : MonoBehaviour
         Ability ability;
         skillPanelButton skillPanelButton;
         float x = 0;
-        for (int i = 0; i < countOFbuttons; i++)
+        for (int i = 0; i < countOfButtons; i++)
         {
             x = cap;
             GameObject newB = Instantiate(button) as GameObject;
@@ -50,26 +45,28 @@ public class skillPanel : MonoBehaviour
        
             newB.transform.SetParent(scrollpanel, false);
             newBRect.offsetMax = new Vector2((widthButton + x) * i, 0);
-            newBRect.offsetMin = new Vector2((widthButton + x) * i, 0);
+            newBRect.offsetMin = new Vector2((heighButton + x) * i, 0);
             ability = abilities[i];
             sprite.sprite = ability._sprite;
             skillPanelButton.ability = ability;
 
             buttons.Add(newB);
-            
-
+           
         }
+        
+        buttonRect.localPosition += new Vector3(((widthButton+cap)/2)*(-1 + countOfButtons), 0, 0)*-1;
+        leftButton.GetComponent<RectTransform>().localPosition = new Vector3(cap + (102)*countOfButtons,0,0)*-1;
+        rightButton.GetComponent<RectTransform>().localPosition = new Vector3(cap + (102)*countOfButtons,0,0);
     }
-
+    // refressaaa skillpaneelin skillit => booli on nappi joko vasen tai oikea.. muuttaa skillien järjestyksen taulussa
     public void moveAbilitiesTo(bool toRight)
     {
         Image sprite;
         Ability ability;
         skillPanelButton skillPanelButton;
         GameObject button;       
-        if (abilities.Count <= countOFbuttons)
-        {
-            Debug.Log("RETUNR");
+        if (abilities.Count <= countOfButtons)
+        {            
             return;
         }
         if(!toRight)
@@ -84,7 +81,7 @@ public class skillPanel : MonoBehaviour
             abilities.RemoveAt(abilities.Count - 1);
             abilities.Insert(0, ability);
         }
-        for (int i = 0; i < countOFbuttons; i++)
+        for (int i = 0; i < countOfButtons; i++)
         {
             button = buttons[i];
             sprite = button.GetComponent<Image>();
@@ -95,21 +92,5 @@ public class skillPanel : MonoBehaviour
         }
 
     }
-
-
-    private void Update()
-    {
-        
-
-        if(Input.GetKeyDown(KeyCode.M))
-        {
-            
-        }
-
-        
-    }
-
-
-
 
 }

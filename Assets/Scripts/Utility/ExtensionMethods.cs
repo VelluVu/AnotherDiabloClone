@@ -7,6 +7,6 @@ public static class ExtensionMethods
     {
         child.parent = parent;
         child.localRotation = Quaternion.identity;
-        child.localScale = new Vector3 ( 1 + 1 /  parent.localScale.x , 1 + 1 / parent.localScale.y, 1 );
+       
     }
 }

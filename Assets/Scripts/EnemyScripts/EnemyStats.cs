@@ -124,6 +124,11 @@ public class EnemyStats : MonoBehaviour
         }
     }
    
+    public float GetHealthPercent ( )
+    {
+        return health.Value / maxHealth.Value * 100f;
+    }
+
     public void ResetEnemy( )
     {
         health.RemoveAllModifiersFromSource ( healthLoss );

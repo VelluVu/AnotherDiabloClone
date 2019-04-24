@@ -34,6 +34,7 @@ public class PickUpLoot : MonoBehaviour
         rawImage.color = PlayerInventory.instance.rarity[rLoot.rarity];
         rawImage.color = new Color(rawImage.color.r, rawImage.color.g, rawImage.color.b, 0.7f);
         setupDone = true;
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-0.6f,0.6f), Random.Range(2f, 2.5f)), ForceMode2D.Impulse);
 
     }
     public void DropSetup()
@@ -44,6 +45,8 @@ public class PickUpLoot : MonoBehaviour
         rawImage.color = PlayerInventory.instance.rarity[rLoot.rarity];
         rawImage.color = new Color(rawImage.color.r, rawImage.color.g, rawImage.color.b, 0.7f);
         setupDone = true;
+        
+        
     }
     
 

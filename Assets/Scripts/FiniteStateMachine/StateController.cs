@@ -49,31 +49,43 @@ public class StateController : MonoBehaviour
     [Tooltip ( "For Enemies that jump on basic attack")]
     public float attackJump; //could be in enemyStats
     [Tooltip ( "Scalar for movespeed")] [Range ( 0.1f, 5f )] public float moveSpeedScale; //could be in enemyStats
-    [Tooltip ( "The Melee attack state distance from enemy eyes to target")] [Range ( 0.1f, 5f )] public float attackDistance; //could be in enemyStats
+    [Tooltip ( "The Melee attack state distance from enemy eyes to target")] [Range ( 0.01f, 5f )] public float attackDistance; //could be in enemyStats
     [Tooltip ( "Duration for Enemy search after losing the target")] [Range ( 0.1f, 10f )] public float searchDuration; //could be in enemyStats
     [Tooltip ( "Enemy spot range, from eyes to the target. Used in patrol to chasestate")] [Range ( 0.1f, 10f )] public float spotDistance; //could be in enemyStats
     [Tooltip ( "Raycast total distance")] [Range ( 0.1f, 20f )] public float sightDistance; //could be in enemyStats
     [Tooltip ( "Turns on when event happens nearby")] [Range ( 0.1f, 10f )] public float alertedByEventDuration;
     [Tooltip ( "The Elapsed time in current state")] public float stateTimeElapsed;
-    [Tooltip ( "Radius for circleCasts")] [Range ( 0.1f, 5f )] public float radius;
-    [Tooltip ( "Radius for hunching different events and flying enemys spot distance")] [Range ( 0.1f, 5f )] public float senseArea;
+    [Tooltip ( "Radius for randomstuff")] [Range ( 0.01f, 5f )] public float radius;
+    [Tooltip ( "Radius for hunching different events and flying enemys spot distance")] [Range ( 0.01f, 5f )] public float senseArea;
+    [Tooltip ( "Radius for circleCasts" )] [Range ( 0.01f, 5f )] public float circleCastRadius;
+    public float fallToDeathHeight;
 
+    [Tooltip ( "For SpiderBoss" )] public float riseUpTime;
+    public float riseUpTimeCounter;
+    public bool changedPos;
+    public bool phase1;
+    public bool phase2;
+    public bool phase3;
+    public bool phase4;
+    
     [Header ("Flying enemy motion variables")]
     [Range ( 0.1f, 5f )] public float amplitude;
     [Range ( 0.1f, 5f )] public float frequency;
     [Range ( 0.1f, 5f )] public float flyingPatrolDirectionTime;
+    [Space]
     #endregion
 
     #region Necessary Variables
+    [Header ("Components for raycasts and checks")]
     [Tooltip ( "Transform for Look and Ledgecheck Raycasts")] public Transform eyes;
     [Tooltip ( "Enemy Back")] public Transform back;
     [Tooltip ( "Head position and possibly for hit data etc.")] public GameObject head;
+    public Transform attackBox;
 
     [Tooltip ( "LayerMasks for raycast detection")] public LayerMask friendlyTargetLayer;
     [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask groundLayer;
     [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask targetLayer;
     [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask blockSightLayer;
-
 
     [Tooltip ( "Humanoid enemy weapons")] public EnemyWeaponHolder weaponLeft;
     [Tooltip ( "Humanoid enemy weapons" )] public EnemyWeaponHolder weaponRight;
@@ -86,7 +98,7 @@ public class StateController : MonoBehaviour
     [HideInInspector] public Vector3 leftDirection;
     [HideInInspector] public Vector3 rightDirection;
     [HideInInspector] public RaycastHit2D gaze;
-
+    [Tooltip ( "Phase Positions for Boss" )] public List<Transform> positions = new List<Transform> ( );
     #endregion
 
     #region Booleans
@@ -100,7 +112,7 @@ public class StateController : MonoBehaviour
     public bool notHatchedEgg;
     #endregion
 
-    private void Awake ( )
+    private void Start ( )
     {
         //GetComponents
         animator = gameObject.GetComponent<Animator> ( );
@@ -108,15 +120,17 @@ public class StateController : MonoBehaviour
         if(animator == null)
         {
             animator = gameObject.GetComponentInChildren<Animator> ( );
-        }
-
+        }     
         rb = gameObject.GetComponent<Rigidbody2D> ( );
         col = gameObject.GetComponent<BoxCollider2D> ( );
         targetDir = new Vector2 ( 1, 0 );
         leftDirection = new Vector3 ( 0, -180, 0 );
         rightDirection = new Vector3 ( 0, 0, 0 );
         attackRdy = true;
-        aiActive = true; //Asetetaan herätessä aktiiviseksi
+        if ( enemyStats.enemyType != EnemyType.Boss )
+        {
+            aiActive = true; //Asetetaan herätessä aktiiviseksi bossi asetetaan aktiiviseksi kun on saapunut alueelle
+        }
     }
 
     private void OnEnable ( )
@@ -127,7 +141,7 @@ public class StateController : MonoBehaviour
         PlayerDeathUI.respawnPlayerEvent += ResetEnemiesOnPlayerRespawn;
         enemyTakeDamageEvent += OnEnemyTakeDamage;
         SpiderEgg.hatchEvent += Hatched;
-        SpiderEgg.eggDestroyedEvent += Hatched; //Tähän vois lisätä omat functiot vaik et hämy menee sekasi ja hyökkää pelaajaan
+        SpiderEgg.eggDestroyedEvent += HatchedDestroyed; //Tähän vois lisätä omat functiot vaik et hämy menee sekasi ja hyökkää pelaajaan
     }
 
     private void OnDisable ( )
@@ -138,7 +152,7 @@ public class StateController : MonoBehaviour
         PlayerDeathUI.respawnPlayerEvent -= ResetEnemiesOnPlayerRespawn;
         enemyTakeDamageEvent -= OnEnemyTakeDamage;
         SpiderEgg.hatchEvent -= Hatched;
-        SpiderEgg.eggDestroyedEvent -= Hatched;
+        SpiderEgg.eggDestroyedEvent -= HatchedDestroyed;
     }
 
     private void Update ( )
@@ -165,7 +179,7 @@ public class StateController : MonoBehaviour
         }
 
         CheckDirection ( );
-
+        EnemyFallToDeath ( );
         
     }
 
@@ -243,15 +257,30 @@ public class StateController : MonoBehaviour
 
     public void DestroySpawnings()
     {
-
-        Destroy ( gameObject );
+        if ( enemyStats.enemyType != EnemyType.Boss )
+        {
+            Destroy ( gameObject );
+        }
+        if ( enemyStats.enemyType == EnemyType.Boss )
+        {
+            enemyStats.ResetEnemy ( );
+        }
         
     }
 
     public void ResetEnemiesOnPlayerRespawn ( Transform playerPos )
     {
-
-        Destroy ( gameObject );
+        if ( enemyStats.enemyType != EnemyType.Boss )
+        {
+            Destroy ( gameObject );
+        }
+        if ( enemyStats.enemyType == EnemyType.Boss )
+        {
+            enemyStats.ResetEnemy ( );
+            chaseTarget = null;
+            phase1 = phase2 = phase3 = phase4 = false;
+            aiActive = true;
+        }
 
     }
 
@@ -303,6 +332,13 @@ public class StateController : MonoBehaviour
         }
     }
 
+    public void HatchedDestroyed( GameObject parent)
+    {
+        if(parent == gameObject)
+        {
+            StartCoroutine ( EggCd ( ) );
+        }
+    }
 
     /// <summary>
     /// Perus hyökkäys animaatio
@@ -313,7 +349,7 @@ public class StateController : MonoBehaviour
         {       
             attackRdy = false;            
             rb.AddForce ( new Vector2 ( rb.velocity.x * 2, 2 ) * attackJump, ForceMode2D.Impulse );
-            eyes.GetComponent<BoxCollider2D> ( ).enabled = true;
+            attackBox.GetComponent<BoxCollider2D> ( ).enabled = true;
             animator.SetTrigger ( "Attack" );         
             StartCoroutine ( AttackCooldown ( ) );
         }
@@ -387,18 +423,34 @@ public class StateController : MonoBehaviour
         float calculatedDamage;
 
         if ( target == gameObject )
-        {
+        {         
             if ( damageType == DamageType.Raw )
             {
                 color = Color.red;           
                 calculatedDamage = Mathf.Round ( dmg );
-                enemyStats.health.BaseValue -= calculatedDamage;
+
+                if ( calculatedDamage <= 0 )
+                {
+                    calculatedDamage = 0;
+                }
+                else
+                {
+                    enemyStats.health.BaseValue -= calculatedDamage;
+                }
             }
             else
             {
                 calculatedDamage = dmg - enemyStats.armor.Value;
                 calculatedDamage = Mathf.Round ( calculatedDamage );
-                enemyStats.health.BaseValue -= calculatedDamage;
+
+                if ( calculatedDamage <= 0 )
+                {
+                    calculatedDamage = 0;
+                }
+                else
+                {
+                    enemyStats.health.BaseValue -= calculatedDamage;
+                }
             }
 
             if ( enemyNotifyEvent != null )
@@ -464,7 +516,7 @@ public class StateController : MonoBehaviour
     }
 
     public void OnEnemyTakeDamage( float damage)
-    {
+    {      
         Collider2D [ ] cols = Physics2D.OverlapCircleAll ( transform.position, 3f, targetLayer);      
         Debug.Log ( gameObject.name +  " Hoksaa : Toinen vihu pulassa" );
         for ( int i = 0 ; i < cols.Length ; i++ )
@@ -488,7 +540,18 @@ public class StateController : MonoBehaviour
         Gizmos.DrawWireSphere ( transform.position, senseArea );
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere ( transform.position, radius );      
+        Gizmos.DrawWireSphere ( transform.position, circleCastRadius );
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere ( transform.position, radius );
+    }
+
+    public void EnemyFallToDeath()
+    {
+        if( transform.position.y <= -fallToDeathHeight)
+        {
+            Die ( );
+        }
     }
 
     #region Coroutines
@@ -496,13 +559,19 @@ public class StateController : MonoBehaviour
     {
         yield return new WaitForSeconds ( enemyStats.attackSpeed.Value );
         attackRdy = true;
-        eyes.GetComponent<BoxCollider2D> ( ).enabled = false;
+        attackBox.GetComponent<BoxCollider2D> ( ).enabled = false;
+    }
+
+    IEnumerator EggCd()
+    {
+        yield return new WaitForSeconds ( 0.5f );
+        notHatchedEgg = false;
     }
 
     IEnumerator AttackHitBoxDuration ( )
     {
         yield return new WaitForSeconds ( enemyStats.attackSpeed.Value );
-        eyes.GetComponent<BoxCollider2D> ( ).enabled = false;
+        attackBox.GetComponent<BoxCollider2D> ( ).enabled = false;
 
     }
 

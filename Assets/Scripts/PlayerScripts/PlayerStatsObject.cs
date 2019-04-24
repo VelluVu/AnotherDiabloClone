@@ -41,6 +41,8 @@ public class PlayerStatsObject : ScriptableObject
     public float _meleeDamageReduction;
     public float _rangedDamageReduction;
     public float _healthOnKill;
+    public float _block;
+    public float _fallDamageReduction;
 
     public int _strength;
     public int _dexterity;

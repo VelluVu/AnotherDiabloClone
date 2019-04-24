@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8752205303067849401}
   m_Layer: 0
   m_Name: Rock
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,6 +104,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   _damage: 0
+  isPlayersProjectile: 0
+  enemyLevel: 0
 --- !u!50 &5603387012833793621
 Rigidbody2D:
   serializedVersion: 4

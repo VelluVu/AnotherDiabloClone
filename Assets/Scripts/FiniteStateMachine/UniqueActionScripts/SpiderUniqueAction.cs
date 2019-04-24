@@ -16,6 +16,10 @@ public class SpiderUniqueAction : Action
 
     void LayEgg ( StateController controller )
     {
+        if(controller.chaseTarget == null)
+        {
+            return;
+        }
         if ( !controller.notHatchedEgg )
         {
             controller.notHatchedEgg = true;

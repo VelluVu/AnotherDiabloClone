@@ -26,11 +26,13 @@ public class WeaponPlaceHolder : MonoBehaviour
     #region Weapon Stats
     public float _weaponDamage; //Aseen vahinko
     public float _weaponSpeed; //Aseen nopeus
-    float hitcd;
+
     #endregion
 
     #region Bools
     bool hasHit;
+    bool hitcd;
+    public bool weaponSwing;
     public bool isEquipped = false;
     #endregion
 
@@ -46,47 +48,49 @@ public class WeaponPlaceHolder : MonoBehaviour
         _weaponCol = gameObject.GetComponent<BoxCollider2D> ( );
     }
 
-    /*private void Update ( )
+    private void Update ( )
     {
-        if (hasHit)
+        if ( _weaponSprite.sprite != null )
         {
-            hitcd += Time.deltaTime;
+            SetColliderBounds ( );
         }
-        if( hitcd >= _weaponSpeed * gameObject.GetComponentInParent<PlayerClass> ( ).baseAttackSpeed.Value )
-        {
-            hasHit = false;
-            hitcd = 0;
-        }
-    }*/
+    }
 
-    public RolledLoot EquipWeapon(RolledLoot newWeapon)
+    public RolledLoot EquipWeapon ( RolledLoot newWeapon )
     {
         RolledLoot tempWeapon = equippedWeapon;
-        Debug.Log("Equipped " + newWeapon.itemName + "!");
-        _weaponSprite.sprite = newWeapon.equipmentSprites[0];
+        Debug.Log ( "Equipped " + newWeapon.itemName + "!" );
+        _weaponSprite.sprite = newWeapon.equipmentSprites [ 0 ];
         equippedWeapon = newWeapon;
         isEquipped = true;
 
         SetColliderBounds ( );
 
-        if (tempWeapon != null)
+        if ( tempWeapon != null )
         {
             return tempWeapon;
         }
-        
+
         return null;
-        
+
     }
 
-    public void SetColliderBounds()
+    public void SetColliderBounds ( )
     {
-        _weaponCol.offset = new Vector2 ( 0, 0 );
-        _weaponCol.size = new Vector3 ( _weaponSprite.bounds.size.x / transform.lossyScale.x,
-                                                              _weaponSprite.bounds.size.y / transform.lossyScale.y,
-                                                              _weaponSprite.bounds.size.z / transform.lossyScale.z );
+
+        if ( weaponType == WeaponType.Shield )
+        {
+            _weaponCol.offset = new Vector2 ( 0, 0 );
+        }
+        else
+        {
+            _weaponCol.offset = new Vector2 ( 0, 0.15f );
+        }
+        _weaponCol.size = new Vector2 ( _weaponSprite.sprite.bounds.size.x, _weaponSprite.sprite.bounds.size.y );
+
     }
 
-    public void UnEquipWeapon()
+    public void UnEquipWeapon ( )
     {
         _weaponSprite.sprite = null;
         _weaponDamage = 0;
@@ -98,7 +102,7 @@ public class WeaponPlaceHolder : MonoBehaviour
 
     public Item NewWeapon ( Item newWeapon )
     {
-       
+
         Item oldWeapon = _currentWeapon;
 
         _weaponSprite.sprite = newWeapon.itemSprite;
@@ -107,7 +111,7 @@ public class WeaponPlaceHolder : MonoBehaviour
         _weaponSpeed = newWeapon.weaponSpeed;
         _currentWeapon = newWeapon;
         isEquipped = true;
-        _weaponCol.size = new Vector2 ( _weaponSprite.sprite.bounds.size.x, _weaponSprite.sprite.bounds.size.y);
+        _weaponCol.size = new Vector2 ( _weaponSprite.sprite.bounds.size.x, _weaponSprite.sprite.bounds.size.y );
         return oldWeapon;
     }
 
@@ -132,24 +136,36 @@ public class WeaponPlaceHolder : MonoBehaviour
 
     }
 
+    public void UseWeapon ( )
+    {
+
+        weaponSwing = true;
+        _weaponCol.enabled = true;
+    }
+    public void HaltWeapon ( )
+    {
+
+        weaponSwing = false;
+        _weaponCol.enabled = false;
+    }
+
     private void OnTriggerEnter2D ( Collider2D collision )
     {
         if ( collision.gameObject.CompareTag ( "Enemy" ) )
         {
-            if ( !hasHit && weaponType != WeaponType.Shield )
+            if ( weaponType != WeaponType.Shield && weaponSwing && !hasHit )
             {
-                
                 hasHit = true;
-                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );              
-                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject , _weaponDamage, damageType );
+                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
+                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject, _weaponDamage, damageType );
                 StartCoroutine ( HitReset ( ) );
             }
         }
     }
 
-    IEnumerator HitReset ()
+    IEnumerator HitReset ( )
     {
-        yield return new WaitForSeconds ( _weaponSpeed * gameObject.GetComponentInParent<PlayerClass>().baseAttackSpeed.Value );
+        yield return new WaitForSeconds ( PlayerClass.instance.baseAttackSpeed.Value );
         hasHit = false;
     }
 }

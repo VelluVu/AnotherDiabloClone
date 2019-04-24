@@ -39,7 +39,8 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat armor;
     public CharacterStat healthRegeneration;
     public CharacterStat healthOnKill;
-    
+
+    public CharacterStat block;
     public CharacterStat cooldownReduction;
     public CharacterStat criticalHitChance;
     public CharacterStat criticalHitDamage;
@@ -54,6 +55,9 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat lightningResistance;
     public CharacterStat physicalResistance;
     public CharacterStat allResistance;
+    public CharacterStat fallDamageReduction;
+    public Dictionary<DamageType, CharacterStat> damageTypes = new Dictionary<DamageType, CharacterStat>();
+    
     #endregion
     #endregion
 
@@ -110,9 +114,18 @@ public class PlayerClass : MonoBehaviour
             isInitStats = false;
             InitializeHeroClass ( );
         }
+        CreateResistanceDictionary();
 
     }
-
+    private void CreateResistanceDictionary()
+    {
+        damageTypes.Add(DamageType.Fire, fireResistance);
+        damageTypes.Add(DamageType.Cold, coldResistance);
+        damageTypes.Add(DamageType.Lightning, lightningResistance);
+        damageTypes.Add(DamageType.Physical,physicalResistance);
+        damageTypes.Add(DamageType.Poison, poisonResistance);
+        damageTypes.Add(DamageType.Raw, fallDamageReduction);
+    }
     private void Start ( )
     {
         checkForChanges ( );
@@ -265,6 +278,7 @@ public class PlayerClass : MonoBehaviour
         maxMana.BaseValue = classes [ chosenClass ]._maxMana;
         healthRegeneration.BaseValue = classes[chosenClass]._healthRegeneration;
         healthOnKill.BaseValue = classes[chosenClass]._healthOnKill;
+        block.BaseValue = classes[chosenClass]._block;
 
         cooldownReduction.BaseValue = classes[chosenClass]._cooldownReduction;
         criticalHitChance.BaseValue = classes [ chosenClass ]._criticalHitChance;
@@ -280,6 +294,7 @@ public class PlayerClass : MonoBehaviour
         lightningResistance.BaseValue = classes [ chosenClass ]._lightningResistance;
         physicalResistance.BaseValue = classes [ chosenClass ]._physicalResistance;
         allResistance.BaseValue = classes[chosenClass]._allResistance;
+        fallDamageReduction.BaseValue = classes[chosenClass]._fallDamageReduction;
 
         goldFind.BaseValue = classes[chosenClass]._goldFind;
         magicFind.BaseValue = classes[chosenClass]._magicFind;
@@ -334,6 +349,8 @@ public class PlayerClass : MonoBehaviour
         listCharacterStats.Add(rangedDamageReduction);//29
         listCharacterStats.Add(healthOnKill);//30
         listCharacterStats.Add(pickupRadius);//31
+        listCharacterStats.Add(block);//32
+        listCharacterStats.Add(fallDamageReduction); //33
 
 
 
@@ -351,7 +368,7 @@ public enum Stat // tarkista että on samassa järjesyksessä mikä addToList
     Endurance, Energy, physicalResistance, maxHealth, maxMana,
     criticalHitChance, criticalHitDamage,cooldownReduction,allResistance,
     goldFind,magicFind,healthRegeneration,manaCostReduction,meleeDamageReduction,
-    rangedDamageReduction,healthOnKill,pickupRadius,
+    rangedDamageReduction,healthOnKill,pickupRadius,block,fallDamageReduction,
     
 }
 

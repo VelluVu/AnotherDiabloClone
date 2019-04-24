@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7783545889495179555}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.072, y: -0.325, z: 0}
-  m_LocalScale: {x: 25.95, y: 2.65, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -69,9 +69,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2017304935
-  m_SortingLayer: 7
+  m_SortingLayer: 6
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 46d6ec98fc51de746a788c1e629f81ec, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e67608674c153c74dafdb838fe6eb8ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,7 +103,10 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
+  web: {fileID: 0}
   _damage: 2
+  isPlayersProjectile: 0
+  enemyLevel: 0
 --- !u!50 &7783545889495179557
 Rigidbody2D:
   serializedVersion: 4
@@ -140,9 +143,9 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.01, y: 0.01}
+    border: {x: 0.140625, y: 0.203125, z: 0.109375, w: 0.21875}
+    pivot: {x: 0.52915215, y: 0.48584044}
+    oldSize: {x: 0.5, y: 0.5}
     newSize: {x: 0.01, y: 0.01}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
