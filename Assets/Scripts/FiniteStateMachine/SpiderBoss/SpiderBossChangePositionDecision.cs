@@ -15,7 +15,6 @@ public class SpiderBossChangePositionDecision : Decision
     {
 
         int healthPercent = Mathf.RoundToInt ( controller.enemyStats.GetHealthPercent ( ) );
-        Debug.Log ( healthPercent );
 
         if ( healthPercent <= 80f && !controller.phase1 )
         {

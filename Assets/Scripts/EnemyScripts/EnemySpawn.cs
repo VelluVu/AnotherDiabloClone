@@ -10,7 +10,9 @@ public class EnemySpawn : MonoBehaviour
     [Header ( "Lista mahdollisista vihollisista mitä spawnaa" )]
     public List<GameObject> enemies = new List<GameObject> ( );
     GameObject spawnedEnemy;
+    public LayerMask playerLayer;
     public bool isSpawn;
+    public float spawnCheckRadius;
 
     private void OnEnable ( )
     {
@@ -24,51 +26,60 @@ public class EnemySpawn : MonoBehaviour
         PlayerDeathUI.respawnPlayerEvent -= RespawnEnemy;
     }
 
-    // Start is called before the first frame update
-    void Start ( )
-    {
-        SpawnEnemy ( );
-    }
-
     private void Update ( )
     {
-        if ( spawnedEnemy == null )
+        if ( !isSpawn )
         {
-            isSpawn = false;
+            SpawnEnemy ( );
+        }
+        if ( isSpawn && spawnedEnemy != null )
+        {
+            if ( Physics2D.OverlapCircle ( transform.position, spawnCheckRadius, playerLayer ) == null )
+            {
+                spawnedEnemy.transform.position = transform.position;
+                spawnedEnemy.SetActive ( false );
+            }
+            else
+            {
+                spawnedEnemy.SetActive ( true );
+            }
         }
     }
-
-    public void CheckPointCall()
+    public void CheckPointCall ( )
     {
-        SpawnEnemy ( );
+        isSpawn = false;
     }
 
     public void SpawnEnemy ( )
     {
-       
-        if ( !isSpawn )
+
+        if ( Physics2D.OverlapCircle ( transform.position, spawnCheckRadius, playerLayer ) )
         {
-            isSpawn = true;
-            spawnedEnemy = Instantiate ( enemies [ Random.Range ( 0, enemies.Count ) ], transform );
-        }
-        else
-        {
-            //Destroy ( spawnedEnemy );
-            isSpawn = false;
-            SpawnEnemy ( );
+            if ( !isSpawn )
+            {
+                isSpawn = true;
+
+                if ( spawnedEnemy == null )
+                {
+                    spawnedEnemy = Instantiate ( enemies [ Random.Range ( 0, enemies.Count ) ], transform );
+                }
+            }
         }
     }
 
-    public void RespawnEnemy( Transform playerPos )
+    public void RespawnEnemy ( Transform playerPos )
     {
 
-        SpawnEnemy ( );
-        
+        isSpawn = false;
+
     }
 
     private void OnDrawGizmos ( )
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere ( transform.position, 0.1f);
+        Gizmos.DrawSphere ( transform.position, 0.1f );
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere ( transform.position, spawnCheckRadius );
     }
 }

@@ -210,6 +210,7 @@ MonoBehaviour:
   fallToDeathHeight: 100
   riseUpTime: 0.014
   riseUpTimeCounter: 0
+  isUpPosition: 0
   changedPos: 0
   phase1: 0
   phase2: 0
@@ -478,7 +479,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
     type: 3}
-  damageType: 0
+  damageType: 3
 --- !u!61 &4796547991287003937
 BoxCollider2D:
   m_ObjectHideFlags: 0

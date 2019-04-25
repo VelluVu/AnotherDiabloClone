@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b84ea76521396d499fa12772145d438, type: 3}
   m_Name: Armor
   m_EditorClassIdentifier: 
-  rollValueByItemLevels: 0
+  rollValueByItemLevels: 1
   attributeName: Armor
   isBaseValue: 0
   stat: 8
   primary: 1
-  value: 20
+  value: 10
   valueMax: 25
   value2Min: 0
   value2Max: 0
@@ -27,3 +27,4 @@ MonoBehaviour:
     isDirty: 1
     lastBaseValue: 0
     _value: 0
+  id: 1

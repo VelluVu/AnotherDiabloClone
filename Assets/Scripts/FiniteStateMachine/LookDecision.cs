@@ -50,6 +50,7 @@ public class LookDecision : Decision
         {
 
             Collider2D [ ] cols = Physics2D.OverlapCircleAll ( controller.eyes.position, controller.senseArea, controller.targetLayer );
+
             if ( cols != null )
             {
                 foreach ( var col in cols )

@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BeltPreset
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: itemName
+    value: Belt of Holding
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: description
+    value: Belt that holds up your pants.
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: itemID
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: itemIcon
+    value: 
+    objectReference: {fileID: 2800000, guid: 5a7e4424a8ba22945836bdb69c383833, type: 3}
+  - target: {fileID: 0}
+    propertyPath: equipmentSprites.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: equipmentSprites.Array.data[0]
+    value: 
+    objectReference: {fileID: 21300000, guid: ce661071f8713cc4fac65572ec995a4f, type: 3}
+  - target: {fileID: 0}
+    propertyPath: lootSprite
+    value: 
+    objectReference: {fileID: 21300000, guid: ce661071f8713cc4fac65572ec995a4f, type: 3}
+  - target: {fileID: 0}
+    propertyPath: rarity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: itemLevel
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: tags.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: attributes.Array.size
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: attributes.Array.data[0]
+    value: 
+    objectReference: {fileID: 11400000, guid: 76c217c35e8e39341a0700b85e49a3c3, type: 2}
+  - target: {fileID: 0}
+    propertyPath: attributes.Array.data[1]
+    value: 
+    objectReference: {fileID: 11400000, guid: bdd8055ea6d6b3a468023ac68f2d5cb1, type: 2}
+  - target: {fileID: 0}
+    propertyPath: randomAttributes
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: equippable
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: consumable
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: stackable
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mainHand
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: offHand
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: armorSlot
+    value: 8
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: consumablePotency
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: buyPrice
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: sellPrice
+    value: 0
+    objectReference: {fileID: 0}

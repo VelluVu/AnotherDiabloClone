@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu ( menuName = "PluggableAI/Actions/SpiderBossChangePositionAction" )]
 public class SpiderBossChangePositionAction : Action
 {
+
     public override void Act ( StateController controller )
     {
         ChangePosition ( controller );
@@ -12,9 +13,10 @@ public class SpiderBossChangePositionAction : Action
 
     void ChangePosition ( StateController controller )
     {
-
+        
         float chosenDistance = 0;
-        Vector2 chosenPosition = new Vector2(0,0);
+        Vector2 chosenPosition = new Vector2(0,0);       
+        controller.riseUpTimeCounter = controller.riseUpTime;
 
         if ( !controller.changedPos )
         {
@@ -37,10 +39,26 @@ public class SpiderBossChangePositionAction : Action
                     {
                         continue;
                     }
-                }          
+                }
             }
-            controller.transform.position = chosenPosition;
-            controller.changedPos = true;
+                       
+            controller.riseUpTimeCounter -= Time.deltaTime;
+            controller.rb.gravityScale = 0;
+            controller.transform.Translate ( Vector2.up * controller.enemyStats.moveSpeed.Value * 0.35f * Time.deltaTime );
+
+            if(controller.CheckIfCountDownElapsed(3f))
+            {
+                controller.isUpPosition = true;
+            }
+
+            if( controller.isUpPosition )
+            {
+                controller.isUpPosition = false;
+                controller.rb.gravityScale = 1;
+                controller.riseUpTimeCounter = controller.riseUpTime;               
+                controller.transform.position = chosenPosition;
+                controller.changedPos = true;
+            }
         }
     }
 }

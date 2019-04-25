@@ -29,6 +29,11 @@ public class RollAttribute : MonoBehaviour
     public void CreateStatModifier()
     {
         Debug.Log(stat);
+        if (originAttribute.stat == Stat.Armor)
+        {
+            value *= PlayerInventory.instance.armorSlotArmorModifier[rolledLoot.armorSlot];
+            Debug.Log(PlayerInventory.instance.armorSlotArmorModifier[rolledLoot.armorSlot]);
+        }
         statModifier = new StatModifier(value, statModType, this);
         characterStat = PC.listCharacterStats[stat];
         string text = createText();
@@ -54,7 +59,7 @@ public class RollAttribute : MonoBehaviour
         }
         else
         {
-            
+          
             CreateStatModifier();
             characterStat.AddModifier(new StatModifier(value, statModType, this));
            

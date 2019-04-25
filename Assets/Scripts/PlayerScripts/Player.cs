@@ -7,7 +7,7 @@ using Kryz.CharacterStats;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// Pelaaja Prototyyppi
+/// Pelaaja Luokka
 /// </summary>
 [RequireComponent ( typeof ( PlayerClass ), typeof ( PlayerInput ), typeof ( PlayerMovement ) )]
 public class Player : MonoBehaviour
@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
     public GameObject rightHand;
     public GameObject leftHand;
     GameObject ToolTip;
+    public GameObject levelupEffect;
     #endregion
 
     #region EssentialComponents
@@ -217,6 +218,11 @@ public class Player : MonoBehaviour
         {
             WalkAnimation ( );
         }
+
+        if ( stats.health.Value <= 0 )
+        {
+            Die ( );
+        }
     }
     #endregion
 
@@ -290,7 +296,7 @@ public class Player : MonoBehaviour
 
             if ( off.weaponType == WeaponType.MeleeWeapon )
             {
-        
+
                 off.UseWeapon ( );
 
             }
@@ -328,7 +334,7 @@ public class Player : MonoBehaviour
         {
             if ( main.weaponType == WeaponType.MeleeWeapon || main.weaponType == WeaponType.TwoHandedMeleeWeapon )
             {
-             
+
                 main.UseWeapon ( );
 
             }
@@ -709,7 +715,6 @@ public class Player : MonoBehaviour
         if ( isBlocking )
         {
 
-
             calculatedDamage = dmg * ( 1 - ( fullResistance / ( 20 * level + fullResistance ) ) );
             calculatedDamage = dmg * ( 1 - ( stats.block.Value / ( 10 * level + stats.block.Value ) ) );
             calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
@@ -727,28 +732,71 @@ public class Player : MonoBehaviour
         }
         else
         {
-            /*
-            switch ( damageType )
-            {   
-                case DamageType.Physical:
-                    break;
-                case DamageType.Fire:
-                    break;
-                case DamageType.Frost:
-                    break;
-                case DamageType.Poison:
-                    break;
-                case DamageType.Raw:
-                    break;
-                default:
-                    break;
-            }*/
-
             if ( damageType == DamageType.Raw )
             {
                 color = Color.red;
                 calculatedDamage = Mathf.Round ( dmg );
                 stats.health.BaseValue -= calculatedDamage;
+            }
+            else if ( damageType == DamageType.Poison )
+            {
+                color = Color.magenta;
+                calculatedDamage = dmg * ( 1 - ( ( fullResistance + stats.poisonResistance.Value ) / ( 20 * level + fullResistance + stats.poisonResistance.Value ) ) );
+                Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+
+                if ( calculatedDamage < 1 && calculatedDamage > 0 )
+                {
+                    calculatedDamage = 1;
+                }
+
+                StartCoroutine ( OverTimeDamage ( calculatedDamage / 5f, 5f, 0.5f, 0.1f, color ) );
+            }
+            else if ( damageType == DamageType.Fire )
+            {
+                color = Color.red;
+                calculatedDamage = dmg * ( 1 - ( ( fullResistance + stats.fireResistance.Value ) / ( 20 * level + fullResistance + stats.fireResistance.Value ) ) );
+                Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+
+                if ( calculatedDamage < 1 && calculatedDamage > 0 )
+                {
+                    calculatedDamage = 1;
+                }
+
+                StartCoroutine ( OverTimeDamage ( calculatedDamage / 2.5f, 2.5f, 0.1f, 0.01f, color ) );
+            }
+            else if ( damageType == DamageType.Cold )
+            {
+                color = Color.cyan;
+                calculatedDamage = dmg * ( 1 - ( ( fullResistance + stats.coldResistance.Value ) / ( 20 * level + fullResistance + stats.coldResistance.Value ) ) );
+                Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+
+                if ( calculatedDamage < 1 && calculatedDamage > 0 )
+                {
+                    calculatedDamage = 1;
+                }
+
+                stats.health.BaseValue -= calculatedDamage;
+                slowEffect = calculatedDamage * 0.1f;
+                StartCoroutine ( RemoveSlow ( ) );
+            }
+            else if ( damageType == DamageType.Lightning )
+            {
+                color = Color.yellow;
+                calculatedDamage = dmg * ( 1 - ( ( fullResistance + stats.lightningResistance.Value ) / ( 20 * level + fullResistance + stats.lightningResistance.Value ) ) );
+                //armor lisää dmg enemmän crit?
+                Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+
+                if ( calculatedDamage < 1 && calculatedDamage > 0 )
+                {
+                    calculatedDamage = 1;
+                }
+
+                stats.health.BaseValue -= calculatedDamage;
+
             }
             else
             {
@@ -782,10 +830,7 @@ public class Player : MonoBehaviour
         }
 
         //Kuolema
-        if ( stats.health.Value <= 0 )
-        {
-            Die ( );
-        }
+
     }
 
     /// <summary>
@@ -795,6 +840,7 @@ public class Player : MonoBehaviour
     {
 
         //esim partikkeli efekti
+        Destroy ( Instantiate ( levelupEffect, transform ), 1f );
         //ääni
         //OnRestoreHealth ( stats.maxHealth.Value, true );
         //OnRestoreMana ( stats.maxHealth.Value, true );
@@ -905,18 +951,36 @@ public class Player : MonoBehaviour
     /// </summary>
     public void Die ( )
     {
-
-        isAlive = false;
-        isDead = true;
-        OnRestoreHealth ( -stats.maxHealth.Value, false );
-        OnRestoreMana ( -stats.maxMana.Value, false );
-
-        if ( playerDeathEvent != null )
+        if ( !isDead )
         {
-            playerDeathEvent ( transform );
+            isAlive = false;
+            isDead = true;
+            OnRestoreHealth ( -stats.maxHealth.Value, false );
+            OnRestoreMana ( -stats.maxMana.Value, false );
+
+            if ( playerDeathEvent != null )
+            {
+                playerDeathEvent ( transform );
+            }
+
+            Debug.Log ( "I'm Dead" );
+        }
+    }
+
+    public void FeelSlow( float newSlowMult )
+    {   
+        if (slowEffect >= newSlowMult)
+        {
+            slowed = true;
+            slowEffect = newSlowMult;
         }
 
-        Debug.Log ( "I'm Dead" );
+        if( slowEffect <= 0.1f)
+        {
+            slowed = true;
+            slowEffect = 0.1f;
+        }
+
     }
     #endregion
 
@@ -985,6 +1049,31 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Coroutines
+
+    IEnumerator OverTimeDamage ( float dmg, float duration, float tickSpeed, float colorFlashSpeed, Color collor )
+    {
+        for ( int i = 0 ; i < duration ; i++ )
+        {
+            yield return new WaitForSeconds ( tickSpeed );
+
+            stats.health.BaseValue -= dmg;
+
+            if ( playerNotifyEvent != null )
+            {
+                playerNotifyEvent ( head.transform, dmg.ToString ( ), collor );
+            }
+            if ( playerFlashEvent != null )
+            {
+                StartCoroutine ( playerFlashEvent ( gameObject, colorFlashSpeed, collor, false ) );
+            }
+            if ( playerTakeDamageEvent != null )
+            {
+                playerTakeDamageEvent ( dmg );
+            }
+
+        }
+    }
+
     IEnumerator Attack ( )
     {
 
@@ -1044,7 +1133,7 @@ public class Player : MonoBehaviour
 
     IEnumerator RemoveSlow ( )
     {
-        yield return new WaitForSeconds ( 3 );
+        yield return new WaitForSeconds ( 5f );
         slowed = false;
     }
 

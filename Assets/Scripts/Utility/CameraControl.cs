@@ -39,7 +39,7 @@ public class CameraControl : MonoBehaviour {
 
     public void ShakeOnImpact( float damage)
     {
-        StartCoroutine ( Shake ( _duration, _magnitude ) );
+        StartCoroutine ( Shake ( _duration, _magnitude * (damage * 0.01f) ) );
     }
 
     public IEnumerator Shake ( float duration, float magnitude )

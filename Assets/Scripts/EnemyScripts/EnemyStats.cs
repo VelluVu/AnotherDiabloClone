@@ -47,7 +47,7 @@ public class EnemyStats : MonoBehaviour
     public GroundEnemyType groundEnemyType;
     public FlyingEnemyType flyingEnemyType;
     public BossEnemyType bossEnemyType;
-    public EnemyVariations[] enemyVariations;
+    public List<EnemyVariations> enemyVariations= new List<EnemyVariations>();
 
     private void Awake ( )
     {
@@ -76,24 +76,28 @@ public class EnemyStats : MonoBehaviour
         xpReward = enemy._xpReward;
         enemyType = enemy._enemyType;
         level = enemy._level;
-        
+
 
         if ( enemyType == EnemyType.GroundEnemy )
         {
             groundEnemyType = enemy._groundEnemyType;
         }
-        else if(enemyType == EnemyType.FlyingEnemy)
+        else if ( enemyType == EnemyType.FlyingEnemy )
         {
             flyingEnemyType = enemy._flyingEnemyType;
         }
         else if ( enemyType == EnemyType.EliteEnemy )
-        {
-            enemyVariations = enemy._enemyVariation;
+        {          
+            for ( int i = 0 ; i < Random.Range(1, enemy._enemyVariation.Length) ; i++ )
+            {
+                enemyVariations.Add ( enemy._enemyVariation [ i ] );
+            }        
         }
         else if(enemyType == EnemyType.Boss)
         {
             bossEnemyType = enemy._bossEnemyType;
-        }       
+        }
+      
     }
 
     private void OnEnable ( )

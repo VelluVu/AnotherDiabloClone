@@ -26,7 +26,7 @@ public class WeaponPlaceHolder : MonoBehaviour
     #region Weapon Stats
     public float _weaponDamage; //Aseen vahinko
     public float _weaponSpeed; //Aseen nopeus
-
+    public float nextHit;
     #endregion
 
     #region Bools
@@ -84,7 +84,7 @@ public class WeaponPlaceHolder : MonoBehaviour
         }
         else
         {
-            _weaponCol.offset = new Vector2 ( 0, 0.15f );
+            _weaponCol.offset = new Vector2 ( 0, 0.2f );
         }
         _weaponCol.size = new Vector2 ( _weaponSprite.sprite.bounds.size.x, _weaponSprite.sprite.bounds.size.y );
 
@@ -138,7 +138,7 @@ public class WeaponPlaceHolder : MonoBehaviour
 
     public void UseWeapon ( )
     {
-
+        
         weaponSwing = true;
         _weaponCol.enabled = true;
     }
@@ -149,23 +149,19 @@ public class WeaponPlaceHolder : MonoBehaviour
         _weaponCol.enabled = false;
     }
 
-    private void OnTriggerEnter2D ( Collider2D collision )
+    private void OnTriggerStay2D ( Collider2D collision )
     {
         if ( collision.gameObject.CompareTag ( "Enemy" ) )
         {
-            if ( weaponType != WeaponType.Shield && weaponSwing && !hasHit )
+            if ( weaponType != WeaponType.Shield )
             {
-                hasHit = true;
-                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
-                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject, _weaponDamage, damageType );
-                StartCoroutine ( HitReset ( ) );
+                if ( weaponSwing && Time.time > nextHit )
+                {
+                    nextHit = Time.time + PlayerClass.instance.baseAttackSpeed.Value;
+                    Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
+                    ReferenceHolder.instance.player.DealDamage ( collision.gameObject, _weaponDamage, damageType );
+                }
             }
         }
-    }
-
-    IEnumerator HitReset ( )
-    {
-        yield return new WaitForSeconds ( PlayerClass.instance.baseAttackSpeed.Value );
-        hasHit = false;
     }
 }

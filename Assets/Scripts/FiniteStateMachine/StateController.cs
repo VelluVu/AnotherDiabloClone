@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Yleinen StateContoller aseta viholliselle componentiksi ja huolehdi että animatorin animaatio parametrit on samalla nimellä, sekä silmät asetettu paikoilleen.
 /// </summary>
-[RequireComponent (typeof(EnemyStats))]
+[RequireComponent ( typeof ( EnemyStats ) )]
 public class StateController : MonoBehaviour
 {
 
@@ -22,16 +22,16 @@ public class StateController : MonoBehaviour
 
     //Jos näissä haluaa saada selville tietyn vihollisen niin lisätään Transform/GameObject parametri
     #region Enemy Delegates
-    public delegate void EnemyNotifyDelegate ( Transform transform, string message, Color color);
+    public delegate void EnemyNotifyDelegate ( Transform transform, string message, Color color );
     public static event EnemyNotifyDelegate enemyNotifyEvent;
 
-    public delegate void EnemyTakeDamageDelegate ( float damage );
+    public delegate void EnemyTakeDamageDelegate ( GameObject origin, float damage, DamageType damageType );
     public static event EnemyTakeDamageDelegate enemyTakeDamageEvent;
 
-    public delegate void EnemyDealDamageDelegate ( GameObject target, float damage, DamageType damageType ,int level);
+    public delegate void EnemyDealDamageDelegate ( GameObject target, float damage, DamageType damageType, int level );
     public static event EnemyDealDamageDelegate enemyDealDamageEvent;
 
-    public delegate void EnemyDeathDelegate ( Transform transform, int xp,StateController origin );
+    public delegate void EnemyDeathDelegate ( Transform transform, int xp, StateController origin );
     public static event EnemyDeathDelegate enemyDeathEvent;
 
     public delegate IEnumerator EnemyFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
@@ -45,30 +45,31 @@ public class StateController : MonoBehaviour
     #endregion
 
     #region Public Variables
-    [Header ("Range and scalar variables")]
-    [Tooltip ( "For Enemies that jump on basic attack")]
+    [Header ( "Range and scalar variables" )]
+    [Tooltip ( "For Enemies that jump on basic attack" )]
     public float attackJump; //could be in enemyStats
-    [Tooltip ( "Scalar for movespeed")] [Range ( 0.1f, 5f )] public float moveSpeedScale; //could be in enemyStats
-    [Tooltip ( "The Melee attack state distance from enemy eyes to target")] [Range ( 0.01f, 5f )] public float attackDistance; //could be in enemyStats
-    [Tooltip ( "Duration for Enemy search after losing the target")] [Range ( 0.1f, 10f )] public float searchDuration; //could be in enemyStats
-    [Tooltip ( "Enemy spot range, from eyes to the target. Used in patrol to chasestate")] [Range ( 0.1f, 10f )] public float spotDistance; //could be in enemyStats
-    [Tooltip ( "Raycast total distance")] [Range ( 0.1f, 20f )] public float sightDistance; //could be in enemyStats
-    [Tooltip ( "Turns on when event happens nearby")] [Range ( 0.1f, 10f )] public float alertedByEventDuration;
-    [Tooltip ( "The Elapsed time in current state")] public float stateTimeElapsed;
-    [Tooltip ( "Radius for randomstuff")] [Range ( 0.01f, 5f )] public float radius;
-    [Tooltip ( "Radius for hunching different events and flying enemys spot distance")] [Range ( 0.01f, 5f )] public float senseArea;
+    [Tooltip ( "Scalar for movespeed" )] [Range ( 0.1f, 5f )] public float moveSpeedScale; //could be in enemyStats
+    [Tooltip ( "The Melee attack state distance from enemy eyes to target" )] [Range ( 0.01f, 5f )] public float attackDistance; //could be in enemyStats
+    [Tooltip ( "Duration for Enemy search after losing the target" )] [Range ( 0.1f, 10f )] public float searchDuration; //could be in enemyStats
+    [Tooltip ( "Enemy spot range, from eyes to the target. Used in patrol to chasestate" )] [Range ( 0.1f, 10f )] public float spotDistance; //could be in enemyStats
+    [Tooltip ( "Raycast total distance" )] [Range ( 0.1f, 20f )] public float sightDistance; //could be in enemyStats
+    [Tooltip ( "Turns on when event happens nearby" )] [Range ( 0.1f, 10f )] public float alertedByEventDuration;
+    [Tooltip ( "The Elapsed time in current state" )] public float stateTimeElapsed;
+    [Tooltip ( "Radius for randomstuff" )] [Range ( 0.01f, 5f )] public float radius;
+    [Tooltip ( "Radius for hunching different events and flying enemys spot distance" )] [Range ( 0.01f, 5f )] public float senseArea;
     [Tooltip ( "Radius for circleCasts" )] [Range ( 0.01f, 5f )] public float circleCastRadius;
     public float fallToDeathHeight;
 
     [Tooltip ( "For SpiderBoss" )] public float riseUpTime;
     public float riseUpTimeCounter;
+    public bool isUpPosition;
     public bool changedPos;
     public bool phase1;
     public bool phase2;
     public bool phase3;
     public bool phase4;
-    
-    [Header ("Flying enemy motion variables")]
+
+    [Header ( "Flying enemy motion variables" )]
     [Range ( 0.1f, 5f )] public float amplitude;
     [Range ( 0.1f, 5f )] public float frequency;
     [Range ( 0.1f, 5f )] public float flyingPatrolDirectionTime;
@@ -76,18 +77,18 @@ public class StateController : MonoBehaviour
     #endregion
 
     #region Necessary Variables
-    [Header ("Components for raycasts and checks")]
-    [Tooltip ( "Transform for Look and Ledgecheck Raycasts")] public Transform eyes;
-    [Tooltip ( "Enemy Back")] public Transform back;
-    [Tooltip ( "Head position and possibly for hit data etc.")] public GameObject head;
+    [Header ( "Components for raycasts and checks" )]
+    [Tooltip ( "Transform for Look and Ledgecheck Raycasts" )] public Transform eyes;
+    [Tooltip ( "Enemy Back" )] public Transform back;
+    [Tooltip ( "Head position and possibly for hit data etc." )] public GameObject head;
     public Transform attackBox;
 
-    [Tooltip ( "LayerMasks for raycast detection")] public LayerMask friendlyTargetLayer;
+    [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask friendlyTargetLayer;
     [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask groundLayer;
     [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask targetLayer;
     [Tooltip ( "LayerMasks for raycast detection" )] public LayerMask blockSightLayer;
 
-    [Tooltip ( "Humanoid enemy weapons")] public EnemyWeaponHolder weaponLeft;
+    [Tooltip ( "Humanoid enemy weapons" )] public EnemyWeaponHolder weaponLeft;
     [Tooltip ( "Humanoid enemy weapons" )] public EnemyWeaponHolder weaponRight;
 
     [HideInInspector] public Transform chaseTarget;
@@ -102,7 +103,7 @@ public class StateController : MonoBehaviour
     #endregion
 
     #region Booleans
-    [Header ("Enemy Booleans")]
+    [Header ( "Enemy Booleans" )]
     public bool dirRight;
     public bool aiActive;
     public bool attackRdy;
@@ -117,10 +118,10 @@ public class StateController : MonoBehaviour
         //GetComponents
         animator = gameObject.GetComponent<Animator> ( );
 
-        if(animator == null)
+        if ( animator == null )
         {
             animator = gameObject.GetComponentInChildren<Animator> ( );
-        }     
+        }
         rb = gameObject.GetComponent<Rigidbody2D> ( );
         col = gameObject.GetComponent<BoxCollider2D> ( );
         targetDir = new Vector2 ( 1, 0 );
@@ -136,7 +137,7 @@ public class StateController : MonoBehaviour
     private void OnEnable ( )
     {
         Player.playerDealDamageEvent += TakeDamage;
-        Player.playerDeathEvent += PlayerIsDeadWeWin;    
+        Player.playerDeathEvent += PlayerIsDeadWeWin;
         CheckPoint.checkPointEvent += DestroySpawnings;
         PlayerDeathUI.respawnPlayerEvent += ResetEnemiesOnPlayerRespawn;
         enemyTakeDamageEvent += OnEnemyTakeDamage;
@@ -147,7 +148,7 @@ public class StateController : MonoBehaviour
     private void OnDisable ( )
     {
         Player.playerDealDamageEvent -= TakeDamage;
-        Player.playerDeathEvent -= PlayerIsDeadWeWin;      
+        Player.playerDeathEvent -= PlayerIsDeadWeWin;
         CheckPoint.checkPointEvent -= DestroySpawnings;
         PlayerDeathUI.respawnPlayerEvent -= ResetEnemiesOnPlayerRespawn;
         enemyTakeDamageEvent -= OnEnemyTakeDamage;
@@ -180,7 +181,7 @@ public class StateController : MonoBehaviour
 
         CheckDirection ( );
         EnemyFallToDeath ( );
-        
+
     }
 
     /// <summary>
@@ -239,7 +240,7 @@ public class StateController : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D ( Collision2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "InteractableObject" ) || collision.gameObject.CompareTag ( "Enemy" ) || collision.gameObject.CompareTag("Wall"))
+        if ( collision.gameObject.CompareTag ( "InteractableObject" ) || collision.gameObject.CompareTag ( "Enemy" ) || collision.gameObject.CompareTag ( "Wall" ) )
         {
             if ( dirRight )
             {
@@ -255,7 +256,7 @@ public class StateController : MonoBehaviour
         }
     }
 
-    public void DestroySpawnings()
+    public void DestroySpawnings ( )
     {
         if ( enemyStats.enemyType != EnemyType.Boss )
         {
@@ -265,7 +266,7 @@ public class StateController : MonoBehaviour
         {
             enemyStats.ResetEnemy ( );
         }
-        
+
     }
 
     public void ResetEnemiesOnPlayerRespawn ( Transform playerPos )
@@ -313,7 +314,7 @@ public class StateController : MonoBehaviour
 
         if ( gaze.collider == false )
         {
-            if (dirRight)
+            if ( dirRight )
             {
                 dirRight = false;
             }
@@ -332,9 +333,9 @@ public class StateController : MonoBehaviour
         }
     }
 
-    public void HatchedDestroyed( GameObject parent)
+    public void HatchedDestroyed ( GameObject parent )
     {
-        if(parent == gameObject)
+        if ( parent == gameObject )
         {
             StartCoroutine ( EggCd ( ) );
         }
@@ -344,58 +345,58 @@ public class StateController : MonoBehaviour
     /// Perus hyökkäys animaatio
     /// </summary>
     public void Attack ( )
-    {       
+    {
         if ( attackRdy )
-        {       
-            attackRdy = false;            
+        {
+            attackRdy = false;
             rb.AddForce ( new Vector2 ( rb.velocity.x * 2, 2 ) * attackJump, ForceMode2D.Impulse );
             attackBox.GetComponent<BoxCollider2D> ( ).enabled = true;
-            animator.SetTrigger ( "Attack" );         
+            animator.SetTrigger ( "Attack" );
             StartCoroutine ( AttackCooldown ( ) );
         }
     }
 
-    public void OnEnemyHeal( float amount)
+    public void OnEnemyHeal ( float amount )
     {
 
         enemyStats.RestoreEnemyHealth ( amount );
 
-        if( enemyHealHealthEvent != null)
+        if ( enemyHealHealthEvent != null )
         {
             enemyHealHealthEvent ( amount );
         }
     }
 
-    public void OnEnemyRestoreMana(float amount)
+    public void OnEnemyRestoreMana ( float amount )
     {
 
         enemyStats.RestoreEnemyMana ( amount );
 
-        if(enemyRestoreManaEvent != null)
+        if ( enemyRestoreManaEvent != null )
         {
             enemyRestoreManaEvent ( amount );
         }
     }
     // laittaa tekemaan reapetillä damagee
-    public void setDotToTarget(GameObject target, float dotDamage, int duration, DamageType damageType)
+    public void setDotToTarget ( GameObject target, float dotDamage, int duration, DamageType damageType )
     {
-        StartCoroutine(dotActivated(target, dotDamage, duration, damageType));
+        StartCoroutine ( dotActivated ( target, dotDamage, duration, damageType ) );
     }
 
-    IEnumerator dotActivated(GameObject target, float dotDamage,int duration , DamageType damageType)
+    IEnumerator dotActivated ( GameObject target, float dotDamage, int duration, DamageType damageType )
     {
-        
+
         int counter = 0;
-        while(counter < duration)
+        while ( counter < duration )
         {
-            
-            TakeDamage(target, dotDamage, damageType);
+
+            TakeDamage ( target, dotDamage, damageType );
             counter++;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds ( 1 );
         }
 
     }
-    
+
     /// <summary>
     /// Tekee vahinkoa pelaajaan
     /// </summary>
@@ -405,10 +406,10 @@ public class StateController : MonoBehaviour
         if ( target != null )
         {
             float calculatedDamage = enemyStats.attackDamage.Value + weaponDamage;
-            
+
             if ( enemyDealDamageEvent != null )
             {
-                enemyDealDamageEvent ( target, calculatedDamage, damageType,enemyStats.level);
+                enemyDealDamageEvent ( target, calculatedDamage, damageType, enemyStats.level );
             }
         }
     }
@@ -417,16 +418,16 @@ public class StateController : MonoBehaviour
     /// Laskee tulevan vahingon lopullisen määrän
     /// </summary>
     /// <param name="dmg">Tuleva vahinko</param>
-    public void TakeDamage ( GameObject target , float dmg, DamageType damageType )
+    public void TakeDamage ( GameObject target, float dmg, DamageType damageType )
     {
         Color color = Color.red;
         float calculatedDamage;
 
         if ( target == gameObject )
-        {         
+        {
             if ( damageType == DamageType.Raw )
             {
-                color = Color.red;           
+                color = Color.red;
                 calculatedDamage = Mathf.Round ( dmg );
 
                 if ( calculatedDamage <= 0 )
@@ -465,7 +466,7 @@ public class StateController : MonoBehaviour
 
             if ( enemyTakeDamageEvent != null )
             {
-                enemyTakeDamageEvent ( calculatedDamage );
+                enemyTakeDamageEvent ( gameObject, calculatedDamage, damageType );
             }
 
             if ( enemyStats.health.Value <= 0 )
@@ -476,20 +477,20 @@ public class StateController : MonoBehaviour
 
     }
 
-    public void PlayerIsDeadWeWin(Transform pTransform)
+    public void PlayerIsDeadWeWin ( Transform pTransform )
     {
         aiActive = false; // lopettaa toiminnan kun pelaaja kuolee
-  
+
     }
 
     public void Die ( )
     {
-        if(enemyDeathEvent != null)
+        if ( enemyDeathEvent != null )
         {
-            enemyDeathEvent ( head.transform, enemyStats.xpReward,this );
+            enemyDeathEvent ( head.transform, enemyStats.xpReward, this );
         }
 
-        if ( enemyStats.groundEnemyType == GroundEnemyType.Splitter && !hasSplit)
+        if ( enemyStats.groundEnemyType == GroundEnemyType.Splitter && !hasSplit )
         {
             hasSplit = true;
             Vector2 leftSplitPos = new Vector2 ( transform.position.x + Random.Range ( 0f, -0.4f ), transform.position.y );
@@ -512,18 +513,18 @@ public class StateController : MonoBehaviour
             //Instantiate death prefab
             Destroy ( gameObject );
         }
-        
+
     }
 
-    public void OnEnemyTakeDamage( float damage)
-    {      
-        Collider2D [ ] cols = Physics2D.OverlapCircleAll ( transform.position, 3f, targetLayer);      
-        Debug.Log ( gameObject.name +  " Hoksaa : Toinen vihu pulassa" );
+    public void OnEnemyTakeDamage ( GameObject origin, float damage, DamageType damageType )
+    {
+        Collider2D [ ] cols = Physics2D.OverlapCircleAll ( transform.position, 3f, targetLayer );
+        Debug.Log ( gameObject.name + " Hoksaa : Toinen vihu pulassa" );
         for ( int i = 0 ; i < cols.Length ; i++ )
         {
-            if(cols[i].gameObject.CompareTag("Player"))
+            if ( cols [ i ].gameObject.CompareTag ( "Player" ) )
             {
-                Debug.Log ( cols[i].name + " Lähellä" );
+                Debug.Log ( cols [ i ].name + " Lähellä" );
                 chaseTarget = cols [ i ].gameObject.transform;
                 alertedByEvent = true;
                 break;
@@ -546,9 +547,9 @@ public class StateController : MonoBehaviour
         Gizmos.DrawWireSphere ( transform.position, radius );
     }
 
-    public void EnemyFallToDeath()
+    public void EnemyFallToDeath ( )
     {
-        if( transform.position.y <= -fallToDeathHeight)
+        if ( transform.position.y <= -fallToDeathHeight )
         {
             Die ( );
         }
@@ -562,7 +563,7 @@ public class StateController : MonoBehaviour
         attackBox.GetComponent<BoxCollider2D> ( ).enabled = false;
     }
 
-    IEnumerator EggCd()
+    IEnumerator EggCd ( )
     {
         yield return new WaitForSeconds ( 0.5f );
         notHatchedEgg = false;
@@ -575,7 +576,7 @@ public class StateController : MonoBehaviour
 
     }
 
-    IEnumerator AlertedByEventTime (float time)
+    IEnumerator AlertedByEventTime ( float time )
     {
         yield return new WaitForSeconds ( time );
         alertedByEvent = false;
@@ -593,6 +594,6 @@ public class StateController : MonoBehaviour
         yield return new WaitForSeconds ( time );
         dirRight = turnDir;
     }
-  
+
     #endregion
 }

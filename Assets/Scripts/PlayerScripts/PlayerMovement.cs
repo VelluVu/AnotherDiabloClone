@@ -110,6 +110,10 @@ public class PlayerMovement : RayCastScript
                     collisions.left = directionX == -1;
                     collisions.right = directionX == 1;
                 }
+                if ( hit.collider.gameObject.CompareTag ( "Enemy" ) && (collisions.right || collisions.left) )
+                {
+                    velocity.x = 0;
+                }
             }
         }
     }

@@ -337,6 +337,7 @@ MonoBehaviour:
     type: 3}
   _weaponDamage: 0
   _weaponSpeed: 0
+  nextHit: 0
   weaponSwing: 0
   isEquipped: 0
   weaponType: 4
@@ -728,6 +729,7 @@ MonoBehaviour:
     type: 3}
   _weaponDamage: 0
   _weaponSpeed: 0
+  nextHit: 0
   weaponSwing: 0
   isEquipped: 0
   weaponType: 0
@@ -2188,6 +2190,8 @@ MonoBehaviour:
   head: {fileID: 2519323538690244043}
   rightHand: {fileID: 3711628038237003984}
   leftHand: {fileID: 1058562718592394236}
+  levelupEffect: {fileID: 6790141827031398494, guid: 7ecd4a9b5e4838c4daba2665f045d934,
+    type: 3}
   stats: {fileID: 5400792684223559201}
   levelUp: {fileID: 3219682470792519087}
   feet: {fileID: 465333549647028381}

@@ -10,6 +10,24 @@ public class LifeAndManaTracker : MonoBehaviour
     public Image healthPool;
     public Image manaPool;
 
+    private void Update ( )
+    {
+        UpdateHealth ( );
+        UpdateMana ( );
+    }
+
+    void UpdateHealth()
+    {
+        healthPool.fillAmount = PlayerClass.instance.health.Value / PlayerClass.instance.maxHealth.Value;
+    }
+
+    void UpdateMana()
+    {
+        manaPool.fillAmount = PlayerClass.instance.mana.Value / PlayerClass.instance.maxMana.Value;
+    }
+
+    /*
+
     private void OnEnable ( )
     {
         Player.playerTakeDamageEvent += LoseHealth;
@@ -74,5 +92,5 @@ public class LifeAndManaTracker : MonoBehaviour
             manaPool.fillAmount += amount * ( 1 / PlayerClass.instance.maxMana.Value );
         }
     }
-
+    */
 }

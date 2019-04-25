@@ -86,6 +86,14 @@ public class PlayerInventory : MonoBehaviour
 
 
     };
+    public Dictionary<ArmorSlot, float> armorSlotArmorModifier = new Dictionary<ArmorSlot, float>
+    {
+        {ArmorSlot.Belt,0.2f},{ArmorSlot.Boots,0.4f},{ArmorSlot.Bracer,0.4f},
+        {ArmorSlot.Chest,1f},{ArmorSlot.Glove,0.4f},{ArmorSlot.Helm,1f},
+        {ArmorSlot.Pants,0.8f},
+        {ArmorSlot.Shoulder,0.6f},
+
+    };
     #endregion
     #region Saving
     string saveName = "/inventory.dat"; // used for saving
