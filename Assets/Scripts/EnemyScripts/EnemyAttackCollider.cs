@@ -12,6 +12,7 @@ public class EnemyAttackCollider : MonoBehaviour
     bool hasDealtDmg;
     public GameObject bloodSplash;
     public DamageType damageType;
+    float nexHit;
 
     private void Awake ( )
     {
@@ -21,14 +22,16 @@ public class EnemyAttackCollider : MonoBehaviour
     ///Jos hirviöllä ei ole asetta
     private void OnTriggerStay2D ( Collider2D collision )
     {
-        if ( collision.gameObject.CompareTag ( "Player" ) && !hasDealtDmg )
+        if ( collision.gameObject.CompareTag ( "Player" ) && Time.time > nexHit)
         {
-
+            nexHit = Time.time + gameObject.GetComponentInParent<EnemyStats> ( ).attackSpeed.Value;
             //Debug.Log ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.name + " Hits you" );
-            hasDealtDmg = true;
-            Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
+            //hasDealtDmg = true;
+            GameObject createdObject = Instantiate(bloodSplash, collision.gameObject.GetComponent<Collider2D>().bounds.ClosestPoint(transform.position), Quaternion.identity);
+            createdObject.transform.SetParent(ReferenceHolder.instance.goreHolder);
+            Destroy(createdObject, 2f);
             gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject, 0, damageType );
-            StartCoroutine ( DmgCooldown ( ) );
+            //StartCoroutine ( DmgCooldown ( ) );
 
         }
     }

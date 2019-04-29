@@ -30,7 +30,7 @@ public class EnemyStats : MonoBehaviour
 
     #region Enemy Resistances
     public CharacterStat fireResistance;
-    public CharacterStat frostResistance;
+    public CharacterStat coldResistance;
     public CharacterStat poisonResistance;
     public CharacterStat lightningResistance;
     public CharacterStat physicalResistance;
@@ -69,7 +69,7 @@ public class EnemyStats : MonoBehaviour
 
         fireResistance.BaseValue = enemy._fireResistance;
         poisonResistance.BaseValue = enemy._poisonResistance;
-        frostResistance.BaseValue = enemy._frostResistance;
+        coldResistance.BaseValue = enemy._frostResistance;
         lightningResistance.BaseValue = enemy._lightningResistance;
         physicalResistance.BaseValue = enemy._physicalResistance;
 
@@ -88,7 +88,7 @@ public class EnemyStats : MonoBehaviour
         }
         else if ( enemyType == EnemyType.EliteEnemy )
         {          
-            for ( int i = 0 ; i < Random.Range(1, enemy._enemyVariation.Length) ; i++ )
+            for ( int i = 0 ; i < enemy._enemyVariation.Length ; i++ )
             {
                 enemyVariations.Add ( enemy._enemyVariation [ i ] );
             }        

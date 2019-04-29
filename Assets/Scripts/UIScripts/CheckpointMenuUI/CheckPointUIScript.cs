@@ -15,6 +15,9 @@ public class CheckPointUIScript : MonoBehaviour
 {
 
     public List<Button> buttons = new List<Button> ( );
+    [Space]
+    public GameObject heroStatsUI;
+    public GameObject travelUI;
 
     public delegate void OnExitCheckPointUIDelegate ( );
     public static event OnExitCheckPointUIDelegate onExitCheckPointUIExitEvent;
@@ -57,7 +60,7 @@ public class CheckPointUIScript : MonoBehaviour
     /// </summary>
     private void HeroStatsSelected ( )
     {
-
+        heroStatsUI.SetActive ( true );
     }
 
     /// <summary>
@@ -65,13 +68,14 @@ public class CheckPointUIScript : MonoBehaviour
     /// </summary>
     private void TravelSelected ( )
     {
-
+        travelUI.SetActive ( true );
     }
 
     private void ExitCheckPoint ( )
     {
 
         transform.GetChild ( 0 ).gameObject.SetActive ( false );
+        heroStatsUI.SetActive ( false );
 
         if ( onExitCheckPointUIExitEvent != null )
         {

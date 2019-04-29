@@ -54,6 +54,7 @@ public class FloatingCombatTextManager: MonoBehaviour
     {
         textSpawnPos = new Vector2 ( Random.Range ( -0.01f, 0.01f ), 0.05f );
         GameObject text = Instantiate ( floatingCombatText, spawnPos + textSpawnPos, Quaternion.identity );
+        text.transform.SetParent(ReferenceHolder.instance.combatTextHolder);
         TextMeshProUGUI textMesh = text.GetComponentInChildren<TextMeshProUGUI> ( );
         textMesh.color = textColor;
         textMesh.text = message;

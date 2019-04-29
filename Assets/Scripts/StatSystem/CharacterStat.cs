@@ -9,6 +9,7 @@ namespace Kryz.CharacterStats
 	{
        
 		public float BaseValue;
+        public string statName;
 
 		public bool isDirty = true;
 		public float lastBaseValue;

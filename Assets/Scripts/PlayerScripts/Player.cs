@@ -74,6 +74,7 @@ public class Player : MonoBehaviour
     public bool isMainAttackRdy = true;
     public bool isOffAttackRdy = true;
     public bool readyToDash = true;
+    public bool directionRight;
     public bool canWallJump;
     public bool isBlocking;
     public bool isAir;
@@ -82,7 +83,7 @@ public class Player : MonoBehaviour
     public bool hitsGround;
     public bool takeFallDamage;
     public bool goingDown;
-    bool invulnerable;
+    public bool invulnerable;
     public bool slowed;
     public bool isDead = false;
     public bool isAlive = true;
@@ -144,7 +145,7 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Extra Variables
-    bool directionRight;
+    
     int jumpsCount;
     private float fallStartYPos;
     private float fallDamage;
@@ -234,32 +235,38 @@ public class Player : MonoBehaviour
         if ( !isBlocking )
         {
             jump = true;
+            heroAnim.SetTrigger ( "Jump" );
             if ( wallSliding )
             {
                 if ( wallDirX == directionalInput.x )
                 {
                     newVelocity.x = -wallDirX * wallJumpClimb.x;
                     newVelocity.y = wallJumpClimb.y;
+                    
                 }
                 else if ( directionalInput.x == 0 )
                 {
                     newVelocity.x = -wallDirX * wallJumpOff.x;
                     newVelocity.y = wallJumpOff.y;
+                   
                 }
                 else
                 {
                     newVelocity.x = -wallDirX * wallLeap.x;
                     newVelocity.y = wallLeap.y;
+                    
                 }
             }
             if ( movement.collisions.below || !movement.collisions.below && jumpsCount >= 0 )
             {
+                
                 jumpsCount--;
                 newVelocity.y = jumpVelocityMax;
             }
             if ( climbingLadder || climbingRobe )
             {
                 newVelocity.y = jumpVelocityMax;
+              
             }
         }
     }
@@ -279,7 +286,7 @@ public class Player : MonoBehaviour
             if ( !isAir )
             {
                 isBlocking = true;
-                //heroAnim.SetTrigger ( "Block" );
+                heroAnim.SetBool ( "Block", true );
             }
 
             if ( isBlocking )
@@ -298,6 +305,7 @@ public class Player : MonoBehaviour
             {
 
                 off.UseWeapon ( );
+                
 
             }
             if ( off.weaponType == WeaponType.RangedWeapon )
@@ -311,6 +319,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log ( "Released block" );
         isBlocking = false;
+        heroAnim.SetBool ( "Block", false );
         off.HaltWeapon ( );
     }
     public void OpenInventory ( )
@@ -334,8 +343,11 @@ public class Player : MonoBehaviour
         {
             if ( main.weaponType == WeaponType.MeleeWeapon || main.weaponType == WeaponType.TwoHandedMeleeWeapon )
             {
-
+                heroAnim.SetTrigger ( "Attack" );
+                heroAnim.SetBool ( "Attack", true );
+                
                 main.UseWeapon ( );
+                //StartCoroutine ( Attack ( ) );
 
             }
             if ( main.weaponType == WeaponType.RangedWeapon || main.weaponType == WeaponType.TwoHandedRangedWeapon )
@@ -347,6 +359,7 @@ public class Player : MonoBehaviour
     public void GetFirstMouseButtonUp ( )
     {
         main.HaltWeapon ( );
+        heroAnim.SetBool ( "Attack", false );
     }
     public void DashInputDown ( )
     {
@@ -584,15 +597,15 @@ public class Player : MonoBehaviour
     {
         if ( newVelocity.x >= 0.05f )
         {
-            //heroAnim.SetBool ( "Walk", true );
+            heroAnim.SetBool ( "Walk", true );
         }
         else if ( newVelocity.x <= -0.05f )
         {
-            //heroAnim.SetBool ( "Walk", true );
+            heroAnim.SetBool ( "Walk", true );
         }
         else
         {
-            //heroAnim.SetBool ( "Walk", false );
+            heroAnim.SetBool ( "Walk", false );
         }
     }
     #endregion
@@ -608,11 +621,28 @@ public class Player : MonoBehaviour
         if ( target != null )
         {
             float calculatedDamage = Random.Range ( ( int ) stats.baseDamage.Value, ( int ) stats.baseDamageMax.Value );
+            if (CheckForCrit())
+            {
+                calculatedDamage *= (stats.criticalHitDamage.Value/100);
+                Debug.Log("CriticalHit: " +(stats.criticalHitDamage.Value / 100));
+            }
 
             if ( playerDealDamageEvent != null )
             {
                 playerDealDamageEvent ( target, calculatedDamage, damageType );
             }
+        }
+    }
+    public bool CheckForCrit()
+    {
+        float randomValue = Random.value;
+        if(randomValue <= stats.criticalHitChance.Value/100)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -735,13 +765,15 @@ public class Player : MonoBehaviour
             if ( damageType == DamageType.Raw )
             {
                 color = Color.red;
-                calculatedDamage = Mathf.Round ( dmg );
+                calculatedDamage = dmg;
+                calculatedDamage -= stats.fallDamageReduction.Value;
+                calculatedDamage = Mathf.Round ( calculatedDamage );
                 stats.health.BaseValue -= calculatedDamage;
             }
             else if ( damageType == DamageType.Poison )
             {
                 color = Color.magenta;
-                calculatedDamage = dmg * ( 1 - ( ( fullResistance + stats.poisonResistance.Value ) / ( 20 * level + fullResistance + stats.poisonResistance.Value ) ) );
+                calculatedDamage = dmg * ( 1 - ( ( fullResistance ) / ( 20 * level + fullResistance ) ) );
                 Debug.Log ( calculatedDamage );
                 calculatedDamage = Mathf.Round ( calculatedDamage );
 
@@ -755,7 +787,7 @@ public class Player : MonoBehaviour
             else if ( damageType == DamageType.Fire )
             {
                 color = Color.red;
-                calculatedDamage = dmg * ( 1 - ( ( fullResistance + stats.fireResistance.Value ) / ( 20 * level + fullResistance + stats.fireResistance.Value ) ) );
+                calculatedDamage = dmg * ( 1 - ( ( fullResistance ) / ( 20 * level + fullResistance ) ) );
                 Debug.Log ( calculatedDamage );
                 calculatedDamage = Mathf.Round ( calculatedDamage );
 
@@ -769,7 +801,7 @@ public class Player : MonoBehaviour
             else if ( damageType == DamageType.Cold )
             {
                 color = Color.cyan;
-                calculatedDamage = dmg * ( 1 - ( ( fullResistance + stats.coldResistance.Value ) / ( 20 * level + fullResistance + stats.coldResistance.Value ) ) );
+                calculatedDamage = dmg * ( 1 - ( ( fullResistance ) / ( 20 * level + fullResistance ) ) );
                 Debug.Log ( calculatedDamage );
                 calculatedDamage = Mathf.Round ( calculatedDamage );
 
@@ -785,7 +817,7 @@ public class Player : MonoBehaviour
             else if ( damageType == DamageType.Lightning )
             {
                 color = Color.yellow;
-                calculatedDamage = dmg * ( 1 - ( ( fullResistance + stats.lightningResistance.Value ) / ( 20 * level + fullResistance + stats.lightningResistance.Value ) ) );
+                calculatedDamage = dmg * ( 1 - ( ( fullResistance  ) / ( 20 * level + fullResistance) ) );
                 //armor lisää dmg enemmän crit?
                 Debug.Log ( calculatedDamage );
                 calculatedDamage = Mathf.Round ( calculatedDamage );
@@ -1077,9 +1109,9 @@ public class Player : MonoBehaviour
     IEnumerator Attack ( )
     {
 
-        //yield return new WaitForSeconds ( heroAnim.GetCurrentAnimatorStateInfo ( 0 ).length );
-        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value );
-        rightHand.GetComponent<BoxCollider2D> ( ).enabled = false;
+        yield return new WaitForSeconds ( heroAnim.GetCurrentAnimatorStateInfo ( 0 ).length );
+        //yield return new WaitForSeconds ( stats.baseAttackSpeed.Value );
+        main.GetComponent<BoxCollider2D> ( ).enabled = false;
 
     }
 

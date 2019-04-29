@@ -124,11 +124,11 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
                     TT.itemRarityText.text = PlayerInventory.instance.rarityString[eSlot.item.rarity];
                     TT.itemTypeText.text = PlayerInventory.instance.typeDictionary[eSlot.item.armorSlot];
                     BuildMainText();
-                    Debug.Log("FilledPointerEnter");
+                    //Debug.Log("FilledPointerEnter");
                 }
                 else
                 {
-                    Debug.Log("EmptyPointerEnter");
+                    //Debug.Log("EmptyPointerEnter");
                     ToolTip.SetActive(false);
                 }
 
@@ -150,7 +150,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
                 }
                 else
                 {
-                    Debug.Log("EmptyPointerEnter for LootSlot");
+                    //Debug.Log("EmptyPointerEnter for LootSlot");
                     ToolTip.SetActive(false);
                 }
             }

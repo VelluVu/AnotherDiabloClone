@@ -30,8 +30,10 @@ public class PlayerInventory : MonoBehaviour
     [HideInInspector] public LootSlot splitItemObject;
     [HideInInspector]
     public bool draggingInventoryItem = false; // inventory item is being dragged
+    [HideInInspector] public bool loading;
+
     #region equipmentSlots
-   
+
     [System.Serializable]
     public struct equipmentSlots // Equipmentslot Structi
     {
@@ -88,10 +90,10 @@ public class PlayerInventory : MonoBehaviour
     };
     public Dictionary<ArmorSlot, float> armorSlotArmorModifier = new Dictionary<ArmorSlot, float>
     {
-        {ArmorSlot.Belt,0.2f},{ArmorSlot.Boots,0.4f},{ArmorSlot.Bracer,0.4f},
+        {ArmorSlot.Belt,0.4f},{ArmorSlot.Boots,0.4f},{ArmorSlot.Bracer,0.4f},
         {ArmorSlot.Chest,1f},{ArmorSlot.Glove,0.4f},{ArmorSlot.Helm,1f},
         {ArmorSlot.Pants,0.8f},
-        {ArmorSlot.Shoulder,0.6f},
+        {ArmorSlot.Shoulder,0.6f}
 
     };
     #endregion
@@ -235,9 +237,9 @@ public class PlayerInventory : MonoBehaviour
                 foreach(RollAttribute roll in LootList[i].item.attributes)
                 {
                     attributeCount++;
-                    data.attributeValue.Add((int)roll.value);
-                    data.attributeValue2.Add((int)roll.value2Min);
-                    data.attributeId.Add((int)roll.originAttribute.id);
+                    data.attributeValue.Add(roll.value);
+                    data.attributeValue2.Add(roll.value2Min);
+                    data.attributeId.Add(roll.originAttribute.id);
                 }
                 data.attributeAmount.Add(attributeCount);
             }
@@ -253,9 +255,9 @@ public class PlayerInventory : MonoBehaviour
                 foreach (RollAttribute roll in equipmentConnect[i].ES.item.attributes)
                 {
                 attributeCount++;
-                data.equipAttributeValue.Add((int)roll.value);
-                data.equipAttributeValue2.Add((int)roll.value2Min);
-                data.equipAttributeId.Add((int)roll.originAttribute.id);
+                data.equipAttributeValue.Add(roll.value);
+                data.equipAttributeValue2.Add(roll.value2Min);
+                data.equipAttributeId.Add(roll.originAttribute.id);
                 }
                
                 
@@ -292,6 +294,7 @@ public class PlayerInventory : MonoBehaviour
             emptyEquipment();
             emptyInventory();
             //add equipped items
+            loading = true;
             int equipCount = 0;
             for (int i = 0; i < data.equipId.Count; i++)
             {
@@ -303,8 +306,11 @@ public class PlayerInventory : MonoBehaviour
                         placeHolder.rollLoot(allLoot[j]);
                         for (int k = 0; k < data.equipAttributeAmount[i]; k++)
                         {
+                            Debug.Log(k);
                             RollAttribute tempAttribute =gameObject.AddComponent<RollAttribute>();
-                            placeHolder.attributes[k] = tempAttribute.rollAttribute(AttributePerSlot.instance.allAttributes[data.equipAttributeId[equipCount+k]]);
+                            placeHolder.attributes.Add(tempAttribute);
+                            placeHolder.attributes[k].rolledLoot = placeHolder;
+                            placeHolder.attributes[k] = tempAttribute.rollAttribute(AttributePerSlot.instance.allAttributes[data.equipAttributeId[equipCount + k]]);
                             placeHolder.attributes[k].value = data.equipAttributeValue[equipCount + k];
                             placeHolder.attributes[k].value2Min = data.equipAttributeValue2[equipCount + k];
                             Destroy(tempAttribute);
@@ -328,7 +334,10 @@ public class PlayerInventory : MonoBehaviour
                         placeHolder.rollLoot(allLoot[j]);
                         for(int k = 0;k < data.attributeAmount[i]; k++)
                         {
+
                             RollAttribute tempAttribute =gameObject.AddComponent<RollAttribute>();
+                            placeHolder.attributes.Add(tempAttribute);
+                            placeHolder.attributes[k].rolledLoot = placeHolder;
                             placeHolder.attributes[k] = tempAttribute.rollAttribute(AttributePerSlot.instance.allAttributes[data.attributeId[count+k]]);
                             placeHolder.attributes[k].value = data.attributeValue[count+k];
                             placeHolder.attributes[k].value2Min = data.attributeValue2[count+k];
@@ -356,9 +365,9 @@ public class PlayerInventory : MonoBehaviour
             {
                 consumablespot.emptySlot();
             }
-           
-            
 
+
+            loading = false;
         }
     }
 
@@ -372,8 +381,8 @@ class SaveData
     public List<int> lootID = new List<int>();
     public List<int> lootStackSize = new List<int>(); // stackSize
     public List<int> attributeAmount = new List<int>();
-    public List<int> attributeValue = new List<int>();
-    public List<int> attributeValue2 = new List<int>();
+    public List<float> attributeValue = new List<float>();
+    public List<float> attributeValue2 = new List<float>();
     public List<int> attributeId = new List<int>();
 
     public int Money;
@@ -381,8 +390,8 @@ class SaveData
 //equipped
     public List<int> equipId = new List<int>();
     public List<int> equipAttributeAmount = new List<int>();
-    public List<int> equipAttributeValue = new List<int>();
-    public List<int> equipAttributeValue2 = new List<int>();
+    public List<float> equipAttributeValue = new List<float>();
+    public List<float> equipAttributeValue2 = new List<float>();
 
      public List<int> equipAttributeId = new List<int>();
 

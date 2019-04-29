@@ -105,6 +105,7 @@ public class LootDropGenerator : MonoBehaviour
             {
                 createdObject.GetComponent<PickUpLoot>().Count = Random.Range(1, 20); // on nyt vaan asettettu arvo
             }
+            createdObject.GetComponent<PickUpLoot>().setupDone = true;
             createdObject.GetComponent<PickUpLoot>().Setup(origin.enemyStats.level);
 
         }
@@ -124,10 +125,14 @@ public class LootDropGenerator : MonoBehaviour
         List<Loot> tempRarityLootList = new List<Loot>();
         List<Rarity> tempRarityList = new List<Rarity>();
         int randomAmountRoll = 1;
-        if (rarity == Rarity.Common || rarity == Rarity.Uncommon)
+        if (rarity == Rarity.Common)
+        {
+            randomAmountRoll = Random.Range(1,2);
+            
+        }
+        else if(rarity == Rarity.Uncommon)
         {
             randomAmountRoll = Random.Range(1, 3);
-            
         }
         else if(rarity == Rarity.Rare)
         {
@@ -176,7 +181,7 @@ public class LootDropGenerator : MonoBehaviour
                 tempRarityList.Add(Rarity.Legendary);
                
             }
-            reduceBy += 20;
+            reduceBy += 30;
         }
         for(int i = 0; i < randomAmountRoll; i++)
         {

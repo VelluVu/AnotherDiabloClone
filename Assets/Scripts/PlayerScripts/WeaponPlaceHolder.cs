@@ -147,6 +147,7 @@ public class WeaponPlaceHolder : MonoBehaviour
 
         weaponSwing = false;
         _weaponCol.enabled = false;
+
     }
 
     private void OnTriggerStay2D ( Collider2D collision )
@@ -158,7 +159,10 @@ public class WeaponPlaceHolder : MonoBehaviour
                 if ( weaponSwing && Time.time > nextHit )
                 {
                     nextHit = Time.time + PlayerClass.instance.baseAttackSpeed.Value;
-                    Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
+                    GameObject createdObject = Instantiate(bloodSplash, collision.gameObject.GetComponent<Collider2D>().bounds.ClosestPoint(transform.position), Quaternion.identity);
+                    createdObject.transform.SetParent(ReferenceHolder.instance.goreHolder);
+                    Destroy(createdObject, 2f);
+                    
                     ReferenceHolder.instance.player.DealDamage ( collision.gameObject, _weaponDamage, damageType );
                 }
             }

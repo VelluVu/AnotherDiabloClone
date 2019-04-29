@@ -36,12 +36,13 @@ public class EnemySpawn : MonoBehaviour
         {
             if ( Physics2D.OverlapCircle ( transform.position, spawnCheckRadius, playerLayer ) == null )
             {
-                spawnedEnemy.transform.position = transform.position;
+                spawnedEnemy.transform.position = transform.position;            
                 spawnedEnemy.SetActive ( false );
             }
             else
             {
                 spawnedEnemy.SetActive ( true );
+                spawnedEnemy.GetComponent<StateController> ( ).aiActive = true;
             }
         }
     }
@@ -61,7 +62,7 @@ public class EnemySpawn : MonoBehaviour
 
                 if ( spawnedEnemy == null )
                 {
-                    spawnedEnemy = Instantiate ( enemies [ Random.Range ( 0, enemies.Count ) ], transform );
+                    spawnedEnemy = Instantiate ( enemies [ Random.Range ( 0, enemies.Count ) ], transform.position, Quaternion.identity );
                 }
             }
         }

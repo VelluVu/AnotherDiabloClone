@@ -28,12 +28,13 @@ public class RollAttribute : MonoBehaviour
 
     public void CreateStatModifier()
     {
-        Debug.Log(stat);
+        
         if (originAttribute.stat == Stat.Armor)
         {
             value *= PlayerInventory.instance.armorSlotArmorModifier[rolledLoot.armorSlot];
-            Debug.Log(PlayerInventory.instance.armorSlotArmorModifier[rolledLoot.armorSlot]);
+           
         }
+        Debug.Log(statModType);
         statModifier = new StatModifier(value, statModType, this);
         characterStat = PC.listCharacterStats[stat];
         string text = createText();
@@ -125,28 +126,44 @@ public class RollAttribute : MonoBehaviour
         value2Max = attribute.value2Max;
         RollValueByItemLevels = attribute.rollValueByItemLevels;
         originAttribute = attribute;
-        PC = FindObjectOfType<PlayerClass>();
+        PC = PlayerClass.instance;
         CreateStatModifier();
         return this;
     }
     public string createText()
     {
         string returnText = "";
-        if(statModType == StatModType.Flat)
+        string format = "F0";
+        if(theStat == Stat.BaseAttackSpeed)
+        {
+            format = "F1";
+            float displayValue = -value * 100;
+            Mathf.Round(displayValue);
+            
+            returnText = "+" + "<color=yellow>" + displayValue.ToString(format) + "%</color> " + attributeName;
+            return returnText;
+        }
+        if(theStat == Stat.criticalHitChance || theStat == Stat.criticalHitDamage || theStat == Stat.cooldownReduction || theStat == Stat.experienceBonus)
+        {
+            returnText = "+" + "<color=yellow>" + value.ToString(format) + "%</color> " + attributeName;
+            
+        }
+        else if(statModType == StatModType.Flat)
         {
         
             if (theStat == Stat.BaseDamage)
             {
-                returnText = "+" + "<color=yellow>" + value.ToString() + "-" +value2Min.ToString()+"</color> " + attributeName;
+                returnText = "+" + "<color=yellow>" + value.ToString(format) + "-" +value2Min.ToString(format) +"</color> " + attributeName;
             }
             else
             {
-                returnText = "+" + "<color=yellow>" + value.ToString() + "</color> " + attributeName;
+                returnText = "+" + "<color=yellow>" + value.ToString(format) + "</color> " + attributeName;
             }
+            
         }
         else if(statModType == StatModType.PercentAdd)
         {
-            returnText = "+" + "<color=yellow>" + value.ToString() + "%</color> " + attributeName;
+            returnText = "+" + "<color=yellow>" + value.ToString(format) + "%</color> " + attributeName;
         }
 
 

@@ -33,27 +33,39 @@ public class BigStatsBox : MonoBehaviour
     public void BuildText()
     {
         //Primary Stats
-        textList[0].text = "Strength: " + PlayerClass.instance.strength.Value;
-        textList[1].text = "Dexterity: " + PlayerClass.instance.dexterity.Value;
-        textList[2].text = "Endurance " + PlayerClass.instance.endurance.Value;
-        textList[3].text = "Energy: " + PlayerClass.instance.energy.Value;
+        textList[0].text = "Strength: "+ "<color=green>" + PlayerClass.instance.strength.Value.ToString("F0") + "</color>";
+        textList[1].text = "Dexterity: " + "<color=green>" + PlayerClass.instance.dexterity.Value.ToString("F0") + "</color>";
+        textList[2].text = "Endurance: " + "<color=green>" + PlayerClass.instance.endurance.Value.ToString("F0") + "</color>";
+        textList[3].text = "Energy: " + "<color=green>" + PlayerClass.instance.energy.Value.ToString("F0") + "</color>";
         // Offensive Stats
-        textList[4].text = PlayerClass.instance.criticalHitChance.Value +"%"+" Critical Hit Chance";
-        textList[5].text = PlayerClass.instance.criticalHitDamage.Value + "%"+" Critical Hit Damage";
-        //textList[6].text = ": " + PlayerClass.instance.energy.Value;
+        textList[4].text = PlayerClass.instance.criticalHitChance.Value.ToString("F0") + "%"+" Critical Hit Chance";
+        textList[5].text = PlayerClass.instance.criticalHitDamage.Value.ToString("F0") + "%"+" Critical Hit Damage";
+        textList[6].text = "Attacks per second: "+ (1/ PlayerClass.instance.baseAttackSpeed.Value).ToString("F2");
+        textList[7].text = "+"+Mathf.Round(PlayerClass.instance.cooldownReduction.Value).ToString("F0")+ " % Cooldown Reduction";
+        
+        // Defensive Stats
+        //resistance *5
+        // Armor,
+        // block
+        // melee+range damage reduction.
+        //
+        // Recovery Stats
+        // Utility Stats
+       
+
         //textList[7].text = "Energy: " + PlayerClass.instance.energy.Value;
 
 
 
 
-        smallStatsTextList[0].text = "Strength: " + PlayerClass.instance.strength.Value.ToString();
-        smallStatsTextList[1].text = "Dexterity:" + PlayerClass.instance.dexterity.Value.ToString();
-        smallStatsTextList[2].text = "Endurance " + PlayerClass.instance.endurance.Value.ToString();
-        smallStatsTextList[3].text = "Energy: " + PlayerClass.instance.energy.Value.ToString();
-        smallStatsTextList[4].text = "Armor: " + PlayerClass.instance.armor.Value.ToString();
-        smallStatsTextList[5].text = "Health: " + PlayerClass.instance.maxHealth.Value.ToString();
-        smallStatsTextList[6].text = "Mana: " + PlayerClass.instance.maxMana.Value.ToString();
-        smallStatsTextList[7].text = "Stamina: " + PlayerClass.instance.stamina.Value.ToString();
+        smallStatsTextList[0].text = "Strength: " + PlayerClass.instance.strength.Value.ToString("F0");
+        smallStatsTextList[1].text = "Dexterity:" + PlayerClass.instance.dexterity.Value.ToString("F0");
+        smallStatsTextList[2].text = "Endurance " + PlayerClass.instance.endurance.Value.ToString("F0");
+        smallStatsTextList[3].text = "Energy: " + PlayerClass.instance.energy.Value.ToString("F0");
+        smallStatsTextList[4].text = "Armor: " + PlayerClass.instance.armor.Value.ToString("F0");
+        smallStatsTextList[5].text = "Health: " + PlayerClass.instance.maxHealth.Value.ToString("F0");
+        smallStatsTextList[6].text = "Mana: " + PlayerClass.instance.maxMana.Value.ToString("F0");
+        smallStatsTextList[7].text = "Stamina: " + PlayerClass.instance.stamina.Value.ToString("F0");
 
        
     }

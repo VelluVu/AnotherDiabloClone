@@ -399,7 +399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1643042880009106843
 Transform:
   m_ObjectHideFlags: 0
@@ -527,6 +527,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bc4487fd3750674bb8605783f9607ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  iceAuraEffect: {fileID: 6790141827031398494, guid: 0fcaf293987165e44b2b07148008cb5b,
+    type: 3}
+  manaLeechAuraEffect: {fileID: 6790141827031398494, guid: 63b189bea78c4604c95f575c53137d63,
+    type: 3}
+  adaptingEffect: {fileID: 1692141867246472333, guid: b49f6845b17d88f46a832db12e522811,
+    type: 3}
+  suiciderEffect: {fileID: 6790141827031398494, guid: 9d2eb38a23eb79242aecce2bc651350e,
+    type: 3}
+  magicImmuneEffect: {fileID: 1692141867246472333, guid: 715c14d46ed6db74cb0683c606a2cf9a,
+    type: 3}
   auraRadius: 2
   iceAuraSlowEffect: 0.5
   manaLeechAmount: 0.1

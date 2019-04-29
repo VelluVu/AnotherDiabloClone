@@ -472,6 +472,7 @@ MonoBehaviour:
   fallToDeathHeight: 100
   riseUpTime: 0
   riseUpTimeCounter: 0
+  isUpPosition: 0
   changedPos: 0
   phase1: 0
   phase2: 0
@@ -584,7 +585,7 @@ MonoBehaviour:
     isDirty: 1
     lastBaseValue: 0
     _value: 0
-  frostResistance:
+  coldResistance:
     BaseValue: 0
     isDirty: 1
     lastBaseValue: 0

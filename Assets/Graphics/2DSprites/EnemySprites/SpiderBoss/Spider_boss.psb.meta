@@ -1,0 +1,402 @@
+fileFormatVersion: 2
+guid: f85e1549c72426149b0abf706dbda884
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: Layer 27_GO/Layer 27_GO
+    100002: Layer 27_GO/Layer 27_GO/Butt
+    100004: Layer 27_GO/Layer 27_GO/Head
+    100006: Layer 27_GO/Layer 27_GO/Layer 4
+    100008: Layer 27_GO/Layer 27_GO/Layer 5
+    100010: Layer 27_GO/Layer 27_GO/Layer 23
+    100012: Layer 27_GO/Layer 27_GO/Layer 26
+    100014: Layer 27_GO/Layer 27_GO/Layer 27
+    100016: Layer 27_GO/Layer 27_GO/Thorax
+    400000: Layer 27_GO/Layer 27_GO/Transform
+    400002: Layer 27_GO/Layer 27_GO/Butt/Transform
+    400004: Layer 27_GO/Layer 27_GO/Head/Transform
+    400006: Layer 27_GO/Layer 27_GO/Layer 4/Transform
+    400008: Layer 27_GO/Layer 27_GO/Layer 5/Transform
+    400010: Layer 27_GO/Layer 27_GO/Layer 23/Transform
+    400012: Layer 27_GO/Layer 27_GO/Layer 26/Transform
+    400014: Layer 27_GO/Layer 27_GO/Layer 27/Transform
+    400016: Layer 27_GO/Layer 27_GO/Thorax/Transform
+    2800000: Spider_boss
+    21200000: Layer 27_GO/Layer 27_GO/Butt/SpriteRenderer
+    21200002: Layer 27_GO/Layer 27_GO/Head/SpriteRenderer
+    21200004: Layer 27_GO/Layer 27_GO/Layer 4/SpriteRenderer
+    21200006: Layer 27_GO/Layer 27_GO/Layer 5/SpriteRenderer
+    21200008: Layer 27_GO/Layer 27_GO/Layer 23/SpriteRenderer
+    21200010: Layer 27_GO/Layer 27_GO/Layer 26/SpriteRenderer
+    21200012: Layer 27_GO/Layer 27_GO/Layer 27/SpriteRenderer
+    21200014: Layer 27_GO/Layer 27_GO/Thorax/SpriteRenderer
+    21300000: Layer 26
+    21300002: Layer 23
+    21300004: Layer 5
+    21300006: Layer 4
+    21300008: Head
+    21300010: Thorax
+    21300012: Butt
+    21300014: Layer 27
+    100100000: Layer 27_GO
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 1
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    isReadable: 0
+    streamingMipmaps: 1
+    streamingMipmapsPriority: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 64
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+  spriteImportData:
+  - name: Spider_boss_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 200
+      height: 200
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 0, y: 0}
+  mosaicSpriteImportData: []
+  rigSpriteImportData:
+  - name: Layer 26
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 184
+      height: 103
+    spriteID: 61173b43d8bca524aafc7a88b0224e1f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -7, y: -7}
+  - name: Layer 23
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 106
+      y: 216
+      width: 108
+      height: 60
+    spriteID: 0a0d9f25ab8ae304498eedfe87508cd6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 33, y: 172}
+  - name: Layer 5
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 361
+      width: 93
+      height: 54
+    spriteID: a80ec483cbfed524eb29601022822d89
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -77, y: 317}
+  - name: Layer 4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 196
+      y: 4
+      width: 51
+      height: 78
+    spriteID: bc7439b4be08f554f9b8d03f72d81f6d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 152, y: -5}
+  - name: Head
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 165
+      y: 115
+      width: 50
+      height: 39
+    spriteID: c12f3890a87992449a38a959ae6f1ebc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 133, y: 70}
+  - name: Thorax
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 423
+      width: 64
+      height: 53
+    spriteID: a5aeb7186723a2e419c276de2b818423
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -64, y: 375}
+  - name: Butt
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 216
+      width: 94
+      height: 137
+    spriteID: 59e0c194cf7075e41bbec2fb97235f97
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -88, y: 160}
+  - name: Layer 27
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 115
+      width: 153
+      height: 93
+    spriteID: 6c5defbc48c898a46ae65669bdf7ebc6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 2, y: 101}
+  platformSettings: []
+  mosaicLayers: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  importedTextureWidth: 256
+  importedTextureHeight: 512
+  documentSize: {x: 200, y: 200}
+  textureActualWidth: 256
+  textureActualHeight: 512
+  spritePackingTag: 
+  resliceFromLayer: 0
+  characterMode: 1
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: legs
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 00000000000000000000000000000000
+    layerID: 19
+    mosaicPosition: {x: 0, y: 0}
+  - name: Layer 26
+    spriteName: Layer 26
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 61173b43d8bca524aafc7a88b0224e1f
+    layerID: 18
+    mosaicPosition: {x: 4, y: 4}
+  - name: Group 2
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: 00000000000000000000000000000000
+    layerID: 44
+    mosaicPosition: {x: 0, y: 0}
+  - name: Layer 23
+    spriteName: Layer 23
+    isGroup: 0
+    parentIndex: 2
+    spriteID: 0a0d9f25ab8ae304498eedfe87508cd6
+    layerID: 17
+    mosaicPosition: {x: 106, y: 216}
+  - name: Group 1
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: 00000000000000000000000000000000
+    layerID: 37
+    mosaicPosition: {x: 0, y: 0}
+  - name: Layer 5
+    spriteName: Layer 5
+    isGroup: 0
+    parentIndex: 4
+    spriteID: a80ec483cbfed524eb29601022822d89
+    layerID: 16
+    mosaicPosition: {x: 4, y: 361}
+  - name: Hair
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 00000000000000000000000000000000
+    layerID: 84
+    mosaicPosition: {x: 0, y: 0}
+  - name: Layer 4
+    spriteName: Layer 4
+    isGroup: 0
+    parentIndex: 6
+    spriteID: bc7439b4be08f554f9b8d03f72d81f6d
+    layerID: 14
+    mosaicPosition: {x: 196, y: 4}
+  - name: Head
+    spriteName: Head
+    isGroup: 0
+    parentIndex: -1
+    spriteID: c12f3890a87992449a38a959ae6f1ebc
+    layerID: 13
+    mosaicPosition: {x: 165, y: 115}
+  - name: Thorax
+    spriteName: Thorax
+    isGroup: 0
+    parentIndex: -1
+    spriteID: a5aeb7186723a2e419c276de2b818423
+    layerID: 12
+    mosaicPosition: {x: 4, y: 423}
+  - name: Butt
+    spriteName: Butt
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 59e0c194cf7075e41bbec2fb97235f97
+    layerID: 10
+    mosaicPosition: {x: 4, y: 216}
+  - name: legs2
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 00000000000000000000000000000000
+    layerID: 9
+    mosaicPosition: {x: 0, y: 0}
+  - name: Layer 27
+    spriteName: Layer 27
+    isGroup: 0
+    parentIndex: 11
+    spriteID: 6c5defbc48c898a46ae65669bdf7ebc6
+    layerID: 8
+    mosaicPosition: {x: 4, y: 115}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+  boneGOs: []
+  generateGOHierarchy: 0

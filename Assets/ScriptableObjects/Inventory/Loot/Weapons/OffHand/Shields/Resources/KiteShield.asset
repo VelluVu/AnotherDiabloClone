@@ -16,24 +16,22 @@ MonoBehaviour:
   description: 'It will block enemy attacks.
 
 '
-  itemID: 1201
+  itemID: 6
   itemIcon: {fileID: 2800000, guid: bffe1ff40f9a77449b40dbdb97790987, type: 3}
   equipmentSprites:
-  - {fileID: 21300000, guid: 45edb2a473d54c34a91184cf9c54eee9, type: 3}
-  lootSprite: {fileID: 21300000, guid: 45edb2a473d54c34a91184cf9c54eee9, type: 3}
-  Rarity: 0
+  - {fileID: 21300000, guid: b12684a2bff77b64fb153980f6e5139e, type: 3}
+  lootSprite: {fileID: 21300000, guid: b12684a2bff77b64fb153980f6e5139e, type: 3}
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
+  randomAttributes: 1
   equippable: 1
   consumable: 0
   stackable: 0
   mainHand: 0
   offHand: 1
-  damageMin: 0
-  damageMax: 0
-  armor: 0
   armorSlot: 10
-  potency: 0
+  consumablePotency: 0
   buyPrice: 0
   sellPrice: 0

@@ -124,6 +124,10 @@ public class LootSlot : MonoBehaviour
                         EquipItem(true);
                         return;
                     }
+                    else if(item.armorSlot == ArmorSlot.Necklace)
+                    {
+                        return;
+                    }
                     else if (PlayerInventory.instance.equipmentConnect[i + 1].ES.isEmpty && PlayerInventory.instance.equipmentConnect[i].key == ArmorSlot.Ring)
                     {
                         

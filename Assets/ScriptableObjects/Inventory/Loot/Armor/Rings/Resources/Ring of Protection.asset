@@ -16,23 +16,21 @@ MonoBehaviour:
   description: 'Increases your armor
 
 '
-  itemID: 900
+  itemID: 2
   itemIcon: {fileID: 2800000, guid: 378ed105aa8b98643b64f7e0538483af, type: 3}
   equipmentSprites: []
   lootSprite: {fileID: 21300000, guid: 9165379c712fd754a95cd2a2606de693, type: 3}
-  Rarity: 0
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
+  randomAttributes: 1
   equippable: 1
   consumable: 0
   stackable: 0
   mainHand: 0
   offHand: 0
-  damageMin: 0
-  damageMax: 0
-  armor: 0
   armorSlot: 11
-  potency: 0
+  consumablePotency: 0
   buyPrice: 0
   sellPrice: 0

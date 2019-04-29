@@ -25,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 363215751546324259}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.046230033, w: 0.9989308}
   m_LocalPosition: {x: -0.004, y: -0.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2198477578692921992}
   m_Father: {fileID: 1888854916482033146}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -5.2990003}
 --- !u!212 &9213364557945907013
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -295,6 +295,7 @@ GameObject:
   - component: {fileID: 6640050483557403131}
   - component: {fileID: 7852784705096150757}
   - component: {fileID: 1169824648}
+  - component: {fileID: 360859005}
   m_Layer: 25
   m_Name: Left_Weapon
   m_TagString: Untagged
@@ -438,6 +439,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &360859005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058562718592394236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be7fca8810d241943a422c4b3c0bf474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultSprite: {fileID: 0}
 --- !u!1 &1922701674262573553
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,6 +653,7 @@ GameObject:
   - component: {fileID: 7391706078199241481}
   - component: {fileID: 6555086630381230785}
   - component: {fileID: 8131655113102551163}
+  - component: {fileID: 745425684}
   m_Layer: 25
   m_Name: Right_Weapon
   m_TagString: Untagged
@@ -782,6 +797,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &745425684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3711628038237003984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be7fca8810d241943a422c4b3c0bf474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultSprite: {fileID: 0}
 --- !u!1 &3927175552967989919
 GameObject:
   m_ObjectHideFlags: 0
@@ -1293,6 +1321,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4219315857888719143}
   - component: {fileID: 2925710398376149434}
+  - component: {fileID: 261858476}
   m_Layer: 13
   m_Name: Character_Rig
   m_TagString: Untagged
@@ -1326,7 +1355,7 @@ Animator:
   m_GameObject: {fileID: 6715336927336710896}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: acfa24d08345e0d44b509bb9584f1115, type: 2}
+  m_Controller: {fileID: 9100000, guid: f977cdae8b2e77c49aedf0d5ce166465, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1335,6 +1364,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &261858476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6715336927336710896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d49409fd39a1d5647b5d964a9747d4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightingMaskLayer: 0
+  lightingCollisionLayer: 0
+  maskMode: 0
+  shape:
+    colliderType: 2
+    maskType: 1
+  edgeCollider2D: 0
+  generateDayMask: 0
+  dayHeight: 1
+  height: 1
+  ambientOcclusion: 0
+  smoothOcclusionEdges: 0
+  occlusionSize: 1
+  disableWhenInvisible: 0
+  spriteRenderer: {fileID: 0}
+  meshFilter: {fileID: 0}
 --- !u!1 &7359060672054148288
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,6 +2267,7 @@ MonoBehaviour:
   isMainAttackRdy: 1
   isOffAttackRdy: 1
   readyToDash: 1
+  directionRight: 0
   canWallJump: 0
   isBlocking: 0
   isAir: 0
@@ -2218,6 +2276,7 @@ MonoBehaviour:
   hitsGround: 0
   takeFallDamage: 0
   goingDown: 0
+  invulnerable: 0
   slowed: 0
   isDead: 0
   isAlive: 1
@@ -2270,197 +2329,248 @@ MonoBehaviour:
   className: perusJamppa
   classType: 0
   moveSpeed:
-    BaseValue: 0
+    BaseValue: 20
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   jumpForce:
-    BaseValue: 0
+    BaseValue: 10
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   extraJumpForce:
-    BaseValue: 0
+    BaseValue: 5
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   extraWallJumpForce:
-    BaseValue: 0
+    BaseValue: 5
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   baseDamage:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   baseDamageMax:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   baseAttackSpeed:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   maxHealth:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   health:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   maxMana:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   mana:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   stamina:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   armor:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   healthRegeneration:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   healthOnKill:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   block:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   cooldownReduction:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   criticalHitChance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   criticalHitDamage:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   manaCostReduction:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   meleeDamageReduction:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   rangedDamageReduction:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   fireResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   coldResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   poisonResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   lightningResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   physicalResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   allResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   fallDamageReduction:
     BaseValue: 0
+    statName: 
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  experienceOnKill:
+    BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   goldFind:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   magicFind:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   pickupRadius:
     BaseValue: 0
+    statName: 
+    isDirty: 1
+    lastBaseValue: 0
+    _value: 0
+  experienceBonus:
+    BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   strength:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   dexterity:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   endurance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   energy:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   statPoint:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   skillPoint:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   playerLevel:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
@@ -2481,16 +2591,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentXP:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   xpBoost:
     BaseValue: 1
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   toLevelXP:
     BaseValue: 100
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0

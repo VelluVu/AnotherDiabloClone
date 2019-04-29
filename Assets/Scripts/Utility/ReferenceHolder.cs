@@ -6,6 +6,8 @@ public class ReferenceHolder : MonoBehaviour
 {
 
     public Player player;
+    public Transform goreHolder;
+    public Transform combatTextHolder;
     public static ReferenceHolder instance { get; private set; }
 
     private void Awake ( )

@@ -90,7 +90,12 @@ public class RolledLoot : MonoBehaviour
         List<Attribute> tempSecondary = new List<Attribute>();
         primaryCount = PlayerInventory.instance.rarityLootCountPrimary[rarity];
         secondaryCount = PlayerInventory.instance.rarityLootCountSecondary[rarity];
-        
+        tempList.Clear();
+        if (PlayerInventory.instance.loading)
+        {
+            return;
+            
+        }
         if (loot.randomAttributes)
         {
             
@@ -137,13 +142,15 @@ public class RolledLoot : MonoBehaviour
             tempList = loot.attributes;
         }
         int i = 0;
+        
         foreach (Attribute a in tempList)
         {
+            
             RollAttribute RA = gameObject.AddComponent<RollAttribute>();
-            Debug.Log(attributes);
+            
             attributes.Add(RA);
-            RA.rollAttribute(a);
             RA.rolledLoot = this;
+            RA.rollAttribute(a);
             if (consumable)
             {
                 RA.value = consumablePotency;
@@ -152,18 +159,18 @@ public class RolledLoot : MonoBehaviour
             {
                 RA.value = Random.Range(RA.value, RA.valueMax) * (1 + itemLevel * 0.2f);
                 RA.value2Min = Random.Range(RA.value2Min, RA.value2Max) * (1 + itemLevel * 0.2f);
-                RA.value = (int)RA.value;
-                RA.value2Min = (int)RA.value2Min;
+                //RA.value = (int)RA.value;
+                //RA.value2Min = (int)RA.value2Min;
             }
             else
             {
                 RA.value = Random.Range(RA.value, RA.valueMax);
                 RA.value2Min = Random.Range(RA.value2Min, RA.value2Max);
-                RA.value = (int)RA.value;
-                RA.value2Min = (int)RA.value2Min;
+                //RA.value = (int)RA.value;
+                //RA.value2Min = (int)RA.value2Min;
             }
 
-            Debug.Log(attributes[i]);
+            
             i++;
         }
     }

@@ -35,7 +35,7 @@ public class ChaseAction : Action
                         controller.dirRight = true;
                     }
 
-                    controller.rb.velocity = new Vector2 ( ( controller.chaseTarget.position.x - controller.transform.position.x ) * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime, controller.rb.velocity.y );
+                    controller.rb.velocity = new Vector2 ( ( controller.chaseTarget.position.x - controller.transform.position.x ) * controller.enemyStats.moveSpeed.Value * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime, controller.rb.velocity.y );
                  
                 }
             }
@@ -52,13 +52,13 @@ public class ChaseAction : Action
                         controller.dirRight = true;
                     }
 
-                    controller.rb.velocity = ( controller.chaseTarget.position - controller.transform.position ) * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime;
+                    controller.rb.velocity = ( controller.chaseTarget.position - controller.transform.position ) * controller.enemyStats.moveSpeed.Value * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime;
                     
                 }
             }
         }
 
-        controller.chaseTarget = null;
+        //controller.chaseTarget = null;
       
     }
 }

@@ -59,8 +59,9 @@ public class StateController : MonoBehaviour
     [Tooltip ( "Radius for hunching different events and flying enemys spot distance" )] [Range ( 0.01f, 5f )] public float senseArea;
     [Tooltip ( "Radius for circleCasts" )] [Range ( 0.01f, 5f )] public float circleCastRadius;
     public float fallToDeathHeight;
+    float slowEffect;
 
-    [Tooltip ( "For SpiderBoss" )] public float riseUpTime;
+    [ Tooltip ( "For SpiderBoss" )] public float riseUpTime;
     public float riseUpTimeCounter;
     public bool isUpPosition;
     public bool changedPos;
@@ -91,7 +92,7 @@ public class StateController : MonoBehaviour
     [Tooltip ( "Humanoid enemy weapons" )] public EnemyWeaponHolder weaponLeft;
     [Tooltip ( "Humanoid enemy weapons" )] public EnemyWeaponHolder weaponRight;
 
-    [HideInInspector] public Transform chaseTarget;
+    public Transform chaseTarget;
     [HideInInspector] public Animator animator;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public BoxCollider2D col;
@@ -111,6 +112,7 @@ public class StateController : MonoBehaviour
     public bool hasSplit;
     public bool alertedByEvent;
     public bool notHatchedEgg;
+    bool slowed;
     #endregion
 
     private void Start ( )
@@ -128,6 +130,7 @@ public class StateController : MonoBehaviour
         leftDirection = new Vector3 ( 0, -180, 0 );
         rightDirection = new Vector3 ( 0, 0, 0 );
         attackRdy = true;
+        slowEffect = 1;
         if ( enemyStats.enemyType != EnemyType.Boss )
         {
             aiActive = true; //Asetetaan herätessä aktiiviseksi bossi asetetaan aktiiviseksi kun on saapunut alueelle
@@ -136,6 +139,11 @@ public class StateController : MonoBehaviour
 
     private void OnEnable ( )
     {
+        StartCoroutine ( AlertedByEventTime ( alertedByEventDuration ) );
+        StartCoroutine ( AttackHitBoxDuration ( ) );
+        StartCoroutine ( AttackCooldown() );
+        StartCoroutine ( RemoveSlow ( ) );
+        StartCoroutine ( EggCd ( ) );
         Player.playerDealDamageEvent += TakeDamage;
         Player.playerDeathEvent += PlayerIsDeadWeWin;
         CheckPoint.checkPointEvent += DestroySpawnings;
@@ -172,7 +180,6 @@ public class StateController : MonoBehaviour
         currentState.UpdateState ( this );
 
         AnimateMovement ( );
-
         //Lentävän vihollisen ei tarvi pelätä tippumista
         if ( enemyStats.enemyType != EnemyType.FlyingEnemy )
         {
@@ -181,7 +188,19 @@ public class StateController : MonoBehaviour
 
         CheckDirection ( );
         EnemyFallToDeath ( );
+        CheckSlows ( );
+    }
 
+    private void CheckSlows ( )
+    {
+        if ( slowed )
+        {
+            enemyStats.moveSpeed.BaseValue *= slowEffect;
+        }
+        else
+        {
+            slowEffect = 1;
+        }
     }
 
     /// <summary>
@@ -439,6 +458,66 @@ public class StateController : MonoBehaviour
                     enemyStats.health.BaseValue -= calculatedDamage;
                 }
             }
+            else if ( damageType == DamageType.Poison )
+            {
+                color = Color.magenta;
+                calculatedDamage = dmg * ( 1 - ( ( enemyStats.poisonResistance.Value ) / ( 20 * enemyStats.level + enemyStats.poisonResistance.Value) ) );
+                Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+
+                if ( calculatedDamage < 1 && calculatedDamage > 0 )
+                {
+                    calculatedDamage = 1;
+                }
+
+                StartCoroutine ( OverTimeDamage ( calculatedDamage / 5f, 5f, 0.5f, 0.1f, color, damageType ) );
+            }
+            else if ( damageType == DamageType.Fire )
+            {
+                color = Color.red;
+                calculatedDamage = dmg * ( 1 - ( ( enemyStats.fireResistance.Value ) / ( 20 * enemyStats.level + enemyStats.fireResistance.Value) ) );
+                Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+
+                if ( calculatedDamage < 1 && calculatedDamage > 0 )
+                {
+                    calculatedDamage = 1;
+                }
+
+                StartCoroutine ( OverTimeDamage ( calculatedDamage / 2.5f, 2.5f, 0.1f, 0.01f, color, damageType ) );
+            }
+            else if ( damageType == DamageType.Cold )
+            {
+                color = Color.cyan;
+                calculatedDamage = dmg * ( 1 - ( ( enemyStats.coldResistance.Value ) / ( 20 * enemyStats.level + enemyStats.coldResistance.Value ) ) );
+                Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+
+                if ( calculatedDamage < 1 && calculatedDamage > 0 )
+                {
+                    calculatedDamage = 1;
+                }
+
+                enemyStats.health.BaseValue -= calculatedDamage;
+                slowEffect = calculatedDamage * 0.1f;
+                StartCoroutine ( RemoveSlow ( ) );
+            }
+            else if ( damageType == DamageType.Lightning )
+            {
+                color = Color.yellow;
+                calculatedDamage = dmg * ( 1 - ( ( enemyStats.lightningResistance.Value ) / ( 20 * enemyStats.level + enemyStats.lightningResistance.Value ) ) );
+                //armor lisää dmg enemmän crit?
+                Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage );
+
+                if ( calculatedDamage < 1 && calculatedDamage > 0 )
+                {
+                    calculatedDamage = 1;
+                }
+
+                enemyStats.health.BaseValue -= calculatedDamage;
+
+            }
             else
             {
                 calculatedDamage = dmg - enemyStats.armor.Value;
@@ -563,9 +642,33 @@ public class StateController : MonoBehaviour
         attackBox.GetComponent<BoxCollider2D> ( ).enabled = false;
     }
 
+    IEnumerator OverTimeDamage ( float dmg, float duration, float tickSpeed, float colorFlashSpeed, Color collor, DamageType damageType )
+    {
+        for ( int i = 0 ; i < duration ; i++ )
+        {
+            yield return new WaitForSeconds ( tickSpeed );
+
+            enemyStats.health.BaseValue -= dmg;
+
+            if ( enemyNotifyEvent != null )
+            {
+                enemyNotifyEvent ( head.transform, dmg.ToString ( ), collor );
+            }
+            if ( enemyFlashEvent != null )
+            {
+                StartCoroutine ( enemyFlashEvent ( gameObject, colorFlashSpeed, collor, false ) );
+            }
+            if ( enemyTakeDamageEvent != null )
+            {
+                enemyTakeDamageEvent ( gameObject, dmg , damageType );
+            }
+
+        }
+    }
+
     IEnumerator EggCd ( )
     {
-        yield return new WaitForSeconds ( 0.5f );
+        yield return new WaitForSeconds ( 1f );
         notHatchedEgg = false;
     }
 
@@ -595,5 +698,10 @@ public class StateController : MonoBehaviour
         dirRight = turnDir;
     }
 
+    IEnumerator RemoveSlow ( )
+    {
+        yield return new WaitForSeconds ( 5f );
+        slowed = false;
+    }
     #endregion
 }

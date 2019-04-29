@@ -25,6 +25,7 @@ public class EnemyWeaponHolder : MonoBehaviour
 
     #region Weapon
     public float _weaponDamage;
+    float nextHit;
     #endregion
 
     #region Bools
@@ -66,16 +67,16 @@ public class EnemyWeaponHolder : MonoBehaviour
 
         Vector2 velocity = AimWithRangedWeapon ( target, range, playerLayer );
     
-        if ( isTargetLocked && isShootCDrdy )
+        if ( isTargetLocked && Time.time > nextHit )
         {
-
-            isShootCDrdy = false;
+            nextHit = Time.time + weaponSpeed;
+            //isShootCDrdy = false;
             GameObject newProjectile = Instantiate ( projectile, launchPosition.position, launchPosition.rotation ) as GameObject;
             newProjectile.GetComponent<Projectile> ( ).LaunchProjectile ( damage, velocity, damageType, projectileType );
             newProjectile.GetComponent<Projectile>().enemyLevel = level;
             
 
-            StartCoroutine ( ShootCD ( weaponSpeed ) );
+            //StartCoroutine ( ShootCD ( weaponSpeed ) );
 
         }
     }
@@ -135,25 +136,21 @@ public class EnemyWeaponHolder : MonoBehaviour
     {
         if ( collision.gameObject.CompareTag ( "Enemy" ) )
         {
-            if ( !hasHit && (weaponType != WeaponType.Shield || weaponType != WeaponType.RangedWeapon || weaponType != WeaponType.TwoHandedRangedWeapon))
+            if ( Time.time > nextHit && (weaponType != WeaponType.Shield || weaponType != WeaponType.RangedWeapon || weaponType != WeaponType.TwoHandedRangedWeapon))
             {
 
-                hasHit = true;
-                Destroy ( Instantiate ( bloodSplash, collision.gameObject.GetComponent<Collider2D> ( ).bounds.ClosestPoint ( transform.position ), Quaternion.identity ), 2f );
+                nextHit = Time.time + gameObject.GetComponentInParent<EnemyStats>().attackSpeed.Value;
+                GameObject createdObject = Instantiate(bloodSplash, collision.gameObject.GetComponent<Collider2D>().bounds.ClosestPoint(transform.position), Quaternion.identity);
+                createdObject.transform.SetParent(ReferenceHolder.instance.goreHolder);
+                Destroy(createdObject, 2f);
                 Debug.Log ( gameObject.name );
-                gameObject.GetComponentInParent<Player> ( ).DealDamage ( collision.gameObject, _weaponDamage, damageType );
-                //col.enabled = false; // kun osuu ottaa colliderin pois ettei iske kaikkialle
-                StartCoroutine ( HitReset ( ) );
+                gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject, _weaponDamage, damageType );
+                //col.enabled = false; // kun osuu ottaa colliderin pois ettei iske kaikkialle             
             }
         }
     }
 
-    IEnumerator HitReset ( )
-    {
-        yield return new WaitForSeconds ( _weaponSpeed * gameObject.GetComponentInParent<PlayerClass> ( ).baseAttackSpeed.Value );
-        hasHit = false;
-    }
-
+   
     IEnumerator ShootCD ( float speed )
     {
         yield return new WaitForSeconds ( speed );

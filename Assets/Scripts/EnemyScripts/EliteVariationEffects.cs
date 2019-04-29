@@ -5,8 +5,18 @@ using UnityEngine;
 public class EliteVariationEffects : MonoBehaviour
 {
     EnemyStats enemyStats;
+    public GameObject iceAuraEffect;
+    public GameObject manaLeechAuraEffect;
+    public GameObject adaptingEffect;
+    public GameObject suiciderEffect;
+    public GameObject magicImmuneEffect;
+    bool auraOn;
+    bool aEffectOn;
+    bool sEffectOn;
+    bool mEffectOn;
     bool manaLeech;
     bool adapting;
+    int rng;
 
     [Tooltip ( "Aura Radius" )] public float auraRadius;
     [Range ( 0.1f, 0.9f )] [Tooltip ( "Less is more" )] public float iceAuraSlowEffect;
@@ -16,6 +26,7 @@ public class EliteVariationEffects : MonoBehaviour
     private void Start ( )
     {
         enemyStats = GetComponent<EnemyStats> ( );
+        rng = Random.Range ( 0, 4 );
     }
 
     private void Update ( )
@@ -37,34 +48,34 @@ public class EliteVariationEffects : MonoBehaviour
 
     void Variations ( )
     {
-        foreach ( var variation in enemyStats.enemyVariations )
+
+        if ( enemyStats.enemyVariations [ rng ] == EnemyVariations.ManaLeech )
         {
-            if ( variation == EnemyVariations.ManaLeech )
-            {
-                Debug.Log ( "MANA LEECH" );
-                ManaLeech ( );
-            }
-            if ( variation == EnemyVariations.IceAura )
-            {
-                Debug.Log ( "ICE AURA" );
-                IceAura ( );
-            }
-            if ( variation == EnemyVariations.Adapting )
-            {
-                Debug.Log ( "ADAPTING" );
-                Adapting ( );
-            }
-            if ( variation == EnemyVariations.MagicImmune )
-            {
-                Debug.Log ( "MAGIC IMMUNE" );
-                MagicImmune ( );
-            }
-            if ( variation == EnemyVariations.Suicider )
-            {
-                Debug.Log ( "SUICIDER" );
-                Suicider ( );
-            }
+            Debug.Log ( "MANA LEECH" );
+            ManaLeech ( );
         }
+        if ( enemyStats.enemyVariations [ rng ] == EnemyVariations.IceAura )
+        {
+            Debug.Log ( "ICE AURA" );
+            IceAura ( );
+        }
+        if ( enemyStats.enemyVariations [ rng ] == EnemyVariations.Adapting )
+        {
+            Debug.Log ( "ADAPTING" );
+            Adapting ( );
+        }
+        if ( enemyStats.enemyVariations [ rng ] == EnemyVariations.MagicImmune )
+        {
+            Debug.Log ( "MAGIC IMMUNE" );
+            MagicImmune ( );
+        }
+        if ( enemyStats.enemyVariations [ rng ] == EnemyVariations.Suicider )
+        {
+            Debug.Log ( "SUICIDER" );
+            Suicider ( );
+        }
+
+
     }
 
     /// <summary>
@@ -76,7 +87,7 @@ public class EliteVariationEffects : MonoBehaviour
         Collider2D col = Physics2D.OverlapCircle ( transform.position, auraRadius, playerLayer );
         if ( col != null )
         {
-            col.GetComponent<Player>().OnManaUse ( manaLeechAmount );
+            col.GetComponent<Player> ( ).OnManaUse ( manaLeechAmount );
         }
     }
 
@@ -84,9 +95,20 @@ public class EliteVariationEffects : MonoBehaviour
     /// Aura joka hidastaa pelaajaa, sekä nostaa hirviön frost resitancee
     /// </summary>
     void IceAura ( )
-    {   
+    {
         Collider2D col = Physics2D.OverlapCircle ( transform.position, auraRadius, playerLayer );
-        enemyStats.frostResistance.BaseValue += 100f;
+        enemyStats.coldResistance.BaseValue += 100f;
+
+        if ( !auraOn )
+        {
+            auraOn = true;
+            GameObject iceAuraEff = Instantiate ( iceAuraEffect, transform.parent );
+            iceAuraEff.transform.localScale = new Vector3 ( ( transform.localScale.x - iceAuraEff.transform.localScale.x ) * 1.2f, ( transform.localScale.y - iceAuraEff.transform.localScale.y ) * 1.2f, 1 );
+            iceAuraEff.transform.SetParent ( transform );
+            iceAuraEff.transform.position = transform.position;
+            iceAuraEff.transform.rotation = Quaternion.identity;
+        }
+
         if ( col != null )
         {
             col.GetComponent<Player> ( ).FeelSlow ( iceAuraSlowEffect );
@@ -99,6 +121,15 @@ public class EliteVariationEffects : MonoBehaviour
     void Adapting ( )
     {
         adapting = true;
+        if ( !aEffectOn )
+        {
+            aEffectOn = true;
+            GameObject adaeff = Instantiate ( adaptingEffect, transform.parent );
+            adaeff.transform.localScale = new Vector3 ( ( transform.localScale.x - adaeff.transform.localScale.x ), ( transform.localScale.y - adaeff.transform.localScale.y ), 1 );
+            adaeff.transform.SetParent ( transform );
+            adaeff.transform.position = transform.position;
+            adaeff.transform.rotation = Quaternion.identity;
+        }
     }
 
     /// <summary>
@@ -106,7 +137,16 @@ public class EliteVariationEffects : MonoBehaviour
     /// </summary>
     void MagicImmune ( )
     {
-        enemyStats.frostResistance.BaseValue += 100f;
+        if ( !mEffectOn )
+        {
+            mEffectOn = true;
+            GameObject meff = Instantiate ( magicImmuneEffect, transform.parent );
+            meff.transform.localScale = new Vector3 ( ( transform.localScale.x - meff.transform.localScale.x ), ( transform.localScale.y - meff.transform.localScale.y ), 1 );
+            meff.transform.SetParent ( transform );
+            meff.transform.position = transform.position;
+            meff.transform.rotation = Quaternion.identity;
+        }
+        enemyStats.coldResistance.BaseValue += 100f;
         enemyStats.fireResistance.BaseValue += 100f;
         enemyStats.lightningResistance.BaseValue += 100f;
         enemyStats.poisonResistance.BaseValue += 100f;
@@ -117,13 +157,31 @@ public class EliteVariationEffects : MonoBehaviour
     /// </summary>
     void Suicider ( )
     {
-
+        if ( !sEffectOn )
+        {
+            sEffectOn = true;
+            GameObject seff = Instantiate ( suiciderEffect, transform.parent );
+            seff.transform.localScale = new Vector3 ( ( transform.localScale.x - seff.transform.localScale.x ), ( transform.localScale.y - seff.transform.localScale.y ), 1 );
+            seff.transform.SetParent ( transform );
+            seff.transform.position = transform.position;
+            seff.transform.rotation = Quaternion.identity;
+        }
     }
 
     public void Leech ( GameObject target, float damage, DamageType damageType, int level )
     {
         if ( manaLeech )
         {
+            if ( !auraOn )
+            {
+                auraOn = true;
+                GameObject lechAuraEff = Instantiate ( manaLeechAuraEffect, transform.parent );
+                lechAuraEff.transform.localScale = new Vector3 ( ( transform.localScale.x - lechAuraEff.transform.localScale.x ) * 1.2f, ( transform.localScale.y - lechAuraEff.transform.localScale.y ) * 1.2f, 1 );
+                lechAuraEff.transform.SetParent ( transform );
+                lechAuraEff.transform.position = transform.position;
+                lechAuraEff.transform.rotation = Quaternion.identity;
+
+            }
             ReferenceHolder.instance.player.OnManaUse ( damage );
             enemyStats.mana.BaseValue += damage;
         }
@@ -141,7 +199,7 @@ public class EliteVariationEffects : MonoBehaviour
                     enemyStats.fireResistance.BaseValue += damage;
                     break;
                 case DamageType.Cold:
-                    enemyStats.frostResistance.BaseValue += damage;
+                    enemyStats.coldResistance.BaseValue += damage;
                     break;
                 case DamageType.Poison:
                     enemyStats.poisonResistance.BaseValue += damage;

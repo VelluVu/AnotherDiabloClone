@@ -14,25 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bronce Bracers
   description: 
-  itemID: 300
+  itemID: 14
   itemIcon: {fileID: 2800000, guid: 3a90a4073798bb948b483b3d7bae92a8, type: 3}
   equipmentSprites:
-  - {fileID: 21300000, guid: 5231f8bcefadc19498c2c08b5c88842c, type: 3}
-  - {fileID: 21300000, guid: ceb146ce4e83b0947b5e987934032295, type: 3}
-  lootSprite: {fileID: 21300000, guid: ceb146ce4e83b0947b5e987934032295, type: 3}
-  Rarity: 0
+  - {fileID: 21300000, guid: 4b13ca0c3ff81f143890c9312ef7d948, type: 3}
+  - {fileID: 21300000, guid: 7b08ef5ee481d3440b24cde402b15a5d, type: 3}
+  lootSprite: {fileID: 21300000, guid: 7b08ef5ee481d3440b24cde402b15a5d, type: 3}
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
+  randomAttributes: 1
   equippable: 1
   consumable: 0
   stackable: 0
   mainHand: 0
   offHand: 0
-  damageMin: 0
-  damageMax: 0
-  armor: 0
   armorSlot: 6
-  potency: 0
+  consumablePotency: 0
   buyPrice: 0
   sellPrice: 0

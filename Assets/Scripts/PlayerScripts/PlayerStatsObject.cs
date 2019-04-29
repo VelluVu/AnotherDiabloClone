@@ -43,6 +43,8 @@ public class PlayerStatsObject : ScriptableObject
     public float _healthOnKill;
     public float _block;
     public float _fallDamageReduction;
+    public float _experienceOnKill;
+    public float _experienceBonus;
 
     public int _strength;
     public int _dexterity;

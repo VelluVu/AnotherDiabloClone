@@ -12,9 +12,9 @@ public class PickUpLoot : MonoBehaviour
     public int Count = 1; 
     TMPro.TMP_Text text;
     RawImage rawImage;
-    bool setupDone = false;
+    public bool setupDone = false;
 
-    public void Awake()
+    public void Start()
     {
         if(loot != null && setupDone == false)
         {
@@ -26,7 +26,7 @@ public class PickUpLoot : MonoBehaviour
     public void Setup(int itemLevel)
     {
         GetComponent<SpriteRenderer>().sprite = loot.lootSprite;
-        rLoot = gameObject.GetComponent<RolledLoot>();
+        rLoot = gameObject.AddComponent<RolledLoot>();
         rLoot.rollLoot(loot);
         text = GetComponentInChildren<TMPro.TMP_Text>();
         text.text = rLoot.itemName;

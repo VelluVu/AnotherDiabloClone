@@ -16,24 +16,22 @@ MonoBehaviour:
   description: 'Round shield
 
 '
-  itemID: 1200
+  itemID: 7
   itemIcon: {fileID: 2800000, guid: ee3595ebfa54b5d4c8bb2b02c9ac4810, type: 3}
   equipmentSprites:
-  - {fileID: 21300000, guid: 420ef360c796fad40a76fb08b0a3bc51, type: 3}
-  lootSprite: {fileID: 21300000, guid: 420ef360c796fad40a76fb08b0a3bc51, type: 3}
-  Rarity: 0
+  - {fileID: 21300000, guid: 1630e43d79b3b914397f013c84f20361, type: 3}
+  lootSprite: {fileID: 21300000, guid: 1630e43d79b3b914397f013c84f20361, type: 3}
+  rarity: 0
   itemLevel: 0
   tags: 
   attributes: []
+  randomAttributes: 1
   equippable: 1
   consumable: 0
   stackable: 0
   mainHand: 0
   offHand: 1
-  damageMin: 0
-  damageMax: 0
-  armor: 3
   armorSlot: 10
-  potency: 0
+  consumablePotency: 0
   buyPrice: 78
   sellPrice: 6

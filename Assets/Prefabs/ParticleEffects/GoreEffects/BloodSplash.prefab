@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6815218840133260822}
   - component: {fileID: 2553064233439677995}
+  - component: {fileID: 5671471055157834819}
   - component: {fileID: 4046489719844107267}
   m_Layer: 16
   m_Name: BloodSplash
@@ -40,7 +41,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6402256880773645892}
   serializedVersion: 6
-  lengthInSec: 5
+  lengthInSec: 0.05
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -4694,6 +4695,20 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &5671471055157834819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6402256880773645892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fabfd3107760834db3971f087cc8322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodParticle: {fileID: 2252801892484751033, guid: 9a3e72ca981f9e74694117a8ab2c41d0,
+    type: 3}
 --- !u!199 &4046489719844107267
 ParticleSystemRenderer:
   serializedVersion: 6

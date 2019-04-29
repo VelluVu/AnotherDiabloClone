@@ -1,0 +1,639 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &519925686768303325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5377271561939031021}
+  - component: {fileID: 6956926613567792445}
+  m_Layer: 0
+  m_Name: 2D Light Source (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5377271561939031021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519925686768303325}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: 4.13, y: -3.7988114, z: 0.45816246}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8851555351562514954}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!114 &6956926613567792445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519925686768303325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2eae93e34ecaed4ca8e54e8d2a1b73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+  lightAlpha: 1
+  lightSize: 2
+  lightCoreSize: 0.5
+  textureSize: 1
+  enableCollisions: 1
+  rotationEnabled: 1
+  eventHandling: 0
+  additive: 0
+  additive_alpha: 0.25
+  whenInsideCollider: 0
+  disableWhenInvisible: 0
+  lightSprite: 1
+  sprite: {fileID: 21300000, guid: 221fcbd098b598b49bade07ad3ef8c8b, type: 3}
+  layerCount: 1
+  layerSetting:
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  buffer: {fileID: 0}
+  sortingOrder: 0
+  sortingLayer: 
+  movement:
+    update: 0
+    updatePosition: {x: -5.9700003, y: -1.0800002, z: 0}
+    updateColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+    updateRotation: 180
+    updateSize: 2
+    updateAlpha: 1
+    move: 0
+    movePosition: {x: 0, y: 0, z: 0}
+  occlusionSize: 15
+--- !u!1 &1923252086924947708
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5401733701307207735}
+  - component: {fileID: 1845569286234481635}
+  m_Layer: 0
+  m_Name: 2D Light Source (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5401733701307207735
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923252086924947708}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: 1.28, y: -3.7988114, z: 0.45816246}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8851555351562514954}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!114 &1845569286234481635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923252086924947708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2eae93e34ecaed4ca8e54e8d2a1b73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+  lightAlpha: 1
+  lightSize: 2
+  lightCoreSize: 0.5
+  textureSize: 1
+  enableCollisions: 1
+  rotationEnabled: 1
+  eventHandling: 0
+  additive: 0
+  additive_alpha: 0.25
+  whenInsideCollider: 0
+  disableWhenInvisible: 0
+  lightSprite: 1
+  sprite: {fileID: 21300000, guid: 221fcbd098b598b49bade07ad3ef8c8b, type: 3}
+  layerCount: 1
+  layerSetting:
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  buffer: {fileID: 0}
+  sortingOrder: 0
+  sortingLayer: 
+  movement:
+    update: 0
+    updatePosition: {x: -8.820001, y: -1.0800002, z: 0}
+    updateColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+    updateRotation: 180
+    updateSize: 2
+    updateAlpha: 1
+    move: 0
+    movePosition: {x: 0, y: 0, z: 0}
+  occlusionSize: 15
+--- !u!1 &3344888237534740083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3817776347813750171}
+  - component: {fileID: 1638419345383682420}
+  m_Layer: 0
+  m_Name: 2D Light Source (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3817776347813750171
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3344888237534740083}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: 0.23, y: -3.7988114, z: 0.45816246}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8851555351562514954}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!114 &1638419345383682420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3344888237534740083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2eae93e34ecaed4ca8e54e8d2a1b73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+  lightAlpha: 1
+  lightSize: 2
+  lightCoreSize: 0.5
+  textureSize: 1
+  enableCollisions: 1
+  rotationEnabled: 1
+  eventHandling: 0
+  additive: 0
+  additive_alpha: 0.25
+  whenInsideCollider: 0
+  disableWhenInvisible: 0
+  lightSprite: 1
+  sprite: {fileID: 21300000, guid: 221fcbd098b598b49bade07ad3ef8c8b, type: 3}
+  layerCount: 1
+  layerSetting:
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  buffer: {fileID: 0}
+  sortingOrder: 0
+  sortingLayer: 
+  movement:
+    update: 0
+    updatePosition: {x: -9.870001, y: -1.0800002, z: 0}
+    updateColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+    updateRotation: 180
+    updateSize: 2
+    updateAlpha: 1
+    move: 0
+    movePosition: {x: 0, y: 0, z: 0}
+  occlusionSize: 15
+--- !u!1 &8851555351562514953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8851555351562514954}
+  - component: {fileID: 8851555351562514955}
+  - component: {fileID: 8851555351562514952}
+  m_Layer: 0
+  m_Name: RoomLighting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8851555351562514954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8851555351562514953}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.1, y: 2.7188113, z: -0.45816246}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5377271561939031021}
+  - {fileID: 8851555351588400621}
+  - {fileID: 7108773681923685403}
+  - {fileID: 5401733701307207735}
+  - {fileID: 3817776347813750171}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8851555351562514955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8851555351562514953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38380e8685a9a5e4c8d75a6c084bb1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+  roomType: 0
+--- !u!61 &8851555351562514952
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8851555351562514953}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 2.106268, y: -1.4813218}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5.472212, y: 4.413867}
+  m_EdgeRadius: 0
+--- !u!1 &8851555351588400619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8851555351588400621}
+  - component: {fileID: 8851555351588400618}
+  m_Layer: 0
+  m_Name: 2D Light Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8851555351588400621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8851555351588400619}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: 2.2300005, y: -3.7988114, z: 0.45816246}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8851555351562514954}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!114 &8851555351588400618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8851555351588400619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2eae93e34ecaed4ca8e54e8d2a1b73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+  lightAlpha: 1
+  lightSize: 2
+  lightCoreSize: 0.5
+  textureSize: 1
+  enableCollisions: 1
+  rotationEnabled: 1
+  eventHandling: 0
+  additive: 0
+  additive_alpha: 0.25
+  whenInsideCollider: 0
+  disableWhenInvisible: 0
+  lightSprite: 1
+  sprite: {fileID: 21300000, guid: 221fcbd098b598b49bade07ad3ef8c8b, type: 3}
+  layerCount: 1
+  layerSetting:
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  buffer: {fileID: 0}
+  sortingOrder: 0
+  sortingLayer: 
+  movement:
+    update: 0
+    updatePosition: {x: -7.87, y: -1.08, z: 0}
+    updateColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+    updateRotation: 180
+    updateSize: 2
+    updateAlpha: 1
+    move: 0
+    movePosition: {x: 0, y: 0, z: 0}
+  occlusionSize: 15
+--- !u!1 &9205036107927691120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7108773681923685403}
+  - component: {fileID: 8817999347270653067}
+  m_Layer: 0
+  m_Name: 2D Light Source (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7108773681923685403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205036107927691120}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: 3.19, y: -3.7988114, z: 0.45816246}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8851555351562514954}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!114 &8817999347270653067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205036107927691120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2eae93e34ecaed4ca8e54e8d2a1b73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+  lightAlpha: 1
+  lightSize: 2
+  lightCoreSize: 0.5
+  textureSize: 1
+  enableCollisions: 1
+  rotationEnabled: 1
+  eventHandling: 0
+  additive: 0
+  additive_alpha: 0.25
+  whenInsideCollider: 0
+  disableWhenInvisible: 0
+  lightSprite: 1
+  sprite: {fileID: 21300000, guid: 221fcbd098b598b49bade07ad3ef8c8b, type: 3}
+  layerCount: 1
+  layerSetting:
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  buffer: {fileID: 0}
+  sortingOrder: 0
+  sortingLayer: 
+  movement:
+    update: 0
+    updatePosition: {x: -6.9100003, y: -1.0800002, z: 0}
+    updateColor: {r: 0.23921569, g: 0.23921569, b: 0.23921569, a: 1}
+    updateRotation: 180
+    updateSize: 2
+    updateAlpha: 1
+    move: 0
+    movePosition: {x: 0, y: 0, z: 0}
+  occlusionSize: 15
