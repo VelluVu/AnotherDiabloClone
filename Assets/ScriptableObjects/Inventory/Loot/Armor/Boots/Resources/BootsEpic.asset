@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: BootsEpic
+  m_EditorClassIdentifier: 
+  itemName: Bronze Boots
+  description: '"Boots of Bronze, oh Boots of Bronze, protect me from the minotaurs
+    horns" - Pellmond the Minotaur Hunter'
+  itemID: 13
+  itemIcon: {fileID: 2800000, guid: 0d45ef6e215d0134e9f02333570423d4, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 2a055e39c1e7a2e42ae1891085f01543, type: 3}
+  - {fileID: 21300000, guid: c842c02c6eec3f246921428a32cf18b6, type: 3}
+  lootSprite: {fileID: 21300000, guid: c842c02c6eec3f246921428a32cf18b6, type: 3}
+  rarity: 3
+  itemLevel: 1
+  tags: 
+  attributes: []
+  randomAttributes: 1
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 0
+  armorSlot: 4
+  consumablePotency: 0
+  buyPrice: 0
+  sellPrice: 0

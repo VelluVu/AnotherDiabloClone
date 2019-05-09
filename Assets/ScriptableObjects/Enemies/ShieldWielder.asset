@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e8748d8b8c79947b93a84acb83c361, type: 3}
   m_Name: ShieldWielder
   m_EditorClassIdentifier: 
-  _name: Shooter
-  _moveSpeed: 30
-  _chaseMultiplier: 1.5
-  _jumpForce: 2
+  _name: ShieldWielder
+  _moveSpeed: 2
+  _chaseMultiplier: 1
+  _jumpForce: 1
   _attackSpeed: 3
-  _attackDamage: 10
-  _health: 30
+  _attackDamage: 25
+  _health: 100
   _mana: 0
   _armor: 2
   _fireResistance: 0
@@ -28,6 +28,7 @@ MonoBehaviour:
   _physicalResistance: 0
   _xpReward: 50
   _level: 1
+  _enemyTypeForSound: 0
   _enemyType: 0
   _groundEnemyType: 4
   _flyingEnemyType: 2

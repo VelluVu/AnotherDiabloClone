@@ -65,10 +65,13 @@ public class LookDecision : Decision
                         
                         if (hit.collider.gameObject.CompareTag("Wall"))
                         {
+                            controller.chaseTarget = null;
                             return false;
+                            
                         }
                         if(hit.collider.gameObject.CompareTag("Player"))
                         {
+                            controller.chaseTarget = hit.transform;
                             return true;
                         }
                     }
@@ -78,13 +81,13 @@ public class LookDecision : Decision
             }
         }
 
-
         if ( controller.alertedByEvent )
         {
             controller.chaseTarget = ReferenceHolder.instance.player.gameObject.transform;
             return true;
         }
 
+        controller.chaseTarget = null;
         return false;
     }
 }

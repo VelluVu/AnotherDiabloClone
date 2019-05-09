@@ -15,12 +15,14 @@ public class UIActivate : MonoBehaviour
     private void OnEnable ( )
     {
         DoorLeverScript.DoorLeverActivationInfoDurationEvent += TextDisplayDuration;
+        DoorScript.DoorActivationMessageDurationEvent += TextDisplayDuration;
         ElevatorLever.ElevatorLeverActivationInfoDurationEvent += TextDisplayDuration;
 
     }
     private void OnDisable ( )
     {
         DoorLeverScript.DoorLeverActivationInfoDurationEvent -= TextDisplayDuration;
+        DoorScript.DoorActivationMessageDurationEvent -= TextDisplayDuration;
         ElevatorLever.ElevatorLeverActivationInfoDurationEvent -= TextDisplayDuration;
     }
 

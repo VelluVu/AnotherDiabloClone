@@ -12,12 +12,26 @@ public class EventMessage : MonoBehaviour
     {
         DoorLeverScript.LeverActivationInfoEvent += DoorLeverActivateMessage;
         ElevatorLever.OnElevatorLeverActivateEvent += ElevatorLeverActivateMessage;
+        DoorScript.doorActivateMessageEvent += DoorMessageActivateMessage;
+        
     }
 
     private void OnDisable ( )
     {
         DoorLeverScript.LeverActivationInfoEvent -= DoorLeverActivateMessage;
         ElevatorLever.OnElevatorLeverActivateEvent -= ElevatorLeverActivateMessage;
+        DoorScript.doorActivateMessageEvent -= DoorMessageActivateMessage;
+    }
+
+    public void DoorMessageActivateMessage ( string message, Color color, float fontSize, float fadeTime )
+    {
+
+        text.text = message;
+        text.color = color;
+        text.fontSize = fontSize;
+
+        StartCoroutine ( FadeTextToFullAlpha ( fadeTime * 0.5f, text ) );
+
     }
 
     public void DoorLeverActivateMessage( string message, Color color, float fontSize, float fadeTime )

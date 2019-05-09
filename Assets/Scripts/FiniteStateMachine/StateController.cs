@@ -16,6 +16,8 @@ public class StateController : MonoBehaviour
     [Tooltip ( "State To Remain" )]
     public State remainState;
 
+    AudioSource audioSource;
+
     //EnemyStats? Scriptable Object Class?
     [Tooltip ( "EnemyStats Class" )]
     public EnemyStats enemyStats;
@@ -27,6 +29,9 @@ public class StateController : MonoBehaviour
 
     public delegate void EnemyTakeDamageDelegate ( GameObject origin, float damage, DamageType damageType );
     public static event EnemyTakeDamageDelegate enemyTakeDamageEvent;
+
+    public delegate void EnemyPlaySoundDelegate ( AudioSource source, EnemySoundType soundToPlay, EnemyTypeForSound enemyTypeForSound );
+    public static event EnemyPlaySoundDelegate EnemyPlaySoundEvent;
 
     public delegate void EnemyDealDamageDelegate ( GameObject target, float damage, DamageType damageType, int level );
     public static event EnemyDealDamageDelegate enemyDealDamageEvent;
@@ -60,8 +65,12 @@ public class StateController : MonoBehaviour
     [Tooltip ( "Radius for circleCasts" )] [Range ( 0.01f, 5f )] public float circleCastRadius;
     public float fallToDeathHeight;
     float slowEffect;
-
-    [ Tooltip ( "For SpiderBoss" )] public float riseUpTime;
+    float weaknessAmount;
+    [Space]
+    public float spiderEggCD;
+    [Space]
+    [Header ( "Boss Variables" )]
+    [Tooltip ( "For SpiderBoss" )] public float riseUpTime;
     public float riseUpTimeCounter;
     public bool isUpPosition;
     public bool changedPos;
@@ -69,6 +78,9 @@ public class StateController : MonoBehaviour
     public bool phase2;
     public bool phase3;
     public bool phase4;
+    [Tooltip ( "Phase Positions for Boss / patrol points" )] public List<Transform> positions = new List<Transform> ( );
+    public Transform targetWP;
+    public int wPindex;
 
     [Header ( "Flying enemy motion variables" )]
     [Range ( 0.1f, 5f )] public float amplitude;
@@ -100,7 +112,7 @@ public class StateController : MonoBehaviour
     [HideInInspector] public Vector3 leftDirection;
     [HideInInspector] public Vector3 rightDirection;
     [HideInInspector] public RaycastHit2D gaze;
-    [Tooltip ( "Phase Positions for Boss" )] public List<Transform> positions = new List<Transform> ( );
+
     #endregion
 
     #region Booleans
@@ -111,7 +123,9 @@ public class StateController : MonoBehaviour
     public bool hasTurn;
     public bool hasSplit;
     public bool alertedByEvent;
-    public bool notHatchedEgg;
+    public bool rdyToHatch = true;
+    public bool stunned;
+    public bool weakness;
     bool slowed;
     #endregion
 
@@ -126,11 +140,15 @@ public class StateController : MonoBehaviour
         }
         rb = gameObject.GetComponent<Rigidbody2D> ( );
         col = gameObject.GetComponent<BoxCollider2D> ( );
+        audioSource = gameObject.GetComponent<AudioSource> ( );
         targetDir = new Vector2 ( 1, 0 );
         leftDirection = new Vector3 ( 0, -180, 0 );
         rightDirection = new Vector3 ( 0, 0, 0 );
+        wPindex = 0;
+        targetWP = positions [ wPindex ];
         attackRdy = true;
         slowEffect = 1;
+        weaknessAmount = 1;
         if ( enemyStats.enemyType != EnemyType.Boss )
         {
             aiActive = true; //Asetetaan herätessä aktiiviseksi bossi asetetaan aktiiviseksi kun on saapunut alueelle
@@ -139,11 +157,19 @@ public class StateController : MonoBehaviour
 
     private void OnEnable ( )
     {
+        wPindex = 0;
+        targetWP = positions [ wPindex ];
         StartCoroutine ( AlertedByEventTime ( alertedByEventDuration ) );
-        StartCoroutine ( AttackHitBoxDuration ( ) );
-        StartCoroutine ( AttackCooldown() );
+        StartCoroutine ( AttackCooldown ( ) );
         StartCoroutine ( RemoveSlow ( ) );
         StartCoroutine ( EggCd ( ) );
+        StartCoroutine ( WeaknessDuration ( 0.1f ) );
+        if ( enemyStats.enemyType == EnemyType.Boss )
+        {
+            StartCoroutine ( AttackBox ( ) );
+        }
+        //StartCoroutine ( StunDuration (0.1f));
+        //StartCoroutine ( FearTime ( 0.1f ) );
         Player.playerDealDamageEvent += TakeDamage;
         Player.playerDeathEvent += PlayerIsDeadWeWin;
         CheckPoint.checkPointEvent += DestroySpawnings;
@@ -164,12 +190,11 @@ public class StateController : MonoBehaviour
         SpiderEgg.eggDestroyedEvent -= HatchedDestroyed;
     }
 
-    private void Update ( )
+    private void FixedUpdate ( )
     {
-        //Debug.Log ( currentState.name );
-        if ( Input.GetButtonDown ( "Submit" ) )
+        if ( stunned )
         {
-            aiActive = true;
+            aiActive = false;
         }
 
         if ( !aiActive )
@@ -189,6 +214,35 @@ public class StateController : MonoBehaviour
         CheckDirection ( );
         EnemyFallToDeath ( );
         CheckSlows ( );
+    }
+
+    public void SetWaypoints ( GameObject parent, List<Transform> waypoints )
+    {
+        positions = waypoints;
+    }
+
+    /// <summary>
+    /// apply fear with this function
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="time"></param>
+    public void ApplyFear ( GameObject target, float time )
+    {
+        if ( target == gameObject )
+        {
+            aiActive = false;
+            StartCoroutine ( FearTime ( time ) );
+        }
+    }
+
+    public void ApplyWeakness ( GameObject target, float percent, float time )
+    {
+        if ( target == gameObject )
+        {
+            weakness = true;
+            weaknessAmount += percent * 0.01f;
+            StartCoroutine ( WeaknessDuration ( time ) );
+        }
     }
 
     private void CheckSlows ( )
@@ -214,8 +268,28 @@ public class StateController : MonoBehaviour
         }
         else if ( !dirRight )
         {
-
             transform.eulerAngles = leftDirection;
+        }
+
+        if ( rb.velocity.x > 0f )
+        {
+            dirRight = true;
+        }
+        if ( rb.velocity.x < 0f )
+        {
+            dirRight = false;
+        }
+
+        if ( chaseTarget != null && !stunned && enemyStats.groundEnemyType != GroundEnemyType.Spider )
+        {
+            if ( chaseTarget.position.x - transform.position.x < 0f )
+            {
+                dirRight = false;
+            }
+            if ( chaseTarget.position.x - transform.position.x > 0f )
+            {
+                dirRight = true;
+            }
         }
     }
 
@@ -348,7 +422,7 @@ public class StateController : MonoBehaviour
     {
         if ( parent == gameObject )
         {
-            notHatchedEgg = false;
+            StartCoroutine ( EggCd ( ) );
         }
     }
 
@@ -369,9 +443,30 @@ public class StateController : MonoBehaviour
         {
             attackRdy = false;
             rb.AddForce ( new Vector2 ( rb.velocity.x * 2, 2 ) * attackJump, ForceMode2D.Impulse );
-            attackBox.GetComponent<BoxCollider2D> ( ).enabled = true;
             animator.SetTrigger ( "Attack" );
+            if ( enemyStats.enemyType == EnemyType.Boss)
+            {            
+                StartCoroutine ( AttackBox ( ) );
+            }
+            if ( EnemyPlaySoundEvent != null )
+            {
+                EnemyPlaySoundEvent ( audioSource, EnemySoundType.EnemyAttack, enemyStats.enemyTypeForSound );
+            }
             StartCoroutine ( AttackCooldown ( ) );
+        }
+    }
+
+    public Vector2 GetTargetPosFromVector ( Vector2 v )
+    {
+        return new Vector2 ( v.x - transform.position.x, v.y - transform.position.y );
+    }
+
+    public void SetStun ( GameObject target, float time )
+    {
+        if ( target == gameObject )
+        {
+            stunned = true;
+            StartCoroutine ( StunDuration ( time ) );
         }
     }
 
@@ -402,20 +497,6 @@ public class StateController : MonoBehaviour
         StartCoroutine ( dotActivated ( target, dotDamage, duration, damageType ) );
     }
 
-    IEnumerator dotActivated ( GameObject target, float dotDamage, int duration, DamageType damageType )
-    {
-
-        int counter = 0;
-        while ( counter < duration )
-        {
-
-            TakeDamage ( target, dotDamage, damageType );
-            counter++;
-            yield return new WaitForSeconds ( 1 );
-        }
-
-    }
-
     /// <summary>
     /// Tekee vahinkoa pelaajaan
     /// </summary>
@@ -437,17 +518,38 @@ public class StateController : MonoBehaviour
     /// Laskee tulevan vahingon lopullisen määrän
     /// </summary>
     /// <param name="dmg">Tuleva vahinko</param>
-    public void TakeDamage ( GameObject target, float dmg, DamageType damageType )
+    public void TakeDamage ( GameObject target, float dmg, bool critical, DamageType damageType, bool skill, float skillDmgPercent )
     {
+
         Color color = Color.red;
+        if ( critical )
+        {
+            color = new Color ( 1f, 0.5f, 0, 1 );
+        }
+
+        float skillDmg = 1;
         float calculatedDamage;
+        if ( skill )
+        {
+            skillDmg = skillDmgPercent * 0.01f;
+        }
 
         if ( target == gameObject )
         {
+            if ( ReferenceHolder.instance.player.transform.position.x < transform.position.x )
+            {
+                dirRight = false;
+            }
+
+            if ( ReferenceHolder.instance.player.transform.position.x > transform.position.x )
+            {
+                dirRight = true;
+
+            }
             if ( damageType == DamageType.Raw )
             {
                 color = Color.red;
-                calculatedDamage = Mathf.Round ( dmg );
+                calculatedDamage = Mathf.Round ( dmg * weaknessAmount );
 
                 if ( calculatedDamage <= 0 )
                 {
@@ -461,7 +563,7 @@ public class StateController : MonoBehaviour
             else if ( damageType == DamageType.Poison )
             {
                 color = Color.magenta;
-                calculatedDamage = dmg * ( 1 - ( ( enemyStats.poisonResistance.Value ) / ( 20 * enemyStats.level + enemyStats.poisonResistance.Value) ) );
+                calculatedDamage = dmg * skillDmg * weaknessAmount * ( 1 - ( ( enemyStats.poisonResistance.Value ) / ( 20 * enemyStats.level + enemyStats.poisonResistance.Value ) ) );
                 Debug.Log ( calculatedDamage );
                 calculatedDamage = Mathf.Round ( calculatedDamage );
 
@@ -475,7 +577,7 @@ public class StateController : MonoBehaviour
             else if ( damageType == DamageType.Fire )
             {
                 color = Color.red;
-                calculatedDamage = dmg * ( 1 - ( ( enemyStats.fireResistance.Value ) / ( 20 * enemyStats.level + enemyStats.fireResistance.Value) ) );
+                calculatedDamage = dmg * skillDmg * weaknessAmount * ( 1 - ( ( enemyStats.fireResistance.Value ) / ( 20 * enemyStats.level + enemyStats.fireResistance.Value ) ) );
                 Debug.Log ( calculatedDamage );
                 calculatedDamage = Mathf.Round ( calculatedDamage );
 
@@ -489,7 +591,7 @@ public class StateController : MonoBehaviour
             else if ( damageType == DamageType.Cold )
             {
                 color = Color.cyan;
-                calculatedDamage = dmg * ( 1 - ( ( enemyStats.coldResistance.Value ) / ( 20 * enemyStats.level + enemyStats.coldResistance.Value ) ) );
+                calculatedDamage = dmg * skillDmg * weaknessAmount * ( 1 - ( ( enemyStats.coldResistance.Value ) / ( 20 * enemyStats.level + enemyStats.coldResistance.Value ) ) );
                 Debug.Log ( calculatedDamage );
                 calculatedDamage = Mathf.Round ( calculatedDamage );
 
@@ -505,7 +607,7 @@ public class StateController : MonoBehaviour
             else if ( damageType == DamageType.Lightning )
             {
                 color = Color.yellow;
-                calculatedDamage = dmg * ( 1 - ( ( enemyStats.lightningResistance.Value ) / ( 20 * enemyStats.level + enemyStats.lightningResistance.Value ) ) );
+                calculatedDamage = dmg * skillDmg * weaknessAmount * ( 1 - ( ( enemyStats.lightningResistance.Value ) / ( 20 * enemyStats.level + enemyStats.lightningResistance.Value ) ) );
                 //armor lisää dmg enemmän crit?
                 Debug.Log ( calculatedDamage );
                 calculatedDamage = Mathf.Round ( calculatedDamage );
@@ -520,7 +622,7 @@ public class StateController : MonoBehaviour
             }
             else
             {
-                calculatedDamage = dmg - enemyStats.armor.Value;
+                calculatedDamage = dmg * skillDmg * weaknessAmount - enemyStats.armor.Value;
                 calculatedDamage = Mathf.Round ( calculatedDamage );
 
                 if ( calculatedDamage <= 0 )
@@ -531,6 +633,15 @@ public class StateController : MonoBehaviour
                 {
                     enemyStats.health.BaseValue -= calculatedDamage;
                 }
+            }
+
+            if ( calculatedDamage <= 0 )
+            {
+                if ( enemyFlashEvent != null )
+                {
+                    StartCoroutine ( enemyFlashEvent ( gameObject, 0.1f, Color.grey, true ) );
+                }
+                return;
             }
 
             if ( enemyNotifyEvent != null )
@@ -548,16 +659,21 @@ public class StateController : MonoBehaviour
                 enemyTakeDamageEvent ( gameObject, calculatedDamage, damageType );
             }
 
+            if ( EnemyPlaySoundEvent != null )
+            {
+                EnemyPlaySoundEvent ( audioSource, EnemySoundType.EnemyPain, enemyStats.enemyTypeForSound );
+            }
+
             if ( enemyStats.health.Value <= 0 )
             {
                 Die ( );
             }
         }
-
     }
 
     public void PlayerIsDeadWeWin ( Transform pTransform )
     {
+
         aiActive = false; // lopettaa toiminnan kun pelaaja kuolee
 
     }
@@ -569,6 +685,11 @@ public class StateController : MonoBehaviour
             enemyDeathEvent ( head.transform, enemyStats.xpReward, this );
         }
 
+        if ( EnemyPlaySoundEvent != null )
+        {
+            EnemyPlaySoundEvent ( audioSource, EnemySoundType.EnemyDeath, enemyStats.enemyTypeForSound );
+        }
+
         if ( enemyStats.groundEnemyType == GroundEnemyType.Splitter && !hasSplit )
         {
             hasSplit = true;
@@ -576,21 +697,43 @@ public class StateController : MonoBehaviour
             Vector2 rightSplitPos = new Vector2 ( transform.position.x + Random.Range ( 0f, 0.4f ), transform.position.y );
             GameObject leftSplitted = Instantiate ( gameObject, leftSplitPos, Quaternion.identity );
             GameObject rightSplitted = Instantiate ( gameObject, rightSplitPos, Quaternion.identity );
-            leftSplitted.GetComponent<StateController> ( ).hasSplit = true;
-            rightSplitted.GetComponent<StateController> ( ).hasSplit = true;
             leftSplitted.transform.localScale *= 0.6f;
             rightSplitted.transform.localScale *= 0.6f;
-            leftSplitted.GetComponent<StateController> ( ).dirRight = false;
-            rightSplitted.GetComponent<StateController> ( ).dirRight = true;
-            leftSplitted.GetComponent<StateController> ( ).chaseTarget = null;
-            rightSplitted.GetComponent<StateController> ( ).chaseTarget = null;
-            gameObject.SetActive ( false );
+            StateController leftController = leftSplitted.GetComponent<StateController> ( );
+            StateController rightController = rightSplitted.GetComponent<StateController> ( );
+            leftController.SetWaypoints ( leftSplitted, positions );
+            rightController.SetWaypoints ( rightSplitted, positions );
+            leftController.hasSplit = true;
+            rightController.hasSplit = true;
+            leftController.dirRight = false;
+            rightController.dirRight = true;
+            leftController.chaseTarget = null;
+            rightController.chaseTarget = null;
+
+            SpriteRenderer [ ] renderers = gameObject.GetComponentsInChildren<SpriteRenderer> ( );
+            foreach ( var item in renderers )
+            {
+                item.enabled = false;
+            }
+            col.enabled = false;
+            gameObject.GetComponent<StateController> ( ).enabled = false;
+            rb.isKinematic = true;
+
+            Destroy ( gameObject, 5f );
         }
         else
         {
-            Debug.Log ( enemyStats.name + " IS DEAD" );
-            //Instantiate death prefab
-            Destroy ( gameObject );
+
+            SpriteRenderer [ ] renderers = gameObject.GetComponentsInChildren<SpriteRenderer> ( );
+            foreach ( var item in renderers )
+            {
+                item.enabled = false;
+            }
+            col.enabled = false;
+            gameObject.GetComponent<StateController> ( ).enabled = false;
+            rb.isKinematic = true;
+
+            Destroy ( gameObject, 5f );
         }
 
     }
@@ -598,12 +741,12 @@ public class StateController : MonoBehaviour
     public void OnEnemyTakeDamage ( GameObject origin, float damage, DamageType damageType )
     {
         Collider2D [ ] cols = Physics2D.OverlapCircleAll ( transform.position, 3f, targetLayer );
-        Debug.Log ( gameObject.name + " Hoksaa : Toinen vihu pulassa" );
+        //Debug.Log ( gameObject.name + " Hoksaa : Toinen vihu pulassa" );
         for ( int i = 0 ; i < cols.Length ; i++ )
         {
             if ( cols [ i ].gameObject.CompareTag ( "Player" ) )
             {
-                Debug.Log ( cols [ i ].name + " Lähellä" );
+                //Debug.Log ( cols [ i ].name + " Lähellä" );
                 chaseTarget = cols [ i ].gameObject.transform;
                 alertedByEvent = true;
                 break;
@@ -635,11 +778,66 @@ public class StateController : MonoBehaviour
     }
 
     #region Coroutines
+
+    IEnumerator dotActivated ( GameObject target, float dotDamage, int duration, DamageType damageType )
+    {
+
+        int counter = 0;
+        while ( counter < duration )
+        {
+
+            TakeDamage ( target, dotDamage, false, damageType, true, 100 );
+            counter++;
+            yield return new WaitForSeconds ( 1 );
+        }
+
+    }
+
+    IEnumerator AttackBox()
+    {      
+
+        yield return new WaitForSeconds ( 0.3f );
+        attackBox.GetComponent<BoxCollider2D> ( ).enabled = true;
+        StartCoroutine ( CloseBox ( ) );
+    }
+    IEnumerator CloseBox()
+    {
+        yield return new WaitForSeconds ( 0.3f );
+        attackBox.GetComponent<BoxCollider2D> ( ).enabled = false;
+    }
+
+    IEnumerator FearTime ( float time )
+    {
+        if ( dirRight )
+        {
+            transform.Translate ( Vector3.left * enemyStats.moveSpeed.Value * moveSpeedScale * 0.5f * Time.deltaTime );
+        }
+        else
+        {
+            transform.Translate ( Vector3.right * enemyStats.moveSpeed.Value * moveSpeedScale * 0.5f * Time.deltaTime );
+        }
+        yield return new WaitForSeconds ( time );
+        aiActive = true;
+    }
+
+    IEnumerator WeaknessDuration ( float time )
+    {
+        yield return new WaitForSeconds ( time );
+        weakness = false;
+        weaknessAmount = 1;
+    }
+
     IEnumerator AttackCooldown ( )
     {
-        yield return new WaitForSeconds ( enemyStats.attackSpeed.Value );
+        yield return new WaitForSeconds ( enemyStats.attackSpeed.Value + 0.2f );
         attackRdy = true;
-        attackBox.GetComponent<BoxCollider2D> ( ).enabled = false;
+    }
+
+    IEnumerator StunDuration ( float time )
+    {
+        yield return new WaitForSeconds ( time );
+        stunned = false;
+        aiActive = true;
     }
 
     IEnumerator OverTimeDamage ( float dmg, float duration, float tickSpeed, float colorFlashSpeed, Color collor, DamageType damageType )
@@ -660,7 +858,7 @@ public class StateController : MonoBehaviour
             }
             if ( enemyTakeDamageEvent != null )
             {
-                enemyTakeDamageEvent ( gameObject, dmg , damageType );
+                enemyTakeDamageEvent ( gameObject, dmg, damageType );
             }
 
         }
@@ -668,22 +866,15 @@ public class StateController : MonoBehaviour
 
     IEnumerator EggCd ( )
     {
-        yield return new WaitForSeconds ( 1f );
-        notHatchedEgg = false;
-    }
-
-    IEnumerator AttackHitBoxDuration ( )
-    {
-        yield return new WaitForSeconds ( enemyStats.attackSpeed.Value );
-        attackBox.GetComponent<BoxCollider2D> ( ).enabled = false;
-
+        yield return new WaitForSeconds ( spiderEggCD );
+        rdyToHatch = true;
     }
 
     IEnumerator AlertedByEventTime ( float time )
     {
         yield return new WaitForSeconds ( time );
         alertedByEvent = false;
-        Debug.Log ( gameObject.name + " No longer alerted from event" );
+        //Debug.Log ( gameObject.name + " No longer alerted from event" );
     }
 
     public IEnumerator WaitTime ( float time )

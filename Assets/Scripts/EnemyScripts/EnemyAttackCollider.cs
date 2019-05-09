@@ -9,7 +9,6 @@ using UnityEngine;
 public class EnemyAttackCollider : MonoBehaviour
 {
 
-    bool hasDealtDmg;
     public GameObject bloodSplash;
     public DamageType damageType;
     float nexHit;
@@ -24,26 +23,12 @@ public class EnemyAttackCollider : MonoBehaviour
     {
         if ( collision.gameObject.CompareTag ( "Player" ) && Time.time > nexHit)
         {
-            nexHit = Time.time + gameObject.GetComponentInParent<EnemyStats> ( ).attackSpeed.Value;
-            //Debug.Log ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.name + " Hits you" );
-            //hasDealtDmg = true;
+            nexHit = Time.time + 0.4f;      
             GameObject createdObject = Instantiate(bloodSplash, collision.gameObject.GetComponent<Collider2D>().bounds.ClosestPoint(transform.position), Quaternion.identity);
             createdObject.transform.SetParent(ReferenceHolder.instance.goreHolder);
             Destroy(createdObject, 2f);
             gameObject.GetComponentInParent<StateController> ( ).DealDamage ( collision.gameObject, 0, damageType );
-            //StartCoroutine ( DmgCooldown ( ) );
-
+            
         }
     }
-
-    /// <summary>
-    /// Mahdollistaa uuden vahingon teon resettaamalla booleanin
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator DmgCooldown ( )
-    {
-        yield return new WaitForSeconds ( gameObject.GetComponentInParent<StateController> ( ).enemyStats.attackSpeed.Value );
-        hasDealtDmg = false;
-    }
-
 }

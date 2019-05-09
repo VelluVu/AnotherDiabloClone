@@ -9,13 +9,17 @@ using UnityEngine;
 public class CheckPoint : MonoBehaviour
 {
    
-    public GameObject checkPointMenu;
+    //public GameObject checkPointMenu;
     bool interactingCheckPoint;
     bool ableToInteractCheckPoint;
     public AreaName areaName;
+    public bool visited;
 
     public delegate void CheckPointDelegate (  );
     public static event CheckPointDelegate checkPointEvent;
+
+    public delegate void CheckPointVisitDelegate ( Transform transform, int checkPointID );
+    public static event CheckPointVisitDelegate CheckPointVisitEvent;
 
 
     private void OnEnable ( )
@@ -42,8 +46,19 @@ public class CheckPoint : MonoBehaviour
        
         if ( collision.gameObject.CompareTag("Player")  && !interactingCheckPoint )
         {
+
             ableToInteractCheckPoint = true;
+            visited = true;
+
             
+            //FindObjectOfType<SaveLoadManager> ( ).SaveGame ( ( int ) areaName );
+            
+
+            if (CheckPointVisitEvent != null)
+            {
+                CheckPointVisitEvent(transform, (int) areaName);
+                
+            }
         }
     }
 
@@ -52,6 +67,7 @@ public class CheckPoint : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") )
         {
             ableToInteractCheckPoint = false;
+            interactingCheckPoint = false;
         }
     }
 
@@ -60,28 +76,27 @@ public class CheckPoint : MonoBehaviour
 
         EnterCheckPoint ( );
 
-
     }
 
     public void EnterCheckPoint()
     {
-        if ( ableToInteractCheckPoint && Input.GetButtonDown ( "Interaction" ) )
+
+        if ( ableToInteractCheckPoint && Input.GetButtonDown ( "Interaction" ) && !interactingCheckPoint )
         {
+
+            interactingCheckPoint = true;
+
             if ( checkPointEvent != null )
             {
                 checkPointEvent ( );
             }
-
-            interactingCheckPoint = true;
-
+            
             Time.timeScale = 0;
         }
     }
 
     public void ResetPlayerPosition( Transform transform )
     {
-
-        transform.position = this.transform.position;
 
         //if ( checkPointEvent != null )
         //{

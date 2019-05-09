@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public delegate IEnumerator PlayerFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
     public static event PlayerFlashDelegate playerFlashEvent;
 
-    public delegate void PlayerDealDamageDelegate ( GameObject enemy, float damage, DamageType damageType );
+    public delegate void PlayerDealDamageDelegate ( GameObject enemy, float damage, bool critical, DamageType damageType, bool skill, float skillDmgPercent );
     public static event PlayerDealDamageDelegate playerDealDamageEvent;
 
     public delegate void PlayerNotifyDelecate ( Transform transform, string message, Color color );
@@ -41,6 +41,9 @@ public class Player : MonoBehaviour
     public delegate void PlayerAliveDelegate ( );
     public static event PlayerAliveDelegate playerAliveEvent;
 
+    public delegate void PlayerSoundDelegate ( AudioSource source, PlayerSoundType playerSoundType );
+    public static event PlayerSoundDelegate PlayerSoundEvent;
+
     #endregion
 
     #region GameObjects
@@ -49,6 +52,9 @@ public class Player : MonoBehaviour
     public GameObject leftHand;
     GameObject ToolTip;
     public GameObject levelupEffect;
+    public GameObject dashEffect;
+    public Transform dashmoveParticlePos;
+    ParticleSystem dashmoveeff;
     #endregion
 
     #region EssentialComponents
@@ -63,6 +69,8 @@ public class Player : MonoBehaviour
     public LayerMask enemyLayer;
     public WeaponPlaceHolder main;
     public WeaponPlaceHolder off;
+    AudioSource audioSource;
+    public AudioSource walkAudio;
     RaycastHit hit;
     Vector2 mousePos;
     Vector2 wallNormal;
@@ -70,11 +78,13 @@ public class Player : MonoBehaviour
 
     #region Booleans
     [Header ( "Action Booleans" )]
+    bool isMainAttackRdy = true;
+    bool isOffAttackRdy = true;
     public bool isSpellRdy = true;
-    public bool isMainAttackRdy = true;
-    public bool isOffAttackRdy = true;
     public bool readyToDash = true;
     public bool directionRight;
+    public bool canTurn = true;
+    public bool stunned;
     public bool canWallJump;
     public bool isBlocking;
     public bool isAir;
@@ -90,6 +100,11 @@ public class Player : MonoBehaviour
     public bool climbingLadder;
     public bool climbingRobe;
     public bool jump;
+    public bool leaping;
+    public bool inCombat;
+    public bool weakness;
+    public bool stopped;
+    float weaknessAmount;
 
     [Header ( "Ability Unlocks" )]
     public bool isDoubleJumpLearned;
@@ -129,7 +144,7 @@ public class Player : MonoBehaviour
     [Range ( 0.1f, 5f )] public float speedScale;
     [Range ( 0.1f, 5f )] public float dashTime;
     [Range ( 0.1f, 5f )] public float dashCooldown;
-    [Range ( 0.1f, 5f )] public float dashSpeed;
+    [Range ( 0.1f, 10f )] public float dashSpeed;
 
     [Header ( "Jump variables" )]
     [Range ( 0.1f, 5f )] public float extraJumpScale;
@@ -145,12 +160,13 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Extra Variables
-    
+
     int jumpsCount;
     private float fallStartYPos;
     private float fallDamage;
     float fallTime;
     float fallDamageMultiplierBonus;
+    float nextSwing;
     #endregion
 
     #region Unity Monobehavior Functions
@@ -161,6 +177,7 @@ public class Player : MonoBehaviour
         ToolTip = FindObjectOfType<ToolTip> ( ).gameObject;
         main = rightHand.GetComponent<WeaponPlaceHolder> ( );
         off = leftHand.GetComponent<WeaponPlaceHolder> ( );
+        Time.timeScale = 1;
     }
     private void OnEnable ( )
     {
@@ -182,9 +199,10 @@ public class Player : MonoBehaviour
     {
         playerRB = gameObject.GetComponent<Rigidbody2D> ( );
         heroAnim = gameObject.GetComponentInChildren<Animator> ( );
-        //rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponSpeed = stats.baseAttackSpeed.Value;
-        //rightHand.GetComponent<WeaponPlaceHolder> ( )._weaponDamage = stats.baseDamage.Value;
+        audioSource = gameObject.GetComponent<AudioSource> ( );
+        dashmoveeff = gameObject.GetComponentInChildren<ParticleSystem> ( );
         slowEffect = 1;
+        weaknessAmount = 1;
         newGravity = -( 2 * jumpHeightMax ) / ( timeToJumpApex * timeToJumpApex );
         jumpVelocityMax = Mathf.Abs ( newGravity ) * timeToJumpApex;
         jumpVelocityMin = Mathf.Sqrt ( 2 * Mathf.Abs ( newGravity ) * jumpHeightMin );
@@ -192,19 +210,39 @@ public class Player : MonoBehaviour
     }
     private void Update ( )
     {
+        newGravity = -( 2 * jumpHeightMax ) / ( timeToJumpApex * timeToJumpApex );
+        jumpVelocityMax = Mathf.Abs ( newGravity ) * timeToJumpApex;
+        jumpVelocityMin = Mathf.Sqrt ( 2 * Mathf.Abs ( newGravity ) * jumpHeightMin );
 
         CalculateVelocity ( );
         HandleWallSliding ( );
         HandleLadderClimbing ( );
         HandleRobeClimb ( );
         HandleSlows ( );
-        UpdateDirection ( );
 
-        if ( !isDead && !isBlocking )
-            movement.Move ( new Vector2 ( newVelocity.x * speedScale * slowEffect, newVelocity.y * jumpScale * slowEffect ) * Time.deltaTime );
+        if ( canTurn )
+        {
+            UpdateDirection ( );
+        }
+
+        if ( !isDead && !isBlocking && !stopped)
+        {
+            if ( !stunned )
+            {
+                movement.Move ( new Vector2 ( newVelocity.x * speedScale * slowEffect, newVelocity.y * jumpScale * slowEffect ) * Time.deltaTime );
+
+            }
+            else
+            {
+                movement.Move ( new Vector2 ( 0, newVelocity.y * jumpScale * slowEffect ) * Time.deltaTime );
+            }
+
+        }
 
         if ( newVelocity.x <= 0.1f && newVelocity.x >= -0.1f )
+        {
             TurnMousePointerDir ( );
+        }
 
         if ( movement.collisions.above || movement.collisions.below )
         {
@@ -224,6 +262,11 @@ public class Player : MonoBehaviour
         {
             Die ( );
         }
+
+        if ( !climbingLadder && !climbingRobe )
+        {
+            heroAnim.speed = 1;
+        }
     }
     #endregion
 
@@ -232,41 +275,58 @@ public class Player : MonoBehaviour
     { directionalInput = input; }
     public void OnJumpInputDown ( )
     {
+        if ( stunned )
+        {
+            return;
+        }
         if ( !isBlocking )
         {
             jump = true;
-            heroAnim.SetTrigger ( "Jump" );
+
             if ( wallSliding )
             {
                 if ( wallDirX == directionalInput.x )
                 {
                     newVelocity.x = -wallDirX * wallJumpClimb.x;
                     newVelocity.y = wallJumpClimb.y;
-                    
+
                 }
                 else if ( directionalInput.x == 0 )
                 {
                     newVelocity.x = -wallDirX * wallJumpOff.x;
                     newVelocity.y = wallJumpOff.y;
-                   
+
                 }
                 else
                 {
                     newVelocity.x = -wallDirX * wallLeap.x;
                     newVelocity.y = wallLeap.y;
-                    
+
                 }
             }
             if ( movement.collisions.below || !movement.collisions.below && jumpsCount >= 0 )
             {
-                
+
                 jumpsCount--;
                 newVelocity.y = jumpVelocityMax;
+
+                if ( PlayerSoundEvent != null )
+                {
+                    PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerJump );
+                }
+                heroAnim.SetTrigger ( "Jump" );
+
             }
-            if ( climbingLadder || climbingRobe )
+            if ( ( climbingLadder || climbingRobe ) && jump )
             {
                 newVelocity.y = jumpVelocityMax;
-              
+
+                if ( PlayerSoundEvent != null )
+                {
+                    PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerJump );
+                }
+                heroAnim.SetTrigger ( "Jump" );
+
             }
         }
     }
@@ -281,21 +341,16 @@ public class Player : MonoBehaviour
     }
     public void GetSecondMouseButton ( )
     {
+        if ( stunned )
+        {
+            return;
+        }
         if ( off.weaponType == WeaponType.Shield )
         {
             if ( !isAir )
             {
                 isBlocking = true;
                 heroAnim.SetBool ( "Block", true );
-            }
-
-            if ( isBlocking )
-            {
-                off.UseWeapon ( );
-            }
-            else
-            {
-                off.HaltWeapon ( );
             }
         }
         else
@@ -304,8 +359,8 @@ public class Player : MonoBehaviour
             if ( off.weaponType == WeaponType.MeleeWeapon )
             {
 
-                off.UseWeapon ( );
-                
+
+
 
             }
             if ( off.weaponType == WeaponType.RangedWeapon )
@@ -320,7 +375,6 @@ public class Player : MonoBehaviour
         Debug.Log ( "Released block" );
         isBlocking = false;
         heroAnim.SetBool ( "Block", false );
-        off.HaltWeapon ( );
     }
     public void OpenInventory ( )
     {
@@ -339,60 +393,132 @@ public class Player : MonoBehaviour
     }
     public void GetFirstMouseButton ( )
     {
-        if ( !isBlocking && !mouseOnUI )
+        if ( stunned )
         {
+            return;
+        }
+
+        if ( !isBlocking && !mouseOnUI && Time.time > nextSwing )
+        {
+            nextSwing = Time.time + PlayerClass.instance.baseAttackSpeed.Value * 0.85f;
+
             if ( main.weaponType == WeaponType.MeleeWeapon || main.weaponType == WeaponType.TwoHandedMeleeWeapon )
             {
-                heroAnim.SetTrigger ( "Attack" );
+                if ( PlayerSoundEvent != null )
+                {
+                    PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerAttack );
+                }
+
+                heroAnim.SetFloat ( "attackAnimSpeed", stats.baseAttackSpeed.Value );
                 heroAnim.SetBool ( "Attack", true );
-                
-                main.UseWeapon ( );
-                //StartCoroutine ( Attack ( ) );
+                //StartCoroutine ( MainAttackCD ( PlayerClass.instance.baseAttackSpeed.Value ) );
 
             }
             if ( main.weaponType == WeaponType.RangedWeapon || main.weaponType == WeaponType.TwoHandedRangedWeapon )
             {
+
+                heroAnim.SetBool ( "Attack", true );
+                heroAnim.SetFloat ( "attackAnimSpeed", stats.baseAttackSpeed.Value );
 
             }
         }
     }
     public void GetFirstMouseButtonUp ( )
     {
-        main.HaltWeapon ( );
+
         heroAnim.SetBool ( "Attack", false );
     }
     public void DashInputDown ( )
     {
-        if ( !isDashing && readyToDash )
+
+        if ( !isDashing && readyToDash && ( !movement.collisions.right || !movement.collisions.left ) )
         {
+            canTurn = false;
             readyToDash = false;
             //Debug.Log ( "Started Dashing" );
             playerRB.gravityScale = 0;
             isDashing = true;
+            Destroy ( Instantiate ( dashEffect, feet.transform.position, Quaternion.identity ), dashTime + 0.1f );
+
+            if ( directionRight )
+            {
+                dashmoveParticlePos.transform.rotation = Quaternion.Euler ( 0f, 0f, 0f );
+                dashmoveeff.Play ( );
+            }
+            else
+            {
+                dashmoveParticlePos.transform.rotation = Quaternion.Euler ( 0f, 180f, 0f );
+                dashmoveeff.Play ( );
+            }
+
+
             movement.dashing = true;
+            if ( PlayerSoundEvent != null )
+            {
+                PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerDash );
+            }
             StartCoroutine ( DashTime ( ) );
             StartCoroutine ( DashCoolDown ( ) );
         }
     }
     public void DashInputHold ( )
     {
+
+        if ( movement.collisions.right || movement.collisions.left )
+        {
+            isDashing = false;
+            movement.dashing = false;
+            if ( !directionRight )
+            {
+                transform.position = new Vector2 ( transform.position.x + 0.1f, transform.position.y );
+            }
+            else
+            {
+                transform.position = new Vector2 ( transform.position.x - 0.1f, transform.position.y );
+            }
+            return;
+        }
+
+        if ( !isDashing )
+        {
+            heroAnim.SetBool ( "Dash", false );
+            invulnerable = false;
+            canTurn = true;
+            movement.dashing = false;
+            dashmoveeff.Stop ( );
+        }
+
         if ( isDashing )
         {
+
+            if ( directionRight )
+            {
+                dashmoveParticlePos.transform.rotation = Quaternion.Euler ( 0f, 0f, 0f );
+
+            }
+            else
+            {
+                dashmoveParticlePos.transform.rotation = Quaternion.Euler ( 0f, 180f, 0f );
+
+            }
 
             //Debug.Log ( "Holding Dash Key" );
             //Debug.Log ( "IS DASHING" );
             //heroAnim.SetBool ( "Walk", false );
-            //dash animaatio
-            if ( directionRight && isDashing )
-            {
-                newVelocity = new Vector2 ( newVelocity.x, 0 );
-                transform.Translate ( new Vector2 ( dashSpeed * Time.deltaTime, 0 ) );
+            heroAnim.SetBool ( "Dash", true );
+            invulnerable = true;
 
-            }
-            else if ( !directionRight && isDashing )
+            if ( directionRight && isDashing && !movement.collisions.right )
             {
-                newVelocity = new Vector2 ( newVelocity.x, 0 );
-                transform.Translate ( new Vector2 ( -dashSpeed * Time.deltaTime, 0 ) );
+
+                newVelocity = new Vector2 ( dashSpeed , 0 );
+                //transform.Translate ( new Vector2 (  * Time.deltaTime, 0 ) );
+            }
+            else if ( !directionRight && isDashing && !movement.collisions.left )
+            {
+
+                newVelocity = new Vector2 ( -dashSpeed , 0 );
+                // transform.Translate ( new Vector2 (  * Time.deltaTime, 0 ) );
 
             }
         }
@@ -400,8 +526,12 @@ public class Player : MonoBehaviour
     public void DashInputUp ( )
     {
         //Debug.Log ( "Stopped Dashing" );
+        heroAnim.SetBool ( "Dash", false );
         isDashing = false;
+        canTurn = true;
         movement.dashing = false;
+        invulnerable = false;
+        dashmoveeff.Stop ( );
     }
     #endregion
 
@@ -419,7 +549,6 @@ public class Player : MonoBehaviour
         {
             hitsGround = true;
             jumpsCount = extraJumps;
-            fallDamageMultiplierBonus = 0;
             isAir = false;
             jump = false;
         }
@@ -462,13 +591,17 @@ public class Player : MonoBehaviour
     {
         if ( climbingLadder )
         {
+            heroAnim.speed = 0;
+            heroAnim.SetBool ( "ClimbLadder", true );
             if ( directionalInput.y > 0 )
             {
+                heroAnim.speed = 1;
                 jump = false;
                 newVelocity.y = ladderClimbSpeed * speedScale;
             }
             if ( directionalInput.y < 0 )
             {
+                heroAnim.speed = 1;
                 jump = false;
                 newVelocity.y = -ladderClimbSpeed * speedScale;
             }
@@ -478,16 +611,26 @@ public class Player : MonoBehaviour
                 newVelocity.y = 0;
             }
         }
+        else
+        {
+            heroAnim.SetBool ( "ClimbLadder", false );
+        }
     }
     void HandleRobeClimb ( )
     {
         if ( climbingRobe )
         {
+            heroAnim.SetBool ( "RobeClimb", true );
             if ( !jump && directionalInput.y == 0 && newVelocity.x != 0 )
             {
                 newVelocity.y = 0;
             }
         }
+        else
+        {
+            heroAnim.SetBool ( "RobeClimb", false );
+        }
+
     }
     void HandleSlows ( )
     {
@@ -507,6 +650,7 @@ public class Player : MonoBehaviour
 
         if ( climbingRobe )
         {
+            heroAnim.speed = 0;
             if ( !jump )
             {
 
@@ -526,18 +670,21 @@ public class Player : MonoBehaviour
 
             if ( directionalInput.y > 0 )
             {
+                heroAnim.speed = 1;
                 jump = false;
                 newVelocity.y = robeClimbSpeed * speedScale;
                 newVelocity.x = collision.attachedRigidbody.velocity.x;
-
             }
+
             if ( directionalInput.y < 0 )
             {
+                heroAnim.speed = 1;
                 jump = false;
                 newVelocity.y = -robeClimbSpeed * speedScale * 0.5f;
                 newVelocity.x = collision.attachedRigidbody.velocity.x;
 
             }
+
         }
     }
     private void ClimbLadder ( )
@@ -552,6 +699,11 @@ public class Player : MonoBehaviour
     }
     void TurnMousePointerDir ( )
     {
+
+        if ( !canTurn )
+        {
+            return;
+        }
 
         MousePosition ( );
 
@@ -576,6 +728,11 @@ public class Player : MonoBehaviour
     }
     void UpdateDirection ( )
     {
+        if ( !canTurn )
+        {
+            return;
+        }
+
         if ( movement.collisions.faceDirection < 0 )
         {
             transform.localScale = new Vector3 ( -1, 1, 1 );
@@ -587,6 +744,22 @@ public class Player : MonoBehaviour
             directionRight = true;
         }
     }
+    public void SetStun ( float time )
+    {
+        stunned = true;
+        StartCoroutine ( StunDuration ( time ) );
+    }
+    public void CanTurn ( float time )
+    {
+        canTurn = false;
+        StartCoroutine ( BlockTurning ( time ) );
+    }
+    public void ApplyWeakness ( float percent, float time )
+    {
+        weakness = true;
+        weaknessAmount += percent * 0.01f;
+        StartCoroutine ( WeaknessDuration ( time ) );
+    }
     #endregion
 
     #region Animation Functions
@@ -595,48 +768,97 @@ public class Player : MonoBehaviour
     /// </summary>
     void WalkAnimation ( )
     {
-        if ( newVelocity.x >= 0.05f )
+        if ( stunned )
         {
-            heroAnim.SetBool ( "Walk", true );
+            heroAnim.SetBool("Walk",false);
+            return;
         }
-        else if ( newVelocity.x <= -0.05f )
+
+        //Askeleiden nopeus, en vielä tiedä miten säädän kohilleen, joko soundplayer tai corouteeni
+        if ( heroAnim.GetBool ( "Walk" ) )
+        {
+            if ( PlayerSoundEvent != null && !walkAudio.isPlaying )
+            {
+                PlayerSoundEvent ( walkAudio, PlayerSoundType.PlayerFootSteps );
+                walkAudio.Play ( );
+            }
+        }
+
+        if ( !heroAnim.GetBool ( "Walk" ) || isDashing || heroAnim.GetBool ( "Attack" ) || stunned || isBlocking )
+        {
+            walkAudio.Stop ( );
+        }
+
+
+        if ( newVelocity.x >= 0.05f && movement.collisions.below )
         {
             heroAnim.SetBool ( "Walk", true );
+            directionRight = true;
+
+        }
+        else if ( newVelocity.x <= -0.05f && movement.collisions.below )
+        {
+            heroAnim.SetBool ( "Walk", true );
+            directionRight = false;
+
         }
         else
         {
             heroAnim.SetBool ( "Walk", false );
+
         }
     }
     #endregion
 
-    #region Event Functions
+    #region Action/Event Functions
     /// <summary>
     /// Osuessa viholliseen suorittaa tarvittavat calculaatiot
     /// </summary>
     /// <param name="target"></param>
     /// <param name="weaponPower"></param>
-    public void DealDamage ( GameObject target, float weaponPower, DamageType damageType )
+    public void DealDamage ( GameObject target, float weaponPower, DamageType damageType, bool skill, float skillDmgPercent )
     {
         if ( target != null )
         {
             float calculatedDamage = Random.Range ( ( int ) stats.baseDamage.Value, ( int ) stats.baseDamageMax.Value );
-            if (CheckForCrit())
+
+            if ( CheckForCrit ( ) )
             {
-                calculatedDamage *= (stats.criticalHitDamage.Value/100);
-                Debug.Log("CriticalHit: " +(stats.criticalHitDamage.Value / 100));
+                calculatedDamage *= ( stats.criticalHitDamage.Value / 100 );
+
+                if ( playerDealDamageEvent != null )
+                {
+                    playerDealDamageEvent ( target, calculatedDamage, true, damageType, skill, skillDmgPercent );
+                }
+
+                if ( PlayerSoundEvent != null )
+                {
+                    PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerHit );
+                }
+
+                Debug.Log ( "CriticalHit: " + ( stats.criticalHitDamage.Value / 100 ) );
+            }
+            else
+            {
+                if ( playerDealDamageEvent != null )
+                {
+                    playerDealDamageEvent ( target, calculatedDamage, false, damageType, skill, skillDmgPercent );
+                }
+
+                if ( PlayerSoundEvent != null )
+                {
+                    PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerHit );
+                }
             }
 
-            if ( playerDealDamageEvent != null )
-            {
-                playerDealDamageEvent ( target, calculatedDamage, damageType );
-            }
+            inCombat = true;
+            StartCoroutine ( RemoveCombat ( ) );
         }
     }
-    public bool CheckForCrit()
+    public bool CheckForCrit ( )
     {
         float randomValue = Random.value;
-        if(randomValue <= stats.criticalHitChance.Value/100)
+        if ( randomValue <= stats.criticalHitChance.Value / 100 )
         {
             return true;
         }
@@ -672,6 +894,11 @@ public class Player : MonoBehaviour
             stats.RestoreHealth ( amount );
         }
 
+        if ( PlayerSoundEvent != null )
+        {
+            PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerRestoreHealth );
+        }
+
         if ( playerHealHealthEvent != null )
         {
             playerHealHealthEvent ( amount, restoreAll );
@@ -692,7 +919,7 @@ public class Player : MonoBehaviour
 
         if ( playerNotifyEvent != null )
         {
-            playerNotifyEvent ( head.transform, amount.ToString ( ), Color.blue );
+            playerNotifyEvent ( head.transform, Mathf.Round ( amount ).ToString ( ), Color.blue );
         }
 
         if ( restoreAll )
@@ -702,6 +929,11 @@ public class Player : MonoBehaviour
         else
         {
             stats.RestoreMana ( amount );
+        }
+
+        if ( PlayerSoundEvent != null )
+        {
+            PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerRestoreMana );
         }
 
         if ( playerRestoreManaEvent != null )
@@ -732,8 +964,8 @@ public class Player : MonoBehaviour
     {
         float calculatedDamage;
         Color color;
-        Debug.Log ( dmg );
-        Debug.Log ( damageType );
+        //Debug.Log ( dmg );
+        //Debug.Log ( damageType );
 
         if ( float.IsNaN ( dmg ) || invulnerable )
         {
@@ -746,9 +978,14 @@ public class Player : MonoBehaviour
         {
 
             calculatedDamage = dmg * ( 1 - ( fullResistance / ( 20 * level + fullResistance ) ) );
-            calculatedDamage = dmg * ( 1 - ( stats.block.Value / ( 10 * level + stats.block.Value ) ) );
+            calculatedDamage = dmg * ( 1 - ( stats.block.Value / ( 5 * level + stats.block.Value ) ) );
             calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
-            calculatedDamage = Mathf.Round ( calculatedDamage );
+            calculatedDamage = Mathf.Round ( calculatedDamage * weaknessAmount );
+
+            if ( PlayerSoundEvent != null )
+            {
+                PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerBlock );
+            }
 
             //Ei saa mennä negatiiviseksi
             if ( calculatedDamage < 0 )
@@ -756,7 +993,7 @@ public class Player : MonoBehaviour
                 calculatedDamage = 0;
             }
 
-            color = Color.yellow;
+            color = Color.grey;
             stats.health.BaseValue -= calculatedDamage;
 
         }
@@ -767,15 +1004,15 @@ public class Player : MonoBehaviour
                 color = Color.red;
                 calculatedDamage = dmg;
                 calculatedDamage -= stats.fallDamageReduction.Value;
-                calculatedDamage = Mathf.Round ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage * weaknessAmount );
                 stats.health.BaseValue -= calculatedDamage;
             }
             else if ( damageType == DamageType.Poison )
             {
                 color = Color.magenta;
                 calculatedDamage = dmg * ( 1 - ( ( fullResistance ) / ( 20 * level + fullResistance ) ) );
-                Debug.Log ( calculatedDamage );
-                calculatedDamage = Mathf.Round ( calculatedDamage );
+                //Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage * weaknessAmount );
 
                 if ( calculatedDamage < 1 && calculatedDamage > 0 )
                 {
@@ -788,8 +1025,8 @@ public class Player : MonoBehaviour
             {
                 color = Color.red;
                 calculatedDamage = dmg * ( 1 - ( ( fullResistance ) / ( 20 * level + fullResistance ) ) );
-                Debug.Log ( calculatedDamage );
-                calculatedDamage = Mathf.Round ( calculatedDamage );
+                //Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage * weaknessAmount );
 
                 if ( calculatedDamage < 1 && calculatedDamage > 0 )
                 {
@@ -802,8 +1039,8 @@ public class Player : MonoBehaviour
             {
                 color = Color.cyan;
                 calculatedDamage = dmg * ( 1 - ( ( fullResistance ) / ( 20 * level + fullResistance ) ) );
-                Debug.Log ( calculatedDamage );
-                calculatedDamage = Mathf.Round ( calculatedDamage );
+                //Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage * weaknessAmount );
 
                 if ( calculatedDamage < 1 && calculatedDamage > 0 )
                 {
@@ -817,10 +1054,10 @@ public class Player : MonoBehaviour
             else if ( damageType == DamageType.Lightning )
             {
                 color = Color.yellow;
-                calculatedDamage = dmg * ( 1 - ( ( fullResistance  ) / ( 20 * level + fullResistance) ) );
+                calculatedDamage = dmg * ( 1 - ( ( fullResistance ) / ( 20 * level + fullResistance ) ) );
                 //armor lisää dmg enemmän crit?
-                Debug.Log ( calculatedDamage );
-                calculatedDamage = Mathf.Round ( calculatedDamage );
+                //Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage * weaknessAmount );
 
                 if ( calculatedDamage < 1 && calculatedDamage > 0 )
                 {
@@ -835,9 +1072,9 @@ public class Player : MonoBehaviour
                 color = Color.red;
                 calculatedDamage = dmg * ( 1 - ( fullResistance / ( 20 * level + fullResistance ) ) );
                 calculatedDamage = dmg * ( 1 - ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
-                Debug.Log ( ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
-                Debug.Log ( calculatedDamage );
-                calculatedDamage = Mathf.Round ( calculatedDamage );
+                //Debug.Log ( ( stats.armor.Value / ( 50 * level + stats.armor.Value ) ) );
+                //Debug.Log ( calculatedDamage );
+                calculatedDamage = Mathf.Round ( calculatedDamage * weaknessAmount );
 
                 if ( calculatedDamage < 1 && calculatedDamage > 0 )
                 {
@@ -846,6 +1083,19 @@ public class Player : MonoBehaviour
 
                 stats.health.BaseValue -= calculatedDamage;
             }
+        }
+        inCombat = true;
+        StartCoroutine ( RemoveCombat ( ) );
+
+        if ( calculatedDamage <= 0 )
+        {
+
+            if ( playerFlashEvent != null )
+            {
+                StartCoroutine ( playerFlashEvent ( gameObject, 0.1f, Color.grey, true ) );
+            }
+
+            return;
         }
 
         if ( playerNotifyEvent != null )
@@ -860,9 +1110,10 @@ public class Player : MonoBehaviour
         {
             playerTakeDamageEvent ( calculatedDamage );
         }
-
-        //Kuolema
-
+        if ( PlayerSoundEvent != null && !isBlocking )
+        {
+            PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerTakeDamage );
+        }
     }
 
     /// <summary>
@@ -886,6 +1137,11 @@ public class Player : MonoBehaviour
             StartCoroutine ( playerFlashEvent ( gameObject, 0.5f, Color.cyan, true ) );
         }
 
+        if ( PlayerSoundEvent != null )
+        {
+            PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerLevelUp );
+        }
+
     }
 
     /// <summary>
@@ -895,8 +1151,15 @@ public class Player : MonoBehaviour
     {
         if ( newVelocity.y > 0 || movement.collisions.below || movement.collisions.left || movement.collisions.right )
         {
+            //Debug.Log ( "IS NOT GOING DOWN" );
             goingDown = false;
+
+        }
+
+        if ( !goingDown )
+        {
             fallTime = 0;
+            fallDamageMultiplierBonus = 0.1f;
         }
 
         if ( newVelocity.y > 0 )
@@ -912,21 +1175,22 @@ public class Player : MonoBehaviour
 
         if ( !goingDown && newVelocity.y < 0 && !movement.collisions.below )
         {
-            Debug.Log ( "IS GOING DOWN !!!" );
+            //Debug.Log ( "IS GOING DOWN !!!" );
             goingDown = true;
             fallStartYPos = transform.position.y;
         }
 
         if ( goingDown )
         {
+            //Debug.Log ( "IS GOING DOWN" );
             fallTime += Time.deltaTime;
             fallDamageMultiplierBonus += fallTime;
         }
 
-        if ( isDashing || wallSliding || isDead || climbingLadder || climbingRobe )
+        if ( isDashing || wallSliding || isDead || climbingLadder || climbingRobe || leaping )
         {
             fallTime = 0;
-            fallDamageMultiplierBonus = 0;
+            fallDamageMultiplierBonus = 0.1f;
             takeFallDamage = false;
         }
 
@@ -941,19 +1205,38 @@ public class Player : MonoBehaviour
             hitsGround = true;
         }
 
-        if ( takeFallDamage && hitsGround && movement.collisions.below )
+        if ( takeFallDamage && movement.collisions.hitsGround && movement.collisions.below )
         {
-            Debug.Log ( fallStartYPos );
-            fallDamage = Mathf.Sqrt ( playerRB.mass * 2 * Mathf.Abs ( Physics2D.gravity.y ) * fallStartYPos - transform.position.y ) * ( fallDamageMultiplier + fallDamageMultiplierBonus );
+            if ( fallDamageMultiplierBonus < 0.1f )
+            {
+                fallDamageMultiplierBonus = 0.1f;
+            }
+            //Debug.Log ( fallStartYPos );
+            fallDamage = Mathf.Sqrt ( playerRB.mass * 2 * Mathf.Abs ( Physics2D.gravity.y * ( fallStartYPos - transform.position.y ) ) * ( fallDamageMultiplier + fallDamageMultiplierBonus ) );
             TakeDamage ( gameObject, fallDamage, DamageType.Raw, 1 );
             takeFallDamage = false;
             hitsGround = false;
+
+            //Debug.Log ( Mathf.Sqrt ( playerRB.mass * 2 * Mathf.Abs ( Physics2D.gravity.y  * (fallStartYPos - transform.position.y) ) * ( fallDamageMultiplier + fallDamageMultiplierBonus ) ) );
+            //Debug.Log ( fallDamage );
+            //Debug.Log ( Physics2D.gravity.y );
+            //Debug.Log ( fallStartYPos );
+            //Debug.Log ( transform.position.y );
+            //Debug.Log ( fallDamageMultiplier );
+            //Debug.Log ( fallDamageMultiplierBonus );
+
         }
 
         if ( fallTime > fallToDeathTime )
         {
-            Debug.Log ( "FELL TO DEATH" );
+            //Debug.Log ( "FELL TO DEATH" );
             fallTime = 0;
+
+            if ( PlayerSoundEvent != null )
+            {
+                PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerFallToDeath );
+            }
+
             Die ( );
         }
     }
@@ -961,10 +1244,17 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Respawnatessa tapahtuvat jutut
     /// </summary>
-    /// <param name="playerPos"></param>
-    public void Alive ( Transform playerPos )
+    /// <param name="respawnPos"></param>
+    public void Alive ( Transform respawnPos )
     {
-
+        if ( respawnPos == null )
+        {
+            transform.position = new Vector3 ( 0, 0, 0 );
+        }
+        else
+        {
+            transform.position = respawnPos.position;
+        }
         isDead = false;
         isAlive = true;
         OnRestoreHealth ( stats.maxHealth.Value, true );
@@ -995,24 +1285,39 @@ public class Player : MonoBehaviour
                 playerDeathEvent ( transform );
             }
 
-            Debug.Log ( "I'm Dead" );
+            if ( PlayerSoundEvent != null )
+            {
+                PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerDeath );
+            }
+
+            //Debug.Log ( "I'm Dead" );
         }
     }
 
-    public void FeelSlow( float newSlowMult )
-    {   
-        if (slowEffect >= newSlowMult)
+    public void FeelSlow ( float newSlowMult )
+    {
+        if ( slowEffect >= newSlowMult )
         {
             slowed = true;
             slowEffect = newSlowMult;
         }
 
-        if( slowEffect <= 0.1f)
+        if ( slowEffect <= 0.1f )
         {
             slowed = true;
             slowEffect = 0.1f;
         }
 
+    }
+    public void SetLeaping ( float leapingDuration )
+    {
+        leaping = true;
+        StartCoroutine ( LeapDuration ( leapingDuration ) );
+    }
+    public void SetStopped ( float stopDuration )
+    {
+        stopped = true;
+        StartCoroutine ( StopDuration ( stopDuration ) );
     }
     #endregion
 
@@ -1026,6 +1331,29 @@ public class Player : MonoBehaviour
             Physics2D.IgnoreCollision ( gameObject.GetComponent<BoxCollider2D> ( ), collision.collider, true );
         }
 
+        if ( !isDashing && !isBlocking && collision.gameObject.CompareTag ( "Enemy" ) && !collision.gameObject.GetComponent<Projectile> ( ) )
+        {
+            Vector2 normalV = collision.GetContact ( 0 ).normal;
+            //Debug.Log ( "normal " + normalV );
+            //Vector2 reflection = Vector2.Reflect ( collision.GetContact ( 0 ).point, normalV );
+            //Debug.Log ( "KnockBack " + normalV * jumpVelocityMax );
+
+            if ( normalV.x == 0 )
+            {
+                if ( ( transform.position.x - collision.transform.position.x ) >= 0 )
+                {
+                    normalV.x = 1 * jumpHeightMax;
+                    //Debug.Log ( 1 * jumpHeightMax );
+                }
+                else if ( ( transform.position.x - collision.transform.position.x ) < 0 )
+                {
+                    normalV.x = -1 * jumpHeightMax;
+                    //Debug.Log ( -1 * jumpHeightMax );
+                }
+            }
+            newVelocity = jumpVelocityMax * new Vector2 ( normalV.x * 0.5f, normalV.y * 0.5f );
+            TakeDamage ( gameObject, 10f, DamageType.Raw, ( int ) stats.playerLevel.Value );
+        }
     }
     private void OnCollisionExit2D ( Collision2D collision )
     {
@@ -1033,6 +1361,8 @@ public class Player : MonoBehaviour
         {
             Physics2D.IgnoreCollision ( gameObject.GetComponent<BoxCollider2D> ( ), collision.collider, false );
         }
+
+
     }
     private void OnTriggerStay2D ( Collider2D collision )
     {
@@ -1082,6 +1412,40 @@ public class Player : MonoBehaviour
 
     #region Coroutines
 
+
+    IEnumerator LeapDuration ( float duration )
+    {
+        yield return new WaitForSeconds ( duration );
+        leaping = false;
+    }
+    IEnumerator StunDuration ( float time )
+    {
+
+        yield return new WaitForSeconds ( time );
+        stunned = false;
+    }
+    IEnumerator BlockTurning ( float time )
+    {
+        yield return new WaitForSeconds ( time );
+        canTurn = true;
+    }
+    IEnumerator WeaknessDuration ( float time )
+    {
+        yield return new WaitForSeconds ( time );
+        weakness = false;
+        weaknessAmount = 1;
+    }
+    IEnumerator RemoveCombat ( )
+    {
+        yield return new WaitForSeconds ( 8f );
+        inCombat = false;
+    }
+    IEnumerator StopDuration ( float duration )
+    {
+        yield return new WaitForSeconds ( duration );
+        stopped = false;
+    }
+
     IEnumerator OverTimeDamage ( float dmg, float duration, float tickSpeed, float colorFlashSpeed, Color collor )
     {
         for ( int i = 0 ; i < duration ; i++ )
@@ -1114,19 +1478,16 @@ public class Player : MonoBehaviour
         main.GetComponent<BoxCollider2D> ( ).enabled = false;
 
     }
-
-    IEnumerator MainAttackCD ( )
+    IEnumerator MainAttackCD ( float cd )
     {
-
-        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value );
+        isMainAttackRdy = false;
+        yield return new WaitForSeconds ( cd );
         isMainAttackRdy = true;
-
     }
-
     IEnumerator OffAttackCD ( )
     {
 
-        yield return new WaitForSeconds ( stats.baseAttackSpeed.Value );
+        yield return new WaitForSeconds ( PlayerClass.instance.baseAttackSpeed.Value );
         isOffAttackRdy = true;
 
     }
@@ -1135,7 +1496,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds ( dashTime );
         isDashing = false;
-        Debug.Log ( "Stopped Dashing" );
+        //Debug.Log ( "Stopped Dashing" );
     }
 
     IEnumerator DashCoolDown ( )
@@ -1167,6 +1528,17 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds ( 5f );
         slowed = false;
+    }
+
+    IEnumerator WalkStepInterval ( )
+    {
+
+        yield return new WaitForSeconds ( newMoveSpeed * 0.1f );
+        if ( PlayerSoundEvent != null )
+        {
+            PlayerSoundEvent ( audioSource, PlayerSoundType.PlayerFootSteps );
+        }
+
     }
 
     #endregion

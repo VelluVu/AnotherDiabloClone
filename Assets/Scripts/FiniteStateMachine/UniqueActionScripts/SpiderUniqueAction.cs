@@ -20,9 +20,9 @@ public class SpiderUniqueAction : Action
         {
             return;
         }
-        if ( !controller.notHatchedEgg )
+        if ( controller.rdyToHatch )
         {
-            controller.notHatchedEgg = true;
+            controller.rdyToHatch = false;
             Vector2 position;
             if ( controller.chaseTarget.transform.position.x > controller.transform.position.x )
             {
@@ -31,7 +31,7 @@ public class SpiderUniqueAction : Action
                 GameObject newEgg = Instantiate ( egg, position, Quaternion.identity ) as GameObject;
                 newEgg.GetComponent<SpiderEgg> ( ).SetParent ( controller.gameObject );
                 newEgg.GetComponent<Rigidbody2D> ( ).AddForce ( (Vector2.right + Vector2.up) *  5f, ForceMode2D.Impulse );
-                controller.rb.velocity = Vector2.left * 6 * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * Time.deltaTime ;
+                controller.rb.velocity = Vector2.left * 15 * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * Time.deltaTime ;
                 
             }
             else if ( controller.chaseTarget.transform.position.x < controller.transform.position.x )
@@ -41,13 +41,9 @@ public class SpiderUniqueAction : Action
                 GameObject newEgg = Instantiate ( egg, position, Quaternion.identity ) as GameObject;
                 newEgg.GetComponent<SpiderEgg> ( ).SetParent ( controller.gameObject );
                 newEgg.GetComponent<Rigidbody2D> ( ).AddForce ( (Vector2.left + Vector2.up ) * 5f, ForceMode2D.Impulse );
-                controller.rb.velocity = Vector2.right * 6 * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * Time.deltaTime ;
+                controller.rb.velocity = Vector2.right * 15 * controller.enemyStats.moveSpeed.Value * controller.moveSpeedScale * Time.deltaTime ;
                 
-
             }
-
         }    
-    }
-
-    
+    }   
 }

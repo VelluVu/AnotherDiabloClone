@@ -10,7 +10,11 @@ public class TreasureChest : MonoBehaviour
     Animator treasureAnimator;
     Collider2D treasureCollider;
     Collider2D triggerArea;
+    AudioSource source;
     bool canOpen;
+
+    public delegate void TreasureChestSoundDelegate ( AudioSource source, ObjectSoundType objSound );
+    public static event TreasureChestSoundDelegate TreasureSoundEvent;
 
     private void OnEnable ( )
     {
@@ -28,6 +32,7 @@ public class TreasureChest : MonoBehaviour
         treasureAnimator = gameObject.GetComponent<Animator> ( );
         treasureCollider = gameObject.GetComponent<Collider2D> ( );
         triggerArea = gameObject.GetComponentInChildren<Collider2D> ( );
+        source = gameObject.GetComponent<AudioSource> ( );
     }
 
     public void OnTriggerEnterArea ( GameObject targetObject )
@@ -54,7 +59,10 @@ public class TreasureChest : MonoBehaviour
     {
         if ( canOpen && Input.GetButton("Interaction"))
         {
-
+            if( TreasureSoundEvent != null)
+            {
+                TreasureSoundEvent ( source, ObjectSoundType.TreasureChest );
+            }
             treasureAnimator.SetTrigger ( "Open" );
             triggerArea.enabled = false;
             treasureCollider.enabled = false;

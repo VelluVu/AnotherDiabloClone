@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e30dc77fd360ba8409178c34795a1aef, type: 3}
+  m_Name: ShadowStep
+  m_EditorClassIdentifier: 
+  _name: Shadow Step
+  desc: Make smoke cloud and step backwards high speed
+  isEnabled: 1
+  checkLevel: 1
+  levelToUnlock: 0
+  _sprite: {fileID: 21300000, guid: 939e3c696ed7efd479eae90b726df4d7, type: 3}
+  skillSoundType: 18
+  _cooldown: 10
+  _manaUsage: 0
+  _duration: 4
+  _showDurBar: 0
+  _allowDoThisInAir: 0
+  _stopPlayerMoving: 0
+  _stopDuration: 0
+  prefab: {fileID: 4180403555099376080, guid: 6e9ba1f5b3e254848871bb6707860fce, type: 3}
+  damageProsent: 0
+  damageType: 0
+  force: 200
+  velocity: 0
+  _waitBeforeLaunch: 0
+  _animation: skill_tompJump
+  _playItBeforeWait: 1

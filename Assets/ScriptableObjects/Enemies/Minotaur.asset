@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Minotaur
   m_EditorClassIdentifier: 
   _name: Minotaur
-  _moveSpeed: 50
-  _chaseMultiplier: 2.5
-  _jumpForce: 2
-  _attackSpeed: 2
-  _attackDamage: 10
-  _health: 100
+  _moveSpeed: 2.5
+  _chaseMultiplier: 1
+  _jumpForce: 1
+  _attackSpeed: 3
+  _attackDamage: 35
+  _health: 150
   _mana: 0
-  _armor: 8
+  _armor: 10
   _fireResistance: 0
   _frostResistance: 0
   _poisonResistance: 0
@@ -28,6 +28,7 @@ MonoBehaviour:
   _physicalResistance: 0
   _xpReward: 50
   _level: 1
+  _enemyTypeForSound: 0
   _enemyType: 0
   _groundEnemyType: 2
   _flyingEnemyType: 2

@@ -1,0 +1,144 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5874489761553880009
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6858229057588189874}
+  - component: {fileID: 3395765496666024012}
+  - component: {fileID: 8989573133143228354}
+  - component: {fileID: 7898764997086938397}
+  m_Layer: 0
+  m_Name: Fear
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6858229057588189874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5874489761553880009}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3395765496666024012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5874489761553880009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2eae93e34ecaed4ca8e54e8d2a1b73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightColor: {r: 0.5412936, g: 0, b: 1, a: 1}
+  lightAlpha: 1
+  lightSize: 2
+  lightCoreSize: 0.5
+  textureSize: 1
+  enableCollisions: 1
+  rotationEnabled: 0
+  eventHandling: 0
+  additive: 0
+  additive_alpha: 0.25
+  whenInsideCollider: 0
+  disableWhenInvisible: 0
+  lightSprite: 0
+  sprite: {fileID: 21300000, guid: 6592d6be03fd808449716a11558d506f, type: 3}
+  layerCount: 1
+  layerSetting:
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  buffer: {fileID: 0}
+  sortingOrder: 0
+  sortingLayer: 
+  movement:
+    update: 0
+    updatePosition: {x: 0, y: 0, z: 0}
+    updateColor: {r: 0.5412936, g: 0, b: 1, a: 1}
+    updateRotation: 0
+    updateSize: 2
+    updateAlpha: 1
+    move: 0
+    movePosition: {x: 0, y: 0, z: 0}
+  occlusionSize: 15
+--- !u!114 &8989573133143228354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5874489761553880009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d770197b8cf7f346a464a625cb36a74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flickersPerSecond: 15
+  flickerRangeMin: -0.8
+  flickerRangeMax: 0.1
+--- !u!114 &7898764997086938397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5874489761553880009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3eb5069c826b5644a659f58e68392c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  changeToColor: {r: 0.14180423, g: 0, b: 0.24528301, a: 0.6666667}

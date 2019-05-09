@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 990943808}
   - component: {fileID: 990943810}
   - component: {fileID: 990943809}
+  - component: {fileID: 307851965433867482}
   m_Layer: 20
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -260,6 +261,18 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!225 &307851965433867482
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990943807}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1537292954
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +284,7 @@ GameObject:
   - component: {fileID: 1537292955}
   - component: {fileID: 1537292957}
   - component: {fileID: 1537292956}
+  - component: {fileID: 7131119012611259638}
   m_Layer: 20
   m_Name: RawImage
   m_TagString: Untagged
@@ -333,6 +347,18 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!225 &7131119012611259638
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537292954}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &3464001231089030267
 GameObject:
   m_ObjectHideFlags: 0

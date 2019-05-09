@@ -10,6 +10,7 @@ public class SpiderEgg : MonoBehaviour
     public List<GameObject> spiderlings = new List<GameObject> ( );
     public float hatchTime;
     public GroundEnemyType imEaster;
+    AudioSource source;
 
     public delegate void HatchDelegate( GameObject parent );
     public static event HatchDelegate hatchEvent;
@@ -19,9 +20,13 @@ public class SpiderEgg : MonoBehaviour
 
     public delegate IEnumerator EggFlashDelegate ( GameObject source, float time, Color color, bool isFlashSpam );
     public static event EggFlashDelegate eggFlashEvent;
-    
+
+    public delegate  void EggSoundDelegate( AudioSource source, EnemySoundType enemySoundType, EnemyTypeForSound enemyTypeForSound );
+    public static event EggSoundDelegate EggSoundEvent;
+
     private void Start ( )
     {
+        source = gameObject.GetComponent<AudioSource> ( );
         StartCoroutine ( HatchCoroutine ( hatchTime ) );
     }
 
@@ -52,11 +57,19 @@ public class SpiderEgg : MonoBehaviour
 
             Vector2 randomX = new Vector2 ( transform.position.x + Random.Range ( -0.2f, 0.2f ), transform.position.y);
             GameObject spawn = Instantiate ( spiderlings[ i ], randomX, Quaternion.identity ) as GameObject;
-            
+            if ( spawn != null || gameObject != null )
+            {
+                spawn.GetComponent<StateController> ( ).SetWaypoints ( parent, parent.GetComponent<StateController> ( ).positions );
+            }
         }
         if( hatchEvent != null)
         {
             hatchEvent ( parent );
+        }
+
+        if ( EggSoundEvent != null)
+        {
+            EggSoundEvent ( source, EnemySoundType.EggCrack, EnemyTypeForSound.Insect );
         }
 
         gameObject.GetComponent<Collider2D> ( ).enabled = false;
@@ -64,12 +77,17 @@ public class SpiderEgg : MonoBehaviour
         Destroy ( gameObject ,3f );
     }
 
-    public void TakeDamage(GameObject target, float dmg, DamageType damageType)
+    public void TakeDamage(GameObject target, float dmg, bool critical, DamageType damageType, bool skill, float skillDmgPercent)
     {
+        float skilldmg = 1;
+        if ( skill )
+        {
+            skilldmg = skillDmgPercent * 0.01f;
+        }
 
         if ( target == gameObject )
         {
-            health -= dmg;
+            health -= dmg * skilldmg;
 
             if(eggFlashEvent != null)
             {
@@ -89,8 +107,17 @@ public class SpiderEgg : MonoBehaviour
         {
             eggDestroyedEvent ( parent );
         }
+
+        if ( EggSoundEvent != null )
+        {
+            EggSoundEvent ( source, EnemySoundType.EggCrack, EnemyTypeForSound.Insect );
+        }
+
         StopAllCoroutines ( );
-        Destroy ( gameObject );
+
+        gameObject.GetComponent<Collider2D> ( ).enabled = false;
+        gameObject.GetComponent<SpriteRenderer> ( ).enabled = false;
+        Destroy ( gameObject, 3f );
     }
 
     IEnumerator HatchCoroutine(float hatchTime)

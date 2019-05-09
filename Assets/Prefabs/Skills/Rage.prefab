@@ -1,0 +1,146 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7401774805628608201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3303520978247885630}
+  - component: {fileID: 1517212198950643594}
+  - component: {fileID: 1277635191386651691}
+  - component: {fileID: 597866597671420358}
+  m_Layer: 0
+  m_Name: Rage
+  m_TagString: Weapon
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3303520978247885630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7401774805628608201}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1517212198950643594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7401774805628608201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2eae93e34ecaed4ca8e54e8d2a1b73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightColor: {r: 0.8490566, g: 0.10012458, b: 0.10012458, a: 1}
+  lightAlpha: 0.6
+  lightSize: 0.8
+  lightCoreSize: 0.5
+  textureSize: 1
+  enableCollisions: 1
+  rotationEnabled: 0
+  eventHandling: 0
+  additive: 0
+  additive_alpha: 1
+  whenInsideCollider: 0
+  disableWhenInvisible: 0
+  lightSprite: 0
+  sprite: {fileID: 21300000, guid: 6592d6be03fd808449716a11558d506f, type: 3}
+  layerCount: 1
+  layerSetting:
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  - layerID: 0
+    type: 0
+    renderingOrder: 0
+    effect: 0
+    maskEffectDistance: 1
+  buffer: {fileID: 0}
+  sortingOrder: 20
+  sortingLayer: Units
+  movement:
+    update: 0
+    updatePosition: {x: 0, y: 0.01, z: 0}
+    updateColor: {r: 0.8490566, g: 0.10012458, b: 0.10012458, a: 1}
+    updateRotation: 0
+    updateSize: 0.8
+    updateAlpha: 0.6
+    move: 0
+    movePosition: {x: 0, y: 0, z: 0}
+  occlusionSize: 15
+--- !u!114 &1277635191386651691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7401774805628608201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d118926dcde5df04fb2ced417494934f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  head: {fileID: 0}
+  goTowardsColor: {r: 0.9811321, g: 0.32858673, b: 0.32858673, a: 1}
+--- !u!114 &597866597671420358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7401774805628608201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d770197b8cf7f346a464a625cb36a74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flickersPerSecond: 50
+  flickerRangeMin: -0.4
+  flickerRangeMax: 0.1

@@ -13,21 +13,22 @@ MonoBehaviour:
   m_Name: Bat
   m_EditorClassIdentifier: 
   _name: Bat
-  _moveSpeed: 50
-  _chaseMultiplier: 2
+  _moveSpeed: 2
+  _chaseMultiplier: 1
   _jumpForce: 0
-  _attackSpeed: 1
-  _attackDamage: 10
-  _health: 30
+  _attackSpeed: 0.5
+  _attackDamage: 8
+  _health: 50
   _mana: 0
-  _armor: 1
+  _armor: 5
   _fireResistance: 0
   _frostResistance: 0
-  _poisonResistance: 30
-  _lightningResistance: 10
+  _poisonResistance: 0
+  _lightningResistance: 0
   _physicalResistance: 0
-  _xpReward: 10
+  _xpReward: 5
   _level: 1
+  _enemyTypeForSound: 1
   _enemyType: 1
   _groundEnemyType: 18
   _flyingEnemyType: 0

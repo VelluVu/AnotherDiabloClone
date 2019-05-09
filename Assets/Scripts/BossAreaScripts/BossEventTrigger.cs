@@ -10,8 +10,11 @@ public class BossEventTrigger : MonoBehaviour
     public Transform bossEntrancePosition;
     public float bossActivateTime;
     public Vector3 areaSize;
+    public Vector3 areaOffSet;
     public LayerMask playerLayer;
     public bool bossStarted;
+    public BoxCollider2D invisibleWall;
+    public GameObject checkPoint3;
 
     public delegate void BossEventDelegate ( GameObject boss );
     public static event BossEventDelegate BossEvent;
@@ -36,29 +39,32 @@ public class BossEventTrigger : MonoBehaviour
     {
         if ( boss == null )
         {
+            invisibleWall.enabled = false;
+            checkPoint3.SetActive ( true );
+            invisibleWall.gameObject.SetActive ( false );
             bossHealthUI.SetActive ( false );
             gameObject.SetActive ( false );
         }
         if ( bossStarted )
         {
             IsPlayerInBossArea ( );
-        }
+        }    
     }
 
     void IsPlayerInBossArea ( )
     {
         if ( boss == null )
-        {
+        {           
             return;
         }
 
-        if ( Physics2D.OverlapBox ( transform.position, areaSize, 0, playerLayer ) == null )
+        if ( Physics2D.OverlapBox ( transform.position + areaOffSet, areaSize, 0, playerLayer ) == null )
         {
             boss.transform.position = bossEntrancePosition.position;
             bossHealthUI.SetActive ( false );
             boss.SetActive ( false );
         }
-        if ( Physics2D.OverlapBox ( transform.position, areaSize, 0, playerLayer ) )
+        if ( Physics2D.OverlapBox ( transform.position + areaOffSet, areaSize, 0, playerLayer ) )
         {
             bossHealthUI.SetActive ( true );
             boss.SetActive ( true );
@@ -72,10 +78,12 @@ public class BossEventTrigger : MonoBehaviour
         gameObject.GetComponent<Collider2D> ( ).enabled = false;
     }
 
+    
+
     private void OnDrawGizmos ( )
     {
         Gizmos.color = Color.black;
-        Gizmos.DrawWireCube ( transform.position, areaSize );
+        Gizmos.DrawWireCube ( transform.position + areaOffSet, areaSize );
     }
 
 }

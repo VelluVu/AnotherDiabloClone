@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e30dc77fd360ba8409178c34795a1aef, type: 3}
+  m_Name: FiveEyes
+  m_EditorClassIdentifier: 
+  _name: Five Eyes
+  desc: Summons five eyes that track enemies around you
+  isEnabled: 1
+  checkLevel: 1
+  levelToUnlock: 1
+  _sprite: {fileID: 21300000, guid: 8f3f92ef6563f634e80e1fc9b5cc9a0c, type: 3}
+  skillSoundType: 4
+  _cooldown: 12
+  _manaUsage: 5
+  _duration: 0
+  _showDurBar: 1
+  _allowDoThisInAir: 1
+  _stopPlayerMoving: 0
+  _stopDuration: 0
+  prefab: {fileID: 1590960449193280826, guid: 36ed2c2881cef46439c5999bdcf11552, type: 3}
+  damageProsent: 100
+  damageType: 3
+  force: 0
+  velocity: 0.5
+  _waitBeforeLaunch: 0
+  _animation: 
+  _playItBeforeWait: 1

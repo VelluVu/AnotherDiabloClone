@@ -44,7 +44,7 @@ public class SpiderBossChangePositionAction : Action
                        
             controller.riseUpTimeCounter -= Time.deltaTime;
             controller.rb.gravityScale = 0;
-            controller.transform.Translate ( Vector2.up * controller.enemyStats.moveSpeed.Value * 0.35f * Time.deltaTime );
+            controller.transform.Translate ( Vector2.up * controller.enemyStats.moveSpeed.Value * 4f * Time.deltaTime );
 
             if(controller.CheckIfCountDownElapsed(3f))
             {

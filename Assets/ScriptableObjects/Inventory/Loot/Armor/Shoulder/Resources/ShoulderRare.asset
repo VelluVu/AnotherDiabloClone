@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: ShoulderRare
+  m_EditorClassIdentifier: 
+  itemName: Dragonscale Pauldrons
+  description: Lighter than it looks
+  itemID: 3
+  itemIcon: {fileID: 2800000, guid: fc2e6e794a2a38c44a12a37c2e3b67eb, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 165637b53242b604e9d2c67f0755c469, type: 3}
+  - {fileID: 21300000, guid: 1cba070e035b6e24095e566c9095e22b, type: 3}
+  lootSprite: {fileID: 21300000, guid: 165637b53242b604e9d2c67f0755c469, type: 3}
+  rarity: 2
+  itemLevel: 0
+  tags: 
+  attributes: []
+  randomAttributes: 1
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 0
+  armorSlot: 5
+  consumablePotency: 0
+  buyPrice: 0
+  sellPrice: 0

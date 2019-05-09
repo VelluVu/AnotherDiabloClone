@@ -7,7 +7,7 @@ public class DotScript : MonoBehaviour
     public float _dotDamage=0;
     public float _duration=0;
     private StateController enemyState;
-    private Player playerC;
+    //private Player playerC;
     private float nextAct=0f;
     private int counter = 0;
     public DamageType _damageType;
@@ -18,10 +18,10 @@ public class DotScript : MonoBehaviour
         {            
             enemyState = GetComponent<StateController>();
         }
-        if(GetComponent<Player>() != null)
-        {
-            playerC = GetComponent<Player>();
-        }
+        //if(GetComponent<Player>() != null)
+        //{
+        //    playerC = GetComponent<Player>();
+        //}
 
 
         Destroy(this, _duration);
@@ -33,7 +33,7 @@ public class DotScript : MonoBehaviour
         {
             counter++; 
             nextAct += 1;
-            enemyState.TakeDamage(this.gameObject, _dotDamage, _damageType);
+            enemyState.TakeDamage(this.gameObject, _dotDamage, false, _damageType, true, 100);
             
         }
     }

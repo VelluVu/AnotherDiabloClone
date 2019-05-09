@@ -49,9 +49,9 @@ TagManager:
   - Rope
   - PlayersAttackCollider
   - EnemyAttackCollider
-  - 
-  - 
-  - 
+  - MusicTrigger
+  - Lights
+  - SecondaryBG
   - 
   - 
   m_SortingLayers:

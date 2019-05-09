@@ -36,14 +36,14 @@ public class ShootAction : Action
         {
             return;
         }
-        if ( controller.transform.position.x < controller.chaseTarget.transform.position.x )
-        {
-            controller.dirRight = true;
-        }
-        else
-        {
-            controller.dirRight = false;
-        }
+        //if ( controller.transform.position.x < controller.chaseTarget.transform.position.x )
+        //{
+        //    controller.dirRight = true;
+        //}
+        //else
+        //{
+        //    controller.dirRight = false;
+        //}
 
         if ( weapon.GetIsShootRdy ( ) )
         {

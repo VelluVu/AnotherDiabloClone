@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2457406347a2a3142b7539e1329a8f10, type: 3}
+  m_Name: Rage
+  m_EditorClassIdentifier: 
+  _name: Rage
+  desc: Gives strenght 30% and attack speed 15%
+  isEnabled: 1
+  checkLevel: 1
+  levelToUnlock: 0
+  _sprite: {fileID: 21300000, guid: 27dcc21b97d8e6143b77c4c8143050f8, type: 3}
+  skillSoundType: 14
+  _cooldown: 8
+  _manaUsage: 2
+  _duration: 3
+  _showDurBar: 1
+  _allowDoThisInAir: 1
+  _stopPlayerMoving: 0
+  _stopDuration: 0
+  _range: 0
+  _heal: 0
+  _mana: 0
+  _damage: 0
+  _damageType: 0
+  _dotDamage: 0
+  _speedBuff: 0
+  _playShoutAnimation: 1
+  _increaseStrM: 1.3
+  _increaseArmorM: 0
+  _increaseAttactSpeedM: 1.15
+  _increaseHealthM: 0
+  _spawnGameobject: {fileID: 7401774805628608201, guid: f32243f27532a434d9c6223c9947f7dd,
+    type: 3}
+  _fearEnemy: 0
+  _stunEnemy: 0
+  _weakEnemy: 0
+  _addShoutScript: 1
+  _addSStoPrefab: 0
+  _addAbilityInfoScript: 1
+  _addAIStoPrefab: 1
+  _waitBeforeLaunch: 0
+  _animation: 
+  _playItBeforeWait: 1

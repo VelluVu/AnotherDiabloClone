@@ -15,6 +15,7 @@ public class Elevator : MonoBehaviour
     public GameObject spriteRendererHolder;
     public SpriteRenderer sr;
     BoxCollider2D coll;
+    AudioSource source;
 
     public List<ElevatorLever> levers = new List<ElevatorLever> ( );
     public List<Transform> checkpoints = new List<Transform> ( );
@@ -29,11 +30,15 @@ public class Elevator : MonoBehaviour
     public delegate void ElevatorReachedCheckpoint ( );
     public static event ElevatorReachedCheckpoint elevatorReachedCheckpointEvent;
 
+    public delegate void ElevatorSoundDelegate ( AudioSource source, ObjectSoundType objSound );
+    public static event ElevatorSoundDelegate ElevatorSoundEvent;
+
     private void Start ( )
     {
         coll = gameObject.GetComponent<BoxCollider2D> ( );
         pos = new Vector2 ( transform.position.x, transform.position.y );
         trig = gameObject.GetComponentInChildren<ElevatorTrigger> ( );
+        source = gameObject.GetComponent<AudioSource> ( );
 
         coll.size = sr.sprite.bounds.size * new Vector2 (1 * spriteRendererHolder.transform.localScale.x,1 * spriteRendererHolder.transform.localScale.y );
 
@@ -72,7 +77,7 @@ public class Elevator : MonoBehaviour
     {
         if ( elevator == gameObject )
         {
-
+            source.Pause ( );
             started = false;
 
             if ( checkpointIndex > 0 )
@@ -167,6 +172,7 @@ public class Elevator : MonoBehaviour
         {
             Debug.Log ( "Saavuttiin päämäärään" );
             started = false;
+            source.Pause ( );
             up = false;
             trig.ResetTrigger ( );
             foreach ( var lever in levers )
@@ -198,7 +204,11 @@ public class Elevator : MonoBehaviour
         Debug.Log ( "Triggered Elevator " );
 
         started = true;
-
+        source.Play ( );
+        if ( ElevatorSoundEvent  != null)
+        {
+            ElevatorSoundEvent ( source, ObjectSoundType.Elevator );
+        }
     }
 
     void MoveElevator ( )

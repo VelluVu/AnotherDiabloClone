@@ -20,7 +20,6 @@ public class AttackAction : Action
     /// <param name="controller"></param>
     void Attack ( StateController controller )
     {
-
         if ( controller.attackRdy)
         {
             controller.Attack ( );

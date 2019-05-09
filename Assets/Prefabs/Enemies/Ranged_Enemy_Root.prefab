@@ -47,9 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 7783545889495179555, guid: 9a04c21eb8be10849a6e71391096e1c5,
     type: 3}
-  rotatingPoint: {fileID: 8473249468196734646}
+  rotatingPoint: {fileID: 8067497996528838149}
   launchPosition: {fileID: 179047170}
-  bloodSplash: {fileID: 0}
+  bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
+    type: 3}
   _weaponDamage: 0
   weaponType: 0
   damageType: 0
@@ -178,9 +179,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 1431946453750279229, guid: 1a36f98657d25c846a029f2b79e8565d,
     type: 3}
-  rotatingPoint: {fileID: 4891201547241347906}
+  rotatingPoint: {fileID: 5831423400716844366}
   launchPosition: {fileID: 582634660}
-  bloodSplash: {fileID: 0}
+  bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
+    type: 3}
   _weaponDamage: 0
   weaponType: 1
   damageType: 0
@@ -276,6 +278,7 @@ GameObject:
   - component: {fileID: 1772442517287954314}
   - component: {fileID: 2994367867294256741}
   - component: {fileID: 4572289657394412132}
+  - component: {fileID: 894190397570153850}
   m_Layer: 12
   m_Name: Ranged_Enemy_Root
   m_TagString: Enemy
@@ -297,6 +300,7 @@ Transform:
   - {fileID: 1773056197717447457}
   - {fileID: 8204483007419588562}
   - {fileID: 6191178983487104881}
+  - {fileID: 7877542526339381058}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -343,30 +347,37 @@ MonoBehaviour:
   enemyStats: {fileID: 1772442517287954314}
   attackJump: 100
   moveSpeedScale: 1
-  attackDistance: 0.1
+  attackDistance: 0.2
   searchDuration: 5
   spotDistance: 5
   sightDistance: 8
-  alertedByEventDuration: 0
+  alertedByEventDuration: 5
   stateTimeElapsed: 0
   radius: 1.1
   senseArea: 2.01
-  circleCastRadius: 0.3
+  circleCastRadius: 0.15
   fallToDeathHeight: 100
+  spiderEggCD: 0
   riseUpTime: 0
   riseUpTimeCounter: 0
+  isUpPosition: 0
   changedPos: 0
   phase1: 0
   phase2: 0
   phase3: 0
   phase4: 0
+  positions:
+  - {fileID: 0}
+  - {fileID: 0}
+  targetWP: {fileID: 0}
+  wPindex: 0
   amplitude: 0
   frequency: 0
   flyingPatrolDirectionTime: 0
   eyes: {fileID: 8204483007419588562}
   back: {fileID: 6191178983487104881}
   head: {fileID: 6319583631003300824}
-  attackBox: {fileID: 0}
+  attackBox: {fileID: 7877542526339381058}
   friendlyTargetLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -388,14 +399,15 @@ MonoBehaviour:
   targetDir: {x: 0, y: 0}
   leftDirection: {x: 0, y: 0, z: 0}
   rightDirection: {x: 0, y: 0, z: 0}
-  positions: []
-  dirRight: 0
+  dirRight: 1
   aiActive: 1
   attackRdy: 1
   hasTurn: 0
   hasSplit: 0
   alertedByEvent: 0
-  notHatchedEgg: 0
+  rdyToHatch: 1
+  stunned: 0
+  weakness: 0
 --- !u!114 &1772442517287954314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,79 +426,95 @@ MonoBehaviour:
   level: 0
   moveSpeed:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   jumpForce:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   attackSpeed:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   attackDamage:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   maxHealth:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   health:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   maxMana:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   mana:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   armor:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   chaseMultiplier:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   fireResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
-  frostResistance:
+  coldResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   poisonResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   lightningResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   physicalResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
+  enemyTypeForSound: 0
   enemyType: 0
   groundEnemyType: 0
   flyingEnemyType: 0
@@ -507,7 +535,7 @@ Rigidbody2D:
   m_Mass: 50
   m_LinearDrag: 5
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -523,7 +551,7 @@ Animator:
   m_GameObject: {fileID: 255067207205110632}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eb56b4532fc74c4458ecbf3fcee9fd9c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 04705c344df35e34b853b5441b2b3416, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -532,6 +560,103 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!82 &894190397570153850
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255067207205110632}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243958971588630962, guid: 86fc88fbdfd94ec448e974561a6299c7,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &403425267914869927
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,37 +736,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1631906534514575258
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8473249468196734646}
-  m_Layer: 12
-  m_Name: Right_Arm_Rotate
-  m_TagString: Enemy
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8473249468196734646
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1631906534514575258}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.273, y: 0.287, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 3375881916207898125}
-  m_Father: {fileID: 1773056197717447457}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1762747469865745548
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,8 +767,8 @@ Transform:
   - {fileID: 8150276375131961457}
   - {fileID: 7871493742946626442}
   - {fileID: 4797076509852337721}
-  - {fileID: 8473249468196734646}
-  - {fileID: 4891201547241347906}
+  - {fileID: 3375881916207898125}
+  - {fileID: 1013655505783607897}
   m_Father: {fileID: 4199463826464430328}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -885,37 +979,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &4014718602898726181
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4891201547241347906}
-  m_Layer: 12
-  m_Name: Left_Arm_Rotate
-  m_TagString: Enemy
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4891201547241347906
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4014718602898726181}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.313, y: 0.234, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1013655505783607897}
-  m_Father: {fileID: 1773056197717447457}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4343830575676658607
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,12 +1164,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5883113030595938710}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.014000058, y: -0.05699998, z: 0}
+  m_LocalPosition: {x: -0.25899994, y: 0.23000002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4837969638039972316}
-  m_Father: {fileID: 8473249468196734646}
-  m_RootOrder: 0
+  m_Father: {fileID: 1773056197717447457}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &774927307127605424
 SpriteRenderer:
@@ -1476,6 +1539,79 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &6845601717956785668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7877542526339381058}
+  - component: {fileID: 5005715696929758811}
+  - component: {fileID: 2737250295987368100}
+  m_Layer: 26
+  m_Name: AttackHitBox
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7877542526339381058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6845601717956785668}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.67, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4199463826464430328}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &5005715696929758811
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6845601717956785668}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &2737250295987368100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6845601717956785668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e8f85d1cd9083478821f2a70ad430a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodSplash: {fileID: 6402256880773645892, guid: 3fca4b8f765faa14492ccfd9e0ee46bb,
+    type: 3}
+  damageType: 0
 --- !u!1 &6866500772072064430
 GameObject:
   m_ObjectHideFlags: 0
@@ -1611,12 +1747,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8164360945543165975}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.058999926, y: -0.008999974, z: 0}
+  m_LocalPosition: {x: 0.25400007, y: 0.22500002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 798792085717266859}
-  m_Father: {fileID: 4891201547241347906}
-  m_RootOrder: 0
+  m_Father: {fileID: 1773056197717447457}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5084589870956176329
 SpriteRenderer:
@@ -1849,7 +1985,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9039906682666255454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.531, y: -0.546, z: 0}
+  m_LocalPosition: {x: 0.531, y: 0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4199463826464430328}

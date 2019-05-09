@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: BeltUncommon
+  m_EditorClassIdentifier: 
+  itemName: Quality Belt
+  description: '"This belt does exactly what it was promised to do, I rate it three
+    stars" - Torwyn Brownstone'
+  itemID: 7
+  itemIcon: {fileID: 2800000, guid: 6375229ce0210814f9b4bd1b9a021f5a, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 3ecb8bf5fc24302489c35e0949c8f2dd, type: 3}
+  lootSprite: {fileID: 21300000, guid: 3ecb8bf5fc24302489c35e0949c8f2dd, type: 3}
+  rarity: 1
+  itemLevel: 1
+  tags: 
+  attributes: []
+  randomAttributes: 1
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 0
+  armorSlot: 8
+  consumablePotency: 0
+  buyPrice: 0
+  sellPrice: 0

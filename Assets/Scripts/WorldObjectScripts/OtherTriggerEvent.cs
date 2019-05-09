@@ -16,7 +16,7 @@ public class OtherTriggerEvent : MonoBehaviour
 
     private void OnTriggerEnter2D ( Collider2D collision )
     {
-        Debug.Log ( collision.gameObject.layer );
+        //Debug.Log ( collision.gameObject.layer );
         if ( collision.gameObject.layer == LayerMask.NameToLayer ( TriggeringLayerName ) )
         {
             if ( TriggerEnterEvent != null )
@@ -28,7 +28,7 @@ public class OtherTriggerEvent : MonoBehaviour
 
     private void OnTriggerExit2D ( Collider2D collision )
     {
-        Debug.Log ( collision.gameObject.layer );
+        //Debug.Log ( collision.gameObject.layer );
         if ( collision.gameObject.layer == LayerMask.NameToLayer ( TriggeringLayerName ) )
         {
             if ( TriggerExitEvent != null )

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: TowerShieldRare
+  m_EditorClassIdentifier: 
+  itemName: Tower Shield of the Dark
+  description: 'Towers over all mortals
+
+'
+  itemID: 7
+  itemIcon: {fileID: 2800000, guid: 8af5e1adaa35f6d4eb71c5b57c5a6cae, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 0dd7170e6e2a7014991f6f7158e54c06, type: 3}
+  lootSprite: {fileID: 21300000, guid: 0dd7170e6e2a7014991f6f7158e54c06, type: 3}
+  rarity: 2
+  itemLevel: 0
+  tags: 
+  attributes: []
+  randomAttributes: 1
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 1
+  armorSlot: 10
+  consumablePotency: 0
+  buyPrice: 78
+  sellPrice: 6

@@ -11,6 +11,7 @@ public class EnemyWeaponHolder : MonoBehaviour
     #region Necessary Components
     SpriteRenderer weaponGraphic;
     BoxCollider2D weaponCollider;
+    AudioSource enemyWeaponSource;
     #endregion
 
     #region Ranged
@@ -38,15 +39,20 @@ public class EnemyWeaponHolder : MonoBehaviour
     public WeaponType weaponType;
     public DamageType damageType;
     public ProjectileType projectileType;
+    EnemyTypeForSound type;
     #endregion
+
+    public delegate void EnemyShootSoundDelegate ( AudioSource source, EnemySoundType enemySoundType, EnemyTypeForSound enemyTypeForSound );
+    public static event EnemyShootSoundDelegate EnemyShootSoundEvent;
 
     //Näihin otetaan talteen itemeistä tulleet muuttujat , esim. varsijousessa force riittää ampuun kauemmas
     public float _damage, _force, _weaponSpeed;
 
     private void Start ( )
     {
-
+        enemyWeaponSource = gameObject.GetComponentInParent<AudioSource> ( );
         weaponGraphic = gameObject.GetComponent<SpriteRenderer> ( );
+        type = gameObject.GetComponentInParent<StateController> ( ).enemyStats.enemyTypeForSound;
 
         if ( weaponType != WeaponType.RangedWeapon )
         {
@@ -66,9 +72,15 @@ public class EnemyWeaponHolder : MonoBehaviour
     {
 
         Vector2 velocity = AimWithRangedWeapon ( target, range, playerLayer );
-    
+        
+        
         if ( isTargetLocked && Time.time > nextHit )
         {
+            if(EnemyShootSoundEvent != null)
+            {
+                EnemyShootSoundEvent ( enemyWeaponSource, EnemySoundType.EnemyThrowRock, type );
+            }
+
             nextHit = Time.time + weaponSpeed;
             //isShootCDrdy = false;
             GameObject newProjectile = Instantiate ( projectile, launchPosition.position, launchPosition.rotation ) as GameObject;

@@ -24,12 +24,69 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 532106995}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.8, y: 5.15, z: 0}
+  m_LocalPosition: {x: -3.31, y: 2.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1033081483147470655}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1507246153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1507246154}
+  - component: {fileID: 1507246155}
+  m_Layer: 11
+  m_Name: invisiblewall
+  m_TagString: Wall
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1507246154
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507246153}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.59, y: 1.27, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1033081484568218442}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1507246155
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507246153}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.14238739, y: 0.06696558}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.4534302, y: 1.7344847}
+  m_EdgeRadius: 0
 --- !u!1 &1033081483147470654
 GameObject:
   m_ObjectHideFlags: 0
@@ -54,7 +111,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033081483147470654}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3105805, y: -3.81, z: -0.009765625}
+  m_LocalPosition: {x: 0.3105805, y: -1.28, z: -0.009765625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1033081484118859537}
@@ -89,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033081483810479973}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.68, y: -4.46, z: 0}
+  m_LocalPosition: {x: 3.33, y: -3.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1033081484568218442}
@@ -111,11 +168,14 @@ MonoBehaviour:
   bossHealthUI: {fileID: 0}
   bossEntrancePosition: {fileID: 532106996}
   bossActivateTime: 4.87
-  areaSize: {x: 9.27, y: 12.46, z: 0}
+  areaSize: {x: 23.09, y: 10, z: 0}
+  areaOffSet: {x: -4.8, y: 2.55, z: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 8192
   bossStarted: 0
+  invisibleWall: {fileID: 1507246155}
+  checkPoint3: {fileID: 0}
 --- !u!61 &1033081483810479975
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -166,7 +226,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033081484118859536}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.1, y: 0.11, z: 0}
+  m_LocalPosition: {x: -3.89, y: -1.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1033081483147470655}
@@ -196,7 +256,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033081484431400596}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.04, y: 0.110000014, z: 0}
+  m_LocalPosition: {x: 3.17, y: -1.16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1033081483147470655}
@@ -217,7 +277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1033081484568218442
 Transform:
   m_ObjectHideFlags: 0
@@ -232,6 +292,7 @@ Transform:
   - {fileID: 7293411623321693567}
   - {fileID: 1033081483147470655}
   - {fileID: 1033081483810479974}
+  - {fileID: 1507246154}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -246,15 +307,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpiderQueen_Root
       objectReference: {fileID: 0}
+    - target: {fileID: 475796402, guid: c699db1a47e0fd948bd8f3a0e8e6c5ea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5758200220689541353, guid: c699db1a47e0fd948bd8f3a0e8e6c5ea,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.47
+      value: -3.21
       objectReference: {fileID: 0}
     - target: {fileID: 5758200220689541353, guid: c699db1a47e0fd948bd8f3a0e8e6c5ea,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.34
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5758200220689541353, guid: c699db1a47e0fd948bd8f3a0e8e6c5ea,
         type: 3}
@@ -302,10 +367,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 475796403, guid: c699db1a47e0fd948bd8f3a0e8e6c5ea, type: 3}
-      propertyPath: senseArea
-      value: 2.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 475796403, guid: c699db1a47e0fd948bd8f3a0e8e6c5ea, type: 3}
       propertyPath: positions.Array.data[0]
       value: 
       objectReference: {fileID: 1033081484118859537}
@@ -317,11 +378,6 @@ PrefabInstance:
       propertyPath: positions.Array.data[2]
       value: 
       objectReference: {fileID: 1033081483147470655}
-    - target: {fileID: 3267712394627021567, guid: c699db1a47e0fd948bd8f3a0e8e6c5ea,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 9951c353cb8c31c439237a73d9d562ea, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c699db1a47e0fd948bd8f3a0e8e6c5ea, type: 3}
 --- !u!1 &3089007193133012516 stripped

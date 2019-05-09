@@ -38,6 +38,12 @@ public enum EnemyType
     Boss
 }
 
+public enum EnemyTypeForSound
+{
+    Humanoid,
+    Insect,
+}
+
 //Vihollislistasta poimitut toteutetaan ne mitä kerkiää
 
 public enum GroundEnemyType
@@ -140,7 +146,75 @@ public enum AreaName
     Area1,
     Area2,
     Area3,
+    Area4,
 }
+
+public enum EnemySoundType
+{
+    EnemyPain,
+    EnemyDeath,
+    EnemyAttack,
+    EnemyThrowRock,
+    EggCrack,
+}
+
+public enum PlayerSoundType
+{
+    PlayerAttack,
+    PlayerHit,
+    PlayerBlock,
+    PlayerDeath,
+    PlayerTakeDamage,
+    PlayerJump,
+    PlayerDash,
+    PlayerRestoreHealth,
+    PlayerRestoreMana,
+    PlayerFootSteps,
+    PlayerLevelUp,
+    PlayerFallToDeath,
+}
+
+public enum ObjectSoundType
+{
+    Lever,
+    Door,
+    Elevator,
+    TreasureChest,
+    Trigger,
+    TrapDoor,
+}
+
+public enum SkillSoundType
+{
+    BouncingFrostBalls,
+    DaggerRain,
+    EyeOfWeakness, 
+    Fear,
+    FiveEyes,
+    HammerTime,
+    HealingShout,
+    IronMan,
+    Leap,
+    LifeStealDagger,
+    PoisonBottle,
+    PowerOfBull,
+    PowerOfGods,
+    PowerOFWolf,
+    Rage,
+    Renew,
+    SecondChance,
+    ShadowOfManaSprit,
+    ShadowStep,
+    ShieldOfGhost,    
+    ThorHammer,
+    ThrowingAxe,
+    VoidShield,
+    Tomp,
+    WitheredPain,
+    
+
+}
+
 [System.Serializable]
 public enum AttributeTag 
 {

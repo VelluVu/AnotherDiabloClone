@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e30dc77fd360ba8409178c34795a1aef, type: 3}
+  m_Name: BounchingFrostBalls
+  m_EditorClassIdentifier: 
+  _name: Storm of Frost Balls
+  desc: Release Bouncing Frost Balls to Hit everything its way
+  isEnabled: 1
+  checkLevel: 1
+  levelToUnlock: 0
+  _sprite: {fileID: 21300000, guid: 41e96d49f67aa2246a5eed232c04cfea, type: 3}
+  _sound: {fileID: 0}
+  skillSoundSource: {fileID: 0}
+  skillSoundType: 0
+  _cooldown: 15
+  _manaUsage: 4
+  _duration: 0.1
+  _showDurBar: 0
+  prefab: {fileID: 6291839171735497906, guid: c531817edc60d6949a460d9705bb45e0, type: 3}
+  damageProsent: 4
+  damageType: 2
+  force: 0
+  velocity: 0
+  _waitBeforeLaunch: 0
+  _animation: 
+  _playItBeforeWait: 1

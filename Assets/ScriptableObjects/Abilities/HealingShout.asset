@@ -12,16 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2457406347a2a3142b7539e1329a8f10, type: 3}
   m_Name: HealingShout
   m_EditorClassIdentifier: 
-  _name: HealingShout
-  _sprite: {fileID: 21300000, guid: 34d4953caddf5d34aa467cd0fcf85b39, type: 3}
-  _sound: {fileID: 0}
-  _cooldown: 10
+  _name: Healing Shout
+  desc: Insta heal you 40%
+  isEnabled: 1
+  checkLevel: 1
+  levelToUnlock: 0
+  _sprite: {fileID: 21300000, guid: 2ca22bde83ef39e47a5471f8f2795bd8, type: 3}
+  skillSoundType: 6
+  _cooldown: 15
   _manaUsage: 5
-  caster: {fileID: 2482208905895880361, guid: f7a0707a6d9b6fb439e11439bd92be3c, type: 3}
-  _range: 0
   _duration: 0
-  _heal: 20
+  _showDurBar: 1
+  _allowDoThisInAir: 1
+  _stopPlayerMoving: 0
+  _stopDuration: 0
+  _range: 0
+  _heal: 40
+  _mana: 0
   _damage: 0
+  _damageType: 0
   _dotDamage: 0
   _speedBuff: 0
+  _playShoutAnimation: 1
+  _increaseStrM: 0
+  _increaseArmorM: 0
+  _increaseAttactSpeedM: 0
+  _increaseHealthM: 0
+  _spawnGameobject: {fileID: 0}
   _fearEnemy: 0
+  _stunEnemy: 0
+  _weakEnemy: 0
+  _addShoutScript: 1
+  _addSStoPrefab: 0
+  _addAbilityInfoScript: 0
+  _addAIStoPrefab: 0
+  _waitBeforeLaunch: 0
+  _animation: 
+  _playItBeforeWait: 1

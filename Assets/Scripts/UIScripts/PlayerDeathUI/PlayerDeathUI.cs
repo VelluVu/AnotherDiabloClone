@@ -7,7 +7,9 @@ public class PlayerDeathUI : MonoBehaviour
 {
 
     public Button [ ] yesAndNo;
-    Transform respawnPosition;
+    public Transform respawnPosition;
+    AudioSource source;
+
     public delegate void RespawnPlayerDelegate ( Transform transform );
     public static event RespawnPlayerDelegate respawnPlayerEvent;
 
@@ -15,22 +17,30 @@ public class PlayerDeathUI : MonoBehaviour
     {
         yesAndNo [ 0 ].onClick.AddListener ( ( ) => RespawnPlayer ( ) );
         yesAndNo [ 1 ].onClick.AddListener ( ( ) => QuitToTheMenu ( ) );
+        source = gameObject.GetComponent<AudioSource> ( );
     }
 
     private void OnEnable ( )
     {
         Player.playerDeathEvent += ActivateDeathUI;
+        CheckPoint.CheckPointVisitEvent += CheckPointVisit;
     }
 
     private void OnDisable ( )
     {
         Player.playerDeathEvent -= ActivateDeathUI;
+        CheckPoint.CheckPointVisitEvent -= CheckPointVisit;
     }
 
-    public void ActivateDeathUI( Transform playerPosition)
+    public void CheckPointVisit(Transform transform, int checkpointID)
     {
-        respawnPosition = playerPosition;
+        respawnPosition = transform;
+    }
+
+    public void ActivateDeathUI( Transform deathPos)
+    {       
         gameObject.transform.GetChild ( 0 ).gameObject.SetActive ( true );
+        source.Play ( );
 
     }
 
@@ -39,7 +49,7 @@ public class PlayerDeathUI : MonoBehaviour
     /// </summary>
     void RespawnPlayer()
     {
-
+        source.Stop ( );
         gameObject.transform.GetChild ( 0 ).gameObject.SetActive ( false );
 
         if (respawnPlayerEvent != null)

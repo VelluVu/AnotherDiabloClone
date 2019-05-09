@@ -14,13 +14,14 @@ GameObject:
   - component: {fileID: 475796404}
   - component: {fileID: 475796403}
   - component: {fileID: 682234346}
+  - component: {fileID: 8972387784176333818}
   m_Layer: 12
   m_Name: SpiderQueen_Root
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5758200220689541353
 Transform:
   m_ObjectHideFlags: 0
@@ -33,7 +34,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7262259659569694014}
-  - {fileID: 9178393708633272625}
   - {fileID: 9191702186535262952}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -103,79 +103,95 @@ MonoBehaviour:
   level: 0
   moveSpeed:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   jumpForce:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   attackSpeed:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   attackDamage:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   maxHealth:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   health:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   maxMana:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   mana:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   armor:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   chaseMultiplier:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   fireResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
-  frostResistance:
+  coldResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   poisonResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   lightningResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   physicalResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
+  enemyTypeForSound: 0
   enemyType: 3
   groundEnemyType: 18
   flyingEnemyType: 2
@@ -198,16 +214,17 @@ MonoBehaviour:
   enemyStats: {fileID: 475796404}
   attackJump: 1
   moveSpeedScale: 1
-  attackDistance: 0.5
+  attackDistance: 0.1
   searchDuration: 5
   spotDistance: 10
   sightDistance: 20
   alertedByEventDuration: 10
   stateTimeElapsed: 0
   radius: 4.21
-  senseArea: 1.96
+  senseArea: 2.8
   circleCastRadius: 0.2
   fallToDeathHeight: 100
+  spiderEggCD: 6
   riseUpTime: 0.014
   riseUpTimeCounter: 0
   isUpPosition: 0
@@ -216,6 +233,12 @@ MonoBehaviour:
   phase2: 0
   phase3: 0
   phase4: 0
+  positions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  targetWP: {fileID: 0}
+  wPindex: 0
   amplitude: 0
   frequency: 0
   flyingPatrolDirectionTime: 0
@@ -244,17 +267,15 @@ MonoBehaviour:
   targetDir: {x: 0, y: 0}
   leftDirection: {x: 0, y: 0, z: 0}
   rightDirection: {x: 0, y: 0, z: 0}
-  positions:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   dirRight: 0
   aiActive: 0
   attackRdy: 0
   hasTurn: 0
   hasSplit: 0
   alertedByEvent: 0
-  notHatchedEgg: 0
+  rdyToHatch: 1
+  stunned: 0
+  weakness: 0
 --- !u!70 &682234346
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -271,6 +292,103 @@ CapsuleCollider2D:
   m_Offset: {x: -0.6356253, y: 0.13055587}
   m_Size: {x: 1.0863963, y: 2.392436}
   m_Direction: 0
+--- !u!82 &8972387784176333818
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475796402}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243958971588630962, guid: 86fc88fbdfd94ec448e974561a6299c7,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2400764576730442201
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,6 +481,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6592233372918476097}
+  - {fileID: 9178393708633272625}
   m_Father: {fileID: 5758200220689541353}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -376,7 +495,7 @@ Animator:
   m_GameObject: {fileID: 4539353265398600579}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9951c353cb8c31c439237a73d9d562ea, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -458,11 +577,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4762329509041303073}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.11, y: -0.373, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.11, y: -0.37300003, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5758200220689541353}
+  m_Father: {fileID: 7262259659569694014}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1775298604891959551
@@ -615,7 +734,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5758200220689541353}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7649278756502579154
 MonoBehaviour:

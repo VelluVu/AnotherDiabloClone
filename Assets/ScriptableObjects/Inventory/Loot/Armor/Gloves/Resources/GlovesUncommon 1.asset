@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: GlovesUncommon 1
+  m_EditorClassIdentifier: 
+  itemName: Steel Gloves
+  description: '"These won''t keep your hands warm"'
+  itemID: 7
+  itemIcon: {fileID: 2800000, guid: 8fc0dc2d6dbd6ba42a6b710b26c65b4b, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 6a519ce414852d2419115b68b17b4123, type: 3}
+  - {fileID: 21300000, guid: c1963414a0bbf0346a4d2fa585bfc066, type: 3}
+  - {fileID: 21300000, guid: 47dde4ab83fd2ad4c8d2a63dcaaef633, type: 3}
+  - {fileID: 21300000, guid: 58623f32b838d9949b0bd286ee16a1b4, type: 3}
+  lootSprite: {fileID: 21300000, guid: c1963414a0bbf0346a4d2fa585bfc066, type: 3}
+  rarity: 1
+  itemLevel: 1
+  tags: 
+  attributes: []
+  randomAttributes: 1
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 0
+  armorSlot: 7
+  consumablePotency: 0
+  buyPrice: 0
+  sellPrice: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b84ea76521396d499fa12772145d438, type: 3}
   m_Name: PoisonResistance
   m_EditorClassIdentifier: 
-  rollValueByItemLevels: 0
+  rollValueByItemLevels: 1
   attributeName: Poison Resistance
   isBaseValue: 0
   stat: 11
@@ -24,7 +24,8 @@ MonoBehaviour:
   statModType: 100
   characterStat:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
-  id: 9
+  id: 21

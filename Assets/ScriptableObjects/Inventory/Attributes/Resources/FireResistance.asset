@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b84ea76521396d499fa12772145d438, type: 3}
   m_Name: FireResistance
   m_EditorClassIdentifier: 
-  rollValueByItemLevels: 0
+  rollValueByItemLevels: 1
   attributeName: Fire Resistance
   isBaseValue: 0
   stat: 9
@@ -24,6 +24,8 @@ MonoBehaviour:
   statModType: 100
   characterStat:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
+  id: 4

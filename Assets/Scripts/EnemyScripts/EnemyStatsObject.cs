@@ -27,6 +27,7 @@ public class EnemyStatsObject : ScriptableObject
     public int _xpReward;
     public int _level;
 
+    public EnemyTypeForSound _enemyTypeForSound;
     public EnemyType _enemyType;
     public GroundEnemyType _groundEnemyType;
     public FlyingEnemyType _flyingEnemyType;

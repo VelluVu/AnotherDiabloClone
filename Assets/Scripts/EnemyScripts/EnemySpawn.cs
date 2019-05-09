@@ -9,6 +9,7 @@ public class EnemySpawn : MonoBehaviour
 {
     [Header ( "Lista mahdollisista vihollisista mitä spawnaa" )]
     public List<GameObject> enemies = new List<GameObject> ( );
+    public List<Transform> enemyWayPoints = new List<Transform> ( );
     GameObject spawnedEnemy;
     public LayerMask playerLayer;
     public bool isSpawn;
@@ -26,7 +27,7 @@ public class EnemySpawn : MonoBehaviour
         PlayerDeathUI.respawnPlayerEvent -= RespawnEnemy;
     }
 
-    private void Update ( )
+    private void FixedUpdate ( )
     {
         if ( !isSpawn )
         {
@@ -34,18 +35,19 @@ public class EnemySpawn : MonoBehaviour
         }
         if ( isSpawn && spawnedEnemy != null )
         {
-            if ( Physics2D.OverlapCircle ( transform.position, spawnCheckRadius, playerLayer ) == null )
+            if ( !Physics2D.OverlapCircle ( transform.position, spawnCheckRadius, playerLayer ) && spawnedEnemy.activeSelf )
             {
-                spawnedEnemy.transform.position = transform.position;            
+                spawnedEnemy.transform.position = transform.position;
                 spawnedEnemy.SetActive ( false );
             }
-            else
+            else if ( Physics2D.OverlapCircle ( transform.position, spawnCheckRadius, playerLayer )  && !spawnedEnemy.activeSelf )
             {
                 spawnedEnemy.SetActive ( true );
                 spawnedEnemy.GetComponent<StateController> ( ).aiActive = true;
             }
         }
     }
+
     public void CheckPointCall ( )
     {
         isSpawn = false;
@@ -63,6 +65,7 @@ public class EnemySpawn : MonoBehaviour
                 if ( spawnedEnemy == null )
                 {
                     spawnedEnemy = Instantiate ( enemies [ Random.Range ( 0, enemies.Count ) ], transform.position, Quaternion.identity );
+                    spawnedEnemy.GetComponent<StateController> ( ).SetWaypoints ( spawnedEnemy, enemyWayPoints );
                 }
             }
         }

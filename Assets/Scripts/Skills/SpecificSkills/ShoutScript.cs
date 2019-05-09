@@ -9,51 +9,89 @@ public class ShoutScript : MonoBehaviour
     [HideInInspector] public float range;
     [HideInInspector] public float duration;
     [HideInInspector] public float heal;
+    [HideInInspector] public float mana;
     [HideInInspector] public float damage;
-    [HideInInspector] public float increaseDamage;
+    [HideInInspector] public DamageType damageType;
     [HideInInspector] public float dotDamage;
     [HideInInspector] public float speedBuff;
     [HideInInspector] public bool fearEnemy;
+    [HideInInspector] public bool stunEnemy;
+    [HideInInspector] public bool weakEnemy;
+
+    [HideInInspector] public float increaseStrM;
+    [HideInInspector] public float increaseArmorM;
+    [HideInInspector] public float increaseAttactSpeedM;
+    [HideInInspector] public float increaseHealthM;
 
     GameObject holder;
   
     Player playerC;
-
+    PlayerClass pc;
+    public List<GameObject> enemies = new List<GameObject>();
      
     bool speedBuffOn = false;
 
     private void Start()
     {
-        Debug.Log("Shout script " + heal );
-        holder = this.gameObject;
-        if(holder.GetComponent<Player>() != null)
-        {
-            playerC = holder.GetComponent<Player>();
-        }
-        if(heal > 0)
+        playerC = GetComponent<Player>();
+
+
+        pc = GetComponent<PlayerClass>();
+       
+            
+        getEnemiesAround();
+        if (heal > 0)
         {
             Debug.Log("HEAALL");
+            
             playerC.OnRestoreHealth(heal, false);
+        }
+
+        if(mana > 0 )
+        {
+            Debug.Log("MANAAA");
+            playerC.OnRestoreMana(mana, false);
         }
 
         if(damage > 0)
         {
             
-            getEnemiesInRangeSetDotOrDamage(false);
+            setEnemiesInRangeDamageAndDot(false);
         }
-        if(increaseDamage != 0)
-        {
-            Debug.Log("INcrease damage ei ole implementoitu");
-        }
+        
         if(fearEnemy)
         {
-            Debug.Log("fearia ei ole implementoitu");
+            stunWeakFearEnemies(false, false, true);
+        }
+        if(stunEnemy)
+        {
+            stunWeakFearEnemies(true,false,false);
         }
         if(dotDamage > 0 && range > 0)
         {
-            
-            getEnemiesInRangeSetDotOrDamage(true);
+            setEnemiesInRangeDamageAndDot(true);
         }
+
+        if(increaseHealthM != 0)
+        {
+            pc.BoostHealth((increaseHealthM - 1f)*100, duration);
+        }
+
+        if(increaseStrM != 0)
+        {
+            pc.BoostStrength((increaseStrM - 1f) * 100, duration);
+        }
+
+        if(increaseArmorM != 0)
+        {
+            pc.BoostArmor((increaseArmorM - 1f) * 100, duration);
+        }
+
+        if(increaseAttactSpeedM != 0)
+        {
+            pc.BoostAttackSpeed((increaseAttactSpeedM - 1f) * 100, duration);
+        }
+
 
         if(speedBuff > 0)
         {
@@ -64,7 +102,6 @@ public class ShoutScript : MonoBehaviour
         }
         else
         {
-            
             Destroy(this);
         }
         
@@ -77,60 +114,73 @@ public class ShoutScript : MonoBehaviour
         }
     }
 
-    void getEnemiesInRangeSetDotOrDamage(bool isDotDamage)
+    void stunWeakFearEnemies(bool stun,bool weak, bool fear)
     {
-        Collider2D[] hitColliders;
-        hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
-        foreach (Collider2D col in hitColliders)
+        if(enemies.Count == 0)
         {
-            if (col.tag == "Enemy")
+            return;
+        }
+
+        StateController state;
+        foreach(GameObject enemy in enemies)
+        {
+            if (enemy.GetComponent<StateController>() != null)
             {
-             if(col.gameObject.GetComponent<StateController>() != null)
-                {
-                    Debug.Log("ENEMy found " + col.gameObject);
-                    //enemies.Add(col.gameObject);
-                    if(isDotDamage)
-                    {
-                        col.gameObject.GetComponent<StateController>().setDotToTarget(col.gameObject, dotDamage, (int)duration, DamageType.Raw);
-                    }
-                    else
-                    {
-                        col.gameObject.GetComponent<StateController>().TakeDamage(col.gameObject, damage, DamageType.Raw);
-                    }
-                    
-
-
-                }
+                state = enemy.GetComponent<StateController>();
+                if(stun)
+                    state.SetStun(enemy, duration);
+                if (weak)
+                    state.ApplyWeakness(enemy, 30, duration);
+                if (fear)
+                    state.ApplyFear(enemy, duration);
             }
         }
     }
 
-    //void makeDamageAllEnemiesInList(float dmg)
-    //{
-    //    if (enemies.Count == 0)
-    //        return;
+    public void setEnemiesInRangeDamageAndDot(bool isDotDamage)
+    {
+        Debug.Log("COUnt: " + enemies.Count);
+        if (enemies.Count <= 0)
+        {
+            return;
+        }
+            
+        foreach (GameObject enemy in enemies)
+        {
+            if(enemy.gameObject.GetComponent<StateController>() != null)
+            {
+                if(isDotDamage)
+                {
+                    enemy.GetComponent<StateController>().setDotToTarget(enemy, dotDamage, (int)duration, damageType);
+                }
+                else
+                {
+                    enemy.GetComponent<StateController>().TakeDamage(enemy, damage, false, damageType, true, 100);
+                }
+            }
+            
+        }
+    }
+    void getEnemiesAround()
+    {
+        if (range <= 0)
+        {
+            range = 0;
+        }
+            
+        Collider2D[] hitColliders = Physics2D.OverlapBoxAll(transform.root.position, new Vector2(range, range), 0);
 
-    //    foreach(GameObject enemy in enemies)
-    //    {
-    //        if (enemy.GetComponent<StateController>() == null)
-    //            return;
-    //        StateController state = enemy.GetComponent<StateController>();
-    //        state.TakeDamage(enemy, dmg);
-
-    //    }
-    //}
-
-    //void addDotAllEnemiesInList(float dmg, float dur)
-    //{
-    //    if (enemies.Count == 0)
-    //        return;
-
-    //    foreach (GameObject enemy in enemies)
-    //    {
-    //        dotScript=enemy.AddComponent<DotScript>();
-    //        dotScript._duration = dur;
-    //        dotScript._dotDamage = dmg;
-
-    //    }
-    //}
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            GameObject obj = hitColliders[i].gameObject;
+            //Debug.Log("OBJ: " + obj);
+            if (obj.CompareTag("Enemy"))
+            {
+                if (!enemies.Contains(obj.transform.root.gameObject))
+                {
+                    enemies.Add(obj.transform.root.gameObject);
+                }
+            }
+        }
+    }
 }

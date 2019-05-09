@@ -31,6 +31,7 @@ public class PlayerInventory : MonoBehaviour
     [HideInInspector]
     public bool draggingInventoryItem = false; // inventory item is being dragged
     [HideInInspector] public bool loading;
+    public float consumableCooldown = 20;
 
     #region equipmentSlots
 
@@ -118,6 +119,7 @@ public class PlayerInventory : MonoBehaviour
             Destroy(this);
         }
         int lootCount = 0;
+        Resources.LoadAll("",typeof(Loot));
         allLoot = Resources.FindObjectsOfTypeAll<Loot>();
         foreach (Loot loot in allLoot)
         {
@@ -171,11 +173,13 @@ public class PlayerInventory : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F7))
             {
+                
                 LoadInventory();
             }
             if (Input.GetKeyDown(KeyCode.F6))
             {
                 SaveInventory();
+                //FindObjectOfType<SaveLoadManager>().SaveGame();
             }
         }
        

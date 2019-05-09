@@ -31,6 +31,24 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                     {
                         droppedLoot.item.Equip();
                         droppedLoot.WeaponEquip();
+                        foreach (var v in PlayerInventory.instance.equipmentConnect) // check which equipment position this can be placed in
+                        {
+                            Debug.Log("<color=red>RED</color>");
+                            Debug.Log(v.key + "      " + droppedLoot.item.armorSlot);
+                            if (v.key == droppedLoot.item.armorSlot)
+                            {
+
+                                Debug.Log("<color=blue>BLUE</color>");
+                                int i = 0;
+                                foreach (SpriteRenderer SR in v.ES.graphicsSpriteRenderers)
+                                {
+                                    Debug.Log(droppedLoot.item.equipmentSprites[i]);
+                                    SR.sprite = droppedLoot.item.equipmentSprites[i];
+                                    i++;
+                                }
+                                break;
+                            }
+                        }
                         transform.parent.GetComponent<EquipmentSlot>().UnEquipItem();
                         RolledLoot tempLoot = gameObject.AddComponent<RolledLoot>(); //Create Temporary Loot
                         tempLoot.transferLoot(transform.parent.GetComponent<RolledLoot>()); //transfer loot to tempLoot
@@ -47,20 +65,7 @@ public class ItemDropHandler : MonoBehaviour,IDropHandler
                         equipmentSlot.fillSlot();
                         Destroy(tempLoot);
                     }
-                    foreach (var v in PlayerInventory.instance.equipmentConnect) // check which equipment position this can be placed in
-                    {
-                        if (v.key == droppedLoot.item.armorSlot)
-                        {
-                            int i = 0;
-                            foreach (SpriteRenderer SR in v.ES.graphicsSpriteRenderers)
-                            {
-                                Debug.Log(v.ES.item.equipmentSprites[i]);
-                                SR.sprite = v.ES.item.equipmentSprites[i];
-                                i++;
-                            }
-                            break;
-                        }
-                    }
+                    
                 }
                 else // drag and drop between two inventory slots
                 {

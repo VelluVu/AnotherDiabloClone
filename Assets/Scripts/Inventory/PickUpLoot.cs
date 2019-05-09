@@ -26,7 +26,9 @@ public class PickUpLoot : MonoBehaviour
     public void Setup(int itemLevel)
     {
         GetComponent<SpriteRenderer>().sprite = loot.lootSprite;
+        
         rLoot = gameObject.AddComponent<RolledLoot>();
+        rLoot = GetComponent<RolledLoot>();
         rLoot.rollLoot(loot);
         text = GetComponentInChildren<TMPro.TMP_Text>();
         text.text = rLoot.itemName;

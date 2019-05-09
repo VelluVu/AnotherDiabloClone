@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2457406347a2a3142b7539e1329a8f10, type: 3}
+  m_Name: Tomp
+  m_EditorClassIdentifier: 
+  _name: Tomp
+  desc: Tomp on the ground and stuns enemies around you!
+  isEnabled: 1
+  checkLevel: 1
+  levelToUnlock: 0
+  _sprite: {fileID: 21300000, guid: 68918ba6339db544eab401a41f368df8, type: 3}
+  skillSoundType: 23
+  _cooldown: 9
+  _manaUsage: 1
+  _duration: 4
+  _showDurBar: 1
+  _allowDoThisInAir: 1
+  _stopPlayerMoving: 1
+  _stopDuration: 0.5
+  _range: 6
+  _heal: 0
+  _mana: 0
+  _damage: 0
+  _damageType: 0
+  _dotDamage: 0
+  _speedBuff: 0
+  _playShoutAnimation: 0
+  _increaseStrM: 0
+  _increaseArmorM: 0
+  _increaseAttactSpeedM: 0
+  _increaseHealthM: 0
+  _spawnGameobject: {fileID: 8020535895097752474, guid: b8e54da7172a5ec4a91cdacf3492952d,
+    type: 3}
+  _fearEnemy: 0
+  _stunEnemy: 1
+  _weakEnemy: 0
+  _addShoutScript: 1
+  _addSStoPrefab: 0
+  _addAbilityInfoScript: 1
+  _addAIStoPrefab: 1
+  _waitBeforeLaunch: 0.4
+  _animation: skill_tomp
+  _playItBeforeWait: 1

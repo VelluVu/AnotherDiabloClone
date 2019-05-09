@@ -136,34 +136,20 @@ public class WeaponPlaceHolder : MonoBehaviour
 
     }
 
-    public void UseWeapon ( )
-    {
-        
-        weaponSwing = true;
-        _weaponCol.enabled = true;
-    }
-    public void HaltWeapon ( )
-    {
-
-        weaponSwing = false;
-        _weaponCol.enabled = false;
-
-    }
-
     private void OnTriggerStay2D ( Collider2D collision )
     {
         if ( collision.gameObject.CompareTag ( "Enemy" ) )
         {
+            Debug.Log ( "HITS ENEMY" );
             if ( weaponType != WeaponType.Shield )
             {
                 if ( weaponSwing && Time.time > nextHit )
-                {
-                    nextHit = Time.time + PlayerClass.instance.baseAttackSpeed.Value;
+                {                 
+                    nextHit = Time.time + PlayerClass.instance.baseAttackSpeed.Value * 0.85f;
                     GameObject createdObject = Instantiate(bloodSplash, collision.gameObject.GetComponent<Collider2D>().bounds.ClosestPoint(transform.position), Quaternion.identity);
                     createdObject.transform.SetParent(ReferenceHolder.instance.goreHolder);
-                    Destroy(createdObject, 2f);
-                    
-                    ReferenceHolder.instance.player.DealDamage ( collision.gameObject, _weaponDamage, damageType );
+                    Destroy(createdObject, 2f);                  
+                    ReferenceHolder.instance.player.DealDamage ( collision.gameObject, _weaponDamage, damageType, false, 100 );
                 }
             }
         }

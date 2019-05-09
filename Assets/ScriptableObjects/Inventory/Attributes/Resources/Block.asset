@@ -12,19 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b84ea76521396d499fa12772145d438, type: 3}
   m_Name: Block
   m_EditorClassIdentifier: 
-  rollValueByItemLevels: 0
+  rollValueByItemLevels: 1
   attributeName: Block
   isBaseValue: 0
   stat: 32
   primary: 1
-  value: 10
-  valueMax: 20
+  value: 5
+  valueMax: 10
   value2Min: 0
   value2Max: 0
   statModType: 100
   characterStat:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
-  id: 1
+  id: 20

@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Spider
   m_EditorClassIdentifier: 
   _name: Spider
-  _moveSpeed: 80
-  _chaseMultiplier: 2
+  _moveSpeed: 2
+  _chaseMultiplier: 1
   _jumpForce: 2
   _attackSpeed: 1
   _attackDamage: 5
-  _health: 25
+  _health: 75
   _mana: 0
   _armor: 2
   _fireResistance: 0
@@ -28,6 +28,7 @@ MonoBehaviour:
   _physicalResistance: 0
   _xpReward: 25
   _level: 1
+  _enemyTypeForSound: 1
   _enemyType: 0
   _groundEnemyType: 6
   _flyingEnemyType: 2

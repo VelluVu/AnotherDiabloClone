@@ -72,6 +72,7 @@ public class LootDropGenerator : MonoBehaviour
             GameObject createdObject = Instantiate(dropObject, LootHolder);
             createdObject.transform.position = trans.position;
             createdObject.transform.rotation = Quaternion.identity;
+            createdObject.transform.SetParent(LootHolder);
             if(randomInt <= 99)
             {
                 rarityChecker = Rarity.Common;
@@ -198,6 +199,7 @@ public class LootDropGenerator : MonoBehaviour
 
             GameObject createdObject = Instantiate(dropObject, LootHolder);
             createdObject.transform.position = trans.position + new Vector3(0, 0.5f) ;
+            createdObject.transform.SetParent(LootHolder);
             createdObject.GetComponent<PickUpLoot>().loot = tempRarityLootList[Random.Range(0, tempRarityLootList.Count)];
             if (createdObject.GetComponent<PickUpLoot>().loot.consumable)
             {

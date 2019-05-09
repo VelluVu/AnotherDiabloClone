@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e8748d8b8c79947b93a84acb83c361, type: 3}
+  m_Name: SummonerKing
+  m_EditorClassIdentifier: 
+  _name: SummonerKing
+  _moveSpeed: 55
+  _chaseMultiplier: 1
+  _jumpForce: 20
+  _attackSpeed: 1
+  _attackDamage: 20
+  _health: 300
+  _mana: 500
+  _armor: 20
+  _fireResistance: 10
+  _frostResistance: 10
+  _poisonResistance: 10
+  _lightningResistance: 10
+  _physicalResistance: 10
+  _xpReward: 50
+  _level: 1
+  _enemyTypeForSound: 0
+  _enemyType: 3
+  _groundEnemyType: 18
+  _flyingEnemyType: 2
+  _bossEnemyType: 2
+  _enemyVariation: 

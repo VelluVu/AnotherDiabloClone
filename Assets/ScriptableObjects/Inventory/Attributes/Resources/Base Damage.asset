@@ -17,13 +17,15 @@ MonoBehaviour:
   isBaseValue: 1
   stat: 3
   primary: 1
-  value: 20
-  valueMax: 40
-  value2Min: 45
-  value2Max: 60
+  value: 5
+  valueMax: 10
+  value2Min: 11
+  value2Max: 15
   statModType: 100
   characterStat:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
+  id: 10

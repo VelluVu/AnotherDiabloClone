@@ -16,6 +16,7 @@ public class AttributePerSlot : MonoBehaviour
         {
             Destroy(this);
         }
+        
         allAttributes = Resources.FindObjectsOfTypeAll<Attribute>();
         int tempId = 0;
         foreach(Attribute att in allAttributes){

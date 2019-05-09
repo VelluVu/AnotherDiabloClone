@@ -42,7 +42,8 @@ public class EnemyStats : MonoBehaviour
     public StatModifier manaLoss;
     public StatModifier manaFill;
     #endregion
- 
+
+    public EnemyTypeForSound enemyTypeForSound;
     public EnemyType enemyType;
     public GroundEnemyType groundEnemyType;
     public FlyingEnemyType flyingEnemyType;
@@ -77,6 +78,7 @@ public class EnemyStats : MonoBehaviour
         enemyType = enemy._enemyType;
         level = enemy._level;
 
+        enemyTypeForSound = enemy._enemyTypeForSound;
 
         if ( enemyType == EnemyType.GroundEnemy )
         {

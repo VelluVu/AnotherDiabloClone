@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     Player player;
-
+  
     private void Awake ( )
     {
         player = GetComponent<Player> ( );
@@ -36,7 +36,7 @@ public class PlayerInput : MonoBehaviour
         {
             player.OpenInventory ( );
         }
-        if( Input.GetMouseButton ( 0 ) )
+        if( Input.GetMouseButton ( 0 )  )
         {
             player.GetFirstMouseButton ( );
         }
@@ -56,5 +56,5 @@ public class PlayerInput : MonoBehaviour
         {
             player.DashInputUp ( );
         }  
-    }
+    } 
 }

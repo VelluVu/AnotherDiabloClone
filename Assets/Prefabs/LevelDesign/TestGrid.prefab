@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2785773285252147155}
   - component: {fileID: 2785773285252147153}
   - component: {fileID: 2785773285252147154}
+  - component: {fileID: 1146386792}
   m_Layer: 10
   m_Name: GroundTiles
   m_TagString: Ground
@@ -2316,14 +2317,6 @@ CompositeCollider2D:
         Y: 55000000
       - X: 35000000
         Y: 55000000
-    - - X: 0
-        Y: 57421876
-      - X: 0
-        Y: 57500000
-      - X: 78125
-        Y: 57500000
-      - X: 78125
-        Y: 57421876
     - - X: -49921876
         Y: 37578124
       - X: -50000000
@@ -2398,10 +2391,6 @@ CompositeCollider2D:
       - {x: -0.25, y: 5.875}
       - {x: -0.25, y: 5.5}
       - {x: 3.5, y: 5.5}
-    - - {x: 0, y: 5.7421875}
-      - {x: 0, y: 5.75}
-      - {x: 0.0078125, y: 5.75}
-      - {x: 0.0078125, y: 5.7421875}
     - - {x: -4.9921875, y: 3.7578125}
       - {x: -5, y: 3.7578125}
       - {x: -5, y: 3.8046877}
@@ -2435,6 +2424,31 @@ CompositeCollider2D:
       - {x: -11, y: -1.5}
       - {x: 3.5, y: -1.5}
   m_VertexDistance: 0.0005
+--- !u!114 &1146386792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2785773285252147159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419e887d52a366b4fa9007b2fc2df56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapType: 0
+  lightingCollisionLayer: 0
+  lightingMaskLayer: 0
+  colliderType: 2
+  maskType: 1
+  maskMode: 0
+  dayHeight: 0
+  height: 1
+  cellSize: {x: 0.25, y: 0.25}
+  cellAnchor: {x: 0.5, y: 0.5}
+  area:
+    m_Position: {x: -46, y: -46, z: 0}
+    m_Size: {x: 106, y: 106, z: 1}
 --- !u!1 &2785773285367950897
 GameObject:
   m_ObjectHideFlags: 0
@@ -2496,6 +2510,7 @@ GameObject:
   - component: {fileID: 2785773285461171893}
   - component: {fileID: 2785773285461171894}
   - component: {fileID: 2785773285461171895}
+  - component: {fileID: 1622704281}
   m_Layer: 11
   m_Name: WallTiles
   m_TagString: Wall
@@ -3014,6 +3029,31 @@ CompositeCollider2D:
       - {x: -5.25, y: 0.25}
       - {x: -5, y: 0.25}
   m_VertexDistance: 0.0005
+--- !u!114 &1622704281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2785773285461171897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419e887d52a366b4fa9007b2fc2df56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapType: 0
+  lightingCollisionLayer: 0
+  lightingMaskLayer: 0
+  colliderType: 1
+  maskType: 1
+  maskMode: 0
+  dayHeight: 0
+  height: 1
+  cellSize: {x: 0.25, y: 0.25}
+  cellAnchor: {x: 0.5, y: 0.5}
+  area:
+    m_Position: {x: -44, y: -44, z: 0}
+    m_Size: {x: 100, y: 100, z: 1}
 --- !u!1 &2785773285471841409
 GameObject:
   m_ObjectHideFlags: 0
@@ -3025,9 +3065,10 @@ GameObject:
   - component: {fileID: 2785773285471841408}
   - component: {fileID: 2785773285471842174}
   - component: {fileID: 2785773285471842175}
-  m_Layer: 0
+  - component: {fileID: 1874407328}
+  m_Layer: 19
   m_Name: BackGroundTiles
-  m_TagString: Untagged
+  m_TagString: BackGround
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8911,6 +8952,31 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
+--- !u!114 &1874407328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2785773285471841409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419e887d52a366b4fa9007b2fc2df56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapType: 0
+  lightingCollisionLayer: 0
+  lightingMaskLayer: 0
+  colliderType: 1
+  maskType: 1
+  maskMode: 0
+  dayHeight: 0
+  height: 1
+  cellSize: {x: 0.25, y: 0.25}
+  cellAnchor: {x: 0.5, y: 0.5}
+  area:
+    m_Position: {x: -44, y: -44, z: 0}
+    m_Size: {x: 102, y: 102, z: 1}
 --- !u!1 &3068460925616846986
 GameObject:
   m_ObjectHideFlags: 0
@@ -8925,6 +8991,7 @@ GameObject:
   - component: {fileID: 4742955478284186270}
   - component: {fileID: 6796642561667700986}
   - component: {fileID: 173242860353725030}
+  - component: {fileID: 1521870947}
   m_Layer: 11
   m_Name: UnderGroundTiles
   m_TagString: Untagged
@@ -12581,3 +12648,28 @@ CompositeCollider2D:
       - {x: -11, y: -2.75}
       - {x: 3.5, y: -2.75}
   m_VertexDistance: 0.0005
+--- !u!114 &1521870947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3068460925616846986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419e887d52a366b4fa9007b2fc2df56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapType: 0
+  lightingCollisionLayer: 0
+  lightingMaskLayer: 0
+  colliderType: 1
+  maskType: 1
+  maskMode: 0
+  dayHeight: 0
+  height: 1
+  cellSize: {x: 0.25, y: 0.25}
+  cellAnchor: {x: 0.5, y: 0.5}
+  area:
+    m_Position: {x: -44, y: -44, z: 0}
+    m_Size: {x: 102, y: 102, z: 1}

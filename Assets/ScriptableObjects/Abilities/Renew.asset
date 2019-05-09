@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2457406347a2a3142b7539e1329a8f10, type: 3}
+  m_Name: Renew
+  m_EditorClassIdentifier: 
+  _name: Renew
+  desc: Healing overtime
+  isEnabled: 1
+  checkLevel: 1
+  levelToUnlock: 0
+  _sprite: {fileID: 21300000, guid: e079a6edd96f155488d6c345a50e533f, type: 3}
+  skillSoundType: 15
+  _cooldown: 10
+  _manaUsage: 3
+  _duration: 5
+  _showDurBar: 1
+  _allowDoThisInAir: 1
+  _stopPlayerMoving: 0
+  _stopDuration: 0
+  _range: 0
+  _heal: 0
+  _mana: 0
+  _damage: 0
+  _damageType: 0
+  _dotDamage: 0
+  _speedBuff: 0
+  _playShoutAnimation: 1
+  _increaseStrM: 0
+  _increaseArmorM: 0
+  _increaseAttactSpeedM: 0
+  _increaseHealthM: 0
+  _spawnGameobject: {fileID: 1119099874950431091, guid: e2e3e935a7840e645a2a688c45f01862,
+    type: 3}
+  _fearEnemy: 0
+  _stunEnemy: 0
+  _weakEnemy: 0
+  _addShoutScript: 0
+  _addSStoPrefab: 0
+  _addAbilityInfoScript: 1
+  _addAIStoPrefab: 1
+  _waitBeforeLaunch: 0
+  _animation: 
+  _playItBeforeWait: 1

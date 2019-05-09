@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2457406347a2a3142b7539e1329a8f10, type: 3}
+  m_Name: IronMan
+  m_EditorClassIdentifier: 
+  _name: Shadow Iron Armor
+  desc: Increases armor significantly
+  isEnabled: 1
+  checkLevel: 1
+  levelToUnlock: 0
+  _sprite: {fileID: 21300000, guid: 78085d92516e56a489d20ee20093c17d, type: 3}
+  skillSoundType: 7
+  _cooldown: 15
+  _manaUsage: 5
+  _duration: 6
+  _showDurBar: 1
+  _allowDoThisInAir: 1
+  _stopPlayerMoving: 0
+  _stopDuration: 0
+  _range: 0
+  _heal: 0
+  _mana: 0
+  _damage: 0
+  _damageType: 0
+  _dotDamage: 0
+  _speedBuff: 0
+  _playShoutAnimation: 1
+  _increaseStrM: 0
+  _increaseArmorM: 1.7
+  _increaseAttactSpeedM: 0
+  _increaseHealthM: 0
+  _spawnGameobject: {fileID: 8159832646804981022, guid: 99dc43ea7f37c5043bf09c82ef0d7db3,
+    type: 3}
+  _fearEnemy: 0
+  _stunEnemy: 0
+  _weakEnemy: 0
+  _addShoutScript: 1
+  _addSStoPrefab: 0
+  _addAbilityInfoScript: 1
+  _addAIStoPrefab: 1
+  _waitBeforeLaunch: 0
+  _animation: 
+  _playItBeforeWait: 1

@@ -28,7 +28,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8683477141587131657}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &5878596943357882421
 GameObject:
@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 5089975428950247703}
   - component: {fileID: 5703408654786324165}
   - component: {fileID: 1667999926790384456}
+  - component: {fileID: 3787744465336662854}
   m_Layer: 12
   m_Name: Splitter_Root
   m_TagString: Enemy
@@ -58,11 +59,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5878596943357882421}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.33, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8683477141587131657}
-  - {fileID: 203391486403829235}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -83,7 +83,7 @@ MonoBehaviour:
   enemyStats: {fileID: 5089975428950247703}
   attackJump: 100
   moveSpeedScale: 1
-  attackDistance: 0.1
+  attackDistance: 0.01
   searchDuration: 6
   spotDistance: 4
   sightDistance: 5
@@ -91,15 +91,22 @@ MonoBehaviour:
   stateTimeElapsed: 0
   radius: 1.1
   senseArea: 1.79
-  circleCastRadius: 0.13
+  circleCastRadius: 0.08
   fallToDeathHeight: 100
+  spiderEggCD: 0
   riseUpTime: 0
   riseUpTimeCounter: 0
+  isUpPosition: 0
   changedPos: 0
   phase1: 0
   phase2: 0
   phase3: 0
   phase4: 0
+  positions:
+  - {fileID: 0}
+  - {fileID: 0}
+  targetWP: {fileID: 0}
+  wPindex: 0
   amplitude: 0
   frequency: 0
   flyingPatrolDirectionTime: 0
@@ -128,14 +135,15 @@ MonoBehaviour:
   targetDir: {x: 0, y: 0}
   leftDirection: {x: 0, y: 0, z: 0}
   rightDirection: {x: 0, y: 0, z: 0}
-  positions: []
   dirRight: 1
   aiActive: 1
   attackRdy: 1
   hasTurn: 0
   hasSplit: 0
   alertedByEvent: 0
-  notHatchedEgg: 0
+  rdyToHatch: 1
+  stunned: 0
+  weakness: 0
 --- !u!114 &5089975428950247703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,79 +162,95 @@ MonoBehaviour:
   level: 0
   moveSpeed:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   jumpForce:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   attackSpeed:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   attackDamage:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   maxHealth:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   health:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   maxMana:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   mana:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   armor:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   chaseMultiplier:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   fireResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
-  frostResistance:
+  coldResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   poisonResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   lightningResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
   physicalResistance:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
+  enemyTypeForSound: 0
   enemyType: 0
   groundEnemyType: 5
   flyingEnemyType: 0
@@ -247,7 +271,7 @@ Rigidbody2D:
   m_Mass: 35
   m_LinearDrag: 5
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -266,7 +290,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.020865917, y: 0.32277644}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -279,6 +303,103 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.75865984, y: 0.5674913}
   m_EdgeRadius: 0
+--- !u!82 &3787744465336662854
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5878596943357882421}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243958971588630962, guid: 86fc88fbdfd94ec448e974561a6299c7,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7621680552157059164
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,8 +429,8 @@ Transform:
   m_LocalPosition: {x: 0.603, y: 0.392, z: -0.055664062}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4921558581355676039}
-  m_RootOrder: 1
+  m_Father: {fileID: 8683477141587131657}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8449237576252284867
 MonoBehaviour:
@@ -380,7 +501,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8683477141587131657}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8683477142771923568
 GameObject:
@@ -408,9 +529,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8683477142771923568}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.33, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 203391486403829235}
   - {fileID: 8683477143438971183}
   - {fileID: 8683477142225969491}
   - {fileID: 6144191231773201103}
@@ -512,5 +634,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8683477141587131657}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -68,7 +68,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0.27}
+  m_ConnectedAnchor: {x: 63.20166, y: -10.7756605}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -170,4 +170,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectPoint: {fileID: 2103545114}
   rope: {fileID: 3791803438265054770, guid: a6df738581c6064409a9722a5824bde0, type: 3}
-  ropes: 50
+  ropes: 30

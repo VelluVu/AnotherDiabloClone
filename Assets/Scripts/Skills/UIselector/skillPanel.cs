@@ -10,7 +10,8 @@ public class skillPanel : MonoBehaviour
     public GameObject button;
     public GameObject leftButton;
     public GameObject rightButton;
-    public List<Ability> abilities;
+    public List<Ability> abilities=new List<Ability>();
+    public List<skillPanelButton> skillpanelButtons = new List<skillPanelButton>();
     private List<Ability> xAb;
     [HideInInspector]public List<GameObject> buttons;
 
@@ -42,6 +43,7 @@ public class skillPanel : MonoBehaviour
             newBRect = newB.GetComponent<RectTransform>();
             sprite = newB.GetComponent<Image>();
             skillPanelButton = newB.GetComponent<skillPanelButton>();
+            skillpanelButtons.Add(skillPanelButton);
        
             newB.transform.SetParent(scrollpanel, false);
             newBRect.offsetMax = new Vector2((widthButton + x) * i, 0);
@@ -69,6 +71,8 @@ public class skillPanel : MonoBehaviour
         {            
             return;
         }
+        
+
         if(!toRight)
         {
             ability = abilities[0];
@@ -90,6 +94,12 @@ public class skillPanel : MonoBehaviour
             sprite.sprite = ability._sprite;
             skillPanelButton.ability = ability;
         }
+
+        foreach (skillPanelButton spb in skillpanelButtons)
+        {
+            spb.checkAbilityLevel();
+        }
+        
 
     }
 

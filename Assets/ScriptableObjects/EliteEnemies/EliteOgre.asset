@@ -13,21 +13,22 @@ MonoBehaviour:
   m_Name: EliteOgre
   m_EditorClassIdentifier: 
   _name: OgreElite
-  _moveSpeed: 50
-  _chaseMultiplier: 2
+  _moveSpeed: 3
+  _chaseMultiplier: 1
   _jumpForce: 1
   _attackSpeed: 1.5
-  _attackDamage: 15
-  _health: 150
+  _attackDamage: 18
+  _health: 250
   _mana: 150
-  _armor: 5
+  _armor: 15
   _fireResistance: 5
   _frostResistance: 5
   _poisonResistance: 5
   _lightningResistance: 5
   _physicalResistance: 5
-  _xpReward: 50
+  _xpReward: 100
   _level: 1
+  _enemyTypeForSound: 0
   _enemyType: 2
   _groundEnemyType: 2
   _flyingEnemyType: 2

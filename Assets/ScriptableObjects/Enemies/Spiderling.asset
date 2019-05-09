@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Spiderling
   m_EditorClassIdentifier: 
   _name: Spiderling
-  _moveSpeed: 80
+  _moveSpeed: 2
   _chaseMultiplier: 1
-  _jumpForce: 2
+  _jumpForce: 1
   _attackSpeed: 0.5
   _attackDamage: 1
-  _health: 30
+  _health: 35
   _mana: 0
   _armor: 1
   _fireResistance: 0
@@ -28,6 +28,7 @@ MonoBehaviour:
   _physicalResistance: 0
   _xpReward: 2
   _level: 1
+  _enemyTypeForSound: 1
   _enemyType: 0
   _groundEnemyType: 7
   _flyingEnemyType: 2

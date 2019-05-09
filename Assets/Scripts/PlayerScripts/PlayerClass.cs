@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Kryz.CharacterStats; //Character stat assetin käyttäminen
 using TMPro;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System;
 
 /// <summary>
 /// Alustaa pelaajan valitseman classin, ja sisältää pelaajan statit, Attribuutit, skillpojot, level jne.
@@ -18,6 +21,7 @@ public class PlayerClass : MonoBehaviour
     public string myName = "Jomppe";
     public string className = "Nephalem";
     public ClassType classType;
+    string saveName = "/player.dat";
 
     #region MovementStats
     public CharacterStat moveSpeed; // old move speed new variables in player 
@@ -61,6 +65,13 @@ public class PlayerClass : MonoBehaviour
     #endregion
     #endregion
 
+    float oldStr;
+    float olddex;
+    float oldEnd;
+    float oldEnergy;
+    public float healthTickRate;
+    public float timeToGen;
+
     #region Utility Stats
     public CharacterStat experienceOnKill;
     public CharacterStat goldFind;
@@ -69,12 +80,24 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat experienceBonus;
     #endregion
 
+
+
     //Tässä vois olla vaikka boostit jne..
     #region StatModifiers
     public StatModifier healthLoss;
     public StatModifier healthFill;
     public StatModifier manaLoss;
     public StatModifier manaFill;
+    public StatModifier healthBoost;
+    public StatModifier strengthBoost;
+    public StatModifier armorBoost;
+    public StatModifier attackSpeedBoost;
+
+
+    public StatModifier strengthEffect;
+    public StatModifier dexterityEffect;
+    public StatModifier energyEffect;
+    public StatModifier enduranceEffect;
     #endregion
 
     #region BaseStats and Leveling Stats
@@ -85,11 +108,6 @@ public class PlayerClass : MonoBehaviour
     public CharacterStat statPoint;
     public CharacterStat skillPoint;
     public CharacterStat playerLevel;
-    #endregion
-
-    #region Delegaatit
-    public delegate void PassiveManaRegenDelegate ( float amount );
-    public static event PassiveManaRegenDelegate passiveManaRegenEvent;
     #endregion
 
     #region bools
@@ -138,11 +156,13 @@ public class PlayerClass : MonoBehaviour
     private void OnEnable ( )
     {
         CheckPoint.checkPointEvent += PlayerEnterCheckPoint;
+        StateController.enemyDeathEvent += HealOnKill;
     }
 
     private void OnDisable ( )
     {
         CheckPoint.checkPointEvent -= PlayerEnterCheckPoint;
+        StateController.enemyDeathEvent -= HealOnKill;
     }
 
     public void checkForChanges ( )
@@ -152,12 +172,57 @@ public class PlayerClass : MonoBehaviour
             cStat.isDirty = true;
         }
         BuildSmallBoxStatsText ( );
+        UpdateStatEffect ( );
     }
 
     private void Update ( )
     {
         checkHealth ( );
         PassiveManaRegen ( );
+
+        if ( Time.time > timeToGen )
+        {
+            timeToGen = Time.time + healthTickRate;
+            health.BaseValue += healthRegeneration.Value;
+            Debug.Log ( healthRegeneration.Value );
+        }
+        
+
+        //Debug.Log ( strength.Value );
+        //Debug.Log ( dexterity.Value );
+        //Debug.Log ( endurance.Value );
+        //Debug.Log ( energy.Value );
+
+        //Debug.Log ( baseDamage.Value + " - " + baseDamageMax.Value );
+        //Debug.Log ( criticalHitChance.Value + " - " + criticalHitDamage.Value );
+        //Debug.Log ( maxHealth.Value );
+        //Debug.Log ( maxMana.Value );
+    }
+
+    public void UpdateStatEffect()
+    {
+        baseDamage.RemoveModifier ( strengthEffect );
+        baseDamageMax.RemoveModifier ( strengthEffect );
+        criticalHitChance.RemoveModifier ( dexterityEffect );
+        criticalHitDamage.RemoveModifier ( dexterityEffect );
+        maxHealth.RemoveModifier ( enduranceEffect );
+        maxMana.RemoveModifier ( energyEffect );
+
+        strengthEffect = new StatModifier ( strength.Value * 0.5f ,StatModType.Flat );
+        dexterityEffect = new StatModifier ( dexterity.Value * 0.1f ,StatModType.Flat );
+        enduranceEffect = new StatModifier ( endurance.Value * 2.0f,StatModType.Flat );
+        energyEffect = new StatModifier ( energy.Value * 2.0f ,StatModType.Flat );
+     
+        baseDamage.AddModifier ( strengthEffect );
+        baseDamageMax.AddModifier ( strengthEffect );
+        criticalHitChance.AddModifier (dexterityEffect );
+        criticalHitDamage.AddModifier ( dexterityEffect );
+        maxHealth.AddModifier ( enduranceEffect );
+        maxMana.AddModifier ( energyEffect );
+
+        health.BaseValue = health.Value + enduranceEffect.Value;
+        mana.BaseValue = mana.Value + enduranceEffect.Value;
+
     }
 
     public void checkHealth ( ) // tarkistetaan että health ei ole suurempi kuin maxHealth;
@@ -195,12 +260,7 @@ public class PlayerClass : MonoBehaviour
 
     public void PassiveManaRegen ( )
     {
-        mana.BaseValue += maxMana.Value * 0.01f * Time.deltaTime;
-
-        if ( passiveManaRegenEvent != null )
-        {
-            passiveManaRegenEvent ( maxMana.Value * 0.01f * Time.deltaTime );
-        }
+        mana.BaseValue += maxMana.Value * 0.0001f * Time.deltaTime;   
     }
 
     public void PlayerEnterCheckPoint ( )
@@ -215,6 +275,50 @@ public class PlayerClass : MonoBehaviour
 
     }
 
+    public void HealOnKill( Transform transform, int xp, StateController origin )
+    {
+        ReferenceHolder.instance.player.OnRestoreHealth ( Mathf.Round(healthOnKill.Value), false );
+        ReferenceHolder.instance.player.levelUp.GainXP((int)experienceOnKill.Value, this);
+        //Debug.Log ( healthOnKill.Value );
+        //Debug.Log ( experienceOnKill.Value );
+    }
+
+    public void BoostHealth(float percent, float time)
+    {
+        healthBoost = new StatModifier ( percent * 0.01f, StatModType.PercentAdd );
+        maxHealth.AddModifier ( healthBoost );
+        ReferenceHolder.instance.player.OnRestoreHealth ( health.Value / maxHealth.Value * maxHealth.Value, false );
+        StartCoroutine ( BuffTime (maxHealth, healthBoost, time ) );
+    }
+
+    public void BoostStrength(float percent, float time)
+    {
+        strengthBoost = new StatModifier(percent * 0.01f, StatModType.PercentAdd);
+        strength.AddModifier(strengthBoost);
+        StartCoroutine(BuffTime(strength, strengthBoost, time));
+        checkForChanges();
+        Invoke("checkForChanges", time+0.1f);
+    }
+
+    public void BoostArmor(float percent, float time)
+    {
+        armorBoost = new StatModifier(percent * 0.01f, StatModType.PercentAdd);
+        armor.AddModifier(armorBoost);
+        StartCoroutine(BuffTime(armor, armorBoost, time));
+        checkForChanges();
+        Invoke("checkForChanges", time + 0.1f);
+    }
+
+    public void BoostAttackSpeed(float percent, float time)
+    {
+        attackSpeedBoost = new StatModifier(percent * 0.01f, StatModType.PercentAdd);
+        baseAttackSpeed.AddModifier(attackSpeedBoost);
+        StartCoroutine(BuffTime(baseAttackSpeed, attackSpeedBoost, time));
+        checkForChanges();
+        Invoke("checkForChanges", time + 0.1f);
+    }
+    
+
     public void FullyRestoreHealth ( )
     {
         health.RemoveAllModifiersFromSource ( healthLoss );
@@ -226,7 +330,7 @@ public class PlayerClass : MonoBehaviour
     {
         mana.RemoveAllModifiersFromSource ( manaLoss );
         mana.RemoveAllModifiersFromSource ( manaFill );
-        mana.BaseValue = maxMana.BaseValue;
+        mana.BaseValue = maxMana.Value;
     }
 
     public void RestoreHealth ( float amount )
@@ -402,6 +506,70 @@ public class PlayerClass : MonoBehaviour
         experienceBonus.statName = "Experience Bonus";
     }
 
+    IEnumerator BuffTime ( CharacterStat stat, StatModifier mod, float time)
+    {
+        yield return new WaitForSeconds ( time );
+        stat.RemoveModifier ( mod );
+    }
+
+   
+
+    public void Save(int checkpointId)
+    {
+
+
+        saveName = "/player.dat";
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + saveName);
+        PlayerSaveData data = new PlayerSaveData();
+
+        data.level = (int)playerLevel.Value;
+        data.skillPoints = (int)skillPoint.Value;
+        data.statPoints = (int)statPoint.Value;
+        data.experience = (int)ReferenceHolder.instance.player.levelUp.currentXP.Value;
+        data.checkPoint = checkpointId;
+
+
+        bf.Serialize(file, data);
+        file.Close();
+    }
+
+    public void Load()
+    {
+        if (File.Exists(Application.persistentDataPath + saveName))
+        {
+            Debug.Log("<color=red>" +"Player Loaded"+ "</color>");
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + saveName, FileMode.Open);
+            PlayerSaveData data = (PlayerSaveData)bf.Deserialize(file);
+            file.Close();
+
+            playerLevel.BaseValue = data.level;
+            statPoint.BaseValue = data.statPoints;
+            skillPoint.BaseValue = data.skillPoints;
+            ReferenceHolder.instance.player.levelUp.currentXP.BaseValue = data.experience;
+            foreach(CheckPoint check in FindObjectsOfType<CheckPoint>())
+            {
+                Debug.Log("<color=red>"+check.areaName+"</color>");
+                if((int)check.areaName == data.checkPoint)
+                {
+                    ReferenceHolder.instance.player.transform.position = check.transform.position;
+                    break;
+                }
+            }
+        }
+    }
+
+
+}
+[Serializable]
+class PlayerSaveData
+{
+    public int level;
+    public int statPoints;
+    public int skillPoints;
+    public int experience;
+    public int checkPoint;
 }
 
 [SerializeField]
@@ -419,4 +587,5 @@ public enum Stat // tarkista että on samassa järjesyksessä mikä addToList
 
 
 }
+
 

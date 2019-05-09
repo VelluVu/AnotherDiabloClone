@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2457406347a2a3142b7539e1329a8f10, type: 3}
+  m_Name: NULLAbility
+  m_EditorClassIdentifier: 
+  _name: No skill here
+  desc: 
+  isEnabled: 0
+  checkLevel: 1
+  levelToUnlock: 9999
+  _sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  _sound: {fileID: 0}
+  _cooldown: 0
+  _manaUsage: 0
+  _duration: 0
+  _range: 0
+  _heal: 0
+  _mana: 0
+  _damage: 0
+  _damageType: 0
+  _dotDamage: 0
+  _speedBuff: 0
+  _increaseStrM: 0
+  _increaseArmorM: 0
+  _increaseAttactSpeedM: 0
+  _increaseHealthM: 0
+  _spawnGameobject: {fileID: 0}
+  _fearEnemy: 0
+  _stunEnemy: 0
+  _weakEnemy: 0
+  _addShoutScript: 0
+  _addSStoPrefab: 0
+  _addAbilityInfoScript: 0
+  _addAIStoPrefab: 0

@@ -10,6 +10,11 @@ public class KeyboardManager : MonoBehaviour
     public delegate void LootTextAppear();
     public static event LootTextAppear LootTextAppearEvent;
 
+    public GameObject secret;
+    public GameObject CheckPointOpen;
+    public bool onCheckPoint;
+    public GameObject pauseMenu;
+    public bool openPauseMenu;
     public bool holdingShift; // if holding shift
     private void Awake()
     {
@@ -30,6 +35,14 @@ public class KeyboardManager : MonoBehaviour
         {
             ShowLoot();
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OpenPauseMenu(openPauseMenu);
+        }
+        if (Input.GetKeyDown(KeyCode.Home))
+        {
+            secret.SetActive(true);
+        }
         ShiftKey();
     }
     public void ShowLoot()
@@ -39,6 +52,25 @@ public class KeyboardManager : MonoBehaviour
             LootTextAppearEvent();
         }
         
+    }
+    public void OpenPauseMenu(bool open)
+    {
+        pauseMenu.SetActive(open);
+        if (open)
+        {
+            Time.timeScale = 0;
+            openPauseMenu = false;
+        }
+        else
+        {
+            onCheckPoint = CheckPointOpen.activeInHierarchy;
+            if (!onCheckPoint)
+            {
+                Time.timeScale = 1;
+            }
+            
+            openPauseMenu = true;
+        }
     }
     public void ShiftKey()
     {

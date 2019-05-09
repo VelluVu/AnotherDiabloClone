@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: RingRare
+  m_EditorClassIdentifier: 
+  itemName: Winged Ring
+  description: 
+  itemID: 2
+  itemIcon: {fileID: 2800000, guid: 97810b03c94e2f449a2da0a025fc1dd9, type: 3}
+  equipmentSprites: []
+  lootSprite: {fileID: 21300000, guid: ca0ac37187ccc424b9b7a5290e55d71c, type: 3}
+  rarity: 2
+  itemLevel: 0
+  tags: 
+  attributes: []
+  randomAttributes: 1
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 0
+  armorSlot: 11
+  consumablePotency: 0
+  buyPrice: 0
+  sellPrice: 0

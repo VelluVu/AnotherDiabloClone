@@ -71,8 +71,7 @@ public class LevelUp : MonoBehaviour
         playerClass.playerLevel.BaseValue += levelAmount;
         playerClass.statPoint.BaseValue += statPointGain;
         playerClass.maxHealth.BaseValue += playerClass.playerLevel.Value * playerClass.endurance.Value;
-        playerClass.maxMana.BaseValue += playerClass.playerLevel.Value * playerClass.energy.Value;
-        //gameObject.GetComponent<Player> ( ).PlayerMessage ( "Level " + playerClass.playerLevel.Value );
+        playerClass.maxMana.BaseValue += playerClass.playerLevel.Value * playerClass.energy.Value;      
 
         //Lisätään vaan joka toinen level yks skillpojo
         if ( playerClass.playerLevel.Value % 2 == 0 )

@@ -65,16 +65,19 @@ public class PlayerMovement : RayCastScript
             Vector2 rayOrigin = ( directionX == -1 ) ? rayCastOrigins.bottomLeft : rayCastOrigins.bottomRight;
             rayOrigin += Vector2.up * ( horizontalRaySpacing * i );
             RaycastHit2D hit; 
+
             if (!dashing)
             {
                 hit = Physics2D.Raycast ( rayOrigin, Vector2.right * directionX, rayLength, collisionMask );
+                //Debug.DrawRay ( rayOrigin, Vector2.right * directionX );
             }
             else
             {
                 hit = Physics2D.Raycast ( rayOrigin, Vector2.right * directionX, rayLength, collisionDashMask );
+                //Debug.DrawRay ( rayOrigin, Vector2.right * directionX );
             }
 
-            Debug.DrawRay ( rayOrigin, Vector2.right * directionX * rayLength, Color.red );
+            //Debug.DrawRay ( rayOrigin, Vector2.right * directionX * rayLength, Color.red );
 
             if ( hit )
             {
@@ -153,6 +156,11 @@ public class PlayerMovement : RayCastScript
                 collisions.below = directionY == -1;
                 collisions.above = directionY == 1;
 
+                if (hit.collider.gameObject.CompareTag("Ground") && collisions.below)
+                {
+                    collisions.hitsGround = true;
+                }
+
                 if ( hit.collider.gameObject.CompareTag ( "MovingPlatform" ) && collisions.below )
                 {
                     collisions.onElevator = true;
@@ -162,7 +170,8 @@ public class PlayerMovement : RayCastScript
                         ExtensionMethods.SetParent ( transform, hit.collider.transform );                
                     }              
                 }
-            }
+            }           
+
         }
         if(collisions.climbingSlope)
         {
@@ -233,6 +242,8 @@ public class PlayerMovement : RayCastScript
         public bool descendSlope;
         public bool climbingSlope;
         public bool onElevator;
+        public bool hitsGround;
+        public bool falling;
         public float slopeAngle, slopeAngleOld;      
         public Vector2 velocityOld;
         public int faceDirection;
@@ -243,6 +254,8 @@ public class PlayerMovement : RayCastScript
             left = right = false;
             climbingSlope = false;
             descendSlope = false;
+            hitsGround = false;
+            falling = false;
             onElevator = false;
             slopeAngleOld = slopeAngle;
             slopeAngle = 0;

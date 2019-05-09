@@ -62,7 +62,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
                     if (v.key == transform.parent.GetComponent<RolledLoot>().armorSlot)
                     {
 
-                        v.ES.gameObject.GetComponent<RawImage>().color = Color.grey;
+                        v.ES.gameObject.GetComponent<RawImage>().color = new Color(v.ES.gameObject.GetComponent<RawImage>().color.r, v.ES.gameObject.GetComponent<RawImage>().color.g, v.ES.gameObject.GetComponent<RawImage>().color.b,0.4f);
 
                         key = v.key;
                     }
@@ -109,7 +109,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
    // Detect if hovering changed
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!eventData.dragging)
+        if (!eventData.dragging && transform.parent.GetComponent<ConsumableSpot>() == null)
         {
             if (eventData.pointerEnter.transform.parent.GetComponent<EquipmentSlot>() != null)
             {
@@ -155,6 +155,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
                 }
             }
         }
+        
         
     }
     private void BuildMainText()
@@ -244,8 +245,13 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
             Debug.Log("SplitItemDrop");
             SplitItemDrop(PlayerInventory.instance.splitItemObject);
         }
-        if(eventData.button == PointerEventData.InputButton.Right && transform.parent.GetComponent<RolledLoot>().consumable) // consume item
+        if(eventData.button == PointerEventData.InputButton.Right && transform.parent.GetComponent<RolledLoot>().consumable && transform.parent.GetComponent<ConsumableSpot>()!= null) // consume item
         {
+            if (transform.parent.GetComponent<ConsumableSpot>().onCooldown)
+            {
+                Debug.LogWarning("Consumable still on cooldown");
+                return;
+            }
             if (PlayerClass.instance.fullHealth && transform.parent.GetComponent<RolledLoot>().tags.Contains(Tags.HealingPotion))
             {
                 
@@ -272,6 +278,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IPo
             {
                 transform.parent.GetComponent<LootSlot>().stackSizeTextEnable(true);
             }
+            transform.parent.GetComponent<ConsumableSpot>().onCooldown = true;
                
 
             

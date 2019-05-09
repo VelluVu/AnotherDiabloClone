@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2457406347a2a3142b7539e1329a8f10, type: 3}
+  m_Name: SecondChance
+  m_EditorClassIdentifier: 
+  _name: Second Chance
+  desc: If you die when this skill is active you will be restored 70% of your health
+    and increase strenght lightly
+  isEnabled: 1
+  checkLevel: 1
+  levelToUnlock: 0
+  _sprite: {fileID: 21300000, guid: 17d7630c88b4e0444a1bc3d5382bac99, type: 3}
+  skillSoundType: 16
+  _cooldown: 60
+  _manaUsage: 10
+  _duration: 10
+  _showDurBar: 1
+  _allowDoThisInAir: 1
+  _stopPlayerMoving: 0
+  _stopDuration: 0
+  _range: 0
+  _heal: 0
+  _mana: 0
+  _damage: 0
+  _damageType: 0
+  _dotDamage: 0
+  _speedBuff: 0
+  _playShoutAnimation: 1
+  _increaseStrM: 1.1
+  _increaseArmorM: 0
+  _increaseAttactSpeedM: 0
+  _increaseHealthM: 1.7
+  _spawnGameobject: {fileID: 89777380692585735, guid: 5745ee3e0b27ccf439bd6c8cdac488bc,
+    type: 3}
+  _fearEnemy: 0
+  _stunEnemy: 0
+  _weakEnemy: 0
+  _addShoutScript: 0
+  _addSStoPrefab: 0
+  _addAbilityInfoScript: 1
+  _addAIStoPrefab: 1
+  _waitBeforeLaunch: 0
+  _animation: 
+  _playItBeforeWait: 1

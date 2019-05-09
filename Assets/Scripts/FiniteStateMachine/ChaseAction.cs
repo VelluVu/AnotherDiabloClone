@@ -26,39 +26,40 @@ public class ChaseAction : Action
             {
                 if ( Vector2.Distance ( controller.transform.position, controller.chaseTarget.position ) >= 0 )
                 {
-                    if(controller.chaseTarget.position.x < controller.transform.position.x)
+
+                    //controller.rb.velocity = new Vector2 ( ( controller.chaseTarget.position.x - controller.transform.position.x ) * controller.enemyStats.moveSpeed.Value * controller.enemyStats.chaseMultiplier.Value , 0 ) * Time.deltaTime;             
+                    controller.transform.position = Vector2.MoveTowards ( controller.transform.position, new Vector2(controller.chaseTarget.position.x, controller.transform.position.y), controller.enemyStats.moveSpeed.Value * 0.5f * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime );
+
+                    if ( controller.dirRight )
                     {
-                        controller.dirRight = false;
+                        controller.rb.velocity = Vector2.right;
                     }
                     else
                     {
-                        controller.dirRight = true;
+                        controller.rb.velocity = Vector2.left;
                     }
 
-                    controller.rb.velocity = new Vector2 ( ( controller.chaseTarget.position.x - controller.transform.position.x ) * controller.enemyStats.moveSpeed.Value * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime, controller.rb.velocity.y );
-                 
                 }
             }
             else
             {
                 if ( Vector2.Distance ( controller.transform.position, controller.chaseTarget.position ) >= 0 )
                 {
-                    if ( controller.chaseTarget.position.x < controller.transform.position.x )
+                  
+                    //controller.rb.velocity = ( controller.chaseTarget.position - controller.transform.position ) * controller.enemyStats.moveSpeed.Value * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime;
+                    controller.transform.position = Vector2.MoveTowards ( controller.transform.position, controller.chaseTarget.position, controller.enemyStats.moveSpeed.Value * 0.5f * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime );
+
+                    if ( controller.dirRight )
                     {
-                        controller.dirRight = false;
+                        controller.rb.velocity = Vector2.right;
                     }
                     else
                     {
-                        controller.dirRight = true;
+                        controller.rb.velocity = Vector2.left;
                     }
 
-                    controller.rb.velocity = ( controller.chaseTarget.position - controller.transform.position ) * controller.enemyStats.moveSpeed.Value * controller.enemyStats.chaseMultiplier.Value * Time.deltaTime;
-                    
                 }
             }
-        }
-
-        //controller.chaseTarget = null;
-      
+        }             
     }
 }

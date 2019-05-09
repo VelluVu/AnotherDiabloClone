@@ -12,6 +12,7 @@ public class DoorLeverScript : MonoBehaviour
     public float messageFontSize;
     public float messageDisplayTime;
     public float eventDuration;
+    AudioSource source;
 
     public delegate void DoorLeverActivationInfoDurationDelegate ( float duration );
     public static event DoorLeverActivationInfoDurationDelegate DoorLeverActivationInfoDurationEvent;
@@ -21,6 +22,14 @@ public class DoorLeverScript : MonoBehaviour
 
     public delegate void DoorLeverActivationInfoDelegate ( string message, Color color, float fontSize, float fadeTime );
     public static event DoorLeverActivationInfoDelegate LeverActivationInfoEvent;
+
+    public delegate void DoorLeverSoundDelegate ( AudioSource source, ObjectSoundType objSound );
+    public static event DoorLeverSoundDelegate DoorLeverSoundEvent;
+
+    private void Start ( )
+    {
+        source = gameObject.GetComponent<AudioSource> ( );
+    }
 
     private void Awake ( )
     {
@@ -69,9 +78,15 @@ public class DoorLeverScript : MonoBehaviour
         {
             LeverActivationFloatingTextEvent ( transform.position, "Clunk", Color.yellow );       
         }
+
         if(LeverActivationInfoEvent != null)
         {
             LeverActivationInfoEvent ( message, Color.white, messageFontSize , messageDisplayTime);
+        }
+
+        if ( DoorLeverSoundEvent != null )
+        {
+            DoorLeverSoundEvent ( source, ObjectSoundType.Lever );
         }
     }
 }

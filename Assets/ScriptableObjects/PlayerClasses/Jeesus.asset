@@ -38,7 +38,7 @@ MonoBehaviour:
   _allResistance: 0
   _goldFind: 10
   _magicFind: 10
-  _pickupRadius: 2
+  _pickupRadius: 0.5
   _healthRegeneration: 0
   _manaCostReduction: 0
   _meleeDamageReduction: 0

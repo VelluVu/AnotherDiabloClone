@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Splitter
   m_EditorClassIdentifier: 
   _name: Splitter
-  _moveSpeed: 80
-  _chaseMultiplier: 2
-  _jumpForce: 2
+  _moveSpeed: 1.5
+  _chaseMultiplier: 1
+  _jumpForce: 1
   _attackSpeed: 1
-  _attackDamage: 5
-  _health: 25
+  _attackDamage: 10
+  _health: 80
   _mana: 0
   _armor: 2
   _fireResistance: 0
@@ -28,6 +28,7 @@ MonoBehaviour:
   _physicalResistance: 0
   _xpReward: 25
   _level: 1
+  _enemyTypeForSound: 1
   _enemyType: 0
   _groundEnemyType: 5
   _flyingEnemyType: 2

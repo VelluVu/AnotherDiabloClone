@@ -6,6 +6,9 @@ using UnityEngine.EventSystems;
 
 public class LootText : MonoBehaviour
 {
+
+    public delegate void ItemLootEvent(Rarity rarity);
+    public static event ItemLootEvent itemLootEvent;
     public PickUpLoot pickLoot;
     public GameObject verticalLayoutObject;
     public Transform lootTextCanvas;
@@ -69,6 +72,10 @@ public class LootText : MonoBehaviour
     }
     public void GainLoot()
     {
+        if(itemLootEvent != null)
+        {
+            itemLootEvent(pickLoot.rLoot.rarity);
+        }
         if (PlayerInventory.instance.IsLootSlotsFull())
         {
             Debug.LogWarning("Inventory Full");

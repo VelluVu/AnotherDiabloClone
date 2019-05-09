@@ -5,20 +5,23 @@ using UnityEngine;
 public class ThrowingAxeSkill : MonoBehaviour
 {
     private AbilityINFO info;
-    //private GameObject player;
+    public GameObject player;
     private SpriteRenderer spriteRenderer;
     private bool isGoingLeft = true;
-    private float spinSpeed = 1500;
+    private float spinSpeed = 800;
     private PlayerClass playerClass;
     public DamageType damageType;
 
     private float damage;
 
+    private bool stopMoving = false;
+    private Vector3 stopPos;
+
     private void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        //playerClass = player.GetComponent<PlayerClass>();
-        //playerClass.hea
+        player = GameObject.FindGameObjectWithTag("Player");
+        
     }
     
     void Start()
@@ -40,30 +43,13 @@ public class ThrowingAxeSkill : MonoBehaviour
         return (-a.x * b.y + a.y * b.x) < 0;
     }
     void flip()
-    {
-
-        float playerX = transform.position.x;
-        float dirPosX = info._direction.x;
-
-        Debug.Log("player X" + playerX);
-        Debug.Log("dirPos X" + dirPosX);
-        //float dotR = Vector2.Dot(dirPos, (Vector2)player.transform.position + new Vector2(0,1));
-        
-        if( dirPosX < playerX)
+    {     
+        if(player.GetComponent<Player>().directionRight)
         {
-            // vasenmalla puolella
-            Debug.Log("vasen");
-        }
-        else
-        {
-            //oikella puolella
-            
             spriteRenderer.flipX = true;
             isGoingLeft = false;
         }
-
-        
-        
+   
     }
     void spin()
     {
@@ -76,29 +62,47 @@ public class ThrowingAxeSkill : MonoBehaviour
     
     void Update()
     {
-        spin();
-        
+        if(!stopMoving)
+        {
+            spin();
+        }
+        else
+        {
+            transform.position = stopPos;
+        }
+       
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        GameObject go;
+        
+        if (stopMoving)
+            return;
+        GameObject go = other.gameObject.transform.root.gameObject;
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player");
+            
            
-        }else if(other.gameObject.CompareTag("Enemy"))
+        }else if(go.CompareTag("Enemy"))
         {
-            go = other.gameObject;
+            
 
             if (go.GetComponent<StateController>() != null)
             {
-                go.GetComponent<StateController>().TakeDamage(go, damage, damageType);
+                go.GetComponent<StateController>().TakeDamage(go, damage, false, damageType, true, 100);
             }
 
             Destroy(this.gameObject);
 
         }
+        else if(!go.CompareTag("LootHolder") || !go.CompareTag("Untagged"))
+        {
+            stopPos = transform.position;
+            stopMoving = true;
+            Destroy(this.gameObject,3);
+        }
+
+        
 
        
 

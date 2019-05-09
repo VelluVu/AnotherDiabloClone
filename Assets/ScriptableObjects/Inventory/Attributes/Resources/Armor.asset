@@ -18,13 +18,14 @@ MonoBehaviour:
   stat: 8
   primary: 1
   value: 10
-  valueMax: 25
+  valueMax: 20
   value2Min: 0
   value2Max: 0
   statModType: 100
   characterStat:
     BaseValue: 0
+    statName: 
     isDirty: 1
     lastBaseValue: 0
     _value: 0
-  id: 1
+  id: 2

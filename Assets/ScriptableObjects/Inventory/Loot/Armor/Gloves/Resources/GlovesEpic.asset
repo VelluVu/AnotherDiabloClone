@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662627dafeab9ce4da683eb4c702b1da, type: 3}
+  m_Name: GlovesEpic
+  m_EditorClassIdentifier: 
+  itemName: Bluescale Gloves
+  description: '"Dovahkiin would be proud" - Stefan the Smith'
+  itemID: 8
+  itemIcon: {fileID: 2800000, guid: 1b3bf85ddbbd76643b97aecb84b8ca77, type: 3}
+  equipmentSprites:
+  - {fileID: 21300000, guid: 0625e9912c61f9d4686a212180746451, type: 3}
+  - {fileID: 21300000, guid: 7f58929c4d594f549bf25268ebd801a4, type: 3}
+  - {fileID: 21300000, guid: cbefcaaff594a5b49b3ab1fcf3f77ba8, type: 3}
+  - {fileID: 21300000, guid: 58623f32b838d9949b0bd286ee16a1b4, type: 3}
+  lootSprite: {fileID: 21300000, guid: 13d621d9032f7254fa563c9c71191fee, type: 3}
+  rarity: 3
+  itemLevel: 1
+  tags: 
+  attributes: []
+  randomAttributes: 1
+  equippable: 1
+  consumable: 0
+  stackable: 0
+  mainHand: 0
+  offHand: 0
+  armorSlot: 7
+  consumablePotency: 0
+  buyPrice: 0
+  sellPrice: 0

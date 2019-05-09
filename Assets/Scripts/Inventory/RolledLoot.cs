@@ -18,6 +18,8 @@ public class RolledLoot : MonoBehaviour
     public int itemLevel; // the level of the item
     #endregion
 
+    public bool overrideItemLevel =false;
+    public int itemLevelOverride = 999;
     public List<Tags> tags;
     #region attributes
     public List<RollAttribute> attributes = new List<RollAttribute>();
@@ -79,6 +81,11 @@ public class RolledLoot : MonoBehaviour
         this.buyPrice = loot.buyPrice;
         this.sellPrice = loot.sellPrice;
         this.originLoot = loot;
+        if (overrideItemLevel)
+        {
+            this.itemLevel = itemLevelOverride;
+            Debug.Log(itemLevel);
+        }
         RollAttributes(loot);
        
         return this;

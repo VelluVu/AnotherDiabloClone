@@ -10,6 +10,8 @@ public class skillPanelItemDragH : MonoBehaviour, IDragHandler,IEndDragHandler,I
     public bool isDragable = true;
     private AbilityBarScript abilityBar;
     private skillPanelButton skillPanelButton;
+
+    private AbilityContainer abilityContainer;
     private GameObject newButton;
 
     Vector2 max;
@@ -18,15 +20,21 @@ public class skillPanelItemDragH : MonoBehaviour, IDragHandler,IEndDragHandler,I
     Transform lastTrans;
 
     
+    
     private void OnEnable()
     {
         abilityBar = FindObjectOfType<AbilityBarScript>();        
         skillPanelButton = GetComponent<skillPanelButton>();
+        abilityContainer = Resources.FindObjectsOfTypeAll<AbilityContainer>()[0];
     }
     public void OnDrag(PointerEventData eventData)
     {
         if (!isDragable)
             return;
+        
+        skillPanelButton.toolTip.SetActive(false);
+        
+        
         transform.position = Input.mousePosition;
     }
 
@@ -39,13 +47,17 @@ public class skillPanelItemDragH : MonoBehaviour, IDragHandler,IEndDragHandler,I
         rectThis.offsetMin = min;
         rectThis.offsetMax = max;
         transform.SetSiblingIndex(lastTrans.GetSiblingIndex());
-        Invoke("addAbilityToBar", 0.05f);
+        //Invoke("addAbilityToBar", 0.05f);
+        StartCoroutine(addAbilityToBar());
         Destroy(newButton);
     }
 
     // laittaa abilityn hot baarille jos siinä ei oo cooldownia ja jos se on dragatty
-    void addAbilityToBar()
+    IEnumerator addAbilityToBar()
     {
+        yield return new WaitForSecondsRealtime(0.05f);
+        
+
         int id = abilityBar.mouseOverId;
         Ability ability = abilityBar.abilityInMouse;
         if(id >= 0 && ability != null)
@@ -60,7 +72,11 @@ public class skillPanelItemDragH : MonoBehaviour, IDragHandler,IEndDragHandler,I
     // Tekee  vale kuvan skillista skillpaneeliin ja laittaa abilitin ylös mikä otettu hiirellä kiinni
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        
+        if(!isDragable)
+        {
+            return;
+        }
+
         rectThis = GetComponent<RectTransform>();
         lastTrans = transform;
         transform.SetAsLastSibling();

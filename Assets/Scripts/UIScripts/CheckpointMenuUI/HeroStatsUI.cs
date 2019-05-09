@@ -27,7 +27,7 @@ public class HeroStatsUI : MonoBehaviour
         buttons [ 6 ].onClick.AddListener ( ( ) => RemoveStat ( PlayerClass.instance.energy ) );
         buttons [ 7 ].onClick.AddListener ( ( ) => AddStat ( PlayerClass.instance.energy ) );
         buttons [ 8 ].onClick.AddListener ( ( ) => ExitHeroStatsUI ( ) );
-        buttons [ 9 ].onClick.AddListener ( ( ) => ShowAllStats ( ) );
+        //buttons [ 9 ].onClick.AddListener ( ( ) => ShowAllStats ( ) );
         buttons [ 10 ].onClick.AddListener ( ( ) => SaveAddedPoints ( ) );
 
         newBaseStats.Add ( "Strength", PlayerClass.instance.strength.BaseValue );
@@ -50,12 +50,7 @@ public class HeroStatsUI : MonoBehaviour
         tmps [ 7 ].text = "Energy";
 
         tmps [ 8 ].text = "Points : " + PlayerClass.instance.statPoint.Value;
-
-        foreach ( var key in newBaseStats.Keys )
-        {
-            Debug.Log ( newBaseStats [ key ] );
-            Debug.Log (  key  );
-        }
+  
     }
 
     void RemoveStat ( CharacterStat stat )
@@ -127,10 +122,13 @@ public class HeroStatsUI : MonoBehaviour
 
     void SaveAddedPoints ( )
     {
+   
         PlayerClass.instance.strength.BaseValue = newBaseStats [ "Strength" ];
         PlayerClass.instance.dexterity.BaseValue = newBaseStats [ "Dexterity" ];
         PlayerClass.instance.endurance.BaseValue = newBaseStats [ "Endurance" ];
         PlayerClass.instance.energy.BaseValue = newBaseStats [ "Energy" ];
+
+        PlayerClass.instance.UpdateStatEffect ( );
 
         gameObject.SetActive ( false );
     }

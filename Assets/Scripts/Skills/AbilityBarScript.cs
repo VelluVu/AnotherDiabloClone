@@ -14,8 +14,8 @@ public class AbilityBarScript : MonoBehaviour
     public Color darkMaskColor = Color.black;
     public Color displayTextColor = Color.gray;
 
-    [HideInInspector] public int mouseOverId=-1;
-    [HideInInspector] public Ability abilityInMouse;
+    public int mouseOverId=-1;
+    public Ability abilityInMouse;
     [HideInInspector] public AbilityCoolDown[] cooldownButtons;
     public AbilityContainer abilityContainer;
 
@@ -31,18 +31,34 @@ public class AbilityBarScript : MonoBehaviour
         StartGame();
     }
 
+    void setAllAbilityThings()
+    {
+        for(int i = 0; i < abilityContainer.allAbilities.Length; i++)
+        {
 
+        }
+    }
+
+    bool isAbilityInBar(Ability ability)
+    {
+        for(int i = 0; i < cooldownButtons.Length; i++)
+        {
+            if (cooldownButtons[i].getAbility() == ability)
+                return true;
+        }
+        return false;
+    }
     // pystytään laittamaan uusi ability listasta idN perusteella
     public void setNewAbility(Ability ab,int buttonId)
     {
-        if (cooldownButtons[buttonId].notInCooldown)
+        if (cooldownButtons[buttonId].notInCooldown && ab.isEnabled && !isAbilityInBar(ab))
         {
             cooldownButtons[buttonId].Initialize(ab, player);
             abilityContainer.activeAbilities[buttonId] = ab;
         }
         else
         {
-            Debug.Log("You cant add new skill if its in cooldown");
+            Debug.Log("You cant add new skill if its in cooldown, not in enabled or is already in bar");
         }
         
     }
@@ -51,9 +67,10 @@ public class AbilityBarScript : MonoBehaviour
     // laukaistaan kun peli ailkaa ja laitetaan skillit paikoilleen hotbaarille ja kaikki tarvittava samalla
     public void StartGame()
     {
+        
         for (int i = 0; i < cooldownButtons.Length; i++)
         {
-            AbilityCoolDown ac = cooldownButtons[i];
+            AbilityCoolDown ac = cooldownButtons[i];            
             ac.Initialize(abilityContainer.activeAbilities[i], player);
             ac.id = i;
             ac.coolDownTextDisplay.color = cooldownTextColor;

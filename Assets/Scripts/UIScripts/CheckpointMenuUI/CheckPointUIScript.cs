@@ -18,6 +18,7 @@ public class CheckPointUIScript : MonoBehaviour
     [Space]
     public GameObject heroStatsUI;
     public GameObject travelUI;
+    public GameObject skillBookUI;
 
     public delegate void OnExitCheckPointUIDelegate ( );
     public static event OnExitCheckPointUIDelegate onExitCheckPointUIExitEvent;
@@ -52,7 +53,7 @@ public class CheckPointUIScript : MonoBehaviour
     /// </summary>
     private void AbilitySelected ( )
     {
-
+        skillBookUI.SetActive( true );
     }
 
     /// <summary>
@@ -71,11 +72,13 @@ public class CheckPointUIScript : MonoBehaviour
         travelUI.SetActive ( true );
     }
 
-    private void ExitCheckPoint ( )
+    public void ExitCheckPoint ( )
     {
 
         transform.GetChild ( 0 ).gameObject.SetActive ( false );
         heroStatsUI.SetActive ( false );
+        travelUI.SetActive ( false );
+        skillBookUI.SetActive( false );
 
         if ( onExitCheckPointUIExitEvent != null )
         {

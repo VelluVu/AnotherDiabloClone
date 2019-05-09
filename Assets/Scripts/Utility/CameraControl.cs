@@ -28,7 +28,7 @@ public class CameraControl : MonoBehaviour {
 
     private void LateUpdate ( )
     {
-        if ( !isShaking )
+        if ( !isShaking &&player != null)
         {
 
             Vector3 targetPosition = new Vector3 ( player.position.x , player.position.y, transform.position.z );
@@ -39,7 +39,8 @@ public class CameraControl : MonoBehaviour {
 
     public void ShakeOnImpact( float damage)
     {
-        StartCoroutine ( Shake ( _duration, _magnitude * (damage * 0.01f) ) );
+        if(!isShaking)
+            StartCoroutine ( Shake ( _duration, _magnitude * (damage * 0.01f) ) );
     }
 
     public IEnumerator Shake ( float duration, float magnitude )

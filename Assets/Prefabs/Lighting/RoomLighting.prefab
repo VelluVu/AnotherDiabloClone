@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5377271561939031021}
   - component: {fileID: 6956926613567792445}
-  m_Layer: 0
+  m_Layer: 28
   m_Name: 2D Light Source (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5401733701307207735}
   - component: {fileID: 1845569286234481635}
-  m_Layer: 0
+  m_Layer: 28
   m_Name: 2D Light Source (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3817776347813750171}
   - component: {fileID: 1638419345383682420}
-  m_Layer: 0
+  m_Layer: 28
   m_Name: 2D Light Source (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 8851555351562514954}
   - component: {fileID: 8851555351562514955}
   - component: {fileID: 8851555351562514952}
-  m_Layer: 0
+  m_Layer: 28
   m_Name: RoomLighting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +397,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 2.106268, y: -1.4813218}
@@ -423,7 +423,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8851555351588400621}
   - component: {fileID: 8851555351588400618}
-  m_Layer: 0
+  m_Layer: 28
   m_Name: 2D Light Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -535,7 +535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7108773681923685403}
   - component: {fileID: 8817999347270653067}
-  m_Layer: 0
+  m_Layer: 28
   m_Name: 2D Light Source (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
