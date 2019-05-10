@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 public class skillPanelItemDragH : MonoBehaviour, IDragHandler,IEndDragHandler,IBeginDragHandler
 {
     public bool isDragable = true;
-    private AbilityBarScript abilityBar;
+    public AbilityBarScript abilityBar;
     private skillPanelButton skillPanelButton;
 
     private AbilityContainer abilityContainer;
@@ -19,7 +19,7 @@ public class skillPanelItemDragH : MonoBehaviour, IDragHandler,IEndDragHandler,I
     RectTransform rectThis;
     Transform lastTrans;
 
-    
+    int idNow = 0;
     
     private void OnEnable()
     {
@@ -47,7 +47,7 @@ public class skillPanelItemDragH : MonoBehaviour, IDragHandler,IEndDragHandler,I
         rectThis.offsetMin = min;
         rectThis.offsetMax = max;
         transform.SetSiblingIndex(lastTrans.GetSiblingIndex());
-        //Invoke("addAbilityToBar", 0.05f);
+        //Invoke("addAbilityToBar", 0.1f);
         StartCoroutine(addAbilityToBar());
         Destroy(newButton);
     }
@@ -55,20 +55,43 @@ public class skillPanelItemDragH : MonoBehaviour, IDragHandler,IEndDragHandler,I
     // laittaa abilityn hot baarille jos siinä ei oo cooldownia ja jos se on dragatty
     IEnumerator addAbilityToBar()
     {
-        yield return new WaitForSecondsRealtime(0.05f);
-        
+        yield return new WaitForSecondsRealtime(0.07f);
+
 
         int id = abilityBar.mouseOverId;
         Ability ability = abilityBar.abilityInMouse;
-        if(id >= 0 && ability != null)
+        if (id >= 0 && ability != null)
         {
-            
+
             abilityBar.setNewAbility(ability, id);
         }
 
-        abilityBar.abilityInMouse = null;
+        
+        //abilityBar.abilityInMouse = null;
     }
 
+    //void addAbilityToBar()
+    //{
+    //    //yield return new WaitForSeconds(0.2f);
+
+
+    //    int id = abilityBar.mouseOverId;
+    //    Debug.Log("ID: " + id);
+    //    Ability ability = abilityBar.abilityInMouse;
+    //    if (id >= 0 && ability != null)
+    //    {
+
+    //        abilityBar.setNewAbility(ability, id);
+    //    }
+
+
+    //    //abilityBar.abilityInMouse = null;
+    //}
+
+    private void Update()
+    {
+        idNow = abilityBar.mouseOverId;
+    }
     // Tekee  vale kuvan skillista skillpaneeliin ja laittaa abilitin ylös mikä otettu hiirellä kiinni
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {

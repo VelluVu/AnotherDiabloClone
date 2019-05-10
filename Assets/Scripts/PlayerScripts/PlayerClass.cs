@@ -219,10 +219,7 @@ public class PlayerClass : MonoBehaviour
         criticalHitDamage.AddModifier ( dexterityEffect );
         maxHealth.AddModifier ( enduranceEffect );
         maxMana.AddModifier ( energyEffect );
-
-        health.BaseValue = health.Value + enduranceEffect.Value;
-        mana.BaseValue = mana.Value + enduranceEffect.Value;
-
+     
     }
 
     public void checkHealth ( ) // tarkistetaan että health ei ole suurempi kuin maxHealth;

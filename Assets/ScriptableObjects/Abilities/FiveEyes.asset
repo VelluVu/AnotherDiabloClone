@@ -19,7 +19,7 @@ MonoBehaviour:
   levelToUnlock: 1
   _sprite: {fileID: 21300000, guid: 8f3f92ef6563f634e80e1fc9b5cc9a0c, type: 3}
   skillSoundType: 4
-  _cooldown: 12
+  _cooldown: 4
   _manaUsage: 5
   _duration: 0
   _showDurBar: 1
@@ -27,7 +27,7 @@ MonoBehaviour:
   _stopPlayerMoving: 0
   _stopDuration: 0
   prefab: {fileID: 1590960449193280826, guid: 36ed2c2881cef46439c5999bdcf11552, type: 3}
-  damageProsent: 100
+  damageProsent: 80
   damageType: 3
   force: 0
   velocity: 0.5

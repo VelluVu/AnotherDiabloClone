@@ -20,9 +20,9 @@ MonoBehaviour:
   levelToUnlock: 0
   _sprite: {fileID: 21300000, guid: 17d7630c88b4e0444a1bc3d5382bac99, type: 3}
   skillSoundType: 16
-  _cooldown: 60
+  _cooldown: 33
   _manaUsage: 10
-  _duration: 10
+  _duration: 5
   _showDurBar: 1
   _allowDoThisInAir: 1
   _stopPlayerMoving: 0

@@ -1333,6 +1333,7 @@ public class Player : MonoBehaviour
 
         if ( !isDashing && !isBlocking && collision.gameObject.CompareTag ( "Enemy" ) && !collision.gameObject.GetComponent<Projectile> ( ) )
         {
+            CanTurn ( 0.5f );
             Vector2 normalV = collision.GetContact ( 0 ).normal;
             //Debug.Log ( "normal " + normalV );
             //Vector2 reflection = Vector2.Reflect ( collision.GetContact ( 0 ).point, normalV );
@@ -1353,6 +1354,7 @@ public class Player : MonoBehaviour
             }
             newVelocity = jumpVelocityMax * new Vector2 ( normalV.x * 0.5f, normalV.y * 0.5f );
             TakeDamage ( gameObject, 10f, DamageType.Raw, ( int ) stats.playerLevel.Value );
+            
         }
     }
     private void OnCollisionExit2D ( Collision2D collision )

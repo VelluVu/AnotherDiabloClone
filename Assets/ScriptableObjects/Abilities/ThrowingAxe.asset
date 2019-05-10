@@ -27,7 +27,7 @@ MonoBehaviour:
   _stopPlayerMoving: 0
   _stopDuration: 0
   _protectileForce: 100
-  _damage: 1
+  _damage: 50
   _damageType: 0
   _mass: 0.2
   _healingEnemy: 5

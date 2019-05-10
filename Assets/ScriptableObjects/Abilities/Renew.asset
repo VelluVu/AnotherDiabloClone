@@ -27,7 +27,7 @@ MonoBehaviour:
   _stopPlayerMoving: 0
   _stopDuration: 0
   _range: 0
-  _heal: 0
+  _heal: 5
   _mana: 0
   _damage: 0
   _damageType: 0

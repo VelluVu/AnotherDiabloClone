@@ -85,7 +85,6 @@ public class ThrowingAxeSkill : MonoBehaviour
            
         }else if(go.CompareTag("Enemy"))
         {
-            
 
             if (go.GetComponent<StateController>() != null)
             {

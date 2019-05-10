@@ -85,4 +85,6 @@ public class CheckPointUIScript : MonoBehaviour
             onExitCheckPointUIExitEvent ( );
         }
     }
+
+    
 }

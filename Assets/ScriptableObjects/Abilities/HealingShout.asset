@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HealingShout
   m_EditorClassIdentifier: 
   _name: Healing Shout
-  desc: Insta heal you 40%
+  desc: Insta heal you 55%
   isEnabled: 1
   checkLevel: 1
   levelToUnlock: 0
@@ -27,7 +27,7 @@ MonoBehaviour:
   _stopPlayerMoving: 0
   _stopDuration: 0
   _range: 0
-  _heal: 40
+  _heal: 55
   _mana: 0
   _damage: 0
   _damageType: 0

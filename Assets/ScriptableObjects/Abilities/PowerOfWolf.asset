@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PowerOfWolf
   m_EditorClassIdentifier: 
   _name: Power of Wolf
-  desc: Gives speed of Wolf!
+  desc: Make you move swiftly!
   isEnabled: 1
   checkLevel: 1
   levelToUnlock: 0
